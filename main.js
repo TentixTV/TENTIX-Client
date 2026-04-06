@@ -45,7 +45,17 @@ ipcMain.handle('get-total-ram', () => { return Math.round(os.totalmem() / (1024 
 ipcMain.handle('ms-login', async () => {
     try {
         const authManager = new Auth("select_account");
-        const xboxManager = await authManager.launch("electron");
+
+        // FANCY MICROSOFT POPUP EINSTELLUNGEN
+        const loginOptions = {
+            width: 500,
+            height: 650,
+            icon: path.join(__dirname, 'assets', 'TENTIX.png'), // Dein Logo für das Fenster
+            title: "TENTIX Client Login", // Custom Fenster-Titel
+            resizable: false
+        };
+
+        const xboxManager = await authManager.launch("electron", loginOptions);
         const token = await xboxManager.getMinecraft();
         return { success: true, name: token.profile.name, uuid: token.profile.id, mclc_token: token.mclc() };
     } catch (error) { return { success: false, error: String(error) }; }

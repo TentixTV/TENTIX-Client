@@ -63,6 +63,15 @@
         @keyframes spin { to { transform: rotate(360deg); } }
         .action-text { font-size: 13px; font-weight: 800; color: var(--accent-blue); letter-spacing: 6px; text-transform: uppercase; }
 
+        /* --- FANCY ERROR MODAL --- */
+        #error-modal { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(8px); z-index: 9999; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease; -webkit-app-region: no-drag; }
+        .error-modal-content { background: var(--card-bg); border: 1px solid rgba(255, 75, 75, 0.4); border-radius: 16px; padding: 40px; text-align: center; box-shadow: 0 15px 50px rgba(0,0,0,0.8), 0 0 40px rgba(255, 75, 75, 0.1); max-width: 400px; transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1); }
+        #error-modal.show .error-modal-content { transform: scale(1); }
+        .error-title { font-size: 18px; font-weight: 800; color: #ff4b4b; letter-spacing: 1px; margin-bottom: 15px; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 12px;}
+        .error-desc { font-size: 13px; color: var(--text-gray); line-height: 1.5; margin-bottom: 25px; }
+        .error-btn { background: rgba(255, 75, 75, 0.1); border: 1px solid rgba(255, 75, 75, 0.3); color: #ff4b4b; padding: 12px 30px; font-size: 12px; font-weight: 800; border-radius: 8px; cursor: pointer; transition: 0.2s; display: inline-block; letter-spacing: 1px;}
+        .error-btn:hover { background: #ff4b4b; color: #fff; box-shadow: 0 0 20px rgba(255, 75, 75, 0.4); }
+
         .mask-icon { display: inline-block; background-color: #8b8b93; -webkit-mask-size: contain; -webkit-mask-repeat: no-repeat; -webkit-mask-position: center; mask-size: contain; mask-repeat: no-repeat; mask-position: center; transition: 0.3s ease; }
 
         /* --- WINDOW CONTROLS --- */
@@ -107,8 +116,7 @@
         .card-btn.green-hover:hover { background: rgba(0, 255, 128, 0.1); }
         .card-btn.red-hover:hover { background: rgba(255, 75, 75, 0.1); color: #ff4b4b; border-color: #ff4b4b; }
 
-        /* FANCY TOOLTIPS (DOWN VARIANT) */
-        .tooltip .tooltiptext { visibility: hidden; width: max-content; background-color: #111; color: var(--accent-blue); text-align: center; border-radius: 6px; padding: 10px 14px; position: absolute; z-index: 10; opacity: 0; transition: 0.3s; border: 1px solid var(--accent-blue); font-size: 10px; font-weight: 700; box-shadow: 0 5px 15px rgba(0,0,0,0.8); line-height: 1.4; white-space: normal;}
+        .tooltip .tooltiptext { visibility: hidden; width: max-content; background-color: #111; color: var(--accent-blue); text-align: center; border-radius: 6px; padding: 8px 14px; position: absolute; z-index: 1; bottom: 125%; left: 50%; transform: translateX(-50%); opacity: 0; transition: 0.3s; border: 1px solid var(--accent-blue); font-size: 10px; font-weight: 700; box-shadow: 0 5px 15px rgba(0,0,0,0.8); line-height: 1.4; white-space: normal;}
         .tooltip.tooltip-down .tooltiptext { top: 135%; bottom: auto; left: 50%; transform: translateX(-50%); }
         .tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }
 
@@ -178,7 +186,7 @@
             overflow-y: auto;
             overflow-x: hidden;
             width: 100%;
-            scroll-behavior: smooth; /* Sanftes Scrollen */
+            scroll-behavior: smooth;
         }
 
         .settings-inner { padding: 40px 30px 50px 40px; }
@@ -247,13 +255,11 @@
         .settings-close { position: absolute; top: 25px; right: 25px; color: #666; cursor: pointer; font-size: 20px; transition: 0.2s; z-index: 10; -webkit-app-region: no-drag; }
         .settings-close:hover { color: #fff; transform: scale(1.1); }
 
-        /* FANCY DISCORD BANNER */
         .fancy-banner { display: flex; justify-content: center; align-items: center; background: linear-gradient(135deg, #5865F2 0%, #4752C4 100%); padding: 25px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 4px 15px rgba(0,0,0,0.5); text-decoration: none; transition: 0.3s ease; margin-top: 30px; -webkit-app-region: no-drag; cursor: pointer;}
         .fancy-banner:hover { transform: translateY(-3px); box-shadow: 0 6px 25px rgba(88, 101, 242, 0.6); border-color: rgba(255,255,255,0.3); }
         .discord-banner-text { font-size: 15px; font-weight: 800; color: #fff; letter-spacing: 0.5px; }
         .discord-banner-sub { font-size: 12px; color: rgba(255,255,255,0.8); margin-top: 4px; line-height: 1.4; }
 
-        /* FANCY DROPDOWN (Discord Sprache) */
         .fancy-dropdown { position: relative; width: 280px; margin-top: 10px; user-select: none; }
         .fancy-dropdown-selected { background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px 18px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: 0.3s; font-size: 13px; font-weight: 700; color: #fff; }
         .fancy-dropdown-selected:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.02); }
@@ -277,14 +283,10 @@
             line-height: 1.4; font-style: normal; white-space: normal;
         }
 
-        /* FIX: RAM Tooltips nach UNTEN */
         .tooltip-down .tooltiptext { top: 135%; bottom: auto; left: 50%; transform: translateX(-50%); }
-        /* Normale Ads Tooltips nach OBEN */
         .tooltip-up .tooltiptext { bottom: 125%; left: 50%; transform: translateX(-50%); }
-
         .tooltip-ads:hover .tooltiptext { visibility: visible; opacity: 1; }
 
-        /* Suchergebnisse Pulsieren */
         .fancy-result-pulse { animation: pulseResult 1.5s ease-out forwards; }
         @keyframes pulseResult {
             0% { background: rgba(0, 212, 255, 0.3); box-shadow: 0 0 20px rgba(0, 212, 255, 0.4); border-color: var(--accent-blue); }
@@ -292,16 +294,8 @@
         }
 
         /* --- MAIN MENU --- */
-        #main-menu-wrapper {
-            position: absolute; width: 100%; height: 100%; z-index: 100; opacity: 0; visibility: hidden;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
-        }
-
-        #play-container-wrapper {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-            display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%;
-        }
+        #main-menu-wrapper { position: absolute; width: 100%; height: 100%; z-index: 100; opacity: 0; visibility: hidden; transition: opacity 0.5s ease, visibility 0.5s ease; }
+        #play-container-wrapper { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1); display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; }
         #play-container-wrapper.news-open { transform: translate(calc(-50% - 160px), -50%); }
 
         .welcome-text { font-size: 16px; letter-spacing: 5px; color: #666; margin-bottom: 15px; text-transform: uppercase;}
@@ -329,7 +323,6 @@
         .mod-display { background: rgba(255,255,255,0.03); border: 1px solid var(--accent-blue); color: var(--accent-blue); padding: 14px 35px; border-radius: 30px; font-size: 12px; font-weight: 800; cursor: pointer; transition: 0.3s; box-shadow: 0 0 15px rgba(0, 212, 255, 0.15); text-transform: uppercase; letter-spacing: 1px;}
         .mod-display:hover { transform: scale(1.05); }
 
-        /* --- NEWS PANE PRO --- */
         #news-toggle-btn { position: absolute; top: 50%; right: 40px; transform: translateY(-50%); width: 45px; height: 45px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 3000; transition: 0.4s ease; -webkit-app-region: no-drag; display: none; opacity: 0; font-size: 18px; color: #888;}
         #news-toggle-btn:hover { background: rgba(0, 212, 255, 0.1); border-color: var(--accent-blue); box-shadow: 0 0 20px rgba(0, 212, 255, 0.2); transform: translateY(-50%) scale(1.05); color: #fff;}
         #news-toggle-btn .arrow-icon { display: inline-block; transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), color 0.3s; transform: rotate(0deg); font-weight: 700;}
@@ -342,12 +335,10 @@
         .news-content { flex: 1; padding: 30px; display: flex; justify-content: center; align-items: center; }
         .news-empty-card { width: 100%; height: 100%; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; display: flex; justify-content: center; align-items: center; color: #666; font-size: 13px; letter-spacing: 1px; font-style: italic; text-align: center; padding: 25px;}
 
-        /* --- SOCIAL LOGOS PRO --- */
         .social-container { position: absolute; bottom: 35px; left: 50%; transform: translateX(-50%); display: flex; gap: 20px; z-index: 3000; -webkit-app-region: no-drag; display: none; opacity: 0; transition: opacity 0.5s ease; }
         .social-icon { width: 38px; height: 38px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; }
         .social-icon .mask-icon { width: 16px; height: 16px; background-color: #666; transition: 0.3s; }
         .social-icon:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.15); transform: translateY(-4px); }
-
         .soc-ig:hover .mask-icon { background-color: #E1306C; filter: drop-shadow(0 0 8px rgba(225, 48, 108, 0.8)); }
         .soc-dc:hover .mask-icon { background-color: #5865F2; filter: drop-shadow(0 0 8px rgba(88, 101, 242, 0.8)); }
         .soc-yt:hover .mask-icon { background-color: #FF0000; filter: drop-shadow(0 0 8px rgba(255, 0, 0, 0.8)); }
@@ -366,7 +357,6 @@
         #toast { position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%) translateY(20px); background: rgba(10, 10, 10, 0.95); border: 1px solid var(--accent-blue); color: var(--accent-blue); padding: 12px 30px; border-radius: 30px; font-size: 12px; font-weight: 800; letter-spacing: 2px; opacity: 0; pointer-events: none; transition: 0.4s; z-index: 8000; text-transform: uppercase; }
         #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-        /* --- SHOP / COSMETICS VIEW --- */
         #shop-view { position: absolute; width: 100%; height: 100%; top: 0; left: 0; display: none; visibility: hidden; justify-content: center; align-items: center; z-index: 50; opacity: 0; transition: opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1), visibility 0.6s; }
         .dummy-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; width: 85%; height: 65%; padding: 25px; opacity: 0.2; filter: blur(10px); }
         .dummy-tile { background: rgba(255,255,255,0.05); border: 1px solid rgba(0,212,255,0.2); border-radius: 14px; height: 200px; }
@@ -383,6 +373,17 @@
 
 <div id="loading-screen">
     <img src="../assets/TENTIX.png" class="startup-logo" alt="TENTIX">
+</div>
+
+<div id="error-modal">
+    <div class="error-modal-content">
+        <div class="error-title">
+            <svg viewBox="0 0 24 24" style="width: 40px; height: 40px; fill: #ff4b4b;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <span id="ui-err-title">LOGIN FEHLGESCHLAGEN</span>
+        </div>
+        <div class="error-desc" id="ui-err-desc">Wir konnten dich nicht bei Microsoft einloggen. Der Vorgang wurde abgebrochen oder es trat ein Fehler auf.</div>
+        <div class="error-btn" id="ui-err-ok" onclick="closeErrorModal()">VERSTANDEN</div>
+    </div>
 </div>
 
 <div id="action-overlay">
@@ -710,7 +711,7 @@
         </div>
     </div>
 
-    <p class="version-tag">v2.6.5 ALPHA</p>
+    <p class="version-tag">v2.6.6 ALPHA</p>
     <p class="credits">Made with Love by TENTIX 🤍</p>
 
     <div class="lang-selector">
@@ -756,8 +757,7 @@
             skinBtn: "Skin Changer", loginBtn: "Log In", userId: "USER ID: #", guest: "GUEST", ttSkin: "Coming Soon", inbox: "Inbox", setT: "Game Settings", setRam: "Allocated Memory", setRamD: "Choose how much memory should be allocated to the game instance",
             setRes: "Game Resolution", setResD: "Set the resolution of the game instance", setVis: "Launcher Visibility on Start", setVisD: "Choose what the launcher should do when the game starts",
             csTitle: "COMING SOON", csBack: "BACK", tGame: "Game", tDisc: "Discord", tPriv: "Privacy", tPriv1: "Analytics", tPrivD1: "TENTIX Client collects analytics and usage data to improve the user experience",
-            tPriv2: "Optimized Ads", tPrivD2: "Whether cookies and similar technologies should be used to personalize ads based on your interests.", tDiscD1: "Whether your game status should be displayed on Discord",
-            tDiscT2: "Hide Discord Rich Presence when away", tDiscD2: "Whether your game status should be hidden when you are away", tDiscT3: "Discord Language", tDiscD3: "Select the language for Discord Rich Presence",
+            tPriv2: "Optimized Ads", tPrivD2: "Whether cookies and similar technologies should be used to personalize ads based on your interests.",
             tDban1: "Join the Official TENTIX Discord", tDban2: "Get support, updates & chat with the community!", tMoj: "Not affiliated with Mojang or Microsoft", search: "Search...", keep: "Keep Open", keepD: "Launcher stays open in background", hide: "Hide", hideD: "Launcher hides once the instance appears", rec: "Recommended", high: "High Usage!", over: "Overridden",
             da: "🇩🇪 Automatic - German", de: "🇬🇧 English", free1: "You have ", free2: " GB free to allocate.", newsHeader: "News", newsEmpty: "Stay tuned for updates...",
             settingsTitle: "Client Settings", setAdsTt: "Disable this to receive no targeted advertising.\nWe are an ad-free client and value your right to shape your experience freely.",
@@ -765,7 +765,8 @@
             discHeader: "Discord Settings", discRp: "Discord Rich Presence", discRpDesc: "Whether your game status should be displayed on Discord",
             discHide: "Hide Discord Rich Presence when away", discHideDesc: "Whether your game status should be hidden when you are away",
             discLang: "Discord Rich Presence Language", discLangDesc: "Select the language for Discord Rich Presence",
-            discJoin: "Join the Official TENTIX Discord Server", discJoinDesc: "Get support, news & chat with the community!"
+            discJoin: "Join the Official TENTIX Discord Server", discJoinDesc: "Get support, news & chat with the community!",
+            loginErrTitle: "LOGIN FAILED", loginErrDesc: "We couldn't log you in to Microsoft. The process was canceled or an error occurred.", btnOk: "UNDERSTOOD"
         },
         de: {
             latest: "Neueste Version", ready: "BEREIT", welcome: "WILLKOMMEN, ", player: "SPIELER", play: "SPIELEN", loginReq: "BITTE EINLOGGEN!",
@@ -773,8 +774,7 @@
             skinBtn: "Skin Changer", loginBtn: "Anmelden", userId: "NUTZER ID: #", guest: "GAST", ttSkin: "Bald verfügbar", inbox: "Posteingang", setT: "Spieleinstellungen", setRam: "Zugewiesener Arbeitsspeicher", setRamD: "Wähle aus wie viel Arbeitsspeicher der Spielinstanz zugewiesen werden soll",
             setRes: "Spielauflösung", setResD: "Stelle die Auflösung der Spielinstanz ein", setVis: "Sichtbarkeit des Launchers beim Start", setVisD: "Wähle aus, welche Option der Launcher übernehmen soll",
             csTitle: "BALD VERFÜGBAR", csBack: "ZURÜCK", tGame: "Spiel", tDisc: "Discord", tPriv: "Privatsphäre", tPriv1: "Analytik", tPrivD1: "TENTIX sammelt Analyse- und Nutzungsdaten, um die Erfahrung zu verbessern",
-            tPriv2: "Optimierte Werbeanzeigen", tPrivD2: "Ob Cookies verwendet werden sollen, um Werbeanzeigen zu personalisieren.", tDiscD1: "Ob dein Spielstatus auf Discord angezeigt werden soll",
-            tDiscT2: "Bei Abwesenheit ausblenden", tDiscD2: "Ob dein Spielstatus ausgeblendet werden soll, wenn du abwesend bist", tDiscT3: "Discord Sprache", tDiscD3: "Wähle die Sprache für Discord aus",
+            tPriv2: "Optimierte Werbeanzeigen", tPrivD2: "Ob Cookies verwendet werden sollen, um Werbeanzeigen zu personalisieren.",
             tDban1: "Tritt dem TENTIX Discord bei", tDban2: "Erhalte Support, Updates & chatte mit der Community!", tMoj: "Nicht mit Mojang oder Microsoft verbunden", search: "Suchen...", keep: "Geöffnet lassen", keepD: "Launcher bleibt im Hintergrund geöffnet", hide: "Ausblenden", hideD: "Der Launcher wird ausgeblendet, sobald die Spielinstanz erscheint", rec: "Empfohlen", high: "Hohe Auslastung!", over: "Überschrieben",
             da: "🇩🇪 Automatisch - Deutsch", de: "🇬🇧 Englisch", free1: "Du hast ", free2: " GB frei zum Zuweisen.", newsHeader: "Neuigkeiten", newsEmpty: "Bleib dran für Updates...",
             settingsTitle: "Client Einstellungen", setAdsTt: "Deaktiviere das um keine Werbung zu erhalten.\nWir sind ein werbefreier Client und legen Wert darauf, dass jeder sein Spielerlebnis frei gestalten kann.",
@@ -782,7 +782,8 @@
             discHeader: "Discordeinstellungen", discRp: "Discord Rich Presence", discRpDesc: "Ob dein Spielstatus auf Discord angezeigt werden soll",
             discHide: "Discord Rich Presence bei Abwesenheit ausblenden", discHideDesc: "Ob dein Spielstatus ausgeblendet werden soll, wenn du abwesend bist",
             discLang: "Discord Rich Presence-Sprache", discLangDesc: "Wähle die Sprache für Discord Rich Presence aus",
-            discJoin: "Tritt dem Offiziellen TENTIX Discord bei", discJoinDesc: "Erhalte Support, Updates & chatte mit der Community!"
+            discJoin: "Tritt dem Offiziellen TENTIX Discord bei", discJoinDesc: "Erhalte Support, Updates & chatte mit der Community!",
+            loginErrTitle: "LOGIN FEHLGESCHLAGEN", loginErrDesc: "Wir konnten dich nicht bei Microsoft einloggen. Der Vorgang wurde abgebrochen oder es trat ein Fehler auf.", btnOk: "VERSTANDEN"
         }
     };
 
@@ -964,6 +965,11 @@
         setElText('t-disc-join', t.discJoin);
         setElText('t-disc-join-desc', t.discJoinDesc);
 
+        // Error Modal
+        setElText('ui-err-title', t.loginErrTitle);
+        setElText('ui-err-desc', t.loginErrDesc);
+        setElText('ui-err-ok', t.btnOk);
+
         if(document.getElementById('settings-search')) document.getElementById('settings-search').placeholder = t.search;
 
         setElText('t-vis-keep', t.keep);
@@ -1021,7 +1027,6 @@
         }
     }
 
-    /* --- FANCY DROPDOWN & SEARCH LOGIC --- */
     function toggleDropdown(id) {
         document.getElementById(id).parentNode.classList.toggle('open');
     }
@@ -1030,7 +1035,6 @@
         document.getElementById('disc-lang-sel-text').innerText = text;
         document.getElementById('disc-lang-sel-img').src = flagSrc;
         document.getElementById('discord-lang-dropdown').classList.remove('open');
-        // Logik für Discord Language hier hin, falls später benötigt
     }
 
     document.addEventListener('click', (e) => {
@@ -1324,6 +1328,24 @@
         }
     }
 
+    function showErrorModal() {
+        const modal = document.getElementById('error-modal');
+        modal.style.display = 'flex';
+        setTimeout(() => {
+            modal.style.opacity = '1';
+            modal.classList.add('show');
+        }, 10);
+    }
+
+    function closeErrorModal() {
+        const modal = document.getElementById('error-modal');
+        modal.style.opacity = '0';
+        modal.classList.remove('show');
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 300);
+    }
+
     async function loginProcess() {
         closeAllPopups();
         const overlay = document.getElementById('action-overlay');
@@ -1348,10 +1370,11 @@
                 updateUI();
                 applyLoginState();
             } else {
-                alert("Login failed!");
+                showErrorModal();
             }
         } catch (err) {
             console.error(err);
+            showErrorModal();
         } finally {
             overlay.style.opacity = '0';
             setTimeout(() => overlay.style.display = 'none', 300);
