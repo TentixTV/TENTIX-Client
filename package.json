@@ -1,0 +1,19 @@
+{
+  "name": "tentixlauncher",
+  "version": "1.0.0",
+  "description": "The Next Gen Minecraft Client",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^30.5.1"
+  },
+  "dependencies": {
+    "minecraft-launcher-core": "^3.18.2",
+    "msmc": "^5.0.5"
+  }
+}
