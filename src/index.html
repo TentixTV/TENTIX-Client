@@ -815,7 +815,7 @@
                 <span class="card-name" id="ui-card-name">GUEST</span>
                 <div class="badges-container" id="ui-badges-container" style="display: none;"></div>
             </div>
-            <span class="card-uuid" id="ui-card-uuid" onclick="copyUUID(event)" title="Click to copy">NOT LOGGED IN</span>
+            <span class="card-uuid copy-hover" id="ui-card-uuid" onclick="copyUUID(event)" title="Click to copy">NOT LOGGED IN</span>
             <span class="card-userid" id="ui-card-id" style="display: none;">USER ID: #----</span>
             <span class="card-info" id="ui-card-reg">REGISTERED: --</span>
 
@@ -972,7 +972,7 @@
                             <div class="setting-row" style="align-items: center;">
                                 <div class="setting-text-col">
                                     <div class="setting-title" style="margin-bottom: 4px;">
-                                        <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: #fff; margin-right: 10px;"><path d="M20 6h-2.18c.11-.31.18-.65.18-1a2.996 2.996 0 0 0-5.5-1.95l-2 2-2-2A2.996 2.996 0 0 0 3 6c0 .35.07.69.18 1H1v15h22V6h-3zM9.5 4c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5S8 6.33 8 5.5 8.67 4 9.5 4zm5 0c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5-1.5-.67-1.5-1.5.67-1.5 1.5-1.5zm-5 4h5v12h-5V8z"/></svg>
+                                        <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: #fff; margin-right: 10px;"><path d="M20 6h-2.18c.11-.31.18-.65.18-1a2.996 2.996 0 0 0-5.5-1.95l-2 2-2-2A2.996 2.996 0 0 0 3 6c0 .35.07.69.18 1H1v15h22V6h-3zM9.5 4c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5-1.5S8 6.33 8 5.5 8.67 4 9.5 4zm5 0c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5-1.5-1.5-.67-1.5-1.5.67-1.5 1.5-1.5zm-5 4h5v12h-5V8z"/></svg>
                                         <span id="t-set-red-title">Code Einlösen</span>
                                     </div>
                                     <div class="setting-desc" id="t-set-red-desc" style="margin-bottom:0;">Löse einen TENTIX Code für exklusive Badges oder Cosmetics ein.</div>
@@ -1198,6 +1198,7 @@
 </div>
 
 <script>
+    let dashUsername = '';
     const API_BASE_URL = 'http://uilkgyp2338kaq7hgyj5pqwt.159.195.44.117.sslip.io';
 
     function setElText(id, text) { const el = document.getElementById(id); if(el) el.innerText = text; }
@@ -1303,16 +1304,32 @@
         }
     }
 
+    function sendHeartbeatPing() {
+        let activeUser = null;
+        if (isLoggedIn && savedName !== 'GUEST') activeUser = savedName;
+        else if (currentDashRole !== 'GUEST' && dashUsername !== '') activeUser = dashUsername;
+
+        if (activeUser) {
+            fetch(`${API_BASE_URL}/api/users/init`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: activeUser, uuid: activeUser + '-admin' })
+            }).then(() => {
+                fetch(`${API_BASE_URL}/api/heartbeat`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: activeUser })
+                });
+            }).catch(e => {});
+        }
+    }
+
     function startHeartbeat() {
-        setInterval(async () => {
-            if (isLoggedIn && savedName !== 'GUEST') {
-                try {
-                    await fetch(`${API_BASE_URL}/api/heartbeat`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ username: savedName })
-                    });
-                } catch(e) {}
+        sendHeartbeatPing();
+        setInterval(() => {
+            sendHeartbeatPing();
+            if(document.getElementById('dashboard-overlay').style.display === 'block') {
+                fetchDashboardStats();
             }
         }, 60000);
     }
@@ -1554,6 +1571,8 @@
 
         if(foundAdmin) {
             currentDashRole = foundAdmin.role;
+            dashUsername = foundAdmin.user;
+            sendHeartbeatPing();
             const modal = document.getElementById('dash-login-modal');
             modal.style.opacity = '0';
             modal.classList.remove('show');
@@ -1607,7 +1626,7 @@
     function closeDashboard() {
         const dash = document.getElementById('dashboard-overlay');
         dash.style.opacity = '0';
-        setTimeout(() => { dash.style.display = 'none'; document.getElementById('dash-pass').value = ''; currentDashRole = 'GUEST'; }, 400);
+        setTimeout(() => { dash.style.display = 'none'; document.getElementById('dash-pass').value = ''; currentDashRole = 'GUEST'; dashUsername = ''; }, 400);
     }
 
     async function renderUsersTable() {
