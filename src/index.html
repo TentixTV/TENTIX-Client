@@ -1200,6 +1200,34 @@
 </div>
 
 <script>
+    // --- BACKEND ANBINDUNG START ---
+    const API_BASE_URL = 'http://uilkgyp2338kaq7hgyj5pqwt.159.195.44.117.sslip.io';
+
+    async function redeemCode(userCode, username) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/codes/redeem`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code: userCode, username: username })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                alert('✅ Erfolg: ' + data.message);
+                // Hier kannst du jetzt die Funktion aufrufen, die das Spiel freischaltet
+                return true;
+            } else {
+                alert('❌ Fehler: ' + data.message);
+                return false;
+            }
+        } catch (error) {
+            alert('❌ Server nicht erreichbar! Check deine Internetverbindung.');
+            console.error(error);
+            return false;
+        }
+    }
+    // --- BACKEND ANBINDUNG ENDE ---
     function setElText(id, text) { const el = document.getElementById(id); if(el) el.innerText = text; }
 
     const translations = {
