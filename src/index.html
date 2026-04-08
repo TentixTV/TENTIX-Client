@@ -1200,34 +1200,8 @@
 </div>
 
 <script>
-    // --- BACKEND ANBINDUNG START ---
     const API_BASE_URL = 'http://uilkgyp2338kaq7hgyj5pqwt.159.195.44.117.sslip.io';
 
-    async function redeemCode(userCode, username) {
-        try {
-            const response = await fetch(`${API_BASE_URL}/api/codes/redeem`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ code: userCode, username: username })
-            });
-
-            const data = await response.json();
-
-            if (data.success) {
-                alert('✅ Erfolg: ' + data.message);
-                // Hier kannst du jetzt die Funktion aufrufen, die das Spiel freischaltet
-                return true;
-            } else {
-                alert('❌ Fehler: ' + data.message);
-                return false;
-            }
-        } catch (error) {
-            alert('❌ Server nicht erreichbar! Check deine Internetverbindung.');
-            console.error(error);
-            return false;
-        }
-    }
-    // --- BACKEND ANBINDUNG ENDE ---
     function setElText(id, text) { const el = document.getElementById(id); if(el) el.innerText = text; }
 
     const translations = {
@@ -1776,7 +1750,7 @@
         }, 300);
     }
 
-    function submitRedeem() {
+    async function submitRedeem() {
         const rawVal = document.getElementById('redeem-input-field').value;
         if(!rawVal) return;
         const val = rawVal.replace(/[- ]/g, '').toUpperCase();
@@ -1794,29 +1768,39 @@
             return;
         }
 
-        let codes = JSON.parse(localStorage.getItem('tentix_db_codes') || '[]');
-        let codeIdx = codes.findIndex(c => c.code === val);
-        let now = Date.now();
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/codes/redeem`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code: val, username: savedName })
+            });
 
-        if(codeIdx > -1 && codes[codeIdx].uses > 0 && (codes[codeIdx].expiresAt === 'P' || codes[codeIdx].expiresAt > now)) {
-            codes[codeIdx].uses -= 1;
-            localStorage.setItem('tentix_db_codes', JSON.stringify(codes));
+            const data = await response.json();
 
-            let reward = codes[codeIdx].reward;
-            let users = JSON.parse(localStorage.getItem('tentix_db_users') || '[]');
-            let userIdx = users.findIndex(u => u.username.toUpperCase() === savedName.toUpperCase());
-            if(userIdx > -1) { if(!users[userIdx].roles.includes(reward)) users[userIdx].roles.push(reward); }
-            else { users.push({username: savedName, uuid: uuidValue, roles: [reward]}); }
-            localStorage.setItem('tentix_db_users', JSON.stringify(users));
-            loadBadges();
+            if (data.success) {
+                // Lokale UI updaten
+                let reward = data.reward || 'DONATOR';
+                let users = JSON.parse(localStorage.getItem('tentix_db_users') || '[]');
+                let userIdx = users.findIndex(u => u.username.toUpperCase() === savedName.toUpperCase());
+                if(userIdx > -1) { if(!users[userIdx].roles.includes(reward)) users[userIdx].roles.push(reward); }
+                else { users.push({username: savedName, uuid: uuidValue, roles: [reward]}); }
+                localStorage.setItem('tentix_db_users', JSON.stringify(users));
+                loadBadges();
 
-            toast.innerText = translations[currentLang].redChecked;
-            toast.className = 'show';
-            toast.style.color = "#00ff80";
-            toast.style.borderColor = "#00ff80";
-            toast.style.boxShadow = "0 0 20px rgba(0, 255, 128, 0.2)";
-        } else {
-            toast.innerText = translations[currentLang].redFail;
+                toast.innerText = translations[currentLang].redChecked;
+                toast.className = 'show';
+                toast.style.color = "#00ff80";
+                toast.style.borderColor = "#00ff80";
+                toast.style.boxShadow = "0 0 20px rgba(0, 255, 128, 0.2)";
+            } else {
+                toast.innerText = translations[currentLang].redFail;
+                toast.className = 'show';
+                toast.style.color = "#ff4b4b";
+                toast.style.borderColor = "#ff4b4b";
+                toast.style.boxShadow = "0 0 20px rgba(255, 75, 75, 0.2)";
+            }
+        } catch (error) {
+            toast.innerText = "OFFLINE!";
             toast.className = 'show';
             toast.style.color = "#ff4b4b";
             toast.style.borderColor = "#ff4b4b";
