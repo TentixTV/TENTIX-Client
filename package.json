@@ -1,7 +1,7 @@
 {
   "name": "tentixlauncher",
   "version": "1.0.0",
-  "description": "The Next Gen Minecraft Client",
+  "description": "Alpha-Tester Version",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -9,7 +9,7 @@
   },
   "build": {
     "appId": "com.tentix.client",
-    "productName": "TENTIX",
+    "productName": "TENTIX Client",
     "directories": {
       "output": "dist"
     },
@@ -30,7 +30,7 @@
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "TENTIX"
+      "shortcutName": "TENTIX Client"
     }
   },
   "keywords": [],
