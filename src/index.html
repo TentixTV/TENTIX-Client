@@ -184,7 +184,6 @@
         .msg-img { width: 100%; border-radius: 8px; margin-bottom: 15px; display: none; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
         .msg-text { font-size: 13px; color: #ccc; line-height: 1.6; margin-bottom: 25px; text-align: left; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px;}
 
-        /* --- TEAM JOIN OVERLAY --- */
         #team-join-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(15px); z-index: 100000; display: none; flex-direction: column; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.5s ease; -webkit-app-region: no-drag; }
         #team-join-overlay.show { display: flex; opacity: 1; }
         .tj-content { background: var(--card-bg); border: 1px solid var(--accent-blue); border-radius: 16px; padding: 40px; width: 450px; text-align: center; box-shadow: 0 0 50px rgba(0, 212, 255, 0.15); }
@@ -210,7 +209,6 @@
             border: 1px solid rgba(255,255,255,0.05); font-size: 11px; font-weight: 600;
             box-shadow: 0 5px 15px rgba(0,0,0,0.8); line-height: 1.4; white-space: normal;
         }
-
         .tooltip.tooltip-down .tooltiptext { top: calc(100% + 10px); left: 50%; transform: translateX(-50%); }
         .tooltip.tooltip-up .tooltiptext { bottom: calc(100% + 10px); left: 50%; transform: translateX(-50%); }
         .tooltip.tooltip-right .tooltiptext { top: 50%; left: calc(100% + 15px); transform: translateY(-50%); bottom: auto; white-space: nowrap; }
@@ -267,7 +265,8 @@
 
         .account-card { position: absolute; top: 60px; left: 0; width: 280px; background: var(--card-bg); border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 12px; padding: 20px; display: none; flex-direction: column; backdrop-filter: blur(20px); box-shadow: 0 15px 50px rgba(0,0,0,0.9); z-index: 3000; }
         .card-name { font-size: 16px; font-weight: 800; color: var(--accent-blue); text-transform: uppercase; }
-        .card-uuid { font-size: 10px; color: #444; font-family: monospace; margin-bottom: 4px; cursor: pointer; }
+        .card-uuid { font-size: 10px; color: #444; font-family: monospace; margin-bottom: 4px; cursor: pointer; transition: 0.2s; display: inline-block; position: relative; z-index: 10; }
+        .card-uuid:hover { color: #fff; text-shadow: 0 0 10px rgba(255, 255, 255, 0.6); transform: scale(1.02); }
         .card-userid { font-size: 10px; color: var(--accent-blue); font-weight: 800; margin-bottom: 12px; letter-spacing: 1px; }
         .card-info { font-size: 11px; color: #555; margin-bottom: 18px; letter-spacing: 1px; text-transform: uppercase; }
         .badges-container { display: flex; gap: 6px; }
@@ -305,6 +304,8 @@
         td { color: #ccc; }
         .dash-action-btn { padding: 6px 12px; background: #222; border-radius: 4px; color: #fff; cursor: pointer; font-size: 10px; font-weight: 700; transition: 0.2s; display: inline-block;}
         .dash-action-btn:hover { background: var(--accent-blue); color: #000; }
+        .copy-hover { transition: 0.2s; cursor: pointer; }
+        .copy-hover:hover { color: #fff !important; text-shadow: 0 0 8px rgba(255, 255, 255, 0.6); }
 
         .chart-container { width: 100%; height: 180px; display: flex; align-items: flex-end; gap: 15px; padding-bottom: 25px; border-bottom: 1px solid #222; margin-top: 10px;}
         .chart-group { display: flex; align-items: flex-end; gap: 2px; flex: 1; position: relative; height: 100%; justify-content: center; cursor: crosshair;}
@@ -655,10 +656,7 @@
                         <thead><tr><th>Username</th><th>UUID</th><th>Role</th><th>Actions</th></tr></thead>
                         <tbody id="dash-users-tbody">
                         <tr>
-                            <td style="color:#fff; font-weight:700;">TNTIX</td>
-                            <td style="font-family:monospace; font-size:10px;">deine-uuid</td>
-                            <td><span style="background:rgba(0,212,255,0.1); color:var(--accent-blue); padding:4px 8px; border-radius:4px; font-size:10px; font-weight:800;">DEVELOPER</span></td>
-                            <td><div class="dash-action-btn" id="t-dash-edit" onclick="openUserEditModal('TNTIX')">Bearbeiten</div></td>
+                            <td colspan="4" style="text-align:center; font-style:italic; padding:20px;">Lade...</td>
                         </tr>
                         </tbody>
                     </table>
@@ -683,9 +681,9 @@
                         <div class="dash-btn" style="flex:1; text-align:center; padding:12px 0;" id="t-dash-gen" onclick="generateDashCode()">Erstellen</div>
                     </div>
                     <table>
-                        <thead><tr><th>Code</th><th>Reward</th><th>Uses Left</th><th>Status</th></tr></thead>
+                        <thead><tr><th>Code</th><th>Reward</th><th>Uses Left</th><th>Status</th><th style="text-align: center;">Aktion</th></tr></thead>
                         <tbody id="dash-codes-tbody">
-                        <tr><td colspan="4" style="text-align:center; font-style:italic; padding:20px;" id="t-dash-nocode">Keine aktiven Codes.</td></tr>
+                        <tr><td colspan="5" style="text-align:center; font-style:italic; padding:20px;" id="t-dash-nocode">Keine aktiven Codes.</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -738,9 +736,9 @@
                         <div class="dash-btn" style="flex:1; text-align:center; padding:12px 0;" onclick="inviteToTeam()">Einladen</div>
                     </div>
                     <table>
-                        <thead><tr><th>UUID</th><th>Rolle</th><th>Status</th></tr></thead>
+                        <thead><tr><th>Spieler</th><th>UUID</th><th>Rolle</th><th>Status</th></tr></thead>
                         <tbody id="dash-invites-tbody">
-                        <tr><td colspan="3" style="text-align:center; font-style:italic; padding:20px;">Keine ausstehenden Einladungen.</td></tr>
+                        <tr><td colspan="4" style="text-align:center; font-style:italic; padding:20px;">Keine ausstehenden Einladungen.</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -1278,6 +1276,25 @@
     }
     initMockDB();
 
+    function showToast(msg, type = 'success') {
+        const toast = document.getElementById('toast');
+        if(!toast) return;
+        toast.innerText = msg;
+        toast.className = 'show';
+        let color = type === 'success' ? '#00ff80' : type === 'error' ? '#ff4b4b' : '#ffb84d';
+        toast.style.color = color;
+        toast.style.borderColor = color;
+        toast.style.boxShadow = `0 0 20px ${color}40`;
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                toast.style.color = "var(--accent-blue)";
+                toast.style.borderColor = "var(--accent-blue)";
+                toast.style.boxShadow = "0 0 20px rgba(0, 212, 255, 0.2)";
+            }, 400);
+        }, 3000);
+    }
+
     function checkBanStatus() {
         if(localStorage.getItem('tentix_ban_status') === 'true') {
             isBanned = true;
@@ -1299,6 +1316,8 @@
             }
         }, 60000);
     }
+
+    const ROLE_ORDER = ['DEV', 'ADMIN', 'MOD', 'SUPP', 'YT', 'ALPHA', 'BETA', 'DONATOR', 'VIPP', 'VIP', 'PLAYER'];
 
     const ROLE_MAP = {
         'DEV': { name: 'Developer', color: 'var(--accent-blue)', bg: 'rgba(0,212,255,0.1)', border: 'rgba(0,212,255,0.3)', svg: '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>' },
@@ -1330,6 +1349,14 @@
                 if(userObj && userObj.roles) {
                     rolesToUse = typeof userObj.roles === 'string' ? JSON.parse(userObj.roles) : userObj.roles;
                 }
+
+                rolesToUse.sort((a, b) => {
+                    let indexA = ROLE_ORDER.indexOf(a);
+                    let indexB = ROLE_ORDER.indexOf(b);
+                    if (indexA === -1) indexA = 999;
+                    if (indexB === -1) indexB = 999;
+                    return indexA - indexB;
+                });
 
                 if(rolesToUse.length > 0) {
                     container.style.display = 'flex';
@@ -1479,15 +1506,7 @@
         document.getElementById('dash-msg-txt').value = '';
         document.getElementById('msg-file-name').innerText = 'Kein Bild ausgewählt';
 
-        const toast = document.getElementById('toast');
-        if(toast) {
-            toast.innerText = "NACHRICHT GESENDET";
-            toast.className = 'show';
-            toast.style.color = "#00ff80";
-            toast.style.borderColor = "#00ff80";
-            toast.style.boxShadow = "0 0 20px rgba(0, 255, 128, 0.2)";
-            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => { toast.style.color = "var(--accent-blue)"; toast.style.borderColor = "var(--accent-blue)"; toast.style.boxShadow = "0 0 20px rgba(0, 212, 255, 0.2)"; }, 400); }, 2000);
-        }
+        showToast("NACHRICHT GESENDET", "success");
         loadInbox();
     }
 
@@ -1496,6 +1515,12 @@
         let val = target.value.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
         let formatted = val.match(/.{1,4}/g)?.join('-') || val;
         target.value = formatted.substring(0, 14);
+    });
+
+    document.getElementById('dash-new-code').addEventListener('input', function (e) {
+        let val = e.target.value.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+        let formatted = val.match(/.{1,4}/g)?.join('-') || val;
+        e.target.value = formatted.substring(0, 14);
     });
 
     document.addEventListener('click', (e) => {
@@ -1550,15 +1575,7 @@
                 }, 10);
             }, 300);
         } else {
-            const toast = document.getElementById('toast');
-            if(toast) {
-                toast.innerText = "ACCESS DENIED";
-                toast.className = 'show';
-                toast.style.color = "#ff4b4b";
-                toast.style.borderColor = "#ff4b4b";
-                toast.style.boxShadow = "0 0 20px rgba(255, 75, 75, 0.2)";
-                setTimeout(() => { toast.classList.remove('show'); setTimeout(() => { toast.style.color = "var(--accent-blue)"; toast.style.borderColor = "var(--accent-blue)"; toast.style.boxShadow = "0 0 20px rgba(0, 212, 255, 0.2)"; }, 400); }, 2000);
-            }
+            showToast("ACCESS DENIED", "error");
         }
     }
 
@@ -1596,25 +1613,50 @@
     async function renderUsersTable() {
         const tbody = document.getElementById('dash-users-tbody');
         if(!tbody) return;
+
+        let users = [];
         try {
             const res = await fetch(`${API_BASE_URL}/api/users`);
+            if(!res.ok) throw new Error();
             const data = await res.json();
-            if(data.success) {
-                let html = '';
-                data.users.forEach(u => {
-                    let roles = u.roles || ['PLAYER'];
-                    if(typeof roles === 'string') roles = JSON.parse(roles);
-                    let roleHtml = roles.map(r => `<span style="background:${ROLE_MAP[r]?.bg||'#333'}; color:${ROLE_MAP[r]?.color||'#fff'}; padding:2px 6px; border-radius:4px; font-size:9px; font-weight:800; margin-right:4px;">${r}</span>`).join('');
-                    html += `<tr>
-                        <td style="color:#fff; font-weight:700;">${u.username}</td>
-                        <td style="font-family:monospace; font-size:10px;">${u.uuid}</td>
-                        <td>${roleHtml}</td>
-                        <td><div class="dash-action-btn" onclick="openUserEditModal('${u.username}')">Bearbeiten</div></td>
-                    </tr>`;
-                });
-                tbody.innerHTML = html;
-            }
-        } catch(e) {}
+            if(data.success) users = data.users;
+        } catch(e) {
+            users = JSON.parse(localStorage.getItem('tentix_db_users') || '[]');
+        }
+
+        if(users.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; font-style:italic; padding:20px;">Keine Benutzer gefunden.</td></tr>`;
+            return;
+        }
+
+        let html = '';
+        users.forEach(u => {
+            let roles = u.roles || ['PLAYER'];
+            if(typeof roles === 'string') roles = JSON.parse(roles);
+
+            roles.sort((a, b) => {
+                let indexA = ROLE_ORDER.indexOf(a);
+                let indexB = ROLE_ORDER.indexOf(b);
+                if (indexA === -1) indexA = 999;
+                if (indexB === -1) indexB = 999;
+                return indexA - indexB;
+            });
+
+            let roleHtml = roles.map(r => `<span style="background:${ROLE_MAP[r]?.bg||'#333'}; color:${ROLE_MAP[r]?.color||'#fff'}; padding:2px 6px; border-radius:4px; font-size:9px; font-weight:800; margin-right:4px;">${r}</span>`).join('');
+            html += `<tr>
+                <td style="color:#fff; font-weight:700;">${u.username}</td>
+                <td class="copy-hover" style="font-family:monospace; font-size:10px; cursor:pointer;" onclick="copyDashUUID('${u.uuid}')" title="Click to copy">${u.uuid}</td>
+                <td>${roleHtml}</td>
+                <td><div class="dash-action-btn" onclick="openUserEditModal('${u.username}')">Bearbeiten</div></td>
+            </tr>`;
+        });
+        tbody.innerHTML = html;
+    }
+
+    function copyDashUUID(uuidText) {
+        navigator.clipboard.writeText(uuidText).then(() => {
+            showToast("UUID KOPIERT!", "success");
+        });
     }
 
     let editUserTarget = null;
@@ -1625,22 +1667,28 @@
         modal.style.display = 'flex';
         setTimeout(() => { modal.style.opacity = '1'; modal.classList.add('show'); }, 10);
 
+        let userObj = {roles: []};
         try {
             const res = await fetch(`${API_BASE_URL}/api/users`);
+            if(!res.ok) throw new Error();
             const data = await res.json();
             if(data.success) {
-                let userObj = data.users.find(u => u.username === username) || {roles:[]};
-                let roles = userObj.roles || [];
-                if(typeof roles === 'string') roles = JSON.parse(roles);
-
-                document.querySelectorAll('.role-check-row').forEach(row => {
-                    const r = row.getAttribute('data-role');
-                    if(roles.includes(r)) row.classList.add('active');
-                    else row.classList.remove('active');
-                    row.onclick = function() { this.classList.toggle('active'); };
-                });
+                userObj = data.users.find(u => u.username === username) || {roles:[]};
             }
-        } catch(e) {}
+        } catch(e) {
+            let users = JSON.parse(localStorage.getItem('tentix_db_users') || '[]');
+            userObj = users.find(u => u.username === username) || {roles:[]};
+        }
+
+        let roles = userObj.roles || [];
+        if(typeof roles === 'string') roles = JSON.parse(roles);
+
+        document.querySelectorAll('.role-check-row').forEach(row => {
+            const r = row.getAttribute('data-role');
+            if(roles.includes(r)) row.classList.add('active');
+            else row.classList.remove('active');
+            row.onclick = function() { this.classList.toggle('active'); };
+        });
     }
 
     function closeUserEditModal() {
@@ -1650,13 +1698,12 @@
         setTimeout(() => { modal.style.display = 'none'; editUserTarget = null;}, 300);
     }
 
-    function saveUserEditModal() {
+    async function saveUserEditModal() {
         if(!editUserTarget) return;
 
         let selectedRoles = [];
         document.querySelectorAll('.role-check-row.active').forEach(row => { selectedRoles.push(row.getAttribute('data-role')); });
 
-        // Backup update via localStorage to not block since we don't have an edit API yet
         let users = JSON.parse(localStorage.getItem('tentix_db_users') || '[]');
         let userIdx = users.findIndex(u => u.username === editUserTarget);
         if(userIdx > -1) { users[userIdx].roles = selectedRoles; }
@@ -1666,6 +1713,16 @@
         if(editUserTarget.toUpperCase() === savedName.toUpperCase()) loadBadges();
         closeUserEditModal();
         renderUsersTable();
+
+        try {
+            await fetch(`${API_BASE_URL}/api/users/update-roles`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: editUserTarget, roles: selectedRoles })
+            });
+        } catch(e) {
+            console.warn("DB update failed, updated locally.", e);
+        }
     }
 
     function mockBanUser() {
@@ -1684,34 +1741,54 @@
 
         let invites = JSON.parse(localStorage.getItem('tentix_pending_invites') || '[]');
         if(!invites.find(i => i.uuid === uuid)) {
-            invites.push({ uuid: uuid, role: role });
+            invites.push({ uuid: uuid, role: role, status: 'Eingeladen' });
             localStorage.setItem('tentix_pending_invites', JSON.stringify(invites));
         }
         document.getElementById('dash-inv-uuid').value = '';
         renderInvitesTable();
     }
 
-    function renderInvitesTable() {
+    async function renderInvitesTable() {
         const tbody = document.getElementById('dash-invites-tbody');
         if(!tbody) return;
         let invites = JSON.parse(localStorage.getItem('tentix_pending_invites') || '[]');
-        if(invites.length === 0) { tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; font-style:italic; padding:20px;">Keine ausstehenden Einladungen.</td></tr>`; return; }
+        if(invites.length === 0) { tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; font-style:italic; padding:20px;">Keine ausstehenden Einladungen.</td></tr>`; return; }
 
         let html = '';
-        invites.forEach(i => {
-            html += `<tr>
-                <td style="color:#fff; font-family:monospace;">${i.uuid}</td>
-                <td style="color:var(--accent-blue); font-weight:700;">${i.role}</td>
-                <td style="color:#ffb84d; font-weight:800;">PENDING</td>
-            </tr>`;
-        });
-        tbody.innerHTML = html;
+
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/users`);
+            const data = await res.json();
+
+            invites.forEach(i => {
+                let usernameDisplay = "Unbekannt";
+                if(data.success) {
+                    let foundUser = data.users.find(u => u.uuid === i.uuid);
+                    if(foundUser) usernameDisplay = foundUser.username;
+                }
+
+                let statusColor = "#ffb84d";
+                let statusText = "Eingeladen";
+                if(i.status === 'Abgelehnt') { statusColor = "#ff4b4b"; statusText = "Abgelehnt"; }
+                if(i.status === 'Angenommen') { statusColor = "#00ff80"; statusText = "Angenommen"; }
+
+                html += `<tr>
+                    <td style="color:#fff; font-weight:700;">${usernameDisplay}</td>
+                    <td class="copy-hover" style="font-family:monospace; font-size:10px; cursor:pointer;" onclick="copyDashUUID('${i.uuid}')" title="Click to copy">${i.uuid}</td>
+                    <td style="color:var(--accent-blue); font-weight:700;">${i.role}</td>
+                    <td style="color:${statusColor}; font-weight:800;">${statusText}</td>
+                </tr>`;
+            });
+            tbody.innerHTML = html;
+        } catch(e) {
+            console.error(e);
+        }
     }
 
     function checkTeamInvites() {
         if(!isLoggedIn) return;
         let invites = JSON.parse(localStorage.getItem('tentix_pending_invites') || '[]');
-        let myInvite = invites.find(i => i.uuid === uuidValue);
+        let myInvite = invites.find(i => i.uuid === uuidValue && i.status !== 'Abgelehnt' && i.status !== 'Angenommen');
 
         if(myInvite) {
             document.getElementById('tj-user').value = savedName;
@@ -1733,8 +1810,11 @@
 
     function declineTeamJoin() {
         let invites = JSON.parse(localStorage.getItem('tentix_pending_invites') || '[]');
-        invites = invites.filter(i => i.uuid !== uuidValue);
-        localStorage.setItem('tentix_pending_invites', JSON.stringify(invites));
+        let idx = invites.findIndex(i => i.uuid === uuidValue);
+        if(idx > -1) {
+            invites[idx].status = 'Abgelehnt';
+            localStorage.setItem('tentix_pending_invites', JSON.stringify(invites));
+        }
 
         const overlay = document.getElementById('team-join-overlay');
         overlay.style.opacity = '0';
@@ -1753,11 +1833,13 @@
         }
 
         let invites = JSON.parse(localStorage.getItem('tentix_pending_invites') || '[]');
-        let myInvite = invites.find(i => i.uuid === uuidValue);
-        if(!myInvite) return;
+        let myInviteIdx = invites.findIndex(i => i.uuid === uuidValue);
+        if(myInviteIdx === -1) return;
+
+        let roleToAssign = invites[myInviteIdx].role;
 
         let admins = JSON.parse(localStorage.getItem('tentix_admin_accounts') || '[]');
-        admins.push({ user: savedName, pass: pass1, role: myInvite.role });
+        admins.push({ user: savedName, pass: pass1, role: roleToAssign });
         localStorage.setItem('tentix_admin_accounts', JSON.stringify(admins));
 
         try {
@@ -1766,9 +1848,27 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ code: "TEAM-JOIN", username: savedName, uuid: uuidValue })
             });
-        } catch(e) {}
 
-        invites = invites.filter(i => i.uuid !== uuidValue);
+            const res = await fetch(`${API_BASE_URL}/api/users`);
+            const data = await res.json();
+            if(data.success) {
+                let userObj = data.users.find(u => u.username.toUpperCase() === savedName.toUpperCase());
+                let currentRoles = [];
+                if(userObj && userObj.roles) {
+                    currentRoles = typeof userObj.roles === 'string' ? JSON.parse(userObj.roles) : userObj.roles;
+                }
+                if(!currentRoles.includes(roleToAssign)) {
+                    currentRoles.push(roleToAssign);
+                    await fetch(`${API_BASE_URL}/api/users/update-roles`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username: savedName, roles: currentRoles })
+                    });
+                }
+            }
+        } catch(e) { console.error("Error joining team", e); }
+
+        invites[myInviteIdx].status = 'Angenommen';
         localStorage.setItem('tentix_pending_invites', JSON.stringify(invites));
 
         loadBadges();
@@ -1777,59 +1877,105 @@
         overlay.style.opacity = '0';
         setTimeout(() => overlay.classList.remove('show'), 500);
 
-        const toast = document.getElementById('toast');
-        if(toast) {
-            toast.innerText = "TEAM BEIGETRETEN!";
-            toast.className = 'show';
-            toast.style.color = "#00ff80";
-            toast.style.borderColor = "#00ff80";
-            toast.style.boxShadow = "0 0 20px rgba(0, 255, 128, 0.2)";
-            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => { toast.style.color = "var(--accent-blue)"; toast.style.borderColor = "var(--accent-blue)"; toast.style.boxShadow = "0 0 20px rgba(0, 212, 255, 0.2)"; }, 400); }, 3000);
-        }
+        showToast("TEAM BEIGETRETEN!", "success");
     }
 
-    function generateDashCode() {
-        let cVal = document.getElementById('dash-new-code').value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+    async function generateDashCode() {
+        let rawVal = document.getElementById('dash-new-code').value;
+        let cVal = rawVal.replace(/[- ]/g, '').toUpperCase();
         const expVal = document.getElementById('dash-new-exp').value.toUpperCase();
         const usesVal = parseInt(document.getElementById('dash-new-uses').value) || 1;
         const rewardVal = document.getElementById('dash-new-reward').value;
 
-        if(cVal.length !== 12) { alert("Code muss genau 12 Zeichen lang sein!"); return; }
+        if(cVal.length !== 12) {
+            showToast(cVal.length < 12 ? "CODE ZU KURZ (12 ZEICHEN)!" : "CODE ZU LANG!", 'warning');
+            return;
+        }
 
         let expiresAt = 'P';
         if(expVal !== 'P') { let h = parseInt(expVal); if(!isNaN(h) && h > 0) expiresAt = Date.now() + (h * 60 * 60 * 1000); }
 
-        fetch(`${API_BASE_URL}/api/codes/generate`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ code: cVal, reward: rewardVal, uses: usesVal, max_uses: usesVal, expires_at: expiresAt })
-        }).then(() => {
-            document.getElementById('dash-new-code').value = '';
-            renderCodesTable();
-        });
+        let codes = JSON.parse(localStorage.getItem('tentix_db_codes') || '[]');
+        codes.push({ code: cVal, reward: rewardVal, uses: usesVal, max_uses: usesVal, expires_at: expiresAt });
+        localStorage.setItem('tentix_db_codes', JSON.stringify(codes));
+
+        try {
+            await fetch(`${API_BASE_URL}/api/codes/generate`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code: cVal, reward: rewardVal, uses: usesVal, max_uses: usesVal, expires_at: expiresAt })
+            });
+        } catch(e) { console.warn("Code generation local fallback used", e); }
+
+        document.getElementById('dash-new-code').value = '';
+        showToast("CODE ERSTELLT!", "success");
+        renderCodesTable();
     }
 
-    function renderCodesTable() {
+    async function deleteDashCode(codeId) {
+        let codes = JSON.parse(localStorage.getItem('tentix_db_codes') || '[]');
+        codes = codes.filter(c => c.code !== codeId);
+        localStorage.setItem('tentix_db_codes', JSON.stringify(codes));
+
+        try {
+            await fetch(`${API_BASE_URL}/api/codes/delete`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code: codeId })
+            });
+        } catch(e) { console.warn("Code deletion local fallback used", e); }
+
+        showToast("CODE GELÖSCHT", "warning");
+        renderCodesTable();
+    }
+
+    async function renderCodesTable() {
         const tbody = document.getElementById('dash-codes-tbody');
         if(!tbody) return;
-        let codes = JSON.parse(localStorage.getItem('tentix_db_codes') || '[]');
-        if(codes.length === 0) { tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; font-style:italic; padding:20px;" id="t-dash-nocode">Keine aktiven Codes.</td></tr>`; return; }
 
-        let html = ''; let now = Date.now();
-        codes.forEach(c => {
-            let statusHtml = '';
-            if(c.uses <= 0) { statusHtml = '<span style="color:#ff4b4b; font-weight:800;">VERBRAUCHT</span>'; }
-            else if (c.expiresAt === 'P') { statusHtml = '<span style="color:#00ff80; font-weight:800;">PERMANENT</span>'; }
-            else {
-                if (now > c.expiresAt) { statusHtml = '<span style="color:#ff4b4b; font-weight:800;">ABGELAUFEN</span>'; }
-                else {
-                    let diffMs = c.expiresAt - now; let h = Math.floor(diffMs / (1000*60*60)); let m = Math.floor((diffMs % (1000*60*60)) / (1000*60));
-                    statusHtml = `<span style="color:#00d4ff; font-weight:800; font-family:monospace;">${h}h ${m}m</span>`;
-                }
+        let codes = [];
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/codes`);
+            if(!res.ok) throw new Error();
+            const data = await res.json();
+            if(data.success && data.codes.length > 0) {
+                codes = data.codes;
             }
-            html += `<tr><td style="color:#fff; font-family:monospace; letter-spacing:2px;">${c.code.match(/.{1,4}/g).join('-')}</td><td style="color:#ffb84d; font-weight:700;">${ROLE_MAP[c.reward]?.name || c.reward}</td><td style="font-weight:800;">${c.uses} / ${c.maxUses}</td><td>${statusHtml}</td></tr>`;
-        });
-        tbody.innerHTML = html;
+        } catch(e) {
+            codes = JSON.parse(localStorage.getItem('tentix_db_codes') || '[]');
+        }
+
+        if(codes.length > 0) {
+            let html = ''; let now = Date.now();
+            codes.forEach(c => {
+                let statusHtml = '';
+                let expiresAtNum = parseInt(c.expires_at);
+
+                if(c.uses <= 0) { statusHtml = '<span style="color:#ff4b4b; font-weight:800;">VERBRAUCHT</span>'; }
+                else if (c.expires_at === '-1' || c.expires_at === 'P' || isNaN(expiresAtNum)) { statusHtml = '<span style="color:#00ff80; font-weight:800;">PERMANENT</span>'; }
+                else {
+                    if (now > expiresAtNum) { statusHtml = '<span style="color:#ff4b4b; font-weight:800;">ABGELAUFEN</span>'; }
+                    else {
+                        let diffMs = expiresAtNum - now; let h = Math.floor(diffMs / (1000*60*60)); let m = Math.floor((diffMs % (1000*60*60)) / (1000*60));
+                        statusHtml = `<span style="color:#00d4ff; font-weight:800; font-family:monospace;">${h}h ${m}m</span>`;
+                    }
+                }
+
+                let safeCode = c.code || "";
+                let displayCode = safeCode.length === 12 ? safeCode.match(/.{1,4}/g).join('-') : safeCode;
+
+                html += `<tr>
+                    <td class="copy-hover" style="color:#fff; font-family:monospace; letter-spacing:2px;" onclick="copyDashUUID('${safeCode}')" title="Click to copy">${displayCode}</td>
+                    <td style="color:#ffb84d; font-weight:700;">${ROLE_MAP[c.reward]?.name || c.reward}</td>
+                    <td style="font-weight:800;">${c.uses} / ${c.max_uses || c.maxUses}</td>
+                    <td>${statusHtml}</td>
+                    <td style="text-align: center;"><span style="color:#ff4b4b; font-weight:800; font-size:16px; cursor:pointer; padding: 5px;" onclick="deleteDashCode('${safeCode}')" title="Code löschen">✕</span></td>
+                </tr>`;
+            });
+            tbody.innerHTML = html;
+        } else {
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; font-style:italic; padding:20px;" id="t-dash-nocode">Keine aktiven Codes.</td></tr>`;
+        }
     }
 
     function updateOnlineStatus() {
@@ -1864,15 +2010,7 @@
         if(data.status === 'downloaded') updateState = 'ready';
         if(data.status === 'latest') {
             updateState = 'latest';
-            const toast = document.getElementById('toast');
-            if(toast) {
-                toast.innerText = translations[currentLang].updLatestToast;
-                toast.className = 'show';
-                toast.style.color = "var(--accent-blue)";
-                toast.style.borderColor = "var(--accent-blue)";
-                toast.style.boxShadow = "0 0 20px rgba(0, 212, 255, 0.2)";
-                setTimeout(() => toast.classList.remove('show'), 3000);
-            }
+            showToast(translations[currentLang].updLatestToast, "success");
             setTimeout(() => { updateState = 'idle'; updateUpdateUI(); }, 5000);
         }
         updateUpdateUI();
@@ -1952,16 +2090,9 @@
         const rawVal = document.getElementById('redeem-input-field').value;
         if(!rawVal) return;
         const val = rawVal.replace(/[- ]/g, '').toUpperCase();
-        const toast = document.getElementById('toast');
-        if(!toast) return;
 
         if(val.length !== 12) {
-            toast.innerText = translations[currentLang].redShort;
-            toast.className = 'show';
-            toast.style.color = "#ff4b4b";
-            toast.style.borderColor = "#ff4b4b";
-            toast.style.boxShadow = "0 0 20px rgba(255, 75, 75, 0.2)";
-            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => { toast.style.color = "var(--accent-blue)"; toast.style.borderColor = "var(--accent-blue)"; toast.style.boxShadow = "0 0 20px rgba(0, 212, 255, 0.2)"; }, 400); }, 3000);
+            showToast(translations[currentLang].redShort, "error");
             closeRedeemModal();
             return;
         }
@@ -1977,28 +2108,14 @@
 
             if (data.success) {
                 loadBadges();
-
-                toast.innerText = translations[currentLang].redChecked;
-                toast.className = 'show';
-                toast.style.color = "#00ff80";
-                toast.style.borderColor = "#00ff80";
-                toast.style.boxShadow = "0 0 20px rgba(0, 255, 128, 0.2)";
+                showToast(translations[currentLang].redChecked, "success");
             } else {
-                toast.innerText = translations[currentLang].redFail;
-                toast.className = 'show';
-                toast.style.color = "#ff4b4b";
-                toast.style.borderColor = "#ff4b4b";
-                toast.style.boxShadow = "0 0 20px rgba(255, 75, 75, 0.2)";
+                showToast(translations[currentLang].redFail, "error");
             }
         } catch (error) {
-            toast.innerText = "OFFLINE!";
-            toast.className = 'show';
-            toast.style.color = "#ff4b4b";
-            toast.style.borderColor = "#ff4b4b";
-            toast.style.boxShadow = "0 0 20px rgba(255, 75, 75, 0.2)";
+            showToast("OFFLINE!", "error");
         }
 
-        setTimeout(() => { toast.classList.remove('show'); setTimeout(() => { toast.style.color = "var(--accent-blue)"; toast.style.borderColor = "var(--accent-blue)"; toast.style.boxShadow = "0 0 20px rgba(0, 212, 255, 0.2)"; }, 400); }, 3000);
         closeRedeemModal();
     }
 
@@ -2017,6 +2134,13 @@
 
         if (tokenStr && tokenStr !== 'undefined' && tokenStr !== 'null' && user && user !== 'GUEST') {
             isLoggedIn = true; savedName = user; uuidValue = uuid; regDate = localStorage.getItem('tentix_reg_date') || '--'; deterministicId = generateFakeId(uuidValue, savedName);
+
+            fetch(`${API_BASE_URL}/api/users/init`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: savedName, uuid: uuidValue })
+            }).catch(e => {});
+
         } else {
             isLoggedIn = false; savedName = 'GUEST'; uuidValue = 'NOT LOGGED IN'; deterministicId = '----'; localStorage.removeItem('tentix_logged');
         }
@@ -2563,15 +2687,7 @@
         e.stopPropagation();
         if (!isLoggedIn) return;
         navigator.clipboard.writeText(uuidValue).then(() => {
-            const toast = document.getElementById('toast');
-            if(toast) {
-                toast.innerText = translations[currentLang].copied;
-                toast.className = 'show';
-                toast.style.color = "var(--accent-blue)";
-                toast.style.borderColor = "var(--accent-blue)";
-                toast.style.boxShadow = "0 0 20px rgba(0, 212, 255, 0.2)";
-                setTimeout(() => { toast.classList.remove('show'); }, 2000);
-            }
+            showToast(translations[currentLang].copied, "success");
         });
     }
 
