@@ -178,11 +178,11 @@
         .dash-btn:hover { box-shadow: 0 0 15px rgba(0,212,255,0.4); }
 
         #msg-read-modal { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.7); z-index: 9999; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease; -webkit-app-region: no-drag; backdrop-filter: blur(5px);}
-        .msg-read-content { background: #1c1c1e; border-radius: 12px; padding: 35px 30px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.6); width: 400px; position: relative; transform: scale(0.95); transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1); }
+        .msg-read-content { background: #1c1c1e; border-radius: 12px; padding: 30px; text-align: left; box-shadow: 0 20px 60px rgba(0,0,0,0.6); width: 550px; position: relative; transform: scale(0.95); transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1); }
         #msg-read-modal.show .msg-read-content { transform: scale(1); }
         .msg-title { font-size: 16px; font-weight: 800; color: var(--accent-blue); letter-spacing: 1px; margin-bottom: 20px; text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;}
-        .msg-img { width: 100%; border-radius: 8px; margin-bottom: 15px; display: none; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
-        .msg-text { font-size: 13px; color: #ccc; line-height: 1.6; margin-bottom: 25px; text-align: left; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px;}
+        .msg-img { width: 200px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); object-fit: cover; display: none; flex-shrink: 0;}
+        .msg-text { font-size: 13px; color: #ccc; line-height: 1.6; text-align: left; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; flex: 1;}
 
         #team-join-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(15px); z-index: 100000; display: none; flex-direction: column; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.5s ease; -webkit-app-region: no-drag; }
         #team-join-overlay.show { display: flex; opacity: 1; }
@@ -577,12 +577,13 @@
 </div>
 
 <div id="msg-read-modal">
-    <div class="dash-edit-content" style="width: 400px;">
+    <div class="msg-read-content" style="background: #1c1c1e; border-radius: 12px; padding: 25px; text-align: left; box-shadow: 0 20px 60px rgba(0,0,0,0.6); width: 550px; position: relative; transform: scale(0.95); transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);">
         <div class="settings-close" onclick="closeMsgModal()">✕</div>
-        <div class="dash-title" id="t-msg-read-title" style="color: var(--accent-blue); font-size: 16px; justify-content: center; border: none;">NACHRICHT</div>
-        <img id="msg-read-img" src="" style="width: 100%; border-radius: 8px; margin-bottom: 15px; display: none; box-shadow: 0 5px 15px rgba(0,0,0,0.5);">
-        <div id="msg-read-text" style="font-size: 13px; color: #ccc; line-height: 1.6; margin-bottom: 25px; text-align: left; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px;"></div>
-        <div class="dash-btn" style="text-align: center;" onclick="closeMsgModal()" id="t-msg-read-btn">SCHLIESSEN</div>
+        <div class="msg-title" id="t-msg-read-title" style="color: var(--accent-blue); font-size: 16px; font-weight: 800; border: none; margin-bottom: 15px;">NACHRICHT</div>
+        <div style="display: flex; gap: 20px; align-items: flex-start;">
+            <img id="msg-read-img" src="" style="width: 150px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); object-fit: cover; display: none; flex-shrink: 0;">
+            <div id="msg-read-text" style="flex: 1; font-size: 13px; color: #ccc; line-height: 1.6; text-align: left; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px;"></div>
+        </div>
     </div>
 </div>
 
@@ -671,6 +672,9 @@
                         <input type="text" class="dash-input" placeholder="Hours or 'P'" style="margin:0; flex:1;" id="dash-new-exp">
                         <input type="number" class="dash-input" placeholder="Uses" style="margin:0; flex:1;" min="1" id="dash-new-uses">
                         <select class="dash-input" style="margin:0; flex:2;" id="dash-new-reward">
+                            <option value="CREATOR">Reward: Content Creator</option>
+                            <option value="TWITCH">Reward: Twitch</option>
+                            <option value="YT">Reward: YouTuber</option>
                             <option value="ALPHA">Reward: Alpha Tester</option>
                             <option value="BETA">Reward: Beta Tester</option>
                             <option value="DONATOR">Reward: Unterstützer</option>
@@ -755,10 +759,12 @@
                     <div class="role-check-row" data-role="ADMIN"><div class="role-box"></div><svg class="role-icon" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg><span class="role-name">Admin</span></div>
                     <div class="role-check-row" data-role="MOD"><div class="role-box"></div><svg class="role-icon" viewBox="0 0 24 24"><path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3z"/></svg><span class="role-name">Moderator</span></div>
                     <div class="role-check-row" data-role="SUPP"><div class="role-box"></div><svg class="role-icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span class="role-name">Supporter</span></div>
+                    <div class="role-check-row" data-role="CREATOR"><div class="role-box"></div><svg class="role-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg><span class="role-name">Content Creator</span></div>
+                    <div class="role-check-row" data-role="TWITCH"><div class="role-box"></div><svg class="role-icon" viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/></svg><span class="role-name">Twitch</span></div>
+                    <div class="role-check-row" data-role="YT"><div class="role-box"></div><svg class="role-icon" viewBox="0 0 24 24"><path d="M21.58 7.19c-.23-.86-.91-1.54-1.77-1.77C18.25 5 12 5 12 5s-6.25 0-7.81.42c-.86.23-1.54.91-1.77 1.77C2 8.75 2 12 2 12s0 3.25.42 4.81c.23.86.91 1.54 1.77 1.77C5.75 19 12 19 12 19s6.25 0 7.81-.42c.86-.23 1.54-.91 1.77-1.77C22 15.25 22 12 22 12s0-3.25-.42-4.81zM10 15V9l5.2 3-5.2 3z"/></svg><span class="role-name">YouTuber</span></div>
                     <div class="role-check-row" data-role="ALPHA"><div class="role-box"></div><svg class="role-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg><span class="role-name">Alpha Tester</span></div>
                     <div class="role-check-row" data-role="BETA"><div class="role-box"></div><svg class="role-icon" viewBox="0 0 24 24"><path d="M13 2.05v3.03c3.39.49 6 3.39 6 6.92 0 .9-.18 1.75-.5 2.54l2.27 2.27c.75-1.4 1.23-3.04 1.23-4.81 0-5.1-3.8-9.35-9-9.95zM12 19c-3.87 0-7-3.13-7-7 0-3.53 2.61-6.43 6-6.92V2.05c-5.2.6-9 4.85-9 9.95 0 5.52 4.48 10 10 10 2.25 0 4.33-.74 6.01-2l-2.21-2.21c-.52.14-1.07.21-1.64.21z"/></svg><span class="role-name">Beta Tester</span></div>
                     <div class="role-check-row" data-role="DONATOR"><div class="role-box"></div><svg class="role-icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span class="role-name">Unterstützer</span></div>
-                    <div class="role-check-row" data-role="YT"><div class="role-box"></div><svg class="role-icon" viewBox="0 0 24 24"><path d="M21.58 7.19c-.23-.86-.91-1.54-1.77-1.77C18.25 5 12 5 12 5s-6.25 0-7.81.42c-.86.23-1.54.91-1.77 1.77C2 8.75 2 12 2 12s0 3.25.42 4.81c.23.86.91 1.54 1.77 1.77C5.75 19 12 19 12 19s6.25 0 7.81-.42c.86-.23 1.54-.91 1.77-1.77C22 15.25 22 12 22 12s0-3.25-.42-4.81zM10 15V9l5.2 3-5.2 3z"/></svg><span class="role-name">YouTuber</span></div>
                     <div class="role-check-row" data-role="VIPP"><div class="role-box"></div><svg class="role-icon" viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm0 3.99L19.53 19H4.47L12 5.99zM11 16h2v2h-2v-2zm0-6h2v4h-2v-4z"/></svg><span class="role-name">VIP+</span></div>
                     <div class="role-check-row" data-role="VIP"><div class="role-box"></div><svg class="role-icon" viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm0 3.99L19.53 19H4.47L12 5.99zM11 16h2v2h-2v-2zm0-6h2v4h-2v-4z"/></svg><span class="role-name">VIP</span></div>
                     <div class="role-check-row" data-role="PLAYER"><div class="role-box"></div><svg class="role-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span class="role-name">Spieler</span></div>
@@ -1105,6 +1111,19 @@
                                 <div id="update-dl-fill" style="width: 0%; height: 100%; background: #00ff80; transition: 0.1s;"></div>
                             </div>
                         </div>
+
+                        <div class="setting-block" id="block-autostart" style="border:none; padding-bottom:0; margin-bottom:0;">
+                            <div class="setting-row">
+                                <div class="setting-text-col">
+                                    <div class="setting-title">
+                                        <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: #fff; margin-right: 10px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                                        Autostart & Hintergrund
+                                    </div>
+                                    <div class="setting-desc" style="margin-bottom:0;">Starte TENTIX automatisch mit Windows und lasse ihn beim Schließen im Hintergrund (Tray) weiterlaufen.</div>
+                                </div>
+                                <div class="toggle-switch" id="ts-autostart" onclick="toggleAutostart(this)"></div>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -1161,7 +1180,7 @@
         </div>
     </div>
 
-    <p class="version-tag">v3.0.0 ALPHA</p>
+    <p class="version-tag">v2.6.7 ALPHA</p>
     <p class="credits">Made with Love by TENTIX 🤍</p>
 
     <div class="lang-selector">
@@ -1310,16 +1329,10 @@
         else if (currentDashRole !== 'GUEST' && dashUsername !== '') activeUser = dashUsername;
 
         if (activeUser) {
-            fetch(`${API_BASE_URL}/api/users/init`, {
+            fetch(`${API_BASE_URL}/api/heartbeat`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username: activeUser, uuid: activeUser + '-admin' })
-            }).then(() => {
-                fetch(`${API_BASE_URL}/api/heartbeat`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username: activeUser })
-                });
+                body: JSON.stringify({ username: activeUser })
             }).catch(e => {});
         }
     }
@@ -1332,15 +1345,23 @@
                 fetchDashboardStats();
             }
         }, 60000);
+
+        setInterval(() => {
+            if(document.getElementById('main-menu-wrapper').style.display !== 'none') {
+                initOnlineCounter();
+            }
+        }, 10000);
     }
 
-    const ROLE_ORDER = ['DEV', 'ADMIN', 'MOD', 'SUPP', 'YT', 'ALPHA', 'BETA', 'DONATOR', 'VIPP', 'VIP', 'PLAYER'];
+    const ROLE_ORDER = ['DEV', 'ADMIN', 'MOD', 'SUPP', 'CREATOR', 'TWITCH', 'YT', 'ALPHA', 'BETA', 'DONATOR', 'VIPP', 'VIP', 'PLAYER'];
 
     const ROLE_MAP = {
         'DEV': { name: 'Developer', color: 'var(--accent-blue)', bg: 'rgba(0,212,255,0.1)', border: 'rgba(0,212,255,0.3)', svg: '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>' },
         'ADMIN': { name: 'Admin', color: '#ff4b4b', bg: 'rgba(255,75,75,0.1)', border: 'rgba(255,75,75,0.3)', svg: '<path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>' },
         'MOD': { name: 'Moderator', color: '#00ff80', bg: 'rgba(0,255,128,0.1)', border: 'rgba(0,255,128,0.3)', svg: '<path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3z"/>' },
         'SUPP': { name: 'Supporter', color: '#ffb84d', bg: 'rgba(255,184,77,0.1)', border: 'rgba(255,184,77,0.3)', svg: '<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>' },
+        'CREATOR': { name: 'Content Creator', color: '#ffcc00', bg: 'rgba(255,204,0,0.1)', border: 'rgba(255,204,0,0.3)', svg: '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>' },
+        'TWITCH': { name: 'Twitch', color: '#9146FF', bg: 'rgba(145,70,255,0.1)', border: 'rgba(145,70,255,0.3)', svg: '<path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/>' },
         'ALPHA': { name: 'Alpha Tester', color: '#ffb84d', bg: 'rgba(255,184,77,0.1)', border: 'rgba(255,184,77,0.3)', svg: '<path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>' },
         'BETA': { name: 'Beta Tester', color: '#888', bg: 'rgba(255,255,255,0.1)', border: 'rgba(255,255,255,0.2)', svg: '<path d="M13 2.05v3.03c3.39.49 6 3.39 6 6.92 0 .9-.18 1.75-.5 2.54l2.27 2.27c.75-1.4 1.23-3.04 1.23-4.81 0-5.1-3.8-9.35-9-9.95zM12 19c-3.87 0-7-3.13-7-7 0-3.53 2.61-6.43 6-6.92V2.05c-5.2.6-9 4.85-9 9.95 0 5.52 4.48 10 10 10 2.25 0 4.33-.74 6.01-2l-2.21-2.21c-.52.14-1.07.21-1.64.21z"/>' },
         'DONATOR': { name: 'Unterstützer', color: '#ff66b2', bg: 'rgba(255,102,178,0.1)', border: 'rgba(255,102,178,0.3)', svg: '<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>' },
@@ -1589,6 +1610,7 @@
                     dash.style.opacity = '1';
                     switchDashTab('dash-tab-home', document.getElementById('t-dash-home'));
                     fetchDashboardStats();
+                    renderDashboardChart();
                     renderCodesTable();
                     renderUsersTable();
                 }, 10);
@@ -1612,12 +1634,42 @@
         } catch(e) {}
     }
 
+    async function renderDashboardChart() {
+        const filter = document.getElementById('dash-chart-filter').value;
+        const container = document.getElementById('main-chart-container');
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/chart?filter=${filter}`);
+            const data = await res.json();
+            if(data.success && data.data.length > 0) {
+                let html = '';
+                let maxVal = Math.max(...data.data.map(d => Math.max(d.avg, d.peak, d.bans, 1)));
+                data.data.forEach(d => {
+                    let h1 = (d.avg / maxVal) * 100;
+                    let h2 = (d.peak / maxVal) * 100;
+                    let h3 = (d.bans / maxVal) * 100;
+                    html += `
+                    <div class="chart-group">
+                        <div class="chart-bar bar-1" style="height:${h1}%;" title="Avg: ${d.avg}"></div>
+                        <div class="chart-bar bar-2" style="height:${h2}%;" title="Peak: ${d.peak}"></div>
+                        <div class="chart-bar bar-3" style="height:${h3}%;" title="Bans: ${d.bans}"></div>
+                        <div class="chart-lbl">${d.label}</div>
+                    </div>`;
+                });
+                container.innerHTML = html;
+            } else {
+                container.innerHTML = '<div style="color:#888; font-style:italic; width:100%; text-align:center; padding-top:50px;">Keine Chart-Daten verfügbar.</div>';
+            }
+        } catch(e) {
+            container.innerHTML = '<div style="color:#ff4b4b; font-style:italic; width:100%; text-align:center; padding-top:50px;">Fehler beim Laden der Chart-Daten.</div>';
+        }
+    }
+
     function switchDashTab(tabId, el) {
         document.querySelectorAll('.dash-tab').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.dash-nav-item').forEach(i => i.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
         el.classList.add('active');
-        if(tabId === 'dash-tab-home') { fetchDashboardStats(); }
+        if(tabId === 'dash-tab-home') { fetchDashboardStats(); renderDashboardChart(); }
         else if(tabId === 'dash-tab-codes') { renderCodesTable(); }
         else if(tabId === 'dash-tab-users') { renderUsersTable(); }
         else if(tabId === 'dash-tab-admins') { renderInvitesTable(); }
@@ -1739,9 +1791,7 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username: editUserTarget, roles: selectedRoles })
             });
-        } catch(e) {
-            console.warn("DB update failed, updated locally.", e);
-        }
+        } catch(e) {}
     }
 
     function mockBanUser() {
@@ -1799,9 +1849,7 @@
                 </tr>`;
             });
             tbody.innerHTML = html;
-        } catch(e) {
-            console.error(e);
-        }
+        } catch(e) {}
     }
 
     function checkTeamInvites() {
@@ -1885,7 +1933,7 @@
                     });
                 }
             }
-        } catch(e) { console.error("Error joining team", e); }
+        } catch(e) {}
 
         invites[myInviteIdx].status = 'Angenommen';
         localStorage.setItem('tentix_pending_invites', JSON.stringify(invites));
@@ -1924,7 +1972,7 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ code: cVal, reward: rewardVal, uses: usesVal, max_uses: usesVal, expires_at: expiresAt })
             });
-        } catch(e) { console.warn("Code generation local fallback used", e); }
+        } catch(e) {}
 
         document.getElementById('dash-new-code').value = '';
         showToast("CODE ERSTELLT!", "success");
@@ -1942,7 +1990,7 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ code: codeId })
             });
-        } catch(e) { console.warn("Code deletion local fallback used", e); }
+        } catch(e) {}
 
         showToast("CODE GELÖSCHT", "warning");
         renderCodesTable();
@@ -2410,6 +2458,13 @@
 
         const hideToggle = document.getElementById('ts-discord-hide');
         if(hideToggle) updateDiscordHideTag(hideToggle);
+
+        if(!localStorage.getItem('tentix_autostart')) localStorage.setItem('tentix_autostart', 'false');
+        const autostartToggle = document.getElementById('ts-autostart');
+        if(autostartToggle) {
+            if(localStorage.getItem('tentix_autostart') === 'true') autostartToggle.classList.add('active');
+            else autostartToggle.classList.remove('active');
+        }
     }
 
     function toggleModloader(e) {
@@ -2470,7 +2525,8 @@
             { id: 'block-discord-lang', tabId: 'tab-discord', sideId: 't-tab-discord', title: t.discLang || "Discord Sprache", desc: t.discLangDesc || "Sprache für Discord" },
             { id: 'block-discord-join', tabId: 'tab-discord', sideId: 't-tab-discord', title: t.discJoin || "TENTIX Discord", desc: t.discJoinDesc || "Trete uns bei!" },
             { id: 'block-analytics', tabId: 'tab-privacy', sideId: 't-tab-priv', title: t.tPriv1 || "Analytik", desc: t.tPrivD1 || "Nutzererfahrung verbessern" },
-            { id: 'block-ads', tabId: 'tab-privacy', sideId: 't-tab-priv', title: t.tPriv2 || "Optimierte Werbeanzeigen", desc: t.tPrivD2 || "Interessenbasierte Werbung" }
+            { id: 'block-ads', tabId: 'tab-privacy', sideId: 't-tab-priv', title: t.tPriv2 || "Optimierte Werbeanzeigen", desc: t.tPrivD2 || "Interessenbasierte Werbung" },
+            { id: 'block-autostart', tabId: 'tab-updater', sideId: 't-tab-updater', title: "Autostart & Hintergrund", desc: "Starte TENTIX automatisch mit Windows" }
         ];
 
         let html = '';
@@ -2525,8 +2581,14 @@
         checkAuthState();
         updateUI();
         checkBanStatus();
-        startHeartbeat();
-        setTimeout(checkTeamInvites, 2000);
+
+        setTimeout(() => {
+            if(isLoggedIn) {
+                startHeartbeat();
+            }
+            checkTeamInvites();
+            updateDiscordRP();
+        }, 1500);
 
         const badge = document.getElementById('bell-badge');
         if(badge) {
@@ -2625,7 +2687,7 @@
         document.querySelectorAll('#tab-spiel .lunar-radio-row .lunar-radio').forEach(el => el.classList.remove('active'));
         if(state === 'keep' && document.getElementById('radio-keep')) document.getElementById('radio-keep').querySelector('.lunar-radio').classList.add('active');
         else if (document.getElementById('radio-hide')) document.getElementById('radio-hide').querySelector('.lunar-radio').classList.add('active');
-        localStorage.setItem('tentix_vis', state);
+        localStorage.setItem('tentix_vis',state);
     }
 
     function updateFromSlider(val) {
@@ -2754,6 +2816,17 @@
             }
             if(element.id === 'ts-ads') {
                 localStorage.setItem('tentix_ads_enabled', element.classList.contains('active'));
+            }
+        }
+    }
+
+    function toggleAutostart(element) {
+        if(element) {
+            element.classList.toggle('active');
+            const isEnabled = element.classList.contains('active');
+            localStorage.setItem('tentix_autostart', isEnabled);
+            if(window.api && window.api.setAutostart) {
+                window.api.setAutostart(isEnabled);
             }
         }
     }
