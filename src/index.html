@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <title>TENTIX CLIENT</title>
@@ -237,13 +237,15 @@
         .bounce-anim { animation: bounce 1s infinite alternate; fill: #ffb84d !important; }
         .bounce-anim-green { animation: bounce 1s infinite alternate; fill: #00ff80 !important; }
         @keyframes bounce { from { transform: translateY(-2px); } to { transform: translateY(2px); } }
-        .update-box.downloading { border-color: #ffb84d; background: rgba(255, 184, 77, 0.1); width: 80px; }
+        .update-box.downloading { border-color: #ffb84d; background: rgba(255, 184, 77, 0.1); width: 100px; }
         .update-progress-fill { position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: rgba(255, 184, 77, 0.2); z-index: 1; transition: 0.2s; }
         .update-box.ready { border-color: #00ff80; background: rgba(0, 255, 128, 0.1); animation: pulseUpdateReady 2s infinite alternate; }
         .update-box.ready .update-icon { fill: #00ff80 !important; }
         @keyframes pulseUpdateReady { from { box-shadow: 0 0 0 rgba(0,255,128,0); } to { box-shadow: 0 0 15px rgba(0,255,128,0.4); } }
         .update-box.latest { border-color: #00ff80; background: rgba(0, 255, 128, 0.1); }
         .update-box.latest .update-icon { fill: #00ff80 !important; }
+        .update-ping { position: absolute; top: -2px; right: -2px; width: 10px; height: 10px; background: #ffb84d; border-radius: 50%; box-shadow: 0 0 10px #ffb84d; animation: ping 1s infinite; display: none; z-index: 10;}
+        @keyframes ping { 0% { transform: scale(0.8); opacity: 1; } 100% { transform: scale(2); opacity: 0; } }
 
         .navbar { position: absolute; top: 35px; left: 50%; transform: translateX(-50%); display: none; gap: 40px; z-index: 3000; -webkit-app-region: no-drag; opacity: 0; transition: opacity 0.5s ease; }
         .nav-item { font-size: 12px; font-weight: 800; letter-spacing: 3px; color: #555; cursor: pointer; text-transform: uppercase; transition: 0.3s; position: relative; }
@@ -280,13 +282,15 @@
         .card-btn.red-hover:hover { background: rgba(255, 75, 75, 0.1); color: #ff4b4b; border-color: #ff4b4b; }
         .card-btn.disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
 
-        .inbox-popup { position: absolute; top: 50px; left: 75px; width: 260px; background: var(--card-bg); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 15px; display: none; flex-direction: column; backdrop-filter: blur(20px); box-shadow: 0 10px 30px rgba(0,0,0,0.9); z-index: 3000; max-height: 300px; overflow-y: auto;}
+        .inbox-popup { position: absolute; top: 50px; left: 75px; width: 320px; background: var(--card-bg); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 15px; display: none; flex-direction: column; backdrop-filter: blur(20px); box-shadow: 0 10px 30px rgba(0,0,0,0.9); z-index: 3000; max-height: 350px; overflow-y: auto;}
         .inbox-header { display: flex; justify-content: space-between; font-size: 12px; font-weight: 800; color: #fff; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px; }
-        .inbox-item { display: flex; align-items: center; gap: 12px; padding: 12px 10px; border-bottom: 1px solid rgba(255,255,255,0.02); cursor: pointer; transition: 0.2s; border-radius: 6px; }
+        .inbox-item { display: flex; align-items: stretch; gap: 12px; padding: 12px 10px; border-bottom: 1px solid rgba(255,255,255,0.02); transition: 0.2s; border-radius: 6px; position: relative; }
         .inbox-item:hover { background: rgba(255,255,255,0.05); }
-        .inbox-box { width: 32px; height: 32px; background: rgba(255,255,255,0.05); border-radius: 6px; flex-shrink: 0; }
-        .inbox-lines { display: flex; flex-direction: column; gap: 2px; flex: 1; overflow: hidden;}
+        .inbox-box { width: 40px; height: 40px; background: rgba(255,255,255,0.05); border-radius: 6px; flex-shrink: 0; background-size: cover; background-position: center; border: 1px solid rgba(255,255,255,0.1);}
+        .inbox-lines { display: flex; flex-direction: column; gap: 4px; flex: 1; overflow: hidden; cursor: pointer;}
         .inbox-line { height: 6px; background: rgba(255,255,255,0.05); border-radius: 3px; }
+        .inbox-delete { color: #ff4b4b; font-size: 14px; font-weight: 800; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; padding: 0 5px; opacity: 0.5;}
+        .inbox-delete:hover { transform: scale(1.2); opacity: 1; }
 
         #dashboard-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg-dark); z-index: 99998; display: none; opacity: 0; transition: opacity 0.4s ease; -webkit-app-region: no-drag; }
         .dash-sidebar { width: 250px; background: #0f0f11; border-right: 1px solid #222; padding: 30px 0; display: flex; flex-direction: column; }
@@ -455,7 +459,7 @@
         .play-btn:disabled { background: #1a1a1a; color: #444; cursor: not-allowed; box-shadow: none; }
 
         #dl-container { display: none; margin-top: 25px; width: 360px; -webkit-app-region: no-drag;}
-        .dl-bar-bg { width: 100%; height: 5px; background: rgba(255,255,255,0.05); border-radius: 3px; overflow: hidden; }
+        .dl-bar-bg { width: 100%; height: 5px; background: rgba(255,255,255,0.05); border-radius: 3px; overflow: hidden; position: relative;}
         #dl-bar { width: 0%; height: 100%; background: var(--accent-blue); box-shadow: 0 0 12px var(--accent-blue); transition: width 0.1s linear; }
         .dl-text-row { display: flex; justify-content: space-between; margin-top: 12px; font-size: 11px; color: var(--accent-blue); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
 
@@ -475,7 +479,7 @@
         #news-pane.open { right: 100px; border-color: rgba(0, 212, 255, 0.3); }
         .news-header { padding: 30px 30px 20px 30px; font-size: 18px; font-weight: 800; color: #fff; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 12px;}
         .news-header svg { width: 22px; height: 22px; fill: var(--accent-blue); }
-        .news-content { flex: 1; padding: 30px; display: flex; justify-content: center; align-items: center; }
+        .news-content { flex: 1; padding: 30px; display: flex; justify-content: center; align-items: center; overflow-y: auto; flex-direction: column; gap: 15px; justify-content: flex-start;}
         .news-empty-card { width: 100%; height: 100%; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; display: flex; justify-content: center; align-items: center; color: #666; font-size: 13px; letter-spacing: 1px; font-style: italic; text-align: center; padding: 25px;}
 
         .social-container { position: absolute; bottom: 35px; left: 50%; transform: translateX(-50%); display: flex; gap: 20px; z-index: 3000; -webkit-app-region: no-drag; display: none; opacity: 0; transition: opacity 0.5s ease; }
@@ -504,6 +508,9 @@
         .dummy-tile { background: rgba(255,255,255,0.05); border: 1px solid rgba(0,212,255,0.2); border-radius: 14px; height: 200px; }
         .coming-soon-popup { position: absolute; display: flex; flex-direction: column; align-items: center; background: rgba(10,10,10,0.85); padding: 70px 140px; border-radius: 24px; border: 1px solid var(--accent-blue); box-shadow: 0 0 100px rgba(0,212,255,0.15); backdrop-filter: blur(30px); -webkit-app-region: no-drag; }
         .cs-title { font-size: 36px; font-weight: 800; letter-spacing: 12px; color: var(--accent-blue); margin-bottom: 35px; text-transform: uppercase; text-shadow: 0 0 25px rgba(0,212,255,0.5);}
+
+        .dl-hover-percent { position: absolute; top: -25px; right: 0; background: var(--card-bg); border: 1px solid var(--accent-blue); padding: 4px 8px; border-radius: 4px; font-size: 10px; color: #fff; font-weight: 800; opacity: 0; transition: 0.2s; pointer-events: none; }
+        .update-box.downloading:hover .dl-hover-percent { opacity: 1; }
     </style>
 </head>
 <body>
@@ -630,7 +637,7 @@
                 <div class="dash-card">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
                         <select class="dash-input" style="width: auto; margin:0;" id="dash-chart-filter" onchange="renderDashboardChart()">
-                            <option value="24h">24h</option><option value="7T">7 Tage</option><option value="14T">14 Tage</option><option value="30T">30 Tage</option><option value="60T">60 Tage</option><option value="180T">180 Tage</option><option value="360T">360 Tage</option>
+                            <option value="24h">Letzte 24h</option><option value="7T">Letzte 7 Tage</option><option value="14T">Letzte 14 Tage</option><option value="30T">Letzte 30 Tage</option><option value="60T">Letzte 60 Tage</option><option value="180T">Letzte 180 Tage</option><option value="360T">Letzte 360 Tage</option>
                         </select>
                         <div style="display:flex; gap:15px; font-size:11px; font-weight:700; color:#888;">
                             <div style="display:flex; align-items:center; gap:5px;"><div style="width:10px; height:10px; background:rgba(0,212,255,0.5); border-radius:2px;"></div> Avg. Spieler</div>
@@ -696,16 +703,19 @@
             <div id="dash-tab-news" class="dash-tab">
                 <div class="dash-title" id="t-dash-newsm">News Editor</div>
                 <div class="dash-card">
-                    <input type="text" class="dash-input" placeholder="News Title">
-                    <textarea class="dash-input" placeholder="News Content..." style="height: 120px; resize: none;"></textarea>
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <input type="text" class="dash-input" id="dash-news-title" placeholder="News Title" autocomplete="off">
+                    <textarea class="dash-input" id="dash-news-content" placeholder="News Content..." style="height: 120px; resize: none;"></textarea>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 30px;">
                         <div style="display:flex; align-items:center; gap: 10px;">
-                            <div class="dash-btn" style="background:#222; color:#fff;" id="t-dash-upimg" onclick="document.getElementById('news-file-upload').click()">Bild Hochladen</div>
+                            <div class="dash-btn" style="background:#222; color:#fff;" onclick="document.getElementById('news-file-upload').click()">Bild Hochladen</div>
                             <span id="news-file-name" style="font-size: 11px; color: #888;">Kein Bild ausgewählt</span>
                             <input type="file" id="news-file-upload" style="display: none;" onchange="document.getElementById('news-file-name').innerText = this.files[0].name;">
                         </div>
-                        <div class="dash-btn" style="width: 150px; text-align:center;" id="t-dash-pub">News Veröffentlichen</div>
+                        <div class="dash-btn" style="width: 150px; text-align:center;" onclick="publishNews()">News Veröffentlichen</div>
                     </div>
+
+                    <div class="dash-title" style="font-size: 16px; margin-bottom: 15px; border:none; padding:0;">Veröffentlichte News</div>
+                    <div id="dash-news-list" style="display: flex; flex-direction: column; gap: 15px;"></div>
                 </div>
             </div>
 
@@ -719,7 +729,7 @@
                     <textarea class="dash-input" id="dash-msg-txt" placeholder="Nachricht..." style="height: 100px; resize: none;"></textarea>
                     <div style="display:flex; justify-content:space-between; align-items:center;">
                         <div style="display:flex; align-items:center; gap: 10px;">
-                            <div class="dash-btn" style="background:#222; color:#fff;" id="t-dash-msg-img" onclick="document.getElementById('msg-file-upload').click()">Bild Hochladen (100x100)</div>
+                            <div class="dash-btn" style="background:#222; color:#fff;" id="t-dash-msg-img" onclick="document.getElementById('msg-file-upload').click()">Bild Hochladen</div>
                             <span id="msg-file-name" style="font-size: 11px; color: #888;">Kein Bild ausgewählt</span>
                             <input type="file" id="msg-file-upload" style="display: none;" onchange="document.getElementById('msg-file-name').innerText = this.files[0].name;">
                         </div>
@@ -792,7 +802,9 @@
 
 <div class="top-right-controls" id="top-right-controls">
     <div class="update-box tooltip tooltip-down" id="fancy-update-box" onclick="handleUpdateClick()">
+        <div class="update-ping" id="update-ping-anim"></div>
         <div class="update-progress-fill" id="fancy-update-fill"></div>
+        <div class="dl-hover-percent" id="dl-hover-percent">0%</div>
         <svg class="update-icon" id="update-icon-svg" viewBox="0 0 24 24">
             <path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/>
         </svg>
@@ -1197,7 +1209,7 @@
         <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg>
         <span id="t-news-header">News</span>
     </div>
-    <div class="news-content">
+    <div class="news-content" id="ui-news-content">
         <div class="news-empty-card" id="t-news-empty">
             Stay tuned for updates...
         </div>
@@ -1240,7 +1252,7 @@
             discJoin: "Join the Official TENTIX Discord Server", discJoinDesc: "Get support, news & chat with the community!",
             loginErrTitle: "LOGIN FAILED", loginErrDesc: "We couldn't log you in to Microsoft. The process was canceled or an error occurred.", btnOk: "UNDERSTOOD",
             updTab: "Updater", updHeader: "Client Updater", updStatTitle: "Status", updStatDesc: "Version 2.6.7 ALPHA is installed", updBtn: "Check for updates",
-            updIdle: "Update the Launcher", updCheck: "Checking for updates...", updDl: "Downloading update...", updReady: "Update ready! Click to install.", updLatest: "You are up to date!", updLatestToast: "The launcher is up to date!",
+            updIdle: "Update the Launcher", updCheck: "Checking for updates...", updDl: "Downloading update...", updReady: "Update ready! Click to install.", updLatest: "You are up to date!", updLatestToast: "Du bist auf der aktuellsten Version! (v3.0.0)",
             offTitle: "NO INTERNET CONNECTION", offDesc: "Please connect to the internet or LAN to continue.",
             setRedTitle: "Redeem Code", setRedDesc: "Redeem a TENTIX code for exclusive badges or cosmetics.", setRedBtn: "ENTER CODE",
             redTitle: "REDEEM CODE", redDesc: "Enter your TENTIX code here", redBtn: "REDEEM", redChecked: "CODE REDEEMED!", redFail: "INVALID CODE!", redShort: "CODE TOO SHORT!",
@@ -1265,7 +1277,7 @@
             discJoin: "Tritt dem Offiziellen TENTIX Discord bei", discJoinDesc: "Erhalte Support, Updates & chatte mit der Community!",
             loginErrTitle: "LOGIN FEHLGESCHLAGEN", loginErrDesc: "Wir konnten dich nicht bei Microsoft einloggen. Der Vorgang wurde abgebrochen oder es trat ein Fehler auf.", btnOk: "VERSTANDEN",
             updTab: "Updater", updHeader: "Client Updater", updStatTitle: "Status", updStatDesc: "Version 2.6.7 ALPHA installiert", updBtn: "Nach Updates suchen",
-            updIdle: "Update den Launcher", updCheck: "Suche nach Updates...", updDl: "Update wird heruntergeladen...", updReady: "Update bereit! Klicken zum Installieren.", updLatest: "Du bist auf der neuesten Version!", updLatestToast: "Der Launcher ist aktuell!",
+            updIdle: "Update den Launcher", updCheck: "Suche nach Updates...", updDl: "Update wird heruntergeladen...", updReady: "Update bereit! Klicken zum Installieren.", updLatest: "Du bist auf der neuesten Version!", updLatestToast: "Du bist auf der aktuellsten Version! (v3.0.0)",
             offTitle: "KEINE INTERNETVERBINDUNG", offDesc: "Bitte stelle eine Verbindung zum Internet oder LAN her, um fortzufahren.",
             setRedTitle: "Code Einlösen", setRedDesc: "Löse einen TENTIX Code für exklusive Badges oder Cosmetics ein.", setRedBtn: "CODE EINGEBEN",
             redTitle: "CODE EINLÖSEN", redDesc: "Gib deinen TENTIX Code hier ein", redBtn: "EINLÖSEN", redChecked: "CODE EINGELÖST!", redFail: "UNGÜLTIGER CODE!", redShort: "CODE ZU KURZ!",
@@ -1432,19 +1444,25 @@
 
         if(myMsgs.length === 0) {
             content.innerHTML = `<div style="padding: 20px; text-align: center; color: #888; font-style: italic;">${t.noMessages}</div>`;
+            const badge = document.getElementById('bell-badge');
+            if(badge) { badge.classList.add('empty'); badge.classList.remove('show'); }
             return;
         }
 
         let html = '';
-        myMsgs.slice().reverse().forEach((m, i) => {
+        myMsgs.slice().reverse().forEach((m, displayIndex) => {
+            let realIndex = msgs.indexOf(m);
             let escapedText = m.text.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+            let imgBg = (m.img && m.img !== '') ? m.img : '../assets/TENTIX.png';
+
             html += `
-                <div class="inbox-item" onclick="openMsgModal('${m.img}', '${escapedText}')">
-                    <div class="inbox-box" style="background: url('${m.img}') center/cover no-repeat; border-radius: 4px;"></div>
-                    <div class="inbox-lines" style="flex: 1;">
+                <div class="inbox-item">
+                    <div class="inbox-box" style="background-image: url('${imgBg}');"></div>
+                    <div class="inbox-lines" onclick="openMsgModal('${m.img}', '${escapedText}')">
                         <div style="font-size: 10px; color: #fff; font-weight: 800; margin-bottom: 2px;">TENTIX TEAM</div>
-                        <div style="font-size: 10px; color: #888; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px;">${m.text}</div>
+                        <div style="font-size: 10px; color: #888; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${m.text}</div>
                     </div>
+                    <div class="inbox-delete" onclick="deleteMessage(${realIndex}, event)">✕</div>
                 </div>
             `;
         });
@@ -1463,13 +1481,21 @@
         }
     }
 
+    function deleteMessage(realIndex, event) {
+        if(event) event.stopPropagation();
+        let msgs = JSON.parse(localStorage.getItem('tentix_db_messages') || '[]');
+        msgs.splice(realIndex, 1);
+        localStorage.setItem('tentix_db_messages', JSON.stringify(msgs));
+        loadInbox();
+    }
+
     function openMsgModal(imgSrc, text) {
         closeAllPopups();
         const modal = document.getElementById('msg-read-modal');
         const imgEl = document.getElementById('msg-read-img');
         const textEl = document.getElementById('msg-read-text');
 
-        if(imgSrc && imgSrc !== '') {
+        if(imgSrc && imgSrc !== '' && imgSrc !== 'undefined') {
             imgEl.src = imgSrc;
             imgEl.style.display = 'block';
         } else {
@@ -1548,6 +1574,82 @@
         loadInbox();
     }
 
+    async function loadNews() {
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/news`);
+            const data = await res.json();
+            const content = document.getElementById('ui-news-content');
+            const dashList = document.getElementById('dash-news-list');
+            if(!content || !dashList) return;
+
+            if(data.success && data.news.length > 0) {
+                let html = '';
+                let dashHtml = '';
+                data.news.forEach(n => {
+                    let imgHtml = n.image_url ? `<div style="width:100%; height:120px; background:url('${n.image_url}') center/cover no-repeat; border-radius:8px; margin-bottom:10px;"></div>` : '';
+                    html += `
+                        <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 20px; border-radius: 12px;">
+                            ${imgHtml}
+                            <div style="font-weight: 800; font-size: 14px; color: var(--accent-blue); margin-bottom: 8px; text-transform: uppercase;">${n.title}</div>
+                            <div style="font-size: 12px; color: #ccc; line-height: 1.5;">${n.content}</div>
+                        </div>
+                    `;
+
+                    dashHtml += `
+                        <div style="background: #111; border: 1px solid #333; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="font-weight: 800; color: #fff; font-size: 13px;">${n.title}</div>
+                                <div style="font-size: 10px; color: #888;">ID: ${n.id}</div>
+                            </div>
+                            <div class="dash-btn" style="background: #ff4b4b; color: #fff; padding: 6px 12px;" onclick="deleteNews(${n.id})">Löschen</div>
+                        </div>
+                    `;
+                });
+                content.innerHTML = html;
+                dashList.innerHTML = dashHtml;
+            } else {
+                content.innerHTML = `<div class="news-empty-card" id="t-news-empty">${translations[currentLang].newsEmpty || "Stay tuned for updates..."}</div>`;
+                dashList.innerHTML = `<div style="color:#888; font-style:italic; font-size:12px;">Keine News veröffentlicht.</div>`;
+            }
+        } catch(e) {}
+    }
+
+    async function publishNews() {
+        const title = document.getElementById('dash-news-title').value;
+        const content = document.getElementById('dash-news-content').value;
+        const imgName = document.getElementById('news-file-name').innerText;
+
+        if(!title || !content) return;
+        let mockImgPath = imgName !== 'Kein Bild ausgewählt' ? '../assets/TENTIX.png' : '';
+
+        try {
+            await fetch(`${API_BASE_URL}/api/news/create`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, content, image_url: mockImgPath })
+            });
+            document.getElementById('dash-news-title').value = '';
+            document.getElementById('dash-news-content').value = '';
+            document.getElementById('news-file-name').innerText = 'Kein Bild ausgewählt';
+            showToast("NEWS VERÖFFENTLICHT", "success");
+            loadNews();
+        } catch(e) {
+            showToast("FEHLER BEIM PUBLISHEN", "error");
+        }
+    }
+
+    async function deleteNews(id) {
+        try {
+            await fetch(`${API_BASE_URL}/api/news/delete`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id })
+            });
+            showToast("NEWS GELÖSCHT", "warning");
+            loadNews();
+        } catch(e) {}
+    }
+
     document.getElementById('redeem-input-field').addEventListener('input', function (e) {
         let target = e.target;
         let val = target.value.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
@@ -1613,6 +1715,7 @@
                     renderDashboardChart();
                     renderCodesTable();
                     renderUsersTable();
+                    loadNews();
                 }, 10);
             }, 300);
         } else {
@@ -1673,6 +1776,7 @@
         else if(tabId === 'dash-tab-codes') { renderCodesTable(); }
         else if(tabId === 'dash-tab-users') { renderUsersTable(); }
         else if(tabId === 'dash-tab-admins') { renderInvitesTable(); }
+        else if(tabId === 'dash-tab-news') { loadNews(); }
     }
 
     function closeDashboard() {
@@ -1718,7 +1822,7 @@
                 <td style="color:#fff; font-weight:700;">${u.username}</td>
                 <td class="copy-hover" style="font-family:monospace; font-size:10px; cursor:pointer;" onclick="copyDashUUID('${u.uuid}')" title="Click to copy">${u.uuid}</td>
                 <td>${roleHtml}</td>
-                <td><div class="dash-action-btn" onclick="openUserEditModal('${u.username}')">Bearbeiten</div></td>
+                <td><div class="dash-action-btn" onclick="openUserEditModal('${u.username}', '${u.uuid}')">Bearbeiten</div></td>
             </tr>`;
         });
         tbody.innerHTML = html;
@@ -1731,8 +1835,10 @@
     }
 
     let editUserTarget = null;
-    async function openUserEditModal(username) {
+    let editUserUuid = null;
+    async function openUserEditModal(username, uuid) {
         editUserTarget = username;
+        editUserUuid = uuid;
         document.getElementById('edit-modal-name').innerText = username;
         const modal = document.getElementById('dash-edit-modal');
         modal.style.display = 'flex';
@@ -1766,7 +1872,7 @@
         const modal = document.getElementById('dash-edit-modal');
         modal.style.opacity = '0';
         modal.classList.remove('show');
-        setTimeout(() => { modal.style.display = 'none'; editUserTarget = null;}, 300);
+        setTimeout(() => { modal.style.display = 'none'; editUserTarget = null; editUserUuid = null;}, 300);
     }
 
     async function saveUserEditModal() {
@@ -1778,7 +1884,7 @@
         let users = JSON.parse(localStorage.getItem('tentix_db_users') || '[]');
         let userIdx = users.findIndex(u => u.username === editUserTarget);
         if(userIdx > -1) { users[userIdx].roles = selectedRoles; }
-        else { users.push({username: editUserTarget, uuid: 'mock-uuid', roles: selectedRoles}); }
+        else { users.push({username: editUserTarget, uuid: editUserUuid || 'unknown', roles: selectedRoles}); }
         localStorage.setItem('tentix_db_users', JSON.stringify(users));
 
         if(editUserTarget.toUpperCase() === savedName.toUpperCase()) loadBadges();
@@ -2072,11 +2178,22 @@
     }
 
     function onUpdateStatusReceived(data) {
-        if(data.status === 'checking') updateState = 'checking';
-        if(data.status === 'available') updateState = 'downloading';
-        if(data.status === 'downloaded') updateState = 'ready';
+        const ping = document.getElementById('update-ping-anim');
+        if(data.status === 'checking') {
+            updateState = 'checking';
+            if(ping) ping.style.display = 'none';
+        }
+        if(data.status === 'available') {
+            updateState = 'downloading';
+            if(ping) ping.style.display = 'block';
+        }
+        if(data.status === 'downloaded') {
+            updateState = 'ready';
+            if(ping) ping.style.display = 'block';
+        }
         if(data.status === 'latest') {
             updateState = 'latest';
+            if(ping) ping.style.display = 'none';
             showToast(translations[currentLang].updLatestToast, "success");
             setTimeout(() => { updateState = 'idle'; updateUpdateUI(); }, 5000);
         }
@@ -2089,7 +2206,9 @@
             updateUpdateUI();
         }
         const fill = document.getElementById('fancy-update-fill');
+        const hoverTxt = document.getElementById('dl-hover-percent');
         if(fill) fill.style.width = percent + '%';
+        if(hoverTxt) hoverTxt.innerText = Math.round(percent) + '%';
     }
 
     function updateUpdateUI() {
@@ -2208,11 +2327,13 @@
                 body: JSON.stringify({ username: savedName, uuid: uuidValue })
             }).catch(e => {});
 
+            sendHeartbeatPing();
         } else {
             isLoggedIn = false; savedName = 'GUEST'; uuidValue = 'NOT LOGGED IN'; deterministicId = '----'; localStorage.removeItem('tentix_logged');
         }
         loadBadges();
         loadInbox();
+        loadNews();
     }
 
     function initOnlineCounter() {
@@ -2417,6 +2538,7 @@
 
         updateUpdateUI();
         loadInbox();
+        loadNews();
 
         if(document.getElementById('settings-search')) document.getElementById('settings-search').placeholder = t.search;
         setElText('t-vis-keep', t.keep);
@@ -2687,7 +2809,7 @@
         document.querySelectorAll('#tab-spiel .lunar-radio-row .lunar-radio').forEach(el => el.classList.remove('active'));
         if(state === 'keep' && document.getElementById('radio-keep')) document.getElementById('radio-keep').querySelector('.lunar-radio').classList.add('active');
         else if (document.getElementById('radio-hide')) document.getElementById('radio-hide').querySelector('.lunar-radio').classList.add('active');
-        localStorage.setItem('tentix_vis',state);
+        localStorage.setItem('tentix_vis', state);
     }
 
     function updateFromSlider(val) {
