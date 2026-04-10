@@ -42,6 +42,7 @@
   },
   "dependencies": {
     "discord-rpc": "^4.0.1",
+    "electron-updater": "^6.8.3",
     "minecraft-launcher-core": "^3.18.2",
     "msmc": "^5.0.5"
   }
