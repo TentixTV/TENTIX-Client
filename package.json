@@ -1,7 +1,7 @@
 {
-  "name": "tentixlauncher",
+  "name": "TentixClient",
   "version": "1.0.0",
-  "description": "Alpha-Tester Version",
+  "description": "Werde Teil des NewGen Clients",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -34,13 +34,14 @@
     }
   },
   "keywords": [],
-  "author": "",
+  "author": "TENTIX - Sandro",
   "license": "ISC",
   "devDependencies": {
     "electron": "^30.5.1",
     "electron-builder": "^26.8.1"
   },
   "dependencies": {
+    "discord-rpc": "^4.0.1",
     "minecraft-launcher-core": "^3.18.2",
     "msmc": "^5.0.5"
   }
