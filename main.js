@@ -131,11 +131,11 @@ ipcMain.on('update-discord-rp', (event, data) => {
     updateActivity();
 });
 
-ipcMain.invoke('get-total-ram', () => {
+ipcMain.handle('get-total-ram', () => {
     return Math.floor(os.totalmem() / 1024 / 1024 / 1024);
 });
 
-ipcMain.invoke('login-microsoft', async () => {
+ipcMain.handle('login-microsoft', async () => {
     try {
         const authManager = new msmc.Auth("select_account");
         const xboxManager = await authManager.launch("raw");
@@ -151,7 +151,7 @@ ipcMain.invoke('login-microsoft', async () => {
     }
 });
 
-ipcMain.invoke('launch-minecraft', async (event, args) => {
+ipcMain.handle('launch-minecraft', async (event, args) => {
     try {
         let opts = {
             clientPackage: null,
