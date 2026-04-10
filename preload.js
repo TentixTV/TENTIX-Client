@@ -1,22 +1,21 @@
+// preload.js
 const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('api', {
-    // Fenster-Steuerung
     close: () => ipcRenderer.send('window-close'),
-    minimize: () => ipcRenderer.send('window-minimize'),
     maximize: () => ipcRenderer.send('window-maximize'),
-    onMaximized: (callback) => ipcRenderer.on('window-maximized', (event, isMax) => callback(isMax)),
-
-    // System-Infos (RAM)
+    minimize: () => ipcRenderer.send('window-minimize'),
+    openExternalLink: (url) => ipcRenderer.send('open-external', url),
+    checkUpdates: () => ipcRenderer.send('check-updates'),
+    installUpdate: () => ipcRenderer.send('install-update'),
+    updateDiscordRP: (data) => ipcRenderer.send('update-discord-rp', data),
+    setAutostart: (isEnabled) => ipcRenderer.send('set-autostart', isEnabled),
     getTotalRam: () => ipcRenderer.invoke('get-total-ram'),
+    loginWithMicrosoft: () => ipcRenderer.invoke('login-microsoft'),
+    launchMinecraft: (args) => ipcRenderer.invoke('launch-minecraft', args),
 
-    // Microsoft Login
-    loginWithMicrosoft: () => ipcRenderer.invoke('ms-login'),
-
-    // Minecraft Starten & Fortschritt
-    launchMinecraft: (options) => ipcRenderer.invoke('launch-minecraft', options),
-    onLaunchProgress: (callback) => ipcRenderer.on('launch-progress', (event, data) => callback(data)),
-
-    // NEU: Links im echten Browser öffnen (für Discord, Socials)
-    openExternalLink: (url) => ipcRenderer.send('open-link', url)
+    onUpdateStatus: (callback) => ipcRenderer.on('update-status', (e, data) => callback(data)),
+    onUpdateProgress: (callback) => ipcRenderer.on('update-progress', (e, percent) => callback(percent)),
+    onLaunchProgress: (callback) => ipcRenderer.on('launch-progress', (e, data) => callback(data)),
+    onMaximized: (callback) => ipcRenderer.on('window-maximized', (e, isMax) => callback(isMax))
 });
