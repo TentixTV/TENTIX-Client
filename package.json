@@ -33,6 +33,7 @@
       "shortcutName": "TENTIX Client"
     }
   },
+  "repository": "github:T3NX/tentix-launcher",
   "keywords": [],
   "author": "TENTIX - Sandro",
   "license": "ISC",

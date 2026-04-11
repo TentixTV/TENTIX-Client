@@ -13,6 +13,7 @@ contextBridge.exposeInMainWorld('api', {
     getTotalRam: () => ipcRenderer.invoke('get-total-ram'),
     loginWithMicrosoft: () => ipcRenderer.invoke('login-microsoft'),
     launchMinecraft: (args) => ipcRenderer.invoke('launch-minecraft', args),
+    downloadMod: (args) => ipcRenderer.invoke('download-mod', args),
 
     onUpdateStatus: (callback) => ipcRenderer.on('update-status', (e, data) => callback(data)),
     onUpdateProgress: (callback) => ipcRenderer.on('update-progress', (e, percent) => callback(percent)),

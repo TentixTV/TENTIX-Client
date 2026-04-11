@@ -12,8 +12,10 @@ let tray = null;
 let rpc = null;
 let discordEnabled = true;
 let discordHideAway = false;
-const clientId = '1122334455667788990';
+const clientId = '405441217766359051';
 const launcher = new Client();
+
+let retryTimeout = null;
 
 function createWindow() {
     mainWindow = new BrowserWindow({
@@ -27,7 +29,8 @@ function createWindow() {
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             contextIsolation: true,
-            nodeIntegration: false
+            nodeIntegration: false,
+            webSecurity: false
         }
     });
 
@@ -59,18 +62,79 @@ function createTray() {
         tray.on('click', () => mainWindow.show());
     }
 }
+let connectingClient = null;
+let isConnecting = false;
 
-function initDiscord() {
-    DiscordRPC.register(clientId);
-    rpc = new DiscordRPC.Client({ transport: 'ipc' });
+async function initDiscord() {
+    if (isConnecting) return;
+    isConnecting = true;
 
-    rpc.on('ready', () => {
-        updateActivity();
-    });
+    if (retryTimeout) {
+        clearTimeout(retryTimeout);
+        retryTimeout = null;
+    }
 
-    rpc.login({ clientId }).catch(() => {
-        console.log("Discord RPC: Discord läuft nicht oder Client ID ungültig.");
-    });
+    const clientsToDestroy = [];
+    if (rpc) {
+        clientsToDestroy.push(rpc);
+        rpc = null;
+    }
+    if (connectingClient) {
+        clientsToDestroy.push(connectingClient);
+        connectingClient = null;
+    }
+
+    for (const c of clientsToDestroy) {
+        try {
+            c.removeAllListeners();
+            await c.destroy().catch(() => {});
+        } catch (e) {}
+    }
+
+    const scheduleRetry = () => {
+        isConnecting = false;
+        if (!retryTimeout) {
+            retryTimeout = setTimeout(() => {
+                retryTimeout = null;
+                initDiscord();
+            }, 15000);
+        }
+    };
+
+    try {
+        DiscordRPC.register(clientId);
+        const client = new DiscordRPC.Client({ transport: 'ipc' });
+        connectingClient = client;
+
+        client.on('ready', () => {
+            console.log("Discord RPC connected!");
+            if (connectingClient === client) {
+                connectingClient = null;
+            }
+            rpc = client;
+            isConnecting = false;
+            updateActivity();
+        });
+
+        const handleFailure = (err) => {
+            console.error("Discord RPC failure:", err ? (err.message || err) : "unknown error");
+            if (rpc === client) rpc = null;
+            if (connectingClient === client) connectingClient = null;
+            try {
+                client.removeAllListeners();
+                client.destroy().catch(() => {});
+            } catch (e) {}
+            scheduleRetry();
+        };
+
+        client.on('disconnected', () => handleFailure("Disconnected"));
+        client.on('error', handleFailure);
+
+        client.login({ clientId }).catch(handleFailure);
+    } catch (e) {
+        console.error("Failed to initialize Discord RPC:", e);
+        scheduleRetry();
+    }
 }
 
 function updateActivity() {
@@ -132,7 +196,57 @@ ipcMain.on('update-discord-rp', (event, data) => {
 });
 
 ipcMain.handle('get-total-ram', () => {
-    return Math.floor(os.totalmem() / 1024 / 1024 / 1024);
+    const rawGb = os.totalmem() / 1024 / 1024 / 1024;
+    const standards = [4, 8, 12, 16, 24, 32, 48, 64, 96, 128];
+    for (const std of standards) {
+        if (Math.abs(rawGb - std) < 1.5) {
+            return std;
+        }
+    }
+    return Math.round(rawGb);
+});
+
+ipcMain.handle('download-mod', async (event, args) => {
+    try {
+        const { url, filename } = args;
+        const modsDir = path.join(app.getPath('appData'), '.tentixclient', 'mods');
+        if (!fs.existsSync(modsDir)) {
+            fs.mkdirSync(modsDir, { recursive: true });
+        }
+        const filePath = path.join(modsDir, filename);
+        
+        const https = require('https');
+        const fileStream = fs.createWriteStream(filePath);
+        
+        return new Promise((resolve) => {
+            https.get(url, (response) => {
+                if (response.statusCode === 302 || response.statusCode === 301) {
+                    https.get(response.headers.location, (redirectResponse) => {
+                        redirectResponse.pipe(fileStream);
+                        fileStream.on('finish', () => {
+                            fileStream.close();
+                            resolve(true);
+                        });
+                    }).on('error', (err) => {
+                        console.error("Redirect download error:", err);
+                        resolve(false);
+                    });
+                } else {
+                    response.pipe(fileStream);
+                    fileStream.on('finish', () => {
+                        fileStream.close();
+                        resolve(true);
+                    });
+                }
+            }).on('error', (err) => {
+                console.error("Download error:", err);
+                resolve(false);
+            });
+        });
+    } catch (e) {
+        console.error("Download mod error:", e);
+        return false;
+    }
 });
 
 ipcMain.handle('login-microsoft', async () => {
