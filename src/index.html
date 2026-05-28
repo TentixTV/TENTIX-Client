@@ -374,8 +374,8 @@
         .explore-sidebar { width: 280px; flex-shrink: 0; background: #0f0f11; border-left: 1px solid rgba(255, 255, 255, 0.05); padding: 30px; overflow-y: auto; scrollbar-gutter: stable;}
         .explore-header { display: flex; align-items: center; margin-bottom: 20px; gap: 20px;}
         .explore-search-wrap { display: flex; align-items: center; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 0 15px; flex: 1; transition: 0.3s;}
-        .explore-search-wrap:focus-within { border-color: #1bd96a; background: rgba(27, 217, 106, 0.05);}
-        .explore-search-wrap svg { width: 18px; height: 18px; fill: #1bd96a; margin-right: 10px;}
+        .explore-search-wrap:focus-within { border-color: var(--accent-blue); background: rgba(0, 212, 255, 0.05);}
+        .explore-search-wrap svg { width: 18px; height: 18px; fill: var(--accent-blue); margin-right: 10px;}
         .explore-search { background: transparent; border: none; color: #fff; padding: 15px 0; width: 100%; font-size: 14px; outline: none; font-family: 'Inter', sans-serif;}
         .explore-sort { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; padding: 14px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; outline: none; cursor: pointer; font-family: 'Inter', sans-serif;}
         .filter-section { margin-bottom: 25px; }
@@ -384,7 +384,7 @@
         .filter-btn { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); color: #888; padding: 10px 15px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 10px; width: 100%; justify-content: flex-start; }
         .filter-btn svg { width: 16px; height: 16px; fill: currentColor; }
         .filter-btn[data-state="0"]:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
-        .filter-btn[data-state="1"] { background: rgba(27, 217, 106, 0.1); border-color: #1bd96a; color: #1bd96a; }
+        .filter-btn[data-state="1"] { background: rgba(0, 212, 255, 0.1); border-color: var(--accent-blue); color: var(--accent-blue); }
         .filter-btn[data-state="2"] { background: rgba(255, 75, 75, 0.1); border-color: #ff4b4b; color: #ff4b4b; text-decoration: line-through;}
         .mod-version-select { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; padding: 8px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; outline: none; font-family: 'Inter', sans-serif; margin-left: 0;}
         .mod-version-select option { background: #111; color: #fff;}
@@ -453,7 +453,7 @@
         .dl-hover-percent { position: absolute; top: -25px; right: 0; background: var(--card-bg); border: 1px solid var(--accent-blue); padding: 4px 8px; border-radius: 4px; font-size: 10px; color: #fff; font-weight: 800; opacity: 0; transition: 0.2s; pointer-events: none; }
         .update-box.downloading:hover .dl-hover-percent { opacity: 1; }
 
-        #announcement-bar { position: absolute; top: 100px; left: 50%; transform: translateX(-50%) translateY(-20px); background: radial-gradient(circle at center, rgba(0, 50, 100, 0.8) 0%, rgba(0, 10, 20, 0.9) 100%); border: 1px solid var(--accent-blue); padding: 10px 25px; border-radius: 20px; font-size: 12px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 10px; opacity: 0; visibility: hidden; transition: 0.5s ease; box-shadow: 0 0 20px rgba(0,212,255,0.3), inset 0 0 15px rgba(0,212,255,0.1); z-index: 2000; -webkit-app-region: no-drag;}
+        #announcement-bar { position: absolute; top: 100px; left: 50%; transform: translateX(-50%) translateY(-20px); background: rgba(10, 10, 12, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(0, 212, 255, 0.25); padding: 10px 25px; border-radius: 20px; font-size: 12px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 10px; opacity: 0; visibility: hidden; transition: 0.5s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(0,212,255,0.15); z-index: 2000; -webkit-app-region: no-drag;}
         #announcement-bar.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
         .ann-icon { width: 14px; height: 14px; fill: var(--accent-blue); animation: bounce 1s infinite alternate; }
         @keyframes bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-3px); } }
@@ -503,7 +503,7 @@
             padding: 35px;
             text-align: center;
             box-shadow: 0 0 50px rgba(0, 212, 255, 0.2);
-            width: 520px;
+            width: 850px;
             transform: scale(0.9);
             transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
             position: relative;
@@ -594,14 +594,11 @@
             filter: drop-shadow(0 0 8px #ff0000);
         }
 
-        /* 2-Column Sidebar Layout for explore category and filter buttons */
+        /* 1-Column Sidebar Layout for explore category and filter buttons */
         #cat-filters, #loader-filters, #env-filters {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            display: flex;
+            flex-direction: column;
             gap: 8px;
-        }
-        #expand-cats-btn {
-            grid-column: span 2;
         }
         .cosmetic-card:hover {
             background: rgba(255, 255, 255, 0.05) !important;
@@ -737,41 +734,59 @@
 </div>
 
 <div id="skin-changer-modal">
-    <div class="skin-changer-content">
+    <div class="skin-changer-content" style="width: 850px; display: flex; flex-direction: column; max-height: 90vh; text-align: left;">
         <div class="settings-close" onclick="closeSkinChangerModal()"><svg viewBox="0 0 24 24" style="width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></div>
-        <div style="color: var(--accent-blue); font-weight: 800; font-size: 18px; margin-bottom: 10px; letter-spacing: 2px; text-transform: uppercase;">Skin Changer</div>
+        <div style="color: var(--accent-blue); font-weight: 800; font-size: 18px; margin-bottom: 15px; letter-spacing: 2px; text-transform: uppercase;">Skin Changer</div>
         
-        <!-- Warning Banner -->
-        <div style="background: rgba(255, 184, 77, 0.08); border: 1px solid rgba(255, 184, 77, 0.2); border-radius: 8px; padding: 12px 15px; margin-bottom: 20px; font-size: 11.5px; color: #ffb84d; line-height: 1.5; text-align: left; font-weight: 500;">
-            ⚠️ <strong>Hinweis:</strong> Diese Funktion befindet sich in der Beta und kann noch Fehler aufweisen. Wir empfehlen, den Skin über die offizielle Minecraft-Webseite zu ändern:<br>
-            <a href="https://www.minecraft.net/msaprofile/mygames/editskin" target="_blank" onclick="if(window.api) window.api.openExternalLink(this.href); return false;" style="color: var(--accent-blue); text-decoration: underline; font-weight: 700; display: inline-block; margin-top: 5px;">Official Minecraft Skin Manager ↗</a>
-        </div>
-
-        <div style="display: flex; gap: 30px; align-items: stretch; justify-content: center; -webkit-app-region: no-drag;">
-            <!-- Left: 3D Preview (Stiff pose, angled) -->
-            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.03); border-radius: 12px; padding: 15px;">
-                <div style="font-size: 11px; font-weight: 800; color: #888; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 1px;">Vorschau</div>
-                <div id="skin-changer-preview-container" style="width: 180px; height: 260px; background: radial-gradient(circle, rgba(0, 212, 255, 0.03) 0%, transparent 80%); border-radius: 8px; position: relative;">
+        <div style="display: flex; gap: 20px; align-items: stretch; justify-content: space-between; -webkit-app-region: no-drag; flex: 1; min-height: 0;">
+            <!-- Column 1: Vorschau (Left) -->
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.03); border-radius: 12px; padding: 20px; justify-content: space-between; min-width: 220px; box-sizing: border-box;">
+                <div style="font-size: 11px; font-weight: 800; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;">Vorschau</div>
+                <div id="skin-changer-preview-container" style="width: 180px; height: 260px; background: radial-gradient(circle, rgba(0, 212, 255, 0.03) 0%, transparent 80%); border-radius: 8px; position: relative; display: flex; align-items: center; justify-content: center;">
                     <canvas id="skin-changer-canvas" style="width: 100%; height: 100%; display: block;"></canvas>
                 </div>
+                <div id="current-skin-caption" style="font-size: 11px; font-weight: 700; color: var(--accent-blue); margin-top: 15px; text-align: center; text-transform: uppercase; letter-spacing: 0.5px;">Current Skin</div>
             </div>
 
-            <!-- Right: Upload and Drag/Drop Area -->
-            <div style="flex: 1.2; display: flex; flex-direction: column; justify-content: space-between;">
-                <div id="skin-drop-zone" style="flex: 1; border: 2px dashed rgba(0, 212, 255, 0.2); background: rgba(0, 212, 255, 0.01); border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; cursor: pointer; transition: 0.3s;" onclick="triggerSkinFileInput()">
-                    <svg viewBox="0 0 24 24" style="width: 32px; height: 32px; fill: none; stroke: var(--accent-blue); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 12px; filter: drop-shadow(0 0 5px rgba(0,212,255,0.2));"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
-                    <div style="font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 6px;">Skin-Datei auswählen</div>
-                    <div style="font-size: 11px; color: #666; font-weight: 600;">oder hierher ziehen (Drag & Drop)</div>
+            <!-- Column 2: Controls & Search (Center) -->
+            <div style="flex: 1.2; display: flex; flex-direction: column; gap: 15px; justify-content: space-between; min-width: 260px; box-sizing: border-box;">
+                <!-- Drag/Drop Area -->
+                <div id="skin-drop-zone" style="flex: 1; border: 2px dashed rgba(0, 212, 255, 0.2); background: rgba(0, 212, 255, 0.01); border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px; cursor: pointer; transition: 0.3s; min-height: 120px;" onclick="triggerSkinFileInput()">
+                    <svg viewBox="0 0 24 24" style="width: 28px; height: 28px; fill: none; stroke: var(--accent-blue); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 8px; filter: drop-shadow(0 0 5px rgba(0,212,255,0.2));"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+                    <div style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 4px; text-align: center;">Skin-Datei auswählen</div>
+                    <div style="font-size: 10px; color: #666; font-weight: 600; text-align: center;">oder hierher ziehen (Drag & Drop)</div>
                     <input type="file" id="skin-file-input" accept=".png" style="display: none;" onchange="handleSkinFileSelect(event)">
                 </div>
-                
-                <div style="margin-top: 15px; text-align: left; font-size: 11px; color: #555; line-height: 1.4; font-weight: 500;">
-                    • Unterstützte Maße: <strong>64x64</strong> (Standard) oder <strong>64x32</strong> (Classic)<br>
-                    • Format: Nur <strong>.PNG</strong> Dateien erlaubt<br>
-                    • Skin-Modell: Erkennt automatisch Slim (Alex) / Classic (Steve)
+
+                <!-- Username/UUID Search Box -->
+                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; gap: 10px;">
+                    <div style="font-size: 11px; font-weight: 800; color: #888; text-transform: uppercase; letter-spacing: 1px;">NameMC / Name Suche</div>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="text" id="skin-search-input" class="dash-input" placeholder="Minecraft Name..." style="margin: 0; flex: 1; font-size: 12px; padding: 10px;">
+                        <div class="dash-btn" style="margin: 0; font-size: 11px; font-weight: 800; padding: 10px 15px;" onclick="searchSkinFromNameMC()">Suchen</div>
+                    </div>
                 </div>
 
-                <div class="dash-btn" id="skin-upload-apply-btn" style="margin-top: 15px; width: 100%; box-sizing: border-box; text-align: center; background: var(--accent-blue); color: #000; font-weight: 800; opacity: 0.5; pointer-events: none;" onclick="applySkinUpload()">Skin Hochladen</div>
+                <div class="dash-btn" id="skin-upload-apply-btn" style="width: 100%; box-sizing: border-box; text-align: center; background: var(--accent-blue); color: #000; font-weight: 800; opacity: 0.5; pointer-events: none; margin: 0; padding: 12px;" onclick="applySkinUpload()">Skin Speichern & Anwenden</div>
+            </div>
+
+            <!-- Column 3: Galerie & Verlauf (Right) -->
+            <div style="flex: 1.3; display: flex; flex-direction: column; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.03); border-radius: 12px; padding: 15px; gap: 15px; min-width: 260px; box-sizing: border-box; overflow-y: auto;">
+                
+                <!-- Bisherige Skins (NameMC Style) -->
+                <div>
+                    <div style="font-size: 11px; font-weight: 800; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">NameMC Skin-Verlauf</div>
+                    <div id="namemc-skins-box" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">
+                    </div>
+                </div>
+
+                <!-- Hochgeladene Skins (Session Gallery) -->
+                <div style="flex: 1; display: flex; flex-direction: column; min-height: 120px;">
+                    <div style="font-size: 11px; font-weight: 800; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Gespeicherte Skins</div>
+                    <div id="uploaded-skins-gallery" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; flex: 1; overflow-y: auto; align-content: flex-start;">
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -894,7 +909,7 @@
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px; gap: 15px; -webkit-app-region: no-drag;">
                     <div class="dash-title" id="t-dash-userm" style="margin: 0;">Nutzerverwaltung</div>
                     <div class="explore-search-wrap" style="max-width: 250px; padding: 0 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.02); height: 32px; margin-bottom: 0;">
-                        <svg viewBox="0 0 24 24" style="width: 13px; height: 13px; fill: #1bd96a; margin-right: 8px;"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                        <svg viewBox="0 0 24 24" style="width: 13px; height: 13px; fill: var(--accent-blue); margin-right: 8px;"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
                         <input type="text" class="explore-search" id="dash-user-search-input" placeholder="Benutzer suchen..." oninput="filterDashboardUsers()" style="padding: 0; font-size: 11.5px; height: 100%;">
                     </div>
                 </div>
@@ -1079,6 +1094,29 @@
                         <div id="sys-console-box" style="flex: 1; min-height: 140px; max-height: 180px; background: #070709; border: 1px solid rgba(255,255,255,0.03); border-radius: 8px; font-family: monospace; font-size: 10.5px; color: #a9ffb4; padding: 12px; overflow-y: auto; line-height: 1.4; white-space: pre-wrap;"></div>
                     </div>
                 </div>
+
+                <!-- Backups Table -->
+                <div class="dash-card" style="padding: 20px; display: flex; flex-direction: column; gap: 10px; -webkit-app-region: no-drag; margin-bottom: 20px;">
+                    <div style="font-size: 14px; font-weight: 800; color: #fff; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Backups verwalten</span>
+                        <span style="font-size: 10px; color: #555; font-weight: 700; text-transform: uppercase;">DB Backups</span>
+                    </div>
+                    <div class="dash-table-wrap" style="max-height: 250px; overflow-y: auto;">
+                        <table class="dash-table">
+                            <thead>
+                                <tr>
+                                    <th>Filename</th>
+                                    <th>Erstellt am</th>
+                                    <th>Größe</th>
+                                    <th style="text-align: right;">Aktionen</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dash-backups-tbody">
+                                <tr><td colspan="4" style="text-align:center; font-style:italic; padding:20px; color:#555;">Keine Backups vorhanden.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -1092,7 +1130,7 @@
                     <div class="role-check-row" data-role="DEV"><div class="role-box"></div><svg class="role-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg><span class="role-name">Developer</span></div>
                     <div class="role-check-row" data-role="ADMIN"><div class="role-box"></div><svg class="role-icon" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg><span class="role-name">Admin</span></div>
                     <div class="role-check-row" data-role="MOD"><div class="role-box"></div><svg class="role-icon" viewBox="0 0 24 24"><path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3z"/></svg><span class="role-name">Moderator</span></div>
-                    <div class="role-check-row" data-role="SUPP"><div class="role-box"></div><svg class="role-icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span class="role-name">Supporter</span></div>
+                    <div class="role-check-row" data-role="SUPP"><div class="role-box"></div><svg class="role-icon" viewBox="0 0 24 24"><path d="M12 2c-4.97 0-9 4.03-9 9v7c0 1.66 1.34 3 3 3h3v-8H5v-2c0-3.87 3.13-7 7-7s7 3.13 7 7v2h-4v8h3c1.66 0 3-1.34 3-3v-7c0-4.97-4.03-9-9-9z"/></svg><span class="role-name">Supporter</span></div>
                     <div class="role-check-row" data-role="CREATOR"><div class="role-box"></div><svg class="role-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg><span class="role-name">Content Creator</span></div>
                     <div class="role-check-row" data-role="TWITCH"><div class="role-box"></div><svg class="role-icon" viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/></svg><span class="role-name">Twitch</span></div>
                     <div class="role-check-row" data-role="YT"><div class="role-box"></div><svg class="role-icon" viewBox="0 0 24 24"><path d="M21.58 7.19c-.23-.86-.91-1.54-1.77-1.77C18.25 5 12 5 12 5s-6.25 0-7.81.42c-.86.23-1.54.91-1.77 1.77C2 8.75 2 12 2 12s0 3.25.42 4.81c.23.86.91 1.54 1.77 1.77C5.75 19 12 19 12 19s6.25 0 7.81-.42c.86-.23 1.54-.91 1.77-1.77C22 15.25 22 12 22 12s0-3.25-.42-4.81zM10 15V9l5.2 3-5.2 3z"/></svg><span class="role-name">YouTuber</span></div>
@@ -1113,9 +1151,12 @@
                     </div>
                     <div class="dash-btn" style="background: #ff4b4b; color: #fff; text-align: center;" id="t-dash-banbtn" onclick="mockBanUser()">SPIELER BANNEN</div>
                 </div>
-                <div style="display:flex; justify-content:flex-end; gap:10px;">
-                    <div class="dash-btn" style="background:#222; color:#fff;" onclick="closeUserEditModal()">Cancel</div>
-                    <div class="dash-btn" onclick="saveUserEditModal()">Save Changes</div>
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div class="dash-btn" style="background:#ff4b4b; color:#fff; margin:0;" onclick="deleteUserFromDashboard()">Spieler löschen</div>
+                    <div style="display:flex; gap:10px;">
+                        <div class="dash-btn" style="background:#222; color:#fff; margin:0;" onclick="closeUserEditModal()">Cancel</div>
+                        <div class="dash-btn" style="margin:0;" onclick="saveUserEditModal()">Save Changes</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1145,6 +1186,7 @@
     <div class="nav-item" data-page="explore" onclick="navTo('explore')"><span id="t-nav-explore">ERKUNDEN</span></div>
     <div class="nav-item" data-page="cosmetics" onclick="navTo('cosmetics')"><span id="t-nav-cosmetics">COSMETICS</span></div>
     <div class="nav-item" data-page="shop" onclick="navTo('shop')"><span id="t-nav-shop">SHOP</span></div>
+    <div class="nav-item" data-page="tentixplus" onclick="navTo('tentixplus')"><span style="background: linear-gradient(135deg, var(--accent-blue) 0%, #0072ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; letter-spacing: 1px;">TENTIX+</span></div>
 </div>
 
 <div id="top-left-container">
@@ -1477,6 +1519,19 @@
     </div>
 </div>
 
+<div id="tentixplus-view" style="display: none; visibility: hidden; opacity: 0; transition: opacity 0.5s ease, visibility 0.5s; -webkit-app-region: no-drag; width: 100%; height: 100%; justify-content: center; align-items: center; position: absolute; top: 0; left: 0; z-index: 50;">
+    <div class="coming-soon-popup" style="background: rgba(10, 10, 12, 0.9); backdrop-filter: blur(25px); border: 1px solid rgba(0, 212, 255, 0.25); box-shadow: 0 0 50px rgba(0, 212, 255, 0.15); border-radius: 16px; padding: 40px 60px; width: 450px; text-align: center; position: relative;">
+        <div style="font-size: 28px; font-weight: 900; color: #fff; margin-bottom: 20px; letter-spacing: 1px;" id="tentixplus-view-title">
+            TENTIX <span style="background: linear-gradient(135deg, var(--accent-blue) 0%, #0072ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">PLUS</span>
+        </div>
+        <div style="font-size: 13.5px; color: #aaa; line-height: 1.6; font-weight: 500; margin-bottom: 30px; padding: 0 10px;" id="tentixplus-view-desc">
+            Du hast kein TENTIX+ um hier deine Extras auszuwählen.<br><br>
+            Hol dir TENTIX+ für exklusive Kosmetika, Profileffekte und Beta-Zugang!
+        </div>
+        <div class="card-btn" onclick="navTo('start')" id="tentixplus-view-back" style="text-align: center; width: 120px; font-weight: 700; margin: 0 auto; box-shadow: 0 0 15px rgba(0, 212, 255, 0.2); background: transparent; border: 1px solid var(--accent-blue); color: #fff;">ZURÜCK</div>
+    </div>
+</div>
+
 <div id="cosmetics-view">
     <div class="explore-container" style="background: rgba(10, 10, 12, 0.9); backdrop-filter: blur(20px);">
         <div style="flex: 1.2; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; position: relative; border-right: 1px solid rgba(255, 255, 255, 0.05); -webkit-app-region: no-drag;">
@@ -1504,28 +1559,28 @@
             <!-- Cosmetics Grid -->
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px;">
                 <!-- Card 1: TENTIX Cape -->
-                <div class="cosmetic-card" onclick="selectCosmetic('tentix', this)" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; padding: 15px; cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; align-items: center; text-align: center;">
+                <div class="cosmetic-card" id="cosmetic-card-tentix" onclick="selectCosmetic('tentix', this)" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; padding: 15px; cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; align-items: center; text-align: center;">
                     <div style="width: 44px; height: 44px; border-radius: 8px; background: linear-gradient(135deg, #0f0f12, #181822); border: 1px solid var(--accent-blue); display: flex; align-items: center; justify-content: center; margin-bottom: 10px; color: var(--accent-blue); font-weight: 900; font-size: 18px;">T</div>
                     <div style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 4px;">TENTIX Cape</div>
                     <div style="font-size: 9px; color: #666; font-weight: 500;">Creator Umhang</div>
                 </div>
 
                 <!-- Card 2: Cyber Cape -->
-                <div class="cosmetic-card" onclick="selectCosmetic('cyber', this)" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; padding: 15px; cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; align-items: center; text-align: center;">
+                <div class="cosmetic-card" id="cosmetic-card-cyber" onclick="selectCosmetic('cyber', this)" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; padding: 15px; cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; align-items: center; text-align: center;">
                     <div style="width: 44px; height: 44px; border-radius: 8px; background: linear-gradient(135deg, #ff007f, #00d4ff); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; margin-bottom: 10px; color: #fff; font-weight: 900; font-size: 14px;">CY</div>
                     <div style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 4px;">Cyberpunk Cape</div>
                     <div style="font-size: 9px; color: #666; font-weight: 500;">Glow Grid Vector</div>
                 </div>
 
                 <!-- Card 3: Developer Cape -->
-                <div class="cosmetic-card" onclick="selectCosmetic('dev', this)" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; padding: 15px; cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; align-items: center; text-align: center;">
+                <div class="cosmetic-card" id="cosmetic-card-dev" onclick="selectCosmetic('dev', this)" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; padding: 15px; cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; align-items: center; text-align: center;">
                     <div style="width: 44px; height: 44px; border-radius: 8px; background: linear-gradient(135deg, #1a0033, #330066); border: 1px solid #ffcc00; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; color: #ffcc00; font-weight: 900; font-size: 18px;">★</div>
                     <div style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 4px;">Developer Cape</div>
                     <div style="font-size: 9px; color: #666; font-weight: 500;">Purple/Gold Star</div>
                 </div>
 
                 <!-- Card 4: Flame Cape -->
-                <div class="cosmetic-card" onclick="selectCosmetic('flame', this)" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; padding: 15px; cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; align-items: center; text-align: center;">
+                <div class="cosmetic-card" id="cosmetic-card-flame" onclick="selectCosmetic('flame', this)" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; padding: 15px; cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; align-items: center; text-align: center;">
                     <div style="width: 44px; height: 44px; border-radius: 8px; background: linear-gradient(135deg, #e63946, #fcbf49); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; margin-bottom: 10px; color: #fff; font-weight: 900; font-size: 18px;">🔥</div>
                     <div style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 4px;">Flame Cape</div>
                     <div style="font-size: 9px; color: #666; font-weight: 500;">Feuer-Umhang</div>
@@ -1702,6 +1757,7 @@
     const API_BASE_URL = 'http://uilkgyp2338kaq7hgyj5pqwt.159.195.44.117.sslip.io';
     let eventTimerInterval = null;
     let isAppReady = false;
+    let currentUserRoles = ['PLAYER'];
 
     let modrinthOffset = 0;
     let isFetchingMods = false;
@@ -1740,7 +1796,10 @@
             modSearch: "Search Modrinth...", modSortRel: "Sort by: Relevance", modSortDl: "Sort by: Downloads", modSortNew: "Sort by: Newest", modSortUpd: "Sort by: Recently Updated", modCatTitle: "Categories", modEnvTitle: "Environment", modBtnView: "View", modBtnInstall: "Install", modStandard: "Standard in Client", modLoading: "Loading Mods...", modNoFound: "No Mods found.", modError: "Error loading Modrinth.",
             ramReset: "Restore default value",
             cosTitle: "No cosmetics available yet",
-            cosDesc: "In the current beta version, no cosmetics are available. Check back soon!"
+            cosDesc: "In the current beta version, no cosmetics are available. Check back soon!",
+            tPlusTitle: "TENTIX <span style=\"background: linear-gradient(135deg, var(--accent-blue) 0%, #0072ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;\">PLUS</span>",
+            tPlusDesc: "You do not have TENTIX+ to choose your extras here.<br><br>Get TENTIX+ for exclusive cosmetics, profile effects, and beta access!",
+            btnBack: "BACK"
         },
         de: {
             latest: "Neueste Version", ready: "BEREIT", welcome: "WILLKOMMEN, ", player: "SPIELER", play: "SPIELEN", loginReq: "BITTE EINLOGGEN!",
@@ -1748,8 +1807,8 @@
             skinBtn: "Skin Changer", loginBtn: "Anmelden", userId: "NUTZER ID: #", guest: "GAST", ttSkin: "Bald verfügbar", inbox: "Posteingang", setT: "Spieleinstellungen", setRam: "Zugewiesener Arbeitsspeicher", setRamD: "Wähle aus wie viel Arbeitsspeicher der Spielinstanz zugewiesen werden soll",
             setRes: "Spielauflösung", setResD: "Stelle die Auflösung der Spielinstanz ein", setVis: "Sichtbarkeit des Launchers beim Start", setVisD: "Wähle aus, welche Option der Launcher übernehmen soll",
             csTitle: "BALD VERFÜGBAR", csBack: "ZURÜCK", tGame: "Spiel", tDisc: "Discord", tPriv: "Privatsphäre", tPriv1: "Analytik", tPrivD1: "TENTIX sammelt Analyse- und Nutzungsdaten, um die Erfahrung zu verbessern",
-            tPriv2: "Optimierte Werbeanzeigen", tPrivD2: "Ob Cookies verwendet werden sollen, um Werbeanzeigen zu personalisieren.",
-            tDban1: "Tritt dem TENTIX Discord bei", tDban2: "Erhalte Support, Updates & chatte mit der Community!", tMoj: "Nicht mit Mojang oder Microsoft verbunden", search: "Suchen...", keep: "Geöffnet lassen", keepD: "Launcher bleibt im Hintergrund geöffnet", hide: "Ausblenden", hideD: "Der Launcher wird ausgeblendet, sobald die Spielinstanz erscheint", rec: "Empfohlen", high: "Hohe Auslastung!", over: "Überschrieben",
+            tPriv2: "Optimierte Werbeanzeigen", tPrivD2: "Ob Cookies verwendet werden sollen, um Werbeanzeigen to personalisieren.",
+            tDban1: "Tritt dem TENTIX Discord bei", tDban2: "Erhalte Support, Updates & chatte mit der Community!", tMoj: "Not affiliated with Mojang or Microsoft", search: "Suchen...", keep: "Geöffnet lassen", keepD: "Launcher bleibt im Hintergrund geöffnet", hide: "Ausblenden", hideD: "Der Launcher wird ausgeblendet, sobald die Spielinstanz erscheint", rec: "Empfohlen", high: "Hohe Auslastung!", over: "Überschrieben",
             da: "🇩🇪 Automatisch - Deutsch", de: "🇬🇧 English", free1: "Du hast ", free2: " GB frei zum Zuweisen.", newsHeader: "Neuigkeiten", newsEmpty: "Bleib dran für Updates...",
             settingsTitle: "Client Einstellungen", setAdsTt: "Deaktiviere das um keine Werbung zu erhalten.\nWir sind ein werbefreier Client und legen Wert darauf, dass jeder sein Spielerlebnis frei gestalten kann.",
             dcHideVisible: "Sichtbar", dcHideHidden: "Versteckt",
@@ -1764,13 +1823,16 @@
             setRedTitle: "Code Einlösen", setRedDesc: "Löse einen TENTIX Code für exklusive Badges oder Cosmetics ein.", setRedBtn: "CODE EINGEBEN",
             redTitle: "CODE EINLÖSEN", redDesc: "Gib deinen TENTIX Code hier ein", redBtn: "EINLÖSEN", redChecked: "CODE EINGELÖST!", redFail: "UNGÜLTIGER CODE!", redShort: "CODE ZU KURZ!",
             dashTitle: "Dashboard Übersicht", dashUsers: "Nutzerverwaltung", dashCodes: "Code-Verwaltung", dashNews: "News Editor", dashEvents: "Events", dashGen: "Erstellen", dashPub: "News Veröffentlichen", dashUpImg: "Bild Hochladen", dashNoCode: "Keine aktiven Codes.", dashTot: "Gesamte Nutzer", dashAct: "Aktive Codes", dashBan: "Gebannte Nutzer", dashEdit: "Bearbeiten",
-            dashAssign: "Rollen & Badges zuweisen", dashBanSet: "Ban Einstellungen", dashBanBtn: "SPIELER BANNEN", bannedTitle: "GEBANNT!", bannedDesc: "Du wurdest von TENTIX gebannt.", bannedReasonLbl: "Grund:", bannedUntilLbl: "Gebannt bis:", dashStats: "Spieler Online Statistiken", dashRev: "Cosmetics Einnahmen", awaitData: "Erwartet Daten",
+            dashAssign: "Rollen & Badges zuweisen", dashBanSet: "Ban Einstellungen", dashBanBtn: "SPIELER BANNEN", bannedTitle: "GEBANNT!", bannedDesc: "Du wurdest von TENTIX gebannt.", bannedReasonLbl: "Grund:", bannedUntilLbl: "Gebanned bis:", dashStats: "Spieler Online Statistiken", dashRev: "Cosmetics Einnahmen", awaitData: "Erwartet Daten",
             dashMsgTab: "Nachrichten", dashMsgTitle: "Nachricht Senden", dashMsgBtn: "Senden", notLogged: "Du bist nicht angemeldet.", noMessages: "Keine neuen Nachrichten.",
             noEvent: "Derzeit keine Aktionen",
             modSearch: "Modrinth durchsuchen...", modSortRel: "Sortieren nach: Relevanz", modSortDl: "Sortieren nach: Downloads", modSortNew: "Sortieren nach: Neueste", modSortUpd: "Sortieren nach: Zuletzt aktualisiert", modCatTitle: "Kategorien", modEnvTitle: "Umgebung", modBtnView: "Ansehen", modBtnInstall: "Installieren", modStandard: "Standard im Client", modLoading: "Lade Mods...", modNoFound: "Keine Mods gefunden.", modError: "Fehler beim Laden von Modrinth.",
             ramReset: "Standard-Wert wiederherstellen",
             cosTitle: "Es gibt noch keine Cosmetics",
-            cosDesc: "In der aktuellen Beta-Version stehen noch keine Cosmetics zur Verfügung. Schau bald wieder vorbei!"
+            cosDesc: "In der aktuellen Beta-Version stehen noch keine Cosmetics zur Verfügung. Schau bald wieder vorbei!",
+            tPlusTitle: "TENTIX <span style=\"background: linear-gradient(135deg, var(--accent-blue) 0%, #0072ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;\">PLUS</span>",
+            tPlusDesc: "Du hast kein TENTIX+ um hier deine Extras auszuwählen.<br><br>Hol dir TENTIX+ für exklusive Kosmetika, Profileffekte und Beta-Zugang!",
+            btnBack: "ZURÜCK"
         }
     };
 
@@ -1942,7 +2004,7 @@
         'DEV': { name: 'Developer', color: 'var(--accent-blue)', bg: 'rgba(0,212,255,0.1)', border: 'rgba(0,212,255,0.3)', svg: '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>' },
         'ADMIN': { name: 'Admin', color: '#ff4b4b', bg: 'rgba(255,75,75,0.1)', border: 'rgba(255,75,75,0.3)', svg: '<path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>' },
         'MOD': { name: 'Moderator', color: '#00ff80', bg: 'rgba(0,255,128,0.1)', border: 'rgba(0,255,128,0.3)', svg: '<path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3z"/>' },
-        'SUPP': { name: 'Supporter', color: '#ffb84d', bg: 'rgba(255,184,77,0.1)', border: 'rgba(255,184,77,0.3)', svg: '<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>' },
+        'SUPP': { name: 'Supporter', color: '#ffb84d', bg: 'rgba(255,184,77,0.1)', border: 'rgba(255,184,77,0.3)', svg: '<path d="M12 2c-4.97 0-9 4.03-9 9v7c0 1.66 1.34 3 3 3h3v-8H5v-2c0-3.87 3.13-7 7-7s7 3.13 7 7v2h-4v8h3c1.66 0 3-1.34 3-3v-7c0-4.97-4.03-9-9-9z"/>' },
         'CREATOR': { name: 'Content Creator', color: '#ffcc00', bg: 'rgba(255,204,0,0.1)', border: 'rgba(255,204,0,0.3)', svg: '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>' },
         'TWITCH': { name: 'Twitch', color: '#9146FF', bg: 'rgba(145,70,255,0.1)', border: 'rgba(145,70,255,0.3)', svg: '<path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/>' },
         'ALPHA': { name: 'Alpha Tester', color: '#ffb84d', bg: 'rgba(255,184,77,0.1)', border: 'rgba(255,184,77,0.3)', svg: '<path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>' },
@@ -2184,6 +2246,9 @@
             return indexA - indexB;
         });
 
+        currentUserRoles = rolesToUse;
+        updateCosmeticsLocks();
+
         if(rolesToUse.length > 0) {
             container.style.display = 'flex';
             container.innerHTML = '';
@@ -2378,12 +2443,12 @@
                     `;
 
                     dashHtml += `
-                        <div style="background: #111; border: 1px solid #333; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.05); padding: 12px 18px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; transition: 0.2s;">
                             <div>
-                                <div style="font-weight: 800; color: #fff; font-size: 13px;">${n.title}</div>
-                                <div style="font-size: 10px; color: #888;">ID: ${n.id}</div>
+                                <div style="font-weight: 800; color: #fff; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">${n.title}</div>
+                                <div style="font-size: 10px; color: #555; font-weight: 600; margin-top: 2px;">ID: ${n.id}</div>
                             </div>
-                            <div class="dash-btn" style="background: #ff4b4b; color: #fff; padding: 6px 12px;" onclick="deleteNews(${n.id})">Löschen</div>
+                            <div class="dash-btn" style="background: rgba(255, 75, 75, 0.1); border: 1px solid #ff4b4b; color: #ff4b4b; padding: 6px 12px; margin: 0; font-size: 10px; font-weight: 800;" onclick="deleteNews(${n.id})">Löschen</div>
                         </div>
                     `;
                 });
@@ -2998,6 +3063,42 @@
                 body: JSON.stringify({ uuid: editUserUuid, username: editUserTarget, roles: selectedRoles })
             });
         } catch(e) {}
+    }
+
+    async function deleteUserFromDashboard() {
+        if(!editUserUuid) return;
+        if (editUserTarget && (editUserTarget.trim().toUpperCase() === 'T3NX' || editUserTarget.trim().toUpperCase() === 'TN3X')) {
+            showToast(currentLang === 'de' ? "Der Besitzer kann nicht gelöscht werden!" : "The owner cannot be deleted!", "error");
+            return;
+        }
+
+        if(!confirm(currentLang === 'de' ? `Bist du sicher, dass du den Spieler ${editUserTarget} löschen willst?` : `Are you sure you want to delete player ${editUserTarget}?`)) {
+            return;
+        }
+
+        let users = JSON.parse(localStorage.getItem('tentix_db_users') || '[]');
+        users = users.filter(u => u.uuid !== editUserUuid);
+        localStorage.setItem('tentix_db_users', JSON.stringify(users));
+
+        closeUserEditModal();
+        renderUsersTable();
+
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/users/delete`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ uuid: editUserUuid, username: editUserTarget })
+            });
+            const data = await res.json();
+            if(data.success) {
+                showToast(currentLang === 'de' ? "Spieler gelöscht!" : "Player deleted!", "success");
+            } else {
+                showToast(data.error || "Fehler beim Löschen", "error");
+            }
+        } catch(e) {
+            console.error("Delete player failed:", e);
+            showToast(currentLang === 'de' ? "Offline: Spieler lokal gelöscht" : "Offline: Player deleted locally", "info");
+        }
     }
 
     async function mockBanUser() {
@@ -3626,6 +3727,13 @@
         setElText('t-cosmetics-title', t.cosTitle);
         setElText('t-cosmetics-desc', t.cosDesc);
         setElText('t-cosmetics-back', t.csBack || "ZURÜCK");
+        
+        const plusTitleEl = document.getElementById('tentixplus-view-title');
+        if(plusTitleEl) plusTitleEl.innerHTML = t.tPlusTitle || 'TENTIX <span style="background: linear-gradient(135deg, var(--accent-blue) 0%, #0072ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">PLUS</span>';
+        const plusDescEl = document.getElementById('tentixplus-view-desc');
+        if(plusDescEl) plusDescEl.innerHTML = t.tPlusDesc || 'Du hast kein TENTIX+ um hier deine Extras auszuwählen.<br><br>Hol dir TENTIX+ für exklusive Kosmetika, Profileffekte und Beta-Zugang!';
+        const plusBackEl = document.getElementById('tentixplus-view-back');
+        if(plusBackEl) plusBackEl.innerText = t.btnBack || 'ZURÜCK';
 
         if(document.getElementById('lang-en')) document.getElementById('lang-en').className = (currentLang === 'en' ? 'active-lang' : '');
         if(document.getElementById('lang-de')) document.getElementById('lang-de').className = (currentLang === 'de' ? 'active-lang' : '');
@@ -3898,23 +4006,26 @@
         const shop = document.getElementById('shop-view');
         const explore = document.getElementById('explore-view');
         const cosmetics = document.getElementById('cosmetics-view');
+        const tentixplus = document.getElementById('tentixplus-view');
         const canvas = document.getElementById('bg-canvas');
         const socials = document.getElementById('ui-social-container');
         const newsBtn = document.getElementById('news-toggle-btn');
         const annBar = document.getElementById('announcement-bar');
 
-        if(!menu || !shop || !explore || !canvas || !cosmetics) return;
+        if(!menu || !shop || !explore || !canvas || !cosmetics || !tentixplus) return;
 
         if(page === 'start') {
             shop.style.opacity = '0';
             explore.style.opacity = '0';
             cosmetics.style.opacity = '0';
+            tentixplus.style.opacity = '0';
             canvas.style.filter = 'blur(0px)';
 
             setTimeout(() => {
                 shop.style.visibility = 'hidden'; shop.style.display = 'none';
                 explore.style.visibility = 'hidden'; explore.style.display = 'none';
                 cosmetics.style.visibility = 'hidden'; cosmetics.style.display = 'none';
+                tentixplus.style.visibility = 'hidden'; tentixplus.style.display = 'none';
                 menu.style.display = 'block';
 
                 setTimeout(() => {
@@ -3933,6 +4044,7 @@
             menu.style.opacity = '0';
             shop.style.opacity = '0';
             cosmetics.style.opacity = '0';
+            tentixplus.style.opacity = '0';
             canvas.style.filter = 'blur(10px)';
 
             if(socials) { socials.style.opacity = '0'; setTimeout(() => socials.style.display = 'none', 500); }
@@ -3943,6 +4055,7 @@
                 menu.style.display = 'none';
                 shop.style.visibility = 'hidden'; shop.style.display = 'none';
                 cosmetics.style.visibility = 'hidden'; cosmetics.style.display = 'none';
+                tentixplus.style.visibility = 'hidden'; tentixplus.style.display = 'none';
 
                 explore.style.visibility = 'visible'; explore.style.display = 'flex';
                 setTimeout(() => explore.style.opacity = '1', 50);
@@ -3956,6 +4069,7 @@
             menu.style.opacity = '0';
             explore.style.opacity = '0';
             shop.style.opacity = '0';
+            tentixplus.style.opacity = '0';
             canvas.style.filter = 'blur(10px)';
 
             if(socials) { socials.style.opacity = '0'; setTimeout(() => socials.style.display = 'none', 500); }
@@ -3966,17 +4080,20 @@
                 menu.style.display = 'none';
                 explore.style.visibility = 'hidden'; explore.style.display = 'none';
                 shop.style.visibility = 'hidden'; shop.style.display = 'none';
+                tentixplus.style.visibility = 'hidden'; tentixplus.style.display = 'none';
 
                 cosmetics.style.visibility = 'visible'; cosmetics.style.display = 'flex';
                 setTimeout(() => cosmetics.style.opacity = '1', 50);
                 
                 initCosmeticsViewer();
                 updateCosmeticsSkin();
+                updateCosmeticsLocks();
             }, 500);
         } else if (page === 'shop') {
             menu.style.opacity = '0';
             explore.style.opacity = '0';
             cosmetics.style.opacity = '0';
+            tentixplus.style.opacity = '0';
             canvas.style.filter = 'blur(10px)';
 
             if(socials) { socials.style.opacity = '0'; setTimeout(() => socials.style.display = 'none', 500); }
@@ -3987,9 +4104,30 @@
                 menu.style.display = 'none';
                 explore.style.visibility = 'hidden'; explore.style.display = 'none';
                 cosmetics.style.visibility = 'hidden'; cosmetics.style.display = 'none';
+                tentixplus.style.visibility = 'hidden'; tentixplus.style.display = 'none';
 
                 shop.style.visibility = 'visible'; shop.style.display = 'flex';
                 setTimeout(() => shop.style.opacity = '1', 50);
+            }, 500);
+        } else if (page === 'tentixplus') {
+            menu.style.opacity = '0';
+            explore.style.opacity = '0';
+            cosmetics.style.opacity = '0';
+            shop.style.opacity = '0';
+            canvas.style.filter = 'blur(10px)';
+
+            if(socials) { socials.style.opacity = '0'; setTimeout(() => socials.style.display = 'none', 500); }
+            if(newsBtn) { newsBtn.style.opacity = '0'; setTimeout(() => newsBtn.style.display = 'none', 500); }
+            if(annBar) annBar.classList.remove('show');
+
+            setTimeout(() => {
+                menu.style.display = 'none';
+                explore.style.visibility = 'hidden'; explore.style.display = 'none';
+                cosmetics.style.visibility = 'hidden'; cosmetics.style.display = 'none';
+                shop.style.visibility = 'hidden'; shop.style.display = 'none';
+
+                tentixplus.style.visibility = 'visible'; tentixplus.style.display = 'flex';
+                setTimeout(() => tentixplus.style.opacity = '1', 50);
             }, 500);
         }
     }
@@ -4717,6 +4855,8 @@
             
             if (skinChangerViewer) {
                 updateSkinChangerPreview();
+                renderNameMCHistory(savedName || 'MHF_Steve');
+                renderUploadedSkinsGallery();
                 return;
             }
             
@@ -4736,6 +4876,8 @@
             
             updateSkinChangerPreview();
             initSkinDragAndDrop();
+            renderNameMCHistory(savedName || 'MHF_Steve');
+            renderUploadedSkinsGallery();
         } catch (e) {
             console.error("Failed to initialize skin changer preview:", e);
         }
@@ -4744,15 +4886,23 @@
     function updateSkinChangerPreview() {
         if (!skinChangerViewer) return;
         let skinUrl = 'https://minotar.net/skin/MHF_Steve';
+        let label = 'Steve';
         const customSkin = localStorage.getItem('tentix_custom_skin');
         if (customSkin) {
             skinUrl = customSkin;
+            label = currentLang === 'de' ? 'Eigener Skin' : 'Custom Skin';
         } else if (isLoggedIn && uuidValue && uuidValue !== 'NOT LOGGED IN') {
             skinUrl = `https://minotar.net/skin/${uuidValue.trim()}`;
+            label = savedName || 'Spieler';
         } else if (isLoggedIn && savedName && savedName !== 'GUEST') {
             skinUrl = `https://minotar.net/skin/${savedName.trim()}`;
+            label = savedName;
         }
         skinChangerViewer.loadSkin(skinUrl);
+        const caption = document.getElementById('current-skin-caption');
+        if (caption) {
+            caption.innerText = (currentLang === 'de' ? 'Aktuell: ' : 'Active: ') + label;
+        }
     }
     
     function triggerSkinFileInput() {
@@ -4786,12 +4936,28 @@
                     if (skinChangerViewer) {
                         skinChangerViewer.loadSkin(dataUrl);
                     }
+                    
+                    getAvatarFromSkin(dataUrl, (avatarUrl) => {
+                        let uploadedSkins = JSON.parse(localStorage.getItem('tentix_uploaded_skins') || '[]');
+                        const skinName = file.name ? file.name.substring(0, file.name.lastIndexOf('.')) || file.name : `Skin_${Date.now()}`;
+                        if (!uploadedSkins.some(s => s.skin === dataUrl)) {
+                            uploadedSkins.push({
+                                id: Date.now(),
+                                name: skinName.substring(0, 10),
+                                skin: dataUrl,
+                                avatar: avatarUrl
+                            });
+                            localStorage.setItem('tentix_uploaded_skins', JSON.stringify(uploadedSkins));
+                            renderUploadedSkinsGallery();
+                        }
+                    });
+
                     const btn = document.getElementById('skin-upload-apply-btn');
                     if (btn) {
                         btn.style.opacity = '1';
                         btn.style.pointerEvents = 'all';
                     }
-                    showToast(currentLang === 'de' ? "Skin geladen! Klicke auf Hochladen zum Speichern." : "Skin loaded! Click Apply to save.", "info");
+                    showToast(currentLang === 'de' ? "Skin geladen! Klicke auf Speichern." : "Skin loaded! Click Save to apply.", "info");
                 } else {
                     showToast(currentLang === 'de' ? `Ungültige Skin-Maße (${w}x${h})! Erforderlich: 64x64 oder 64x32.` : `Invalid skin dimensions (${w}x${h})! Required: 64x64 or 64x32.`, "error");
                 }
@@ -4799,12 +4965,109 @@
         };
         reader.readAsDataURL(file);
     }
+
+    function searchSkinFromNameMC() {
+        const query = document.getElementById('skin-search-input').value.trim();
+        if (!query) {
+            showToast(currentLang === 'de' ? "Bitte einen Namen oder UUID eingeben!" : "Please enter a name or UUID!", "error");
+            return;
+        }
+        
+        showToast(currentLang === 'de' ? "Suche Skin..." : "Searching skin...", "info");
+        const skinUrl = `https://mc-heads.net/skin/${query}`;
+        
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.src = skinUrl;
+        img.onload = function() {
+            uploadedSkinDataUrl = skinUrl;
+            if (skinChangerViewer) {
+                skinChangerViewer.loadSkin(skinUrl);
+            }
+            
+            const btn = document.getElementById('skin-upload-apply-btn');
+            if (btn) {
+                btn.style.opacity = '1';
+                btn.style.pointerEvents = 'all';
+            }
+            
+            renderNameMCHistory(query);
+            
+            showToast(currentLang === 'de' ? "Skin geladen! Klicke auf Speichern." : "Skin loaded! Click Save to apply.", "success");
+        };
+        img.onerror = function() {
+            showToast(currentLang === 'de' ? "Spieler nicht gefunden oder Skin-Ladefehler!" : "Player not found or skin load error!", "error");
+        };
+    }
+
+    function loadSkinFromUrl(url) {
+        uploadedSkinDataUrl = url;
+        if (skinChangerViewer) {
+            skinChangerViewer.loadSkin(url);
+        }
+        const btn = document.getElementById('skin-upload-apply-btn');
+        if (btn) {
+            btn.style.opacity = '1';
+            btn.style.pointerEvents = 'all';
+        }
+        showToast(currentLang === 'de' ? "Skin geladen! Klicke auf Speichern." : "Skin loaded! Click Save to apply.", "info");
+    }
+
+    function renderNameMCHistory(query = 'MHF_Steve') {
+        const box = document.getElementById('namemc-skins-box');
+        if (!box) return;
+        
+        const historyUsers = [query, 'Notch', 'Herobrine', 'jeb_'];
+        let html = '';
+        historyUsers.forEach((u, index) => {
+            const label = index === 0 ? (currentLang === 'de' ? 'Gesucht' : 'Searched') : u;
+            html += `
+                <div class="namemc-card" onclick="loadSkinFromUrl('https://mc-heads.net/skin/${u}')" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 5px; cursor: pointer; text-align: center; transition: 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <img src="https://mc-heads.net/body/${u}/right" style="height: 70px; width: 100%; object-fit: contain; margin-bottom: 5px;" onerror="this.src='https://minotar.net/helm/${u}/40.png'">
+                    <span style="font-size: 8px; color: #aaa; font-weight: 700; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${label}</span>
+                </div>
+            `;
+        });
+        box.innerHTML = html;
+    }
+
+    function renderUploadedSkinsGallery() {
+        const gallery = document.getElementById('uploaded-skins-gallery');
+        if(!gallery) return;
+        
+        let uploadedSkins = JSON.parse(localStorage.getItem('tentix_uploaded_skins') || '[]');
+        if (uploadedSkins.length === 0) {
+            gallery.innerHTML = `<div style="grid-column: span 3; text-align: center; color: #444; font-size: 10px; font-style: italic; padding: 20px 0;">Keine gespeicherten Skins.</div>`;
+            return;
+        }
+        
+        let html = '';
+        uploadedSkins.forEach(skinObj => {
+            html += `
+                <div class="gallery-card" style="position: relative; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 8px; cursor: pointer; text-align: center; transition: 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <div onclick="event.stopPropagation(); deleteUploadedSkin(${skinObj.id})" style="position: absolute; top: 4px; right: 4px; background: rgba(255,75,75,0.15); border-radius: 50%; width: 14px; height: 14px; display: flex; align-items: center; justify-content: center; color: #ff4b4b; font-size: 8px; font-weight: bold; cursor: pointer;" title="Delete">✕</div>
+                    <img src="${skinObj.avatar}" style="width: 32px; height: 32px; border-radius: 4px; margin-bottom: 5px;" onclick="loadSkinFromUrl('${skinObj.skin}')">
+                    <span style="font-size: 8px; color: #888; font-weight: 700; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${skinObj.name}</span>
+                </div>
+            `;
+        });
+        gallery.innerHTML = html;
+    }
+
+    function deleteUploadedSkin(id) {
+        let uploadedSkins = JSON.parse(localStorage.getItem('tentix_uploaded_skins') || '[]');
+        uploadedSkins = uploadedSkins.filter(s => s.id !== id);
+        localStorage.setItem('tentix_uploaded_skins', JSON.stringify(uploadedSkins));
+        renderUploadedSkinsGallery();
+        showToast(currentLang === 'de' ? "Skin gelöscht!" : "Skin deleted!", "info");
+    }
     
     function applySkinUpload() {
         if (!uploadedSkinDataUrl) return;
         localStorage.setItem('tentix_custom_skin', uploadedSkinDataUrl);
         
         updateCosmeticsSkin();
+        updateSkinChangerPreview();
         getAvatarFromSkin(uploadedSkinDataUrl, (avatarUrl) => {
             if (avatarUrl && document.getElementById('user-avatar')) {
                 document.getElementById('user-avatar').src = avatarUrl;
@@ -4919,7 +5182,69 @@
     }
     
     let equippedCosmetic = null;
+    function updateCosmeticsLocks() {
+        const checkRole = (allowedRoles) => {
+            return (currentUserRoles || []).some(r => allowedRoles.includes(r));
+        };
+        
+        const capes = [
+            { id: 'tentix', roles: ['OWNER', 'ADMIN', 'MOD', 'SUPP'] },
+            { id: 'cyber', roles: ['ALPHA', 'BETA'] },
+            { id: 'dev', roles: ['DEV'] },
+            { id: 'flame', roles: ['DONATOR', 'VIPP', 'VIP'] }
+        ];
+
+        capes.forEach(cape => {
+            const card = document.getElementById(`cosmetic-card-${cape.id}`);
+            if (!card) return;
+            
+            const existingLock = card.querySelector('.cape-lock-overlay');
+            if (existingLock) existingLock.remove();
+
+            const hasAccess = checkRole(cape.roles);
+            if (!hasAccess) {
+                card.style.position = 'relative';
+                card.style.opacity = '0.35';
+                const lock = document.createElement('div');
+                lock.className = 'cape-lock-overlay';
+                lock.style.position = 'absolute';
+                lock.style.top = '8px';
+                lock.style.right = '8px';
+                lock.style.background = 'rgba(0,0,0,0.65)';
+                lock.style.borderRadius = '50%';
+                lock.style.width = '20px';
+                lock.style.height = '20px';
+                lock.style.display = 'flex';
+                lock.style.alignItems = 'center';
+                lock.style.justifyContent = 'center';
+                lock.style.border = '1px solid rgba(255,255,255,0.15)';
+                lock.innerHTML = `<svg viewBox="0 0 24 24" style="width: 11px; height: 11px; fill: #ff4b4b;"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>`;
+                card.appendChild(lock);
+            } else {
+                card.style.opacity = '1';
+            }
+        });
+    }
+
     function selectCosmetic(type, element) {
+        if (type !== 'none') {
+            const capeRoles = {
+                'tentix': { roles: ['OWNER', 'ADMIN', 'MOD', 'SUPP'], name: 'Owner / Team' },
+                'cyber': { roles: ['ALPHA', 'BETA'], name: 'Alpha / Beta Tester' },
+                'dev': { roles: ['DEV'], name: 'Developer' },
+                'flame': { roles: ['DONATOR', 'VIPP', 'VIP'], name: 'Donator / VIP' }
+            };
+            
+            const req = capeRoles[type];
+            if (req) {
+                const hasAccess = (currentUserRoles || []).some(r => req.roles.includes(r));
+                if (!hasAccess) {
+                    showToast(currentLang === 'de' ? `Dieses Cape ist nur für ${req.name} freigeschaltet!` : `This cape is only unlocked for ${req.name}!`, "error");
+                    return;
+                }
+            }
+        }
+
         document.querySelectorAll('.cosmetic-card').forEach(el => el.classList.remove('active'));
         if (element) element.classList.add('active');
         
@@ -5035,6 +5360,116 @@
         consoleBox.innerHTML += `[${timeStr}] ${text}\n`;
         consoleBox.scrollTop = consoleBox.scrollHeight;
     }
+
+    async function loadDashboardBackups() {
+        const tbody = document.getElementById('dash-backups-tbody');
+        if(!tbody) return;
+
+        let backups = [];
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/system/backups`);
+            if(!res.ok) throw new Error();
+            const data = await res.json();
+            if(data.success) backups = data.backups;
+        } catch(e) {
+            backups = JSON.parse(localStorage.getItem('tentix_sim_backups') || '[]');
+        }
+
+        if(backups.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; font-style:italic; padding:20px; color:#555;">Keine Backups vorhanden.</td></tr>`;
+            return;
+        }
+
+        let html = '';
+        backups.forEach(b => {
+            const sizeFormatted = b.size ? `${(b.size / 1024).toFixed(2)} KB` : 'N/A';
+            const dateFormatted = new Date(b.created_at || b.date || Date.now()).toLocaleString();
+            html += `<tr>
+                <td style="color:#fff; font-weight:700;">${b.filename}</td>
+                <td>${dateFormatted}</td>
+                <td>${sizeFormatted}</td>
+                <td style="text-align: right;">
+                    <div style="display:inline-flex; gap: 8px;">
+                        <div class="dash-action-btn" style="background: rgba(0, 212, 255, 0.15); color: var(--accent-blue);" onclick="restoreDashboardBackup(${b.id}, '${b.filename}')">Wiederherstellen</div>
+                        <div class="dash-action-btn" style="background: rgba(255, 75, 75, 0.15); color: #ff4b4b;" onclick="deleteDashboardBackup(${b.id}, '${b.filename}')">Löschen</div>
+                    </div>
+                </td>
+            </tr>`;
+        });
+        tbody.innerHTML = html;
+    }
+
+    async function restoreDashboardBackup(id, filename) {
+        if(!confirm(currentLang === 'de' ? `Bist du sicher, dass du das Backup '${filename}' einspielen willst? Alle aktuellen Tabellendaten werden überschrieben!` : `Are you sure you want to restore backup '${filename}'? All current table data will be overwritten!`)) {
+            return;
+        }
+
+        logToTerminal(`Starte Wiederherstellung von Backup: ${filename}...`);
+        showToast("Wiederherstellung läuft...", "info");
+
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/system/restore`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id })
+            });
+            const data = await res.json();
+            if(data.success) {
+                showToast("Wiederherstellung erfolgreich abgeschlossen!", "success");
+                logToTerminal(`RESTORE ERFOLGREICH: ${filename}`);
+            } else {
+                showToast(data.error || "Wiederherstellung fehlgeschlagen", "error");
+                logToTerminal(`RESTORE FEHLER: ${data.error || 'Unbekannt'}`);
+            }
+        } catch(e) {
+            let simBackups = JSON.parse(localStorage.getItem('tentix_sim_backups') || '[]');
+            const backup = simBackups.find(b => b.id === id);
+            if(backup) {
+                try {
+                    const dataObj = JSON.parse(backup.data);
+                    if(dataObj.users) localStorage.setItem('tentix_db_users', JSON.stringify(dataObj.users));
+                    if(dataObj.codes) localStorage.setItem('tentix_db_codes', JSON.stringify(dataObj.codes));
+                    showToast("Wiederherstellung erfolgreich abgeschlossen! (Simulation)", "success");
+                    logToTerminal(`RESTORE ERFOLGREICH (Simulation): ${filename}`);
+                } catch(err) {
+                    showToast("Fehler beim Parsen des Backups", "error");
+                }
+            } else {
+                showToast("Backup nicht gefunden (Simulation)", "error");
+            }
+        }
+    }
+
+    async function deleteDashboardBackup(id, filename) {
+        if(!confirm(currentLang === 'de' ? `Bist du sicher, dass du das Backup '${filename}' löschen willst?` : `Are you sure you want to delete backup '${filename}'?`)) {
+            return;
+        }
+
+        logToTerminal(`Lösche Backup: ${filename}...`);
+
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/system/delete-backup`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id })
+            });
+            const data = await res.json();
+            if(data.success) {
+                showToast("Backup gelöscht!", "success");
+                logToTerminal(`BACKUP GELÖSCHT: ${filename}`);
+                loadDashboardBackups();
+            } else {
+                showToast(data.error || "Löschen fehlgeschlagen", "error");
+            }
+        } catch(e) {
+            let simBackups = JSON.parse(localStorage.getItem('tentix_sim_backups') || '[]');
+            simBackups = simBackups.filter(b => b.id !== id);
+            localStorage.setItem('tentix_sim_backups', JSON.stringify(simBackups));
+            showToast("Backup gelöscht! (Simulation)", "success");
+            logToTerminal(`BACKUP GELÖSCHT (Simulation): ${filename}`);
+            loadDashboardBackups();
+        }
+    }
     
     function startSystemMonitoring() {
         if (systemMonInterval) clearInterval(systemMonInterval);
@@ -5086,14 +5521,13 @@
                 "GET /api/stats 200 OK",
                 "Heartbeat ping erhalten von User: Player_" + Math.floor(Math.random() * 100)
             ];
-            if (Math.random() < 0.4) {
-                const log = mockLogs[Math.floor(Math.random() * mockLogs.length)];
-                logToTerminal(log);
-            }
+            const randomLog = mockLogs[Math.floor(Math.random() * mockLogs.length)];
+            logToTerminal(randomLog);
         };
         
         updateMetrics();
-        systemMonInterval = setInterval(updateMetrics, 2000);
+        loadDashboardBackups();
+        systemMonInterval = setInterval(updateMetrics, 5000);
     }
     
     function toggleMaintenanceMode() {
