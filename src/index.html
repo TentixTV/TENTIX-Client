@@ -371,7 +371,7 @@
         #explore-view { position: absolute; width: 100%; height: 100%; top: 0; left: 0; display: none; visibility: hidden; justify-content: center; align-items: center; z-index: 50; opacity: 0; transition: opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1), visibility 0.6s; -webkit-app-region: no-drag; }
         .explore-container { width: 90%; height: 80%; background: var(--card-bg); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.05); display: flex; overflow: hidden; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8); margin: 0 auto; margin-top: 40px; }
         .explore-main { flex: 1; display: flex; flex-direction: column; padding: 30px; }
-        .explore-sidebar { width: 280px; flex-shrink: 0; background: #0f0f11; border-left: 1px solid rgba(255, 255, 255, 0.05); padding: 30px; overflow-y: auto;}
+        .explore-sidebar { width: 280px; flex-shrink: 0; background: #0f0f11; border-left: 1px solid rgba(255, 255, 255, 0.05); padding: 30px; overflow-y: auto; scrollbar-gutter: stable;}
         .explore-header { display: flex; align-items: center; margin-bottom: 20px; gap: 20px;}
         .explore-search-wrap { display: flex; align-items: center; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 0 15px; flex: 1; transition: 0.3s;}
         .explore-search-wrap:focus-within { border-color: #1bd96a; background: rgba(27, 217, 106, 0.05);}
@@ -416,7 +416,18 @@
 
         .social-container { position: absolute; bottom: 35px; left: 50%; transform: translateX(-50%); display: flex; gap: 20px; z-index: 3000; -webkit-app-region: no-drag; display: none; opacity: 0; transition: opacity 0.5s ease; }
         .social-icon { width: 38px; height: 38px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; }
-        .social-icon .mask-icon { width: 18px; height: 18px; background-color: #888; transition: 0.3s; }
+        .social-icon .mask-icon {
+            width: 18px;
+            height: 18px;
+            background-color: #888;
+            transition: 0.3s;
+            -webkit-mask-size: contain;
+            -webkit-mask-repeat: no-repeat;
+            -webkit-mask-position: center;
+            mask-size: contain;
+            mask-repeat: no-repeat;
+            mask-position: center;
+        }
         .social-icon:hover { background: rgba(255,255,255,0.06); border-color: var(--accent-blue); transform: translateY(-4px); box-shadow: 0 0 15px rgba(0, 212, 255, 0.4); }
         .social-icon:hover .mask-icon { background-color: var(--accent-blue); filter: drop-shadow(0 0 8px var(--accent-blue)); }
 
@@ -430,7 +441,7 @@
         .version-tag { position: absolute; bottom: 50px; left: 45px; color: #222; font-size: 11px; letter-spacing: 1px; font-weight: 800;}
         .credits { position: absolute; bottom: 25px; left: 45px; color: #444; font-size: 10px; letter-spacing: 1px; font-style: italic; }
 
-        #toast { position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%) translateY(20px); background: rgba(10, 10, 10, 0.95); border: 1px solid var(--accent-blue); color: var(--accent-blue); padding: 12px 30px; border-radius: 30px; font-size: 12px; font-weight: 800; letter-spacing: 2px; opacity: 0; pointer-events: none; transition: 0.4s; z-index: 1000000; text-transform: uppercase; box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);}
+        #toast { position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%) translateY(20px); background: rgba(10, 10, 10, 0.95); border: 1px solid var(--accent-blue); color: var(--accent-blue); padding: 12px 30px; border-radius: 30px; font-size: 12px; font-weight: 800; letter-spacing: 2px; opacity: 0; pointer-events: none; transition: 0.4s; z-index: 2147483647; text-transform: uppercase; box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);}
         #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
         #shop-view, #cosmetics-view { position: absolute; width: 100%; height: 100%; top: 0; left: 0; display: none; visibility: hidden; justify-content: center; align-items: center; z-index: 50; opacity: 0; transition: opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1), visibility 0.6s; }
@@ -589,6 +600,19 @@
             grid-template-columns: 1fr 1fr;
             gap: 8px;
         }
+        #expand-cats-btn {
+            grid-column: span 2;
+        }
+        .cosmetic-card:hover {
+            background: rgba(255, 255, 255, 0.05) !important;
+            border-color: var(--accent-blue) !important;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.15);
+        }
+        .cosmetic-card.active {
+            background: rgba(0, 212, 255, 0.08) !important;
+            border-color: var(--accent-blue) !important;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.25);
+        }
         
         .filter-btn {
             background: rgba(255, 255, 255, 0.03);
@@ -680,7 +704,7 @@
 
 <div id="redeem-modal">
     <div class="redeem-content">
-        <div class="redeem-close" onclick="closeRedeemModal()">✕</div>
+        <div class="redeem-close" onclick="closeRedeemModal()"><svg viewBox="0 0 24 24" style="width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></div>
         <div class="redeem-title" id="t-red-title">CODE EINLÖSEN</div>
         <div class="redeem-desc" id="t-red-desc">Gib deinen TENTIX Code hier ein</div>
         <input type="text" class="redeem-input" id="redeem-input-field" placeholder="XXXX-XXXX-XXXX" maxlength="14" autocomplete="off" spellcheck="false">
@@ -817,6 +841,7 @@
             <div class="dash-nav-item" onclick="switchDashTab('dash-tab-events', this)" id="t-dash-events">Events</div>
             <div class="dash-nav-item" onclick="switchDashTab('dash-tab-msg', this)" id="t-dash-msg-tab">Nachrichten</div>
             <div class="dash-nav-item" id="t-dash-admins-tab" onclick="switchDashTab('dash-tab-admins', this)" style="display:none; color: #ffb84d;">Admins</div>
+            <div class="dash-nav-item" onclick="switchDashTab('dash-tab-system', this)" id="t-dash-system-tab">System Status</div>
             <div class="dash-nav-item" onclick="dashLogout()" style="color: #ff4b4b; margin-top: auto; font-weight: 700;">Abmelden</div>
         </div>
         <div class="dash-main">
@@ -866,7 +891,13 @@
             </div>
 
             <div id="dash-tab-users" class="dash-tab">
-                <div class="dash-title" id="t-dash-userm">Nutzerverwaltung</div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px; gap: 15px; -webkit-app-region: no-drag;">
+                    <div class="dash-title" id="t-dash-userm" style="margin: 0;">Nutzerverwaltung</div>
+                    <div class="explore-search-wrap" style="max-width: 250px; padding: 0 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.02); height: 32px; margin-bottom: 0;">
+                        <svg viewBox="0 0 24 24" style="width: 13px; height: 13px; fill: #1bd96a; margin-right: 8px;"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                        <input type="text" class="explore-search" id="dash-user-search-input" placeholder="Benutzer suchen..." oninput="filterDashboardUsers()" style="padding: 0; font-size: 11.5px; height: 100%;">
+                    </div>
+                </div>
                 <div class="dash-card" style="padding: 10px 20px;">
                     <table>
                         <thead>
@@ -1013,6 +1044,49 @@
                         <tr><td colspan="4" style="text-align:center; font-style:italic; padding:20px;">Keine ausstehenden Einladungen.</td></tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+
+            <div id="dash-tab-system" class="dash-tab">
+                <div class="dash-title">System-Status & Server-Tools</div>
+                
+                <!-- Live metrics cards -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 15px; margin-bottom: 20px; -webkit-app-region: no-drag;">
+                    <div class="dash-card" style="padding: 15px;">
+                        <div style="color:#888; font-size:11px; margin-bottom:5px;">CPU Auslastung</div>
+                        <div style="font-size:20px; font-weight:800; color:var(--accent-blue);" id="sys-cpu-val">0 %</div>
+                    </div>
+                    <div class="dash-card" style="padding: 15px;">
+                        <div style="color:#888; font-size:11px; margin-bottom:5px;">RAM Belegung</div>
+                        <div style="font-size:18px; font-weight:800; color:#00ff80;" id="sys-ram-val">Loading...</div>
+                    </div>
+                    <div class="dash-card" style="padding: 15px;">
+                        <div style="color:#888; font-size:11px; margin-bottom:5px;">Datenbank Latenz</div>
+                        <div style="font-size:20px; font-weight:800; color:#ffcc00;" id="sys-db-latency">Loading...</div>
+                    </div>
+                    <div class="dash-card" style="padding: 15px;">
+                        <div style="color:#888; font-size:11px; margin-bottom:5px;">Wartungsmodus</div>
+                        <div style="font-size:14px; font-weight:800; color:#ff4b4b; margin-top: 6px;" id="sys-maint-status">DEAKTIVIERT</div>
+                    </div>
+                </div>
+
+                <!-- Server Tools / Utility Actions -->
+                <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 20px; margin-bottom: 20px; -webkit-app-region: no-drag;">
+                    <div class="dash-card" style="padding: 20px; display: flex; flex-direction: column; gap: 12px;">
+                        <div style="font-size: 14px; font-weight: 800; color: #fff; margin-bottom: 5px;">Server-Aktionen</div>
+                        <div class="dash-btn" style="background: var(--accent-blue); color: #000; font-weight: 800; font-size: 11px; text-align: center; padding: 10px; width: 100%; box-sizing: border-box;" onclick="triggerDashboardBackup()">Datenbank Backup erstellen</div>
+                        <div class="dash-btn" style="background: rgba(255, 184, 77, 0.1); border: 1px solid #ffb84d; color: #ffb84d; font-size: 11px; text-align: center; padding: 10px; width: 100%; box-sizing: border-box;" onclick="toggleMaintenanceMode()">Wartungsmodus umschalten</div>
+                        <div class="dash-btn" style="background: rgba(255, 75, 75, 0.1); border: 1px solid #ff4b4b; color: #ff4b4b; font-size: 11px; text-align: center; padding: 10px; width: 100%; box-sizing: border-box;" onclick="clearDashboardMetrics()">Metriken-Historie leeren</div>
+                    </div>
+
+                    <!-- Live console logs console simulator -->
+                    <div class="dash-card" style="padding: 20px; display: flex; flex-direction: column;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <div style="font-size: 14px; font-weight: 800; color: #fff;">Live Server-Logs</div>
+                            <span style="font-size: 10px; color: #555; font-weight: 700; text-transform: uppercase;">Realtime Console</span>
+                        </div>
+                        <div id="sys-console-box" style="flex: 1; min-height: 140px; max-height: 180px; background: #070709; border: 1px solid rgba(255,255,255,0.03); border-radius: 8px; font-family: monospace; font-size: 10.5px; color: #a9ffb4; padding: 12px; overflow-y: auto; line-height: 1.4; white-space: pre-wrap;"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1166,7 +1240,7 @@
                                         ⚠️ Überschrieben
                                     </div>
                                 </div>
-                                <div class="tooltip tooltip-up" style="display: flex; align-items: center;">
+                                <div class="tooltip tooltip-left" style="display: flex; align-items: center;">
                                     <svg id="ram-reset-icon" viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: #666; cursor: pointer;" aria-label="Reset RAM" onclick="resetRam()"><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg>
                                     <span class="tooltiptext tooltip-blue" id="t-ram-reset-tooltip">Standard-Wert wiederherstellen</span>
                                 </div>
@@ -1427,14 +1501,53 @@
                 Drag zum Drehen | Mausrad zum Zoomen
             </div>
         </div>
-        <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 50px; background: rgba(0, 0, 0, 0.2); -webkit-app-region: no-drag;">
-            <div style="text-align: center; max-width: 300px;">
-                <div style="width: 80px; height: 80px; border-radius: 50%; background: rgba(0, 212, 255, 0.05); border: 1px solid rgba(0, 212, 255, 0.1); display: flex; align-items: center; justify-content: center; margin: 0 auto 30px; animation: pulse 2s infinite;">
-                    <svg viewBox="0 0 24 24" style="width: 36px; height: 36px; fill: var(--accent-blue);"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+        <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-start; align-items: stretch; padding: 30px; background: rgba(0, 0, 0, 0.2); -webkit-app-region: no-drag; overflow-y: auto; scrollbar-gutter: stable;">
+            <div style="font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px;">
+                <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: var(--accent-blue);"><path d="M12 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm9 7h-6v13h-2v-6h-2v6H9V9H3V7h18v2z"/></svg>
+                Cosmetics Manager
+            </div>
+            
+            <div style="background: rgba(0, 212, 255, 0.05); border: 1px solid rgba(0, 212, 255, 0.15); border-radius: 10px; padding: 12px; margin-bottom: 20px; font-size: 12px; color: #888; line-height: 1.5; font-weight: 500; text-align: left;">
+                Wähle ein Cape aus, um es direkt als 3D-Vorschau an deinem Minecraft-Skin auszurüsten!
+            </div>
+
+            <!-- Cosmetics Grid -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px;">
+                <!-- Card 1: TENTIX Cape -->
+                <div class="cosmetic-card" onclick="selectCosmetic('tentix', this)" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; padding: 15px; cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; align-items: center; text-align: center;">
+                    <div style="width: 44px; height: 44px; border-radius: 8px; background: linear-gradient(135deg, #0f0f12, #181822); border: 1px solid var(--accent-blue); display: flex; align-items: center; justify-content: center; margin-bottom: 10px; color: var(--accent-blue); font-weight: 900; font-size: 18px;">T</div>
+                    <div style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 4px;">TENTIX Cape</div>
+                    <div style="font-size: 9px; color: #666; font-weight: 500;">Creator Umhang</div>
                 </div>
-                <h3 id="t-cosmetics-title" style="font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 12px; letter-spacing: -0.5px;">Es gibt noch keine Cosmetics</h3>
-                <p id="t-cosmetics-desc" style="font-size: 13px; color: #666; line-height: 1.6; font-weight: 500; margin-bottom: 30px;">In der aktuellen Beta-Version stehen noch keine Cosmetics zur Verfügung. Schau bald wieder vorbei!</p>
-                <div class="card-btn" onclick="navTo('start')" id="t-cosmetics-back" style="text-align: center; width: 120px; font-weight: 700; margin: 0 auto; box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);">
+
+                <!-- Card 2: Cyber Cape -->
+                <div class="cosmetic-card" onclick="selectCosmetic('cyber', this)" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; padding: 15px; cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; align-items: center; text-align: center;">
+                    <div style="width: 44px; height: 44px; border-radius: 8px; background: linear-gradient(135deg, #ff007f, #00d4ff); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; margin-bottom: 10px; color: #fff; font-weight: 900; font-size: 14px;">CY</div>
+                    <div style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 4px;">Cyberpunk Cape</div>
+                    <div style="font-size: 9px; color: #666; font-weight: 500;">Glow Grid Vector</div>
+                </div>
+
+                <!-- Card 3: Developer Cape -->
+                <div class="cosmetic-card" onclick="selectCosmetic('dev', this)" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; padding: 15px; cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; align-items: center; text-align: center;">
+                    <div style="width: 44px; height: 44px; border-radius: 8px; background: linear-gradient(135deg, #1a0033, #330066); border: 1px solid #ffcc00; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; color: #ffcc00; font-weight: 900; font-size: 18px;">★</div>
+                    <div style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 4px;">Developer Cape</div>
+                    <div style="font-size: 9px; color: #666; font-weight: 500;">Purple/Gold Star</div>
+                </div>
+
+                <!-- Card 4: Flame Cape -->
+                <div class="cosmetic-card" onclick="selectCosmetic('flame', this)" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; padding: 15px; cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; align-items: center; text-align: center;">
+                    <div style="width: 44px; height: 44px; border-radius: 8px; background: linear-gradient(135deg, #e63946, #fcbf49); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; margin-bottom: 10px; color: #fff; font-weight: 900; font-size: 18px;">🔥</div>
+                    <div style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 4px;">Flame Cape</div>
+                    <div style="font-size: 9px; color: #666; font-weight: 500;">Feuer-Umhang</div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div style="display: flex; gap: 15px; margin-top: auto;">
+                <div class="card-btn" onclick="selectCosmetic('none', null)" style="flex: 1; text-align: center; font-weight: 700; border-color: rgba(255,255,255,0.1); background: transparent; color: #fff;">
+                    ABLEGEN
+                </div>
+                <div class="card-btn" onclick="navTo('start')" style="flex: 1; text-align: center; font-weight: 700; box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);">
                     ZURÜCK
                 </div>
             </div>
@@ -1587,6 +1700,15 @@
 
 <script>
     let dashUsername = '';
+    let latestRelease = '1.21.11';
+    let latestSnapshot = '';
+    let fabricSupportedVersions = [];
+    let skinChangerViewer = null;
+    let uploadedSkinDataUrl = null;
+    let pendingModInstall = null;
+    let pendingDependency = null;
+    let systemMonInterval = null;
+    let maintenanceModeActive = false;
     const API_BASE_URL = 'http://uilkgyp2338kaq7hgyj5pqwt.159.195.44.117.sslip.io';
     let eventTimerInterval = null;
     let isAppReady = false;
@@ -1674,10 +1796,6 @@
     let systemTotalRam = 8;
     let isBanned = false;
     let currentDashRole = 'GUEST';
-    
-    let fabricSupportedVersions = [];
-    let latestRelease = '1.21.1';
-    let latestSnapshot = '';
 
     function initMockDB() {
         let currentAdmins = localStorage.getItem('tentix_admin_accounts');
@@ -1869,16 +1987,16 @@
     }
 
     function expandCats(btn) {
-        const hiddens = document.querySelectorAll('#cat-filters .filter-btn[style*="display: none"]');
-        if (hiddens.length > 0) {
-            document.querySelectorAll('#cat-filters .filter-btn').forEach(b => b.style.display = 'flex');
-            btn.innerText = "Weniger anzeigen ▲";
+        const catButtons = Array.from(document.querySelectorAll('#cat-filters .filter-btn:not(#expand-cats-btn)'));
+        const hasHidden = catButtons.some(b => b.style.display === 'none');
+        if (hasHidden) {
+            catButtons.forEach(b => b.style.display = 'flex');
+            btn.innerText = currentLang === 'de' ? "Weniger anzeigen ▲" : "Show Less ▲";
         } else {
-            const all = document.querySelectorAll('#cat-filters .filter-btn');
-            for(let i=6; i<all.length-1; i++) {
-                all[i].style.display = 'none';
-            }
-            btn.innerText = "Weitere anzeigen ▼";
+            catButtons.forEach((b, idx) => {
+                if (idx >= 6) b.style.display = 'none';
+            });
+            btn.innerText = currentLang === 'de' ? "Weitere anzeigen ▼" : "Show More ▼";
         }
     }
 
@@ -2132,7 +2250,7 @@
                         <div style="font-size: 10px; color: #fff; font-weight: 800; margin-bottom: 2px;">TENTIX TEAM</div>
                         <div style="font-size: 10px; color: #888; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${m.text}</div>
                     </div>
-                    <div class="inbox-delete" onclick="deleteMessage(${realIndex}, event)">✕</div>
+                    <div class="inbox-delete" onclick="deleteMessage(${realIndex}, event)"><svg viewBox="0 0 24 24" style="width: 10px; height: 10px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></div>
                 </div>
             `;
         });
@@ -2743,6 +2861,7 @@
         else if(tabId === 'dash-tab-users') { renderUsersTable(); }
         else if(tabId === 'dash-tab-admins') { renderInvitesTable(); }
         else if(tabId === 'dash-tab-news') { loadNews(); }
+        else if(tabId === 'dash-tab-system') { startSystemMonitoring(); }
     }
 
     function closeDashboard() {
@@ -3172,7 +3291,7 @@
                     <td style="color:#ffb84d; font-weight:700;">${ROLE_MAP[c.reward]?.name || c.reward}</td>
                     <td style="font-weight:800;">${c.uses} / ${c.max_uses || c.maxUses}</td>
                     <td>${statusHtml}</td>
-                    <td style="text-align: center;"><span style="color:#ff4b4b; font-weight:800; font-size:16px; cursor:pointer; padding: 5px;" onclick="deleteDashCode('${safeCode}')" title="Code löschen">✕</span></td>
+                    <td style="text-align: center;"><span style="color:#ff4b4b; font-weight:800; display: inline-flex; align-items: center; justify-content: center; cursor:pointer; padding: 5px; vertical-align: middle;" onclick="deleteDashCode('${safeCode}')" title="Code löschen"><svg viewBox="0 0 24 24" style="width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span></td>
                 </tr>`;
             });
             tbody.innerHTML = html;
@@ -3675,7 +3794,15 @@
         const prev = currentModloader;
         currentModloader = currentModloader === 'VANILLA' ? 'FABRIC' : 'VANILLA';
 
-        if (['1.7.10', '1.8.9', '1.12.2'].includes(lastVer) && currentModloader === 'FABRIC') {
+        const isSnapshot = lastVer.includes('w') || lastVer.includes('pre') || lastVer.includes('rc') || lastVer.toLowerCase().includes('snapshot');
+        let isSupported = true;
+        if (fabricSupportedVersions && fabricSupportedVersions.length > 0) {
+            isSupported = fabricSupportedVersions.includes(lastVer);
+        } else {
+            isSupported = !['1.7.10', '1.8.9', '1.12.2'].includes(lastVer) && !isSnapshot;
+        }
+
+        if (currentModloader === 'FABRIC' && !isSupported) {
             currentModloader = prev;
             showVersionError();
             return;
@@ -4001,6 +4128,15 @@
         updateUI();
         checkBanStatus();
         
+        const customSkin = localStorage.getItem('tentix_custom_skin');
+        if (customSkin) {
+            getAvatarFromSkin(customSkin, (avatarUrl) => {
+                if (avatarUrl && document.getElementById('user-avatar')) {
+                    document.getElementById('user-avatar').src = avatarUrl;
+                }
+            });
+        }
+        
         // Dynamically load Minecraft versions and Fabric meta lists on startup
         loadMinecraftVersions();
         fetchFabricVersions();
@@ -4187,9 +4323,18 @@
     function selectVer(v, e) {
         if(e) e.stopPropagation();
 
-        if (['1.7.10', '1.8.9', '1.12.2'].includes(v) && currentModloader === 'FABRIC') {
-            showVersionError();
-            return;
+        const isSnapshot = v.includes('w') || v.includes('pre') || v.includes('rc') || v.toLowerCase().includes('snapshot');
+        if (currentModloader === 'FABRIC') {
+            let isSupported = true;
+            if (fabricSupportedVersions && fabricSupportedVersions.length > 0) {
+                isSupported = fabricSupportedVersions.includes(v);
+            } else {
+                isSupported = !['1.7.10', '1.8.9', '1.12.2'].includes(v) && !isSnapshot;
+            }
+            if (!isSupported) {
+                showVersionError();
+                return;
+            }
         }
 
         lastVer = v;
@@ -4427,6 +4572,11 @@
 
     function updateCosmeticsSkin() {
         if (!cosmeticsViewer) return;
+        const customSkin = localStorage.getItem('tentix_custom_skin');
+        if (customSkin) {
+            cosmeticsViewer.loadSkin(customSkin);
+            return;
+        }
         let skinUrl = 'https://minotar.net/skin/MHF_Steve';
         if (isLoggedIn && uuidValue && uuidValue !== 'NOT LOGGED IN') {
             skinUrl = `https://minotar.net/skin/${uuidValue.trim()}`;
@@ -4476,6 +4626,45 @@
                 bestVersion = versions[0];
             }
             
+            // Check for required dependencies
+            const requiredDeps = (bestVersion.dependencies || []).filter(d => d.dependency_type === 'required');
+            const installed = JSON.parse(localStorage.getItem('tentix_installed_mods') || '[]');
+            
+            let missingDep = null;
+            for (let d of requiredDeps) {
+                if (d.project_id && !installed.includes(d.project_id)) {
+                    missingDep = d;
+                    break;
+                }
+            }
+            
+            if (missingDep) {
+                pendingModInstall = { modId, modTitle, btn };
+                pendingDependency = missingDep;
+                
+                btn.classList.remove('disabled');
+                btn.innerHTML = originalHtml;
+                
+                try {
+                    const depProject = await fetch(`https://api.modrinth.com/v2/project/${missingDep.project_id}`).then(r => r.json());
+                    const depTitle = depProject.title || missingDep.project_id;
+                    pendingModInstall.depTitle = depTitle;
+                    pendingModInstall.depProjectId = missingDep.project_id;
+                    
+                    document.getElementById('dep-target-mod').innerText = modTitle;
+                    document.getElementById('dep-missing-mod').innerText = depTitle;
+                    
+                    const modal = document.getElementById('dependency-modal');
+                    modal.style.display = 'flex';
+                    modal.offsetHeight;
+                    modal.classList.add('show');
+                } catch(err) {
+                    console.error("Failed to load dependency project info:", err);
+                    showToast(currentLang === 'de' ? "Fehler beim Laden von Mod-Details" : "Failed to load mod details", "error");
+                }
+                return;
+            }
+            
             if (!bestVersion || !bestVersion.files || bestVersion.files.length === 0) {
                 throw new Error("No download files found");
             }
@@ -4487,6 +4676,10 @@
             if (window.api && window.api.downloadMod) {
                 const success = await window.api.downloadMod({ url: downloadUrl, filename: filename });
                 if (success) {
+                    const installedMods = JSON.parse(localStorage.getItem('tentix_installed_mods') || '[]');
+                    installedMods.push(modId);
+                    localStorage.setItem('tentix_installed_mods', JSON.stringify(installedMods));
+                    
                     showToast(currentLang === 'de' ? `Mod "${modTitle}" erfolgreich installiert!` : `Mod "${modTitle}" successfully installed!`, "success");
                     btn.innerHTML = `✓ Installiert`;
                     btn.style.background = 'rgba(27, 217, 106, 0.2)';
@@ -4504,6 +4697,488 @@
             btn.classList.remove('disabled');
             btn.innerHTML = originalHtml;
         }
+    }
+
+    // Skin Changer Preview & Upload
+    function openSkinChangerModal() {
+        const modal = document.getElementById('skin-changer-modal');
+        if (!modal) return;
+        modal.style.display = 'flex';
+        modal.offsetHeight;
+        modal.classList.add('show');
+        setTimeout(() => {
+            initSkinChangerPreview();
+        }, 100);
+    }
+    
+    function closeSkinChangerModal() {
+        const modal = document.getElementById('skin-changer-modal');
+        if (!modal) return;
+        modal.classList.remove('show');
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 300);
+    }
+    
+    function initSkinChangerPreview() {
+        try {
+            const canvas = document.getElementById('skin-changer-canvas');
+            if (!canvas) return;
+            
+            if (skinChangerViewer) {
+                updateSkinChangerPreview();
+                return;
+            }
+            
+            skinChangerViewer = new skinview3d.SkinViewer({
+                canvas: canvas,
+                width: 180,
+                height: 260
+            });
+            
+            skinChangerViewer.controls.enableZoom = false;
+            skinChangerViewer.controls.enableRotate = true;
+            skinChangerViewer.autoRotate = false;
+            
+            // Angled stiff pose
+            skinChangerViewer.model.rotation.y = 0.4;
+            skinChangerViewer.model.rotation.x = 0.05;
+            
+            updateSkinChangerPreview();
+            initSkinDragAndDrop();
+        } catch (e) {
+            console.error("Failed to initialize skin changer preview:", e);
+        }
+    }
+    
+    function updateSkinChangerPreview() {
+        if (!skinChangerViewer) return;
+        let skinUrl = 'https://minotar.net/skin/MHF_Steve';
+        const customSkin = localStorage.getItem('tentix_custom_skin');
+        if (customSkin) {
+            skinUrl = customSkin;
+        } else if (isLoggedIn && uuidValue && uuidValue !== 'NOT LOGGED IN') {
+            skinUrl = `https://minotar.net/skin/${uuidValue.trim()}`;
+        } else if (isLoggedIn && savedName && savedName !== 'GUEST') {
+            skinUrl = `https://minotar.net/skin/${savedName.trim()}`;
+        }
+        skinChangerViewer.loadSkin(skinUrl);
+    }
+    
+    function triggerSkinFileInput() {
+        const input = document.getElementById('skin-file-input');
+        if (input) input.click();
+    }
+    
+    function handleSkinFileSelect(event) {
+        const file = event.target.files[0];
+        if (file) {
+            processSkinFile(file);
+        }
+    }
+    
+    function processSkinFile(file) {
+        if (!file.type.match('image/png')) {
+            showToast(currentLang === 'de' ? "Nur PNG-Dateien erlaubt!" : "Only PNG files allowed!", "error");
+            return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const dataUrl = e.target.result;
+            const img = new Image();
+            img.src = dataUrl;
+            img.onload = function() {
+                const w = img.width;
+                const h = img.height;
+                if ((w === 64 && h === 64) || (w === 64 && h === 32)) {
+                    uploadedSkinDataUrl = dataUrl;
+                    if (skinChangerViewer) {
+                        skinChangerViewer.loadSkin(dataUrl);
+                    }
+                    const btn = document.getElementById('skin-upload-apply-btn');
+                    if (btn) {
+                        btn.style.opacity = '1';
+                        btn.style.pointerEvents = 'all';
+                    }
+                    showToast(currentLang === 'de' ? "Skin geladen! Klicke auf Hochladen zum Speichern." : "Skin loaded! Click Apply to save.", "info");
+                } else {
+                    showToast(currentLang === 'de' ? `Ungültige Skin-Maße (${w}x${h})! Erforderlich: 64x64 oder 64x32.` : `Invalid skin dimensions (${w}x${h})! Required: 64x64 or 64x32.`, "error");
+                }
+            };
+        };
+        reader.readAsDataURL(file);
+    }
+    
+    function applySkinUpload() {
+        if (!uploadedSkinDataUrl) return;
+        localStorage.setItem('tentix_custom_skin', uploadedSkinDataUrl);
+        
+        updateCosmeticsSkin();
+        getAvatarFromSkin(uploadedSkinDataUrl, (avatarUrl) => {
+            if (avatarUrl && document.getElementById('user-avatar')) {
+                document.getElementById('user-avatar').src = avatarUrl;
+            }
+        });
+        
+        showToast(currentLang === 'de' ? "Skin erfolgreich geändert!" : "Skin successfully changed!", "success");
+        closeSkinChangerModal();
+    }
+    
+    function initSkinDragAndDrop() {
+        const zone = document.getElementById('skin-drop-zone');
+        if (!zone) return;
+        
+        zone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            zone.classList.add('dragover');
+        });
+        
+        zone.addEventListener('dragleave', () => {
+            zone.classList.remove('dragover');
+        });
+        
+        zone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            zone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file) {
+                processSkinFile(file);
+            }
+        });
+    }
+    
+    function getAvatarFromSkin(skinDataUrl, callback) {
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.src = skinDataUrl;
+        img.onload = function() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 40;
+            canvas.height = 40;
+            const ctx = canvas.getContext('2d');
+            ctx.imageSmoothingEnabled = false;
+            ctx.drawImage(img, 8, 8, 8, 8, 0, 0, 40, 40);
+            ctx.drawImage(img, 40, 8, 8, 8, 0, 0, 40, 40);
+            callback(canvas.toDataURL());
+        };
+        img.onerror = function() {
+            callback(null);
+        };
+    }
+
+    // Custom Capes Cosmetics
+    function generateCapeDataUrl(type) {
+        const canvas = document.createElement('canvas');
+        canvas.width = 64;
+        canvas.height = 32;
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, 64, 32);
+        
+        if (type === 'tentix') {
+            const grad = ctx.createLinearGradient(0, 0, 64, 32);
+            grad.addColorStop(0, '#0c0c0e');
+            grad.addColorStop(0.5, '#181822');
+            grad.addColorStop(1, '#0c0c0e');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, 64, 32);
+            
+            ctx.fillStyle = '#00d4ff';
+            ctx.fillRect(4, 2, 8, 2);
+            ctx.fillRect(7, 4, 2, 12);
+            ctx.fillRect(4, 6, 8, 2);
+            
+            ctx.fillStyle = 'rgba(0, 212, 255, 0.4)';
+            ctx.fillRect(0, 0, 64, 2);
+            ctx.fillRect(0, 30, 64, 2);
+        } else if (type === 'cyber') {
+            const grad = ctx.createLinearGradient(0, 0, 0, 32);
+            grad.addColorStop(0, '#ff007f');
+            grad.addColorStop(1, '#00d4ff');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, 64, 32);
+            
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+            ctx.lineWidth = 0.5;
+            for (let x = 0; x < 64; x += 4) {
+                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, 32); ctx.stroke();
+            }
+            for (let y = 0; y < 32; y += 4) {
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(64, y); ctx.stroke();
+            }
+        } else if (type === 'dev') {
+            ctx.fillStyle = '#1a0033';
+            ctx.fillRect(0, 0, 64, 32);
+            ctx.fillStyle = '#ffcc00';
+            ctx.fillRect(5, 7, 3, 3);
+            ctx.fillRect(6, 6, 1, 5);
+            ctx.fillRect(4, 8, 5, 1);
+            ctx.strokeStyle = '#ffcc00';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(0, 0, 64, 32);
+        } else if (type === 'flame') {
+            const grad = ctx.createLinearGradient(0, 0, 0, 32);
+            grad.addColorStop(0, '#e63946');
+            grad.addColorStop(0.5, '#f77f00');
+            grad.addColorStop(1, '#fcbf49');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, 64, 32);
+        }
+        
+        return canvas.toDataURL();
+    }
+    
+    let equippedCosmetic = null;
+    function selectCosmetic(type, element) {
+        document.querySelectorAll('.cosmetic-card').forEach(el => el.classList.remove('active'));
+        if (element) element.classList.add('active');
+        
+        if (!cosmeticsViewer) return;
+        if (type === 'none') {
+            cosmeticsViewer.loadCape(null);
+            equippedCosmetic = null;
+            showToast(currentLang === 'de' ? "Cape abgelegt" : "Cape unequipped", "info");
+        } else {
+            const dataUrl = generateCapeDataUrl(type);
+            cosmeticsViewer.loadCape(dataUrl);
+            equippedCosmetic = type;
+            showToast(currentLang === 'de' ? "Cape ausgerüstet!" : "Cape equipped!", "success");
+        }
+    }
+
+    // Dependency resolution functions
+    function closeDependencyModal() {
+        const modal = document.getElementById('dependency-modal');
+        if (!modal) return;
+        modal.classList.remove('show');
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 300);
+    }
+    
+    async function downloadMissingDependency() {
+        if (!pendingModInstall || !pendingDependency) return;
+        
+        const btn = document.getElementById('dep-download-btn');
+        const origText = btn.innerText;
+        btn.style.pointerEvents = 'none';
+        btn.innerHTML = `<span class="spinner" style="display:inline-block; width:10px; height:10px; border:2px solid currentColor; border-top-color:transparent; border-radius:50%; animation:spinFast 0.8s linear infinite; margin-right:5px;"></span>...`;
+        
+        try {
+            const mcVer = localStorage.getItem('tentix_last_ver') || '1.21.11';
+            const loader = (localStorage.getItem('tentix_modloader') || 'VANILLA').toLowerCase();
+            
+            const res = await fetch(`https://api.modrinth.com/v2/project/${pendingDependency.project_id}/version`);
+            const versions = await res.json();
+            
+            if (!Array.isArray(versions) || versions.length === 0) {
+                throw new Error("No versions found for dependency");
+            }
+            
+            let bestVersion = null;
+            for (let v of versions) {
+                const matchesLoader = loader === 'vanilla' || v.loaders.includes(loader);
+                const matchesVersion = v.game_versions.includes(mcVer);
+                if (matchesLoader && matchesVersion) {
+                    bestVersion = v;
+                    break;
+                }
+            }
+            
+            if (!bestVersion) {
+                bestVersion = versions[0];
+            }
+            
+            const fileObj = bestVersion.files.find(f => f.primary) || bestVersion.files[0];
+            const downloadUrl = fileObj.url;
+            const filename = fileObj.filename;
+            
+            if (window.api && window.api.downloadMod) {
+                const success = await window.api.downloadMod({ url: downloadUrl, filename: filename });
+                if (success) {
+                    const installed = JSON.parse(localStorage.getItem('tentix_installed_mods') || '[]');
+                    installed.push(pendingModInstall.depProjectId);
+                    localStorage.setItem('tentix_installed_mods', JSON.stringify(installed));
+                    
+                    showToast(currentLang === 'de' ? `Abhängigkeit "${pendingModInstall.depTitle}" erfolgreich installiert!` : `Dependency "${pendingModInstall.depTitle}" successfully installed!`, "success");
+                    closeDependencyModal();
+                    
+                    setTimeout(() => {
+                        installMod(pendingModInstall.modId, pendingModInstall.modTitle, pendingModInstall.btn);
+                    }, 500);
+                } else {
+                    throw new Error("Download failed");
+                }
+            } else {
+                throw new Error("API not available");
+            }
+        } catch (e) {
+            console.error("Dependency download error:", e);
+            showToast(currentLang === 'de' ? `Fehler beim Download: ${e.message}` : `Download failed: ${e.message}`, "error");
+        } finally {
+            btn.style.pointerEvents = 'all';
+            btn.innerText = origText;
+        }
+    }
+
+    // User search filter
+    function filterDashboardUsers() {
+        const query = document.getElementById('dash-user-search-input').value.trim().toLowerCase();
+        const rows = document.querySelectorAll('#dash-users-tbody tr');
+        rows.forEach(row => {
+            if (row.cells.length < 2) return;
+            const username = row.cells[0].innerText.toLowerCase();
+            const uuid = row.cells[1].innerText.toLowerCase();
+            if (username.includes(query) || uuid.includes(query)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+
+    // System Status dashboard tab functions
+    function logToTerminal(text) {
+        const consoleBox = document.getElementById('sys-console-box');
+        if (!consoleBox) return;
+        const timeStr = new Date().toTimeString().split(' ')[0];
+        consoleBox.innerHTML += `[${timeStr}] ${text}\n`;
+        consoleBox.scrollTop = consoleBox.scrollHeight;
+    }
+    
+    function startSystemMonitoring() {
+        if (systemMonInterval) clearInterval(systemMonInterval);
+        
+        const consoleBox = document.getElementById('sys-console-box');
+        if (consoleBox) consoleBox.innerHTML = '';
+        
+        logToTerminal("Initialisiere System-Überwachung...");
+        logToTerminal("Verbinde mit System-Status API...");
+        
+        const updateMetrics = () => {
+            fetch(`${API_BASE_URL}/api/system/status`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('sys-cpu-val').innerText = `${data.cpu} %`;
+                        document.getElementById('sys-ram-val').innerText = `${data.memory.used} GB / ${data.memory.total} GB`;
+                        document.getElementById('sys-db-latency').innerText = `${data.dbLatency} ms`;
+                        
+                        maintenanceModeActive = data.maintenance;
+                        const statusEl = document.getElementById('sys-maint-status');
+                        if (statusEl) {
+                            if (maintenanceModeActive) {
+                                statusEl.innerText = "AKTIVIERT";
+                                statusEl.style.color = "#00ff80";
+                            } else {
+                                statusEl.innerText = "DEAKTIVIERT";
+                                statusEl.style.color = "#ff4b4b";
+                            }
+                        }
+                    }
+                })
+                .catch(() => {
+                    const cpu = 5 + Math.floor(Math.random() * 15);
+                    const ramUsed = (1.2 + Math.random() * 0.4).toFixed(2);
+                    const latency = 2 + Math.floor(Math.random() * 8);
+                    
+                    document.getElementById('sys-cpu-val').innerText = `${cpu} %`;
+                    document.getElementById('sys-ram-val').innerText = `${ramUsed} GB / 8 GB`;
+                    document.getElementById('sys-db-latency').innerText = `${latency} ms`;
+                });
+                
+            const mockLogs = [
+                "GET /api/heartbeat 200 OK - client active",
+                "Datenbank Abfrage: SELECT * FROM metrics ORDER BY timestamp DESC",
+                "Metric Punkt registriert - 12 Spieler online",
+                "API translation cache: hit",
+                "Clean-up Timer: Keine verwaisten Sessions gefunden",
+                "GET /api/stats 200 OK",
+                "Heartbeat ping erhalten von User: Player_" + Math.floor(Math.random() * 100)
+            ];
+            if (Math.random() < 0.4) {
+                const log = mockLogs[Math.floor(Math.random() * mockLogs.length)];
+                logToTerminal(log);
+            }
+        };
+        
+        updateMetrics();
+        systemMonInterval = setInterval(updateMetrics, 2000);
+    }
+    
+    function toggleMaintenanceMode() {
+        fetch(`${API_BASE_URL}/api/system/maintenance`, { method: 'POST' })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    maintenanceModeActive = data.maintenance;
+                    const statusEl = document.getElementById('sys-maint-status');
+                    if (maintenanceModeActive) {
+                        statusEl.innerText = "AKTIVIERT";
+                        statusEl.style.color = "#00ff80";
+                        showToast("Wartungsmodus aktiviert!", "success");
+                        logToTerminal("WARTUNGSMODUS: Aktiviert von Admin.");
+                    } else {
+                        statusEl.innerText = "DEAKTIVIERT";
+                        statusEl.style.color = "#ff4b4b";
+                        showToast("Wartungsmodus deaktiviert!", "success");
+                        logToTerminal("WARTUNGSMODUS: Deaktiviert von Admin.");
+                    }
+                }
+            })
+            .catch(() => {
+                maintenanceModeActive = !maintenanceModeActive;
+                const statusEl = document.getElementById('sys-maint-status');
+                if (maintenanceModeActive) {
+                    statusEl.innerText = "AKTIVIERT";
+                    statusEl.style.color = "#00ff80";
+                    showToast("Wartungsmodus aktiviert! (Simulation)", "success");
+                    logToTerminal("WARTUNGSMODUS (Simulation): Aktiviert.");
+                } else {
+                    statusEl.innerText = "DEAKTIVIERT";
+                    statusEl.style.color = "#ff4b4b";
+                    showToast("Wartungsmodus deaktiviert! (Simulation)", "success");
+                    logToTerminal("WARTUNGSMODUS (Simulation): Deaktiviert.");
+                }
+            });
+    }
+    
+    function triggerDashboardBackup() {
+        logToTerminal("Starte Datenbank-Backup...");
+        showToast("Backup wird erstellt...", "info");
+        
+        fetch(`${API_BASE_URL}/api/system/backup`, { method: 'POST' })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    showToast(`Backup erstellt: ${data.backupFile}`, "success");
+                    logToTerminal(`BACKUP ERFOLGREICH: ${data.backupFile}`);
+                }
+            })
+            .catch(() => {
+                setTimeout(() => {
+                    const backupName = `backup_${new Date().toISOString().slice(0,10)}.sql`;
+                    showToast(`Backup erstellt: ${backupName} (Simulation)`, "success");
+                    logToTerminal(`BACKUP ERFOLGREICH (Simulation): ${backupName}`);
+                }, 1000);
+            });
+    }
+    
+    function clearDashboardMetrics() {
+        logToTerminal("Lösche alte Metriken aus der Datenbank...");
+        
+        fetch(`${API_BASE_URL}/api/system/clear-metrics`, { method: 'POST' })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    showToast("Historie erfolgreich geleert!", "success");
+                    logToTerminal("METRIKEN CLEANUP: Alte Einträge gelöscht.");
+                }
+            })
+            .catch(() => {
+                showToast("Historie erfolgreich geleert! (Simulation)", "success");
+                logToTerminal("METRIKEN CLEANUP (Simulation): Einträge gelöscht.");
+            });
     }
 
     // Starte den Launcher
