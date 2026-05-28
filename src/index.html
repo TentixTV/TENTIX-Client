@@ -925,15 +925,7 @@
                         <input type="text" class="dash-input" placeholder="Hours or 'P'" style="margin:0; flex:1;" id="dash-new-exp">
                         <input type="number" class="dash-input" placeholder="Uses" style="margin:0; flex:1;" min="1" id="dash-new-uses">
                         <select class="dash-input" style="margin:0; flex:2;" id="dash-new-reward">
-                            <option value="CREATOR">Reward: Content Creator</option>
-                            <option value="TWITCH">Reward: Twitch</option>
-                            <option value="YT">Reward: YouTuber</option>
-                            <option value="ALPHA">Reward: Alpha Tester</option>
-                            <option value="BETA">Reward: Beta Tester</option>
-                            <option value="DONATOR">Reward: Unterstützer</option>
-                            <option value="VIPP">Reward: VIP+</option>
-                            <option value="VIP">Reward: VIP</option>
-                            <option value="PLAYER">Reward: Spieler</option>
+                            <option value="CREATOR">Reward: Content Creator</option><option value="TWITCH">Reward: Twitch</option><option value="YT">Reward: YouTuber</option><option value="ALPHA">Reward: Alpha Tester</option><option value="BETA">Reward: Beta Tester</option><option value="DONATOR">Reward: Unterstützer</option><option value="VIPP">Reward: VIP+</option><option value="VIP">Reward: VIP</option><option value="PLAYER">Reward: Spieler</option>
                         </select>
                         <div class="dash-btn" style="flex:1; text-align:center; padding:12px 0;" id="t-dash-gen" onclick="generateDashCode()">Erstellen</div>
                     </div>
@@ -1026,8 +1018,7 @@
                     <div style="display:flex; gap:15px; margin-bottom:20px;">
                         <input type="text" class="dash-input" placeholder="Spieler UUID" style="margin:0; flex:2;" id="dash-inv-uuid">
                         <select class="dash-input" style="margin:0; flex:1;" id="dash-inv-role">
-                            <option value="ADMIN">Admin</option>
-                            <option value="DEV">Developer</option>
+                            <option value="ADMIN">Admin</option><option value="DEV">Developer</option>
                         </select>
                         <div class="dash-btn" style="flex:1; text-align:center; padding:12px 0;" onclick="inviteToTeam()">Einladen</div>
                     </div>
@@ -1176,7 +1167,6 @@
             <div class="card-btn" id="ui-tentixplus-btn" onclick="openTentixPlusModal(event)" style="display: none; font-weight: 800; background: linear-gradient(135deg, var(--accent-blue) 0%, #0072ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);">
                 TENTIX+
             </div>
-
             <div class="card-btn" id="ui-open-settings-btn" onclick="openSettings()">Einstellungen</div>
             <div class="card-btn red-hover" id="ui-logout-btn" onclick="logout()" style="color: #ff4b4b; display: none;">Abmelden</div>
         </div>
