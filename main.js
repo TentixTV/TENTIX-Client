@@ -19,9 +19,9 @@ let retryTimeout = null;
 
 function createWindow() {
     mainWindow = new BrowserWindow({
-        width: 1200,
+        width: 1350,
         height: 750,
-        minWidth: 1000,
+        minWidth: 1100,
         minHeight: 600,
         frame: false,
         transparent: true,
