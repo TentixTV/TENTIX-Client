@@ -13,6 +13,11 @@
     "directories": {
       "output": "dist"
     },
+    "publish": {
+      "provider": "github",
+      "owner": "TentixTV",
+      "repo": "tentix-launcher"
+    },
     "mac": {
       "icon": "build/icon.png",
       "target": [
