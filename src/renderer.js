@@ -2573,8 +2573,8 @@
         const usesVal = parseInt(document.getElementById('dash-new-uses') ? document.getElementById('dash-new-uses').value : 1) || 1;
         const rewardVal = document.getElementById('dash-new-reward') ? document.getElementById('dash-new-reward').value : 'PLAYER';
 
-        if(cVal.length !== 12) {
-            showToast(cVal.length < 12 ? "CODE ZU KURZ (12 ZEICHEN)!" : "CODE ZU LANG!", 'warning');
+        if(cVal.length < 4 || cVal.length > 20) {
+            showToast(currentLang === 'de' ? "Der Code muss zwischen 4 und 20 Zeichen lang sein." : "Code must be between 4 and 20 characters.", 'warning');
             return;
         }
 
@@ -2905,8 +2905,8 @@
         if(!rawVal) return;
         const val = rawVal.replace(/[- ]/g, '').toUpperCase();
 
-        if(val.length !== 12) {
-            showToast(translations[currentLang].redShort, "error");
+        if(val.length < 4 || val.length > 20) {
+            showToast(currentLang === 'de' ? "Ungültige Codelänge (4-20 Zeichen)." : "Invalid code length (4-20 characters).", "error");
             closeRedeemModal();
             return;
         }
@@ -3766,18 +3766,55 @@
         }
     }
 
-    function submitBetaCode() {
+    async function submitBetaCode() {
         const inputField = document.getElementById('beta-input-field');
         if (!inputField) return;
         const key = inputField.value.trim().toUpperCase();
         
-        if (key === 'BETA' || key.startsWith('BETA-')) {
-            localStorage.setItem('tentix_beta_verified', 'true');
-            showToast(currentLang === 'de' ? "ZUGANG GEWÄHRT!" : "ACCESS GRANTED!", "success");
-            hideBetaOverlay();
-            proceedToMainMenu();
-        } else {
-            showToast(currentLang === 'de' ? "UNGÜLTIGER BETA KEY!" : "INVALID BETA KEY!", "error");
+        if (!key) return;
+
+        // Visual button loading feedback
+        const btn = document.getElementById('beta-submit-btn');
+        const originalText = btn ? btn.innerText : 'OK';
+        if (btn) {
+            btn.innerText = currentLang === 'de' ? "VERIFIZIERE..." : "VERIFYING...";
+            btn.disabled = true;
+        }
+
+        try {
+            const usernameToUse = isLoggedIn && savedName ? savedName : 'BETA-GUEST';
+            const uuidToUse = isLoggedIn && uuidValue ? uuidValue : 'BETA-GUEST-UUID';
+            
+            const response = await fetch(`${API_BASE_URL}/api/codes/redeem`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code: key, username: usernameToUse, uuid: uuidToUse })
+            });
+            const data = await response.json();
+            
+            if (data.success) {
+                localStorage.setItem('tentix_beta_verified', 'true');
+                showToast(currentLang === 'de' ? "ZUGANG GEWÄHRT!" : "ACCESS GRANTED!", "success");
+                hideBetaOverlay();
+                proceedToMainMenu();
+            } else {
+                showToast(currentLang === 'de' ? "UNGÜLTIGER ODER VERBRAUCHTER BETA KEY!" : "INVALID OR EXPIRED BETA KEY!", "error");
+            }
+        } catch (error) {
+            // Fallback for offline mode or server downtime (e.g. if they enter the default emergency code offline)
+            if (key === 'TENTIX-BETA-BYPASS') {
+                localStorage.setItem('tentix_beta_verified', 'true');
+                showToast("Bypass gewährt (Offline Mode)", "success");
+                hideBetaOverlay();
+                proceedToMainMenu();
+            } else {
+                showToast(currentLang === 'de' ? "SERVER NICHT ERREICHBAR!" : "SERVER UNREACHABLE!", "error");
+            }
+        } finally {
+            if (btn) {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
         }
     }
 
