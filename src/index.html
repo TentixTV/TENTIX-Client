@@ -157,6 +157,20 @@
         .dash-input:focus { border-color: var(--accent-blue); }
         .dash-btn { background: var(--accent-blue); color: #000; padding: 12px; border-radius: 6px; font-weight: 800; cursor: pointer; transition: 0.2s; font-size: 12px; border: none;}
         .dash-btn:hover { box-shadow: 0 0 15px rgba(var(--accent-blue-rgb),0.4); }
+        .skin-model-select-btn {
+            background: rgba(255,255,255,0.05) !important;
+            border: 1px solid rgba(255,255,255,0.08) !important;
+            color: #aaa !important;
+            padding: 8px 10px !important;
+            font-size: 11px !important;
+            transition: all 0.2s ease !important;
+        }
+        .skin-model-select-btn.active {
+            background: var(--accent-blue) !important;
+            border: 1px solid var(--accent-blue) !important;
+            color: #000 !important;
+            box-shadow: 0 0 10px rgba(var(--accent-blue-rgb), 0.25) !important;
+        }
 
         .msg-read-content { background: #1c1c1e; border-radius: 12px; padding: 30px; text-align: left; box-shadow: 0 20px 60px rgba(0,0,0,0.6); width: 550px; position: relative; transform: scale(0.95); transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1); }
         .show .msg-read-content { transform: scale(1); }
@@ -168,7 +182,7 @@
         .tj-title { font-size: 24px; font-weight: 800; color: var(--accent-blue); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px;}
         .tj-input { width: 100%; background: rgba(0,0,0,0.5); border: 1px solid #333; color: #fff; padding: 14px; border-radius: 8px; margin-bottom: 15px; outline: none; font-family: 'Inter', sans-serif; }
         .tj-input:focus { border-color: var(--accent-blue); }
-        .tj-info { background: rgba(255,75,75,0.1); border: 1px solid rgba(255,75,75,0.3); padding: 15px; border-radius: 8px; font-size: 11px; color: #ff8888; text-align: left; margin-bottom: 20px; line-height: 1.5; }
+        .tj-info { background: rgba(255,75,75,0.1); border: 1px solid rgba(255,75,75,0.3); padding: 15px; border-radius: 8px; font-size: 11px; color: #ff8888; text-align: left; margin-bottom: 20px; line-height: 1.5; max-height: 100px; overflow-y: auto; }
         .tj-check-row { display: flex; align-items: center; gap: 10px; margin-bottom: 25px; text-align: left; cursor: pointer; }
         .tj-check-box { width: 20px; height: 20px; border: 2px solid #555; border-radius: 4px; display: flex; justify-content: center; align-items: center; transition: 0.2s; flex-shrink: 0;}
         .tj-check-row.active .tj-check-box { background: var(--accent-blue); border-color: var(--accent-blue); }
@@ -1488,6 +1502,15 @@
                     </div>
                 </div>
 
+                <!-- Model Selection (Slim / Normal) -->
+                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 12px 15px; display: flex; flex-direction: column; gap: 8px;">
+                    <div style="font-size: 11px; font-weight: 800; color: #888; text-transform: uppercase; letter-spacing: 1px;">Skin Modell / Model Type</div>
+                    <div style="display: flex; gap: 8px;">
+                        <button id="skin-model-btn-classic" class="dash-btn skin-model-select-btn active" style="margin: 0; flex: 1; text-align: center;" onclick="setSkinChangerModel('classic')">Normal (Steve)</button>
+                        <button id="skin-model-btn-slim" class="dash-btn skin-model-select-btn" style="margin: 0; flex: 1; text-align: center;" onclick="setSkinChangerModel('slim')">Slim (Alex)</button>
+                    </div>
+                </div>
+
                 <div class="dash-btn" id="skin-upload-apply-btn" style="width: 100%; box-sizing: border-box; text-align: center; background: var(--accent-blue); color: #000; font-weight: 800; opacity: 0.5; pointer-events: none; margin: 0; padding: 12px;" onclick="applySkinUpload()">Skin Speichern & Anwenden</div>
             </div>
 
@@ -1552,7 +1575,12 @@
         <input type="password" id="tj-pass1" class="tj-input" placeholder="Passwort für Dev Access">
         <input type="password" id="tj-pass2" class="tj-input" placeholder="Passwort bestätigen">
         <div class="tj-info">
-            <strong>ACHTUNG:</strong> Das ist dein Admin Login, drück auf den Badge im Profil um dahin zu gelangen. Solltest du dich der AGBs widersetzen wird das Rechtliche konsequenzen haben, weil du mit dem Eintritt diese Bestätigst!
+            <strong>NUTZUNGSBEDINGUNGEN & REGELN FÜR TEAMMITGLIEDER:</strong><br>
+            1. Vertraulichkeit: Alle internen Informationen, Daten und Entwicklungen unterliegen der Geheimhaltung.<br>
+            2. Verantwortung: Missbrauch der administrativen Rechte führt zum sofortigen Ausschluss und rechtlichen Schritten.<br>
+            3. Sicherheit: Du bist verpflichtet, ein starkes Passwort zu wählen und dieses niemals an Dritte weiterzugeben.<br>
+            4. Zusammenarbeit: Respektvoller Umgang im Team ist Voraussetzung für die Mitgliedschaft.<br>
+            Solltest du dich diesen Bedingungen widersetzen, behalten wir uns rechtliche Schritte vor. Mit deinem Beitritt erklärst du dich vollumfänglich einverstanden!
         </div>
         <div class="tj-check-row" id="tj-agb-check" onclick="toggleTjCheck()">
             <div class="tj-check-box"></div>
@@ -1795,6 +1823,24 @@
                         </thead>
                         <tbody id="dash-invites-tbody">
                         <tr><td colspan="4" style="text-align:center; font-style:italic; padding:20px;">Keine ausstehenden Einladungen.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="dash-title" style="margin-top: 30px;">Registrierte Team-Mitglieder</div>
+                <div class="dash-card">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Benutzername</th>
+                            <th>E-Mail</th>
+                            <th>Rolle</th>
+                            <th>Registriert am</th>
+                            <th style="text-align:center;">Aktionen</th>
+                        </tr>
+                        </thead>
+                        <tbody id="dash-team-tbody">
+                        <tr><td colspan="5" style="text-align:center; font-style:italic; padding:20px;">Keine Teammitglieder registriert.</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -4242,6 +4288,28 @@
         .then(res => res.json())
         .then(data => {
             if (data.success) {
+                if (data.needsPasswordSetup) {
+                    const newPass = prompt(currentLang === 'de' ? "Ein Passwort-Setup ist erforderlich. Bitte gib dein neues Passwort ein (mind. 4 Zeichen):" : "Password setup required. Please enter your new password (min. 4 chars):");
+                    if (newPass && newPass.length >= 4) {
+                        fetch(`${API_BASE_URL}/api/admins/setup-password`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ username: data.username, password: newPass })
+                        })
+                        .then(r => r.json())
+                        .then(setupData => {
+                            if (setupData.success) {
+                                showToast(currentLang === 'de' ? "Passwort erfolgreich eingerichtet! Logge dich erneut ein." : "Password setup successful! Please log in again.", "success");
+                            } else {
+                                showToast(setupData.error || "Setup fehlgeschlagen", "error");
+                            }
+                        })
+                        .catch(() => showToast("Verbindungsfehler", "error"));
+                    } else {
+                        showToast(currentLang === 'de' ? "Ungültiges Passwort!" : "Invalid password!", "error");
+                    }
+                    return;
+                }
                 localStorage.setItem('tentix_last_admin_user', data.username);
                 sessionStorage.setItem('tentix_admin_logged_in', 'true');
                 sessionStorage.setItem('tentix_current_dash_role', data.role);
@@ -4398,7 +4466,7 @@
         if(tabId === 'dash-tab-home') { fetchDashboardStats(); renderDashboardChart(); }
         else if(tabId === 'dash-tab-codes') { renderCodesTable(); renderCreatorCodesTable(); }
         else if(tabId === 'dash-tab-users') { renderUsersTable(); }
-        else if(tabId === 'dash-tab-admins') { renderInvitesTable(); }
+        else if(tabId === 'dash-tab-admins') { renderInvitesTable(); renderTeamTable(); }
         else if(tabId === 'dash-tab-news') { loadNews(); }
         else if(tabId === 'dash-tab-system') { startSystemMonitoring(); }
         else if(tabId === 'dash-tab-bans') { renderBansTable(); }
@@ -4953,36 +5021,46 @@
         fetchDashboardStats();
     }
 
-    function inviteToTeam() {
+    async function inviteToTeam() {
         const uuid = document.getElementById('dash-inv-uuid').value.trim();
         const role = document.getElementById('dash-inv-role').value;
         if(!uuid) return;
 
-        let invites = JSON.parse(localStorage.getItem('tentix_pending_invites') || '[]');
-        if(!invites.find(i => i.uuid === uuid)) {
-            invites.push({ uuid: uuid, role: role, status: 'Eingeladen' });
-            localStorage.setItem('tentix_pending_invites', JSON.stringify(invites));
+        try {
+            await fetch(`${API_BASE_URL}/api/team/invite`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ uuid, role })
+            });
+            if(document.getElementById('dash-inv-uuid')) document.getElementById('dash-inv-uuid').value = '';
+            renderInvitesTable();
+            showToast(currentLang === 'de' ? "Einladung gesendet!" : "Invitation sent!", "success");
+        } catch(e) {
+            showToast("Fehler beim Senden der Einladung", "error");
         }
-        if(document.getElementById('dash-inv-uuid')) document.getElementById('dash-inv-uuid').value = '';
-        renderInvitesTable();
     }
 
     async function renderInvitesTable() {
         const tbody = document.getElementById('dash-invites-tbody');
         if(!tbody) return;
-        let invites = JSON.parse(localStorage.getItem('tentix_pending_invites') || '[]');
-        if(invites.length === 0) { tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; font-style:italic; padding:20px;">Keine ausstehenden Einladungen.</td></tr>`; return; }
-
-        let html = '';
 
         try {
-            const res = await fetch(`${API_BASE_URL}/api/users`);
-            const data = await res.json();
+            const resInvites = await fetch(`${API_BASE_URL}/api/team/invites`);
+            const dataInvites = await resInvites.json();
+            
+            if(!dataInvites.success || dataInvites.invites.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; font-style:italic; padding:20px;">Keine ausstehenden Einladungen.</td></tr>`;
+                return;
+            }
 
-            invites.forEach(i => {
+            const resUsers = await fetch(`${API_BASE_URL}/api/users`);
+            const dataUsers = await resUsers.json();
+
+            let html = '';
+            dataInvites.invites.forEach(i => {
                 let usernameDisplay = "Unbekannt";
-                if(data.success) {
-                    let foundUser = data.users.find(u => u.uuid === i.uuid);
+                if(dataUsers.success) {
+                    let foundUser = dataUsers.users.find(u => u.uuid === i.uuid);
                     if(foundUser) usernameDisplay = foundUser.username;
                 }
 
@@ -4999,22 +5077,99 @@
                 </tr>`;
             });
             tbody.innerHTML = html;
-        } catch(e) {}
+        } catch(e) {
+            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; font-style:italic; padding:20px; color:#ff4b4b;">Fehler beim Laden.</td></tr>`;
+        }
     }
 
-    function checkTeamInvites() {
-        if(!isLoggedIn) return;
-        let invites = JSON.parse(localStorage.getItem('tentix_pending_invites') || '[]');
-        let myInvite = invites.find(i => i.uuid === uuidValue && i.status !== 'Abgelehnt' && i.status !== 'Angenommen');
+    async function renderTeamTable() {
+        const tbody = document.getElementById('dash-team-tbody');
+        if(!tbody) return;
 
-        if(myInvite) {
-            if(document.getElementById('tj-user')) document.getElementById('tj-user').value = savedName;
-            if(document.getElementById('tj-pass1')) document.getElementById('tj-pass1').value = '';
-            if(document.getElementById('tj-pass2')) document.getElementById('tj-pass2').value = '';
-            if(document.getElementById('tj-agb-check')) document.getElementById('tj-agb-check').classList.remove('active');
-            if(document.getElementById('tj-submit-btn')) document.getElementById('tj-submit-btn').classList.add('disabled');
-            if(document.getElementById('team-join-overlay')) document.getElementById('team-join-overlay').classList.add('show');
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/admins/list`);
+            const data = await res.json();
+            if(!data.success || data.admins.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; font-style:italic; padding:20px;">Keine Teammitglieder registriert.</td></tr>`;
+                return;
+            }
+
+            let html = '';
+            data.admins.forEach(admin => {
+                const date = new Date(admin.created_at).toLocaleDateString();
+                const isTN3X = admin.username.toUpperCase() === 'TN3X';
+                
+                const actionsHtml = isTN3X
+                    ? `<span style="color:#888; font-style:italic;">Hauptinhaber</span>`
+                    : `<div style="display:flex; gap:8px; justify-content:center;">
+                         <div class="dash-action-btn" style="background:#ff9900; color:#000; padding:4px 8px; border-radius:4px; font-size:10px; cursor:pointer; font-weight:700;" onclick="resetTeamMember('${admin.username}', 'password')">New Password</div>
+                         <div class="dash-action-btn" style="background:#ff4b4b; color:#fff; padding:4px 8px; border-radius:4px; font-size:10px; cursor:pointer; font-weight:700;" onclick="resetTeamMember('${admin.username}', 'login')">New Login</div>
+                       </div>`;
+
+                html += `<tr>
+                    <td style="color:#fff; font-weight:700;">${admin.username}</td>
+                    <td style="font-family:monospace; font-size:11px;">${admin.email}</td>
+                    <td style="color:var(--accent-blue); font-weight:700;">${admin.role}</td>
+                    <td style="color:#888;">${date}</td>
+                    <td>${actionsHtml}</td>
+                </tr>`;
+            });
+            tbody.innerHTML = html;
+        } catch(e) {
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; font-style:italic; padding:20px; color:#ff4b4b;">Fehler beim Laden.</td></tr>`;
         }
+    }
+
+    async function resetTeamMember(username, type) {
+        let msg = '';
+        if (type === 'login') {
+            msg = currentLang === 'de' ? `Bist du sicher, dass du den Login für '${username}' komplett zurücksetzen willst? Der Benutzer muss sich neu registrieren.` : `Are you sure you want to completely reset the login for '${username}'? The user will have to register again.`;
+        } else {
+            msg = currentLang === 'de' ? `Bist du sicher, dass du das Passwort für '${username}' zurücksetzen willst?` : `Are you sure you want to reset the password for '${username}'?`;
+        }
+        
+        if (!confirm(msg)) return;
+
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/admins/reset`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, type })
+            });
+            const data = await res.json();
+            if (data.success) {
+                showToast(data.message || "Reset erfolgreich!", "success");
+                renderTeamTable();
+                renderInvitesTable();
+            } else {
+                showToast(data.error || "Fehler beim Zurücksetzen", "error");
+            }
+        } catch (e) {
+            showToast("Fehler beim Zurücksetzen", "error");
+        }
+    }
+
+    async function checkTeamInvites() {
+        if(!isLoggedIn || !uuidValue || uuidValue === 'NOT LOGGED IN') return;
+        
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/team/invites`);
+            const data = await res.json();
+            if(data.success) {
+                const myInvite = data.invites.find(i => i.uuid === uuidValue && i.status === 'Eingeladen');
+                if(myInvite) {
+                    if(document.getElementById('tj-user')) document.getElementById('tj-user').value = savedName;
+                    if(document.getElementById('tj-pass1')) document.getElementById('tj-pass1').value = '';
+                    if(document.getElementById('tj-pass2')) document.getElementById('tj-pass2').value = '';
+                    if(document.getElementById('tj-agb-check')) document.getElementById('tj-agb-check').classList.remove('active');
+                    if(document.getElementById('tj-submit-btn')) document.getElementById('tj-submit-btn').classList.add('disabled');
+                    
+                    localStorage.setItem('tentix_pending_invite_role', myInvite.role);
+                    
+                    if(document.getElementById('team-join-overlay')) document.getElementById('team-join-overlay').classList.add('show');
+                }
+            }
+        } catch(e) {}
     }
 
     function toggleTjCheck() {
@@ -5027,13 +5182,15 @@
         }
     }
 
-    function declineTeamJoin() {
-        let invites = JSON.parse(localStorage.getItem('tentix_pending_invites') || '[]');
-        let idx = invites.findIndex(i => i.uuid === uuidValue);
-        if(idx > -1) {
-            invites[idx].status = 'Abgelehnt';
-            localStorage.setItem('tentix_pending_invites', JSON.stringify(invites));
-        }
+    async function declineTeamJoin() {
+        if (!uuidValue) return;
+        try {
+            await fetch(`${API_BASE_URL}/api/team/respond`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ uuid: uuidValue, status: 'Abgelehnt' })
+            });
+        } catch(e) {}
 
         const overlay = document.getElementById('team-join-overlay');
         if(overlay) {
@@ -5053,17 +5210,26 @@
             return;
         }
 
-        let invites = JSON.parse(localStorage.getItem('tentix_pending_invites') || '[]');
-        let myInviteIdx = invites.findIndex(i => i.uuid === uuidValue);
-        if(myInviteIdx === -1) return;
-
-        let roleToAssign = invites[myInviteIdx].role;
-
-        let admins = JSON.parse(localStorage.getItem('tentix_admin_accounts') || '[]');
-        admins.push({ user: savedName, pass: pass1, role: roleToAssign });
-        localStorage.setItem('tentix_admin_accounts', JSON.stringify(admins));
+        const roleToAssign = localStorage.getItem('tentix_pending_invite_role') || 'DEV';
 
         try {
+            await fetch(`${API_BASE_URL}/api/admins/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: savedName + '@tentix.net',
+                    username: savedName,
+                    password: pass1,
+                    role: roleToAssign
+                })
+            });
+
+            await fetch(`${API_BASE_URL}/api/team/respond`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ uuid: uuidValue, status: 'Angenommen' })
+            });
+
             await fetch(`${API_BASE_URL}/api/codes/redeem`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -5088,9 +5254,6 @@
                 }
             }
         } catch(e) {}
-
-        invites[myInviteIdx].status = 'Angenommen';
-        localStorage.setItem('tentix_pending_invites', JSON.stringify(invites));
 
         loadBadges();
 
@@ -7337,10 +7500,42 @@
         }, 300);
     }
     
+    let skinChangerModelType = localStorage.getItem('tentix_skin_model_type') || 'classic';
+    function setSkinChangerModel(model) {
+        skinChangerModelType = model;
+        localStorage.setItem('tentix_skin_model_type', model);
+        
+        const btnClassic = document.getElementById('skin-model-btn-classic');
+        const btnSlim = document.getElementById('skin-model-btn-slim');
+        
+        if (model === 'classic') {
+            if(btnClassic) btnClassic.classList.add('active');
+            if(btnSlim) btnSlim.classList.remove('active');
+        } else {
+            if(btnClassic) btnClassic.classList.remove('active');
+            if(btnSlim) btnSlim.classList.add('active');
+        }
+        
+        updateSkinChangerPreview();
+    }
+
     function initSkinChangerPreview() {
         const canvas = document.getElementById('skin-changer-canvas');
         const canvas2d = document.getElementById('skin-changer-canvas-2d');
         if (!canvas) return;
+
+        // Set initial button states
+        const initialModel = localStorage.getItem('tentix_skin_model_type') || 'classic';
+        skinChangerModelType = initialModel;
+        const btnClassic = document.getElementById('skin-model-btn-classic');
+        const btnSlim = document.getElementById('skin-model-btn-slim');
+        if (initialModel === 'classic') {
+            if(btnClassic) btnClassic.classList.add('active');
+            if(btnSlim) btnSlim.classList.remove('active');
+        } else {
+            if(btnClassic) btnClassic.classList.remove('active');
+            if(btnSlim) btnSlim.classList.add('active');
+        }
 
         let use3D = true;
         try {
@@ -7403,7 +7598,7 @@
         if (skinChangerViewer) {
             canvas.style.display = 'block';
             if (canvas2d) canvas2d.style.display = 'none';
-            skinChangerViewer.loadSkin(skinUrl).catch(err => {
+            skinChangerViewer.loadSkin(skinUrl, { model: skinChangerModelType }).catch(err => {
                 console.warn("Failed to load 3D skin, falling back to 2D canvas:", err);
                 canvas.style.display = 'none';
                 if (canvas2d) {
@@ -8972,6 +9167,15 @@
             if (cartStatus) { cartStatus.innerText = text; cartStatus.style.color = '#ff4b4b'; cartStatus.style.display = 'block'; }
             
             showToast(currentLang === 'de' ? "Ungültiger Code!" : "Invalid Code!", "error");
+
+            setTimeout(() => {
+                if (status && (status.innerText.includes("Ungültiger") || status.innerText.includes("Invalid"))) {
+                    status.style.display = 'none';
+                }
+                if (cartStatus && (cartStatus.innerText.includes("Ungültiger") || cartStatus.innerText.includes("Invalid"))) {
+                    cartStatus.style.display = 'none';
+                }
+            }, 4000);
         }
     }
     
