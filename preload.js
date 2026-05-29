@@ -14,6 +14,7 @@ contextBridge.exposeInMainWorld('api', {
     loginWithMicrosoft: () => ipcRenderer.invoke('login-microsoft'),
     launchMinecraft: (args) => ipcRenderer.invoke('launch-minecraft', args),
     downloadMod: (args) => ipcRenderer.invoke('download-mod', args),
+    uninstallMod: (filename) => ipcRenderer.invoke('uninstall-mod', filename),
 
     onUpdateStatus: (callback) => ipcRenderer.on('update-status', (e, data) => callback(data)),
     onUpdateProgress: (callback) => ipcRenderer.on('update-progress', (e, percent) => callback(percent)),

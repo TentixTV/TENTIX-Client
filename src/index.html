@@ -572,15 +572,16 @@
             box-shadow: 0 0 20px rgba(27, 217, 106, 0.1);
         }
 
-        /* Dependency Modal */
+        /* Dependency Modal - Premium Glassmorphism Overrides */
         #dependency-modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(10, 10, 10, 0.85);
-            backdrop-filter: blur(8px);
+            background: rgba(10, 10, 12, 0.6);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             z-index: 100001;
             display: none;
             justify-content: center;
@@ -590,13 +591,15 @@
             -webkit-app-region: no-drag;
         }
         .dependency-content {
-            background: #111;
-            border: 1px solid #ffb84d;
-            border-radius: 12px;
+            background: rgba(20, 20, 20, 0.65);
+            backdrop-filter: blur(35px);
+            -webkit-backdrop-filter: blur(35px);
+            border: 1px solid rgba(255, 184, 77, 0.25);
+            border-radius: 16px;
             padding: 35px;
             text-align: center;
-            box-shadow: 0 0 50px rgba(255, 184, 77, 0.1);
-            width: 400px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 0 30px rgba(255, 184, 77, 0.15);
+            width: 420px;
             transform: scale(0.9);
             transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
             position: relative;
@@ -607,6 +610,132 @@
         }
         #dependency-modal.show .dependency-content {
             transform: scale(1);
+        }
+
+        /* Payment Drawer Pulsation */
+        @keyframes paymentPulse {
+            0% {
+                border-color: rgba(0, 225, 255, 0.15) !important;
+                box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.65), 0 0 10px rgba(0, 225, 255, 0.1) !important;
+            }
+            50% {
+                border-color: rgba(0, 225, 255, 0.4) !important;
+                box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.65), 0 0 25px rgba(0, 225, 255, 0.25) !important;
+            }
+            100% {
+                border-color: rgba(0, 225, 255, 0.15) !important;
+                box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.65), 0 0 10px rgba(0, 225, 255, 0.1) !important;
+            }
+        }
+        #shop-payment-container:not(.expanded) {
+            animation: paymentPulse 2.5s infinite ease-in-out !important;
+        }
+
+        /* Synced Creator Code Layout overrides */
+        .cart-pay-btn {
+            cursor: pointer;
+            height: 28px;
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.02);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+        .cart-pay-btn img {
+            height: 12px;
+            max-width: 90%;
+            filter: grayscale(1);
+            transition: 0.2s;
+        }
+        .cart-pay-btn:hover {
+            background: rgba(255, 255, 255, 0.05) !important;
+            border-color: rgba(255, 255, 255, 0.15) !important;
+        }
+        .cart-pay-btn:hover img {
+            filter: grayscale(0) !important;
+        }
+        .cart-pay-btn.active {
+            background: rgba(0, 225, 255, 0.05) !important;
+            border-color: #00e1ff !important;
+            box-shadow: 0 0 10px rgba(0, 225, 255, 0.2) !important;
+        }
+        .cart-pay-btn.active img {
+            filter: grayscale(0) !important;
+        }
+
+        /* P2P Friends Chat Message Bubbles */
+        .chat-bubble {
+            max-width: 75%;
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 11px;
+            line-height: 1.4;
+            word-break: break-word;
+        }
+        .chat-bubble.sent {
+            align-self: flex-end;
+            background: rgba(0, 225, 255, 0.12);
+            border: 1px solid rgba(0, 225, 255, 0.25);
+            color: #fff;
+            border-bottom-right-radius: 2px;
+            box-shadow: 0 2px 10px rgba(0, 225, 255, 0.05);
+        }
+        .chat-bubble.received {
+            align-self: flex-start;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #e0e0e0;
+            border-bottom-left-radius: 2px;
+        }
+        .chat-time {
+            font-size: 8px;
+            color: #666;
+            margin-top: 4px;
+            text-align: right;
+        }
+        .chat-bubble.received .chat-time {
+            text-align: left;
+        }
+
+        /* Installed Mod Action Button Hover States */
+        .installed-btn {
+            background: rgba(27, 217, 106, 0.15) !important;
+            color: #1bd96a !important;
+            border: 1px solid rgba(27, 217, 106, 0.4) !important;
+            width: 120px !important;
+            position: relative;
+        }
+        .installed-btn::before {
+            content: attr(data-installed);
+        }
+        .installed-btn:hover {
+            background: rgba(255, 75, 75, 0.15) !important;
+            color: #ff4b4b !important;
+            border-color: rgba(255, 75, 75, 0.4) !important;
+            box-shadow: 0 0 15px rgba(255, 75, 75, 0.3) !important;
+        }
+        .installed-btn:hover::before {
+            content: attr(data-uninstall);
+        }
+        
+        /* Loading Spinner Inside Mod Buttons */
+        .mod-spinner {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border: 2px solid currentColor;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spinFast 0.8s linear infinite;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+
+        /* News Pane padding adjust in maintenance */
+        body.maintenance-active .news-content {
+            padding: 20px 15px !important;
         }
 
         /* Social Icons Hover brand colors */
@@ -1963,6 +2092,24 @@
             <!-- Friends list dynamically rendered -->
         </div>
     </div>
+
+    <!-- Encrypted Friends Chat Panel -->
+    <div class="inbox-popup" id="friends-chat-popup" style="left: 485px; width: 340px; display: none; height: 380px; flex-direction: column; z-index: 4001;">
+        <div class="inbox-header" style="border-bottom: 1px solid rgba(255,255,255,0.05); padding: 12px 15px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <img id="chat-friend-avatar" src="https://minotar.net/avatar/MHF_Steve/18" style="width: 18px; height: 18px; border-radius: 3px;">
+                <span id="chat-friend-name" style="font-weight: 800; font-size: 11px; color: #fff; letter-spacing: 0.5px; text-transform: uppercase;">CHAT</span>
+            </div>
+            <div onclick="closeFriendChat()" style="cursor: pointer; color: #888; font-size: 11px; font-weight: 800;">✕</div>
+        </div>
+        <div id="friends-chat-messages" style="flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 10px; scrollbar-width: thin;">
+            <!-- Messages will be rendered here -->
+        </div>
+        <div style="padding: 10px 15px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 8px; background: rgba(0,0,0,0.15); flex-shrink: 0; -webkit-app-region: no-drag;">
+            <input type="text" id="friends-chat-input" placeholder="Nachricht schreiben..." onkeydown="if(event.key === 'Enter') sendFriendChatMessage()" style="flex: 1; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 6px 10px; font-size: 11px; color: #fff; outline: none;">
+            <button class="dash-btn" style="margin: 0; padding: 6px 12px; font-size: 10px; font-weight: 800; background: var(--accent-blue); color: #000; border: none; border-radius: 6px; cursor: pointer;" onclick="sendFriendChatMessage()">Senden</button>
+        </div>
+    </div>
 </div>
 
 <div id="settings-overlay">
@@ -2421,6 +2568,53 @@
         <div id="cart-items-list" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; scrollbar-width: thin;">
             <!-- Cart items here -->
         </div>
+
+        <!-- Sync Creator Code inside Cart -->
+        <div style="background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.03); border-radius: 8px; padding: 10px; margin-bottom: 12px; -webkit-app-region: no-drag;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                <div style="font-weight: 800; font-size: 9px; color: #aaa; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 4px;">
+                    Creator Code
+                    <div class="tooltip tooltip-up" style="cursor: help; display: inline-flex; align-items: center; justify-content: center; width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.1); color: #fff; font-size: 8px; font-weight: 800;">
+                        ?
+                        <span class="tooltiptext wide-tooltip tooltip-blue" style="z-index: 10000; bottom: 150%;">Mit einem Creator Code kannst du Sparen und Creator unterstützen! / Use a Creator Code to save money and support creators!</span>
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; background: #000; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 3px 3px 3px 8px; height: 26px; box-sizing: border-box;">
+                <input type="text" id="cart-creator-input" placeholder="CODE..." oninput="syncCreatorCodeInputs(event, 'shop-creator-input')" style="flex: 1; background: transparent; border: none; color: #fff; outline: none; text-transform: uppercase; font-family: 'Inter', sans-serif; font-size: 10px; padding: 0; min-width: 0;">
+                <button class="dash-btn" style="margin: 0; padding: 0 10px; height: 100%; font-size: 9px; font-weight: 800; background: var(--accent-blue); color: #000; border: none; border-radius: 4px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: opacity 0.2s;" onclick="applyShopCreatorCode()">OK</button>
+            </div>
+            <div id="cart-creator-status" style="font-size: 9px; color: #ff8800; margin-top: 4px; font-weight: 600; display: none;"></div>
+        </div>
+
+        <!-- Sync Payment Method Selector inside Cart -->
+        <div style="background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.03); border-radius: 8px; padding: 10px; margin-bottom: 12px; -webkit-app-region: no-drag;">
+            <div style="font-weight: 800; font-size: 9px; color: #aaa; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px;">Zahlungsmethode / Payment Method</div>
+            <div class="cart-payment-selector" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
+                <div class="cart-pay-btn active" data-method="paypal" onclick="selectCartPayment('paypal')" title="PayPal">
+                    <img src="../assets/PayPal.png">
+                </div>
+                <div class="cart-pay-btn" data-method="bitcoin" onclick="selectCartPayment('bitcoin')" title="Bitcoin">
+                    <img src="../assets/Bitcoin.png">
+                </div>
+                <div class="cart-pay-btn" data-method="skrill" onclick="selectCartPayment('skrill')" title="Skrill">
+                    <img src="../assets/Skrill.png">
+                </div>
+                <div class="cart-pay-btn" data-method="giropay" onclick="selectCartPayment('giropay')" title="Giropay">
+                    <img src="../assets/Giropay.png">
+                </div>
+                <div class="cart-pay-btn" data-method="visa" onclick="selectCartPayment('visa')" title="Visa">
+                    <img src="../assets/Visa.png">
+                </div>
+                <div class="cart-pay-btn" data-method="mastercard" onclick="selectCartPayment('mastercard')" title="Mastercard">
+                    <img src="../assets/Mastercard.png">
+                </div>
+                <div class="cart-pay-btn" data-method="sofort" onclick="selectCartPayment('sofort')" title="Sofort">
+                    <img src="../assets/Sofort.png">
+                </div>
+            </div>
+        </div>
+
         <div class="cart-summary">
             <div class="cart-summary-row">
                 <span>Zwischensumme</span>
@@ -3026,9 +3220,19 @@
                     let date = new Date(mod.date_modified).toLocaleDateString();
 
                     let isStandard = standardMods.includes(mod.slug);
-                    let installBtnHtml = isStandard
-                        ? `<div class="mod-btn btn-install disabled" title="${translations[currentLang].modStandard}">✓ ${translations[currentLang].modStandard}</div>`
-                        : `<div class="mod-btn btn-install" onclick="installMod('${mod.project_id || mod.id || mod.slug}', '${mod.title.replace(/'/g, "\\'")}', this)"><svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: currentColor;"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> ${translations[currentLang].modBtnInstall}</div>`;
+                    const installed = JSON.parse(localStorage.getItem('tentix_installed_mods') || '[]');
+                    let isInstalled = installed.includes(mod.project_id || mod.id || mod.slug);
+
+                    let installBtnHtml = '';
+                    if (isStandard) {
+                        installBtnHtml = `<div class="mod-btn btn-install disabled" title="${translations[currentLang].modStandard}">✓ ${translations[currentLang].modStandard}</div>`;
+                    } else if (isInstalled) {
+                        const dataInstalled = currentLang === 'de' ? '✓ Installiert' : '✓ Installed';
+                        const dataUninstall = currentLang === 'de' ? 'Deinstallieren' : 'Uninstall';
+                        installBtnHtml = `<div class="mod-btn installed-btn" data-installed="${dataInstalled}" data-uninstall="${dataUninstall}" onclick="uninstallMod('${mod.project_id || mod.id || mod.slug}', '${mod.title.replace(/'/g, "\\'")}', this)"></div>`;
+                    } else {
+                        installBtnHtml = `<div class="mod-btn btn-install" onclick="installMod('${mod.project_id || mod.id || mod.slug}', '${mod.title.replace(/'/g, "\\'")}', this)"><svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: currentColor;"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> ${translations[currentLang].modBtnInstall}</div>`;
+                    }
 
                     let envTags = '';
                     if(mod.client_side !== 'unsupported') envTags += `<span class="mod-env-badge"><svg viewBox="0 0 24 24"><path d="M21 2H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h7v2H8v2h8v-2h-2v-2h7c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H3V4h18v12z"/></svg> Client</span>`;
@@ -3551,7 +3755,7 @@
                 }
 
                 maintenanceCardHtml = `
-                    <div style="background: rgba(255, 75, 75, 0.08); border: 1px solid rgba(255, 75, 75, 0.35); padding: 28px 24px 38px 24px; border-radius: 12px; width: 100%; box-shadow: 0 0 20px rgba(255, 75, 75, 0.15); margin-bottom: 15px; position: relative; overflow: hidden; box-sizing: border-box;">
+                    <div style="background: rgba(255, 75, 75, 0.08); border: 1px solid rgba(255, 75, 75, 0.35); padding: 30px 24px 45px 24px; border-radius: 12px; width: 100%; box-shadow: 0 0 20px rgba(255, 75, 75, 0.15); margin-bottom: 15px; position: relative; overflow: hidden; box-sizing: border-box;">
                         <div style="position: absolute; top: -50px; left: -50px; width: 150px; height: 150px; background: radial-gradient(circle, rgba(255, 75, 75, 0.1) 0%, transparent 70%); pointer-events: none;"></div>
                         <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
                             <div style="position: relative; width: 7px; height: 7px; display: flex; align-items: center; justify-content: center;">
@@ -3563,7 +3767,7 @@
                         <div class="gradient-text-red" style="font-weight: 800; font-size: 13px; margin-bottom: 8px; text-transform: uppercase;">
                             ${currentLang === 'de' ? 'WARTUNGSARBEITEN AKTIV' : 'MAINTENANCE ACTIVE'}
                         </div>
-                        <div style="font-size: 11px; color: #eee; line-height: 1.5; text-align: left; margin-bottom: 12px;">
+                        <div style="font-size: 12px; color: #eee; line-height: 1.6; text-align: left; margin-bottom: 12px;">
                             ${currentLang === 'de' ? detailsTextDe : detailsTextEn}
                         </div>
                     </div>
@@ -6342,6 +6546,7 @@
             localStorage.setItem('tentix_last_maintenance', new Date().toISOString());
         }
         maintenanceModeActive = active;
+        document.body.classList.toggle('maintenance-active', active);
         
         // 1. Accent color variables
         if (active) {
@@ -6902,7 +7107,7 @@
         if (btn.classList.contains('disabled')) return;
         const originalHtml = btn.innerHTML;
         btn.classList.add('disabled');
-        btn.innerHTML = `<span class="spinner" style="display:inline-block; width:10px; height:10px; border:2px solid currentColor; border-top-color:transparent; border-radius:50%; animation:spinFast 0.8s linear infinite; margin-right:5px;"></span>...`;
+        btn.innerHTML = `<span class="mod-spinner"></span>...`;
         
         try {
             const mcVer = localStorage.getItem('tentix_last_ver') || '1.21.11';
@@ -6941,10 +7146,11 @@
             // Check for required dependencies
             const requiredDeps = (bestVersion.dependencies || []).filter(d => d.dependency_type === 'required');
             const installed = JSON.parse(localStorage.getItem('tentix_installed_mods') || '[]');
+            const preInstalledProjectIds = ['P7smOC4t', 'AANobbMI', 'YL575DfQ', 'gv9N2tTf', 'mOgUt4mY'];
             
             let missingDep = null;
             for (let d of requiredDeps) {
-                if (d.project_id && !installed.includes(d.project_id)) {
+                if (d.project_id && !installed.includes(d.project_id) && !preInstalledProjectIds.includes(d.project_id)) {
                     missingDep = d;
                     break;
                 }
@@ -6989,14 +7195,30 @@
                 const success = await window.api.downloadMod({ url: downloadUrl, filename: filename });
                 if (success) {
                     const installedMods = JSON.parse(localStorage.getItem('tentix_installed_mods') || '[]');
-                    installedMods.push(modId);
+                    if (!installedMods.includes(modId)) {
+                        installedMods.push(modId);
+                    }
                     localStorage.setItem('tentix_installed_mods', JSON.stringify(installedMods));
                     
+                    const modFilesMap = JSON.parse(localStorage.getItem('tentix_installed_mods_files') || '{}');
+                    modFilesMap[modId] = filename;
+                    localStorage.setItem('tentix_installed_mods_files', JSON.stringify(modFilesMap));
+                    
                     showToast(currentLang === 'de' ? `Mod "${modTitle}" erfolgreich installiert!` : `Mod "${modTitle}" successfully installed!`, "success");
-                    btn.innerHTML = `✓ Installiert`;
-                    btn.style.background = 'rgba(27, 217, 106, 0.2)';
-                    btn.style.color = '#1bd96a';
-                    btn.style.borderColor = '#1bd96a';
+                    
+                    btn.classList.remove('disabled');
+                    btn.classList.remove('btn-install');
+                    btn.classList.add('installed-btn');
+                    btn.innerHTML = '';
+                    btn.style.background = '';
+                    btn.style.color = '';
+                    btn.style.borderColor = '';
+                    
+                    const dataInstalled = currentLang === 'de' ? '✓ Installiert' : '✓ Installed';
+                    const dataUninstall = currentLang === 'de' ? 'Deinstallieren' : 'Uninstall';
+                    btn.setAttribute('data-installed', dataInstalled);
+                    btn.setAttribute('data-uninstall', dataUninstall);
+                    btn.setAttribute('onclick', `uninstallMod('${modId}', '${modTitle.replace(/'/g, "\\'")}', this)`);
                 } else {
                     throw new Error("Download failed");
                 }
@@ -7008,6 +7230,89 @@
             showToast(currentLang === 'de' ? `Installation fehlgeschlagen: ${e.message}` : `Installation failed: ${e.message}`, "error");
             btn.classList.remove('disabled');
             btn.innerHTML = originalHtml;
+        }
+    }
+
+    async function uninstallMod(modId, modTitle, btn) {
+        if (btn.classList.contains('disabled')) return;
+        const originalHtml = btn.innerHTML;
+        btn.classList.add('disabled');
+        btn.removeAttribute('data-installed');
+        btn.removeAttribute('data-uninstall');
+        btn.innerHTML = `<span class="mod-spinner"></span>...`;
+        
+        try {
+            const modFilesMap = JSON.parse(localStorage.getItem('tentix_installed_mods_files') || '{}');
+            let filename = modFilesMap[modId];
+            
+            if (!filename) {
+                const mcVer = localStorage.getItem('tentix_last_ver') || '1.21.11';
+                const loader = (localStorage.getItem('tentix_modloader') || 'VANILLA').toLowerCase();
+                const res = await fetch(`https://api.modrinth.com/v2/project/${modId}/version`);
+                const versions = await res.json();
+                if (Array.isArray(versions) && versions.length > 0) {
+                    let bestVersion = null;
+                    for (let v of versions) {
+                        const matchesLoader = loader === 'vanilla' || v.loaders.includes(loader);
+                        const matchesVersion = v.game_versions.includes(mcVer);
+                        if (matchesLoader && matchesVersion) {
+                            bestVersion = v;
+                            break;
+                        }
+                    }
+                    if (!bestVersion && loader !== 'vanilla') {
+                        for (let v of versions) {
+                            if (v.loaders.includes(loader)) {
+                                bestVersion = v;
+                                break;
+                            }
+                        }
+                    }
+                    if (!bestVersion) bestVersion = versions[0];
+                    if (bestVersion && bestVersion.files && bestVersion.files.length > 0) {
+                        const fileObj = bestVersion.files.find(f => f.primary) || bestVersion.files[0];
+                        filename = fileObj.filename;
+                    }
+                }
+            }
+            
+            if (!filename) {
+                throw new Error("Could not determine filename for mod");
+            }
+            
+            if (window.api && window.api.uninstallMod) {
+                const success = await window.api.uninstallMod(filename);
+                if (success) {
+                    let installedMods = JSON.parse(localStorage.getItem('tentix_installed_mods') || '[]');
+                    installedMods = installedMods.filter(id => id !== modId);
+                    localStorage.setItem('tentix_installed_mods', JSON.stringify(installedMods));
+                    
+                    const modFilesMap = JSON.parse(localStorage.getItem('tentix_installed_mods_files') || '{}');
+                    delete modFilesMap[modId];
+                    localStorage.setItem('tentix_installed_mods_files', JSON.stringify(modFilesMap));
+                    
+                    showToast(currentLang === 'de' ? `Mod "${modTitle}" erfolgreich deinstalliert!` : `Mod "${modTitle}" successfully uninstalled!`, "info");
+                    
+                    btn.classList.remove('disabled');
+                    btn.classList.remove('installed-btn');
+                    btn.classList.add('btn-install');
+                    btn.innerHTML = `<svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: currentColor;"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> ${translations[currentLang].modBtnInstall}`;
+                    btn.setAttribute('onclick', `installMod('${modId}', '${modTitle.replace(/'/g, "\\'")}', this)`);
+                } else {
+                    throw new Error("Deletion failed on disk");
+                }
+            } else {
+                throw new Error("API not available");
+            }
+        } catch (e) {
+            console.error("Uninstall mod error:", e);
+            showToast(currentLang === 'de' ? `Deinstallation fehlgeschlagen: ${e.message}` : `Uninstallation failed: ${e.message}`, "error");
+            btn.classList.remove('disabled');
+            btn.innerHTML = originalHtml;
+            const dataInstalled = currentLang === 'de' ? '✓ Installiert' : '✓ Installed';
+            const dataUninstall = currentLang === 'de' ? 'Deinstallieren' : 'Uninstall';
+            btn.setAttribute('data-installed', dataInstalled);
+            btn.setAttribute('data-uninstall', dataUninstall);
         }
     }
 
@@ -7497,7 +7802,7 @@
         const btn = document.getElementById('dep-download-btn');
         const origText = btn.innerText;
         btn.style.pointerEvents = 'none';
-        btn.innerHTML = `<span class="spinner" style="display:inline-block; width:10px; height:10px; border:2px solid currentColor; border-top-color:transparent; border-radius:50%; animation:spinFast 0.8s linear infinite; margin-right:5px;"></span>...`;
+        btn.innerHTML = `<span class="mod-spinner"></span>...`;
         
         try {
             const mcVer = localStorage.getItem('tentix_last_ver') || '1.21.11';
@@ -8293,6 +8598,9 @@
                     </div>
                     <div style="display: flex; align-items: center;">
                         ${serverJoinIcon}
+                        <div class="friend-chat-btn" onclick="openFriendChat('${f.uuid}', '${f.username.replace(/'/g, "\\'")}', event)" style="cursor: pointer; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 4px; padding: 3px 6px; display: inline-flex; align-items: center; margin-right: 6px; transition: 0.2s;" onmouseover="this.style.background='rgba(0, 225, 255, 0.1)'; this.style.borderColor='rgba(0, 225, 255, 0.3)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.borderColor='rgba(255, 255, 255, 0.1)';">
+                            <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; fill: currentColor; color: #aaa;"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+                        </div>
                         <div class="friends-remove-btn" onclick="removeFriend('${f.uuid}')" style="cursor: pointer; color: #555; padding: 4px 6px; font-size: 10px; transition: 0.2s;" onmouseover="this.style.color='#ff4b4b';" onmouseout="this.style.color='#555';">✕</div>
                     </div>
                 </div>
@@ -8302,6 +8610,190 @@
     
     function filterFriendsList() {
         renderFriendsList();
+    }
+
+    // --- Encrypted Friends Chat System ---
+    let activeChatFriendUuid = null;
+    let activeChatFriendName = null;
+    let chatPollInterval = null;
+
+    // Symmetric E2E XOR Cipher with base64 serialization (UTF-8 safe)
+    function xorEncrypt(text, key) {
+        try {
+            const utf8Text = unescape(encodeURIComponent(text));
+            let xored = '';
+            for (let i = 0; i < utf8Text.length; i++) {
+                xored += String.fromCharCode(utf8Text.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+            }
+            return btoa(xored);
+        } catch (e) {
+            console.error("Encryption failed:", e);
+            return btoa(text);
+        }
+    }
+
+    function xorDecrypt(base64Text, key) {
+        try {
+            const xored = atob(base64Text);
+            let decrypted = '';
+            for (let i = 0; i < xored.length; i++) {
+                decrypted += String.fromCharCode(xored.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+            }
+            return decodeURIComponent(escape(decrypted));
+        } catch (e) {
+            console.error("Decryption failed:", e);
+            return "[Decryption Error]";
+        }
+    }
+
+    async function openFriendChat(friendUuid, friendUsername, e) {
+        if (e) e.stopPropagation();
+        
+        activeChatFriendUuid = friendUuid;
+        activeChatFriendName = friendUsername;
+        
+        const chatTitle = document.getElementById('chat-friend-name');
+        const chatAvatar = document.getElementById('chat-friend-avatar');
+        if (chatTitle) chatTitle.innerText = friendUsername.toUpperCase();
+        if (chatAvatar) chatAvatar.src = `https://minotar.net/avatar/${friendUsername}/18`;
+        
+        const chatPopup = document.getElementById('friends-chat-popup');
+        if (chatPopup) {
+            chatPopup.style.display = 'flex';
+        }
+        
+        await loadFriendChatHistory();
+        
+        const msgBox = document.getElementById('friends-chat-messages');
+        if (msgBox) {
+            msgBox.scrollTop = msgBox.scrollHeight;
+        }
+        
+        if (chatPollInterval) clearInterval(chatPollInterval);
+        chatPollInterval = setInterval(loadFriendChatHistory, 3000);
+    }
+
+    function closeFriendChat() {
+        const chatPopup = document.getElementById('friends-chat-popup');
+        if (chatPopup) {
+            chatPopup.style.display = 'none';
+        }
+        activeChatFriendUuid = null;
+        activeChatFriendName = null;
+        if (chatPollInterval) {
+            clearInterval(chatPollInterval);
+            chatPollInterval = null;
+        }
+    }
+
+    async function loadFriendChatHistory() {
+        if (!activeChatFriendUuid) return;
+        
+        const senderUuid = uuidValue || 'guest-uuid';
+        const friendUuid = activeChatFriendUuid;
+        const msgBox = document.getElementById('friends-chat-messages');
+        if (!msgBox) return;
+        
+        const encryptionKey = [senderUuid, friendUuid].sort().join('-');
+        
+        try {
+            let messages = [];
+            if (isClientSimulated) {
+                const allSimMsgs = JSON.parse(localStorage.getItem('tentix_sim_private_messages') || '[]');
+                messages = allSimMsgs.filter(m => 
+                    (m.sender === senderUuid && m.recipient === friendUuid) ||
+                    (m.sender === friendUuid && m.recipient === senderUuid)
+                );
+            } else {
+                const res = await fetch(`${API_BASE_URL}/api/chat/history?user1=${senderUuid}&user2=${friendUuid}`);
+                const data = await res.json();
+                if (data.success) {
+                    messages = data.messages;
+                }
+            }
+            
+            let html = '';
+            if (messages.length === 0) {
+                html = `<div style="text-align: center; color: #444; font-size: 11px; padding: 20px; font-style: italic;">Keine Nachrichten vorhanden. Schreibe eine Nachricht...</div>`;
+            } else {
+                messages.forEach(msg => {
+                    const isMe = msg.sender === senderUuid;
+                    const decryptedContent = xorDecrypt(msg.content, encryptionKey);
+                    const bubbleClass = isMe ? 'sent' : 'received';
+                    const timeStr = new Date(msg.created_at || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    
+                    html += `
+                        <div class="chat-bubble ${bubbleClass}">
+                            <div>${decryptedContent}</div>
+                            <div class="chat-time">${timeStr}</div>
+                        </div>
+                    `;
+                });
+            }
+            
+            if (msgBox.innerHTML !== html) {
+                const wasAtBottom = msgBox.scrollHeight - msgBox.clientHeight <= msgBox.scrollTop + 40;
+                msgBox.innerHTML = html;
+                if (wasAtBottom) {
+                    msgBox.scrollTop = msgBox.scrollHeight;
+                }
+            }
+        } catch (err) {
+            console.error("Failed to load chat history:", err);
+        }
+    }
+
+    async function sendFriendChatMessage() {
+        const input = document.getElementById('friends-chat-input');
+        if (!input) return;
+        const text = input.value.trim();
+        if (!text) return;
+        
+        const senderUuid = uuidValue || 'guest-uuid';
+        const friendUuid = activeChatFriendUuid;
+        if (!friendUuid) return;
+        
+        const encryptionKey = [senderUuid, friendUuid].sort().join('-');
+        const encryptedText = xorEncrypt(text, encryptionKey);
+        
+        const payload = {
+            sender: senderUuid,
+            recipient: friendUuid,
+            content: encryptedText
+        };
+        
+        try {
+            if (isClientSimulated) {
+                const allSimMsgs = JSON.parse(localStorage.getItem('tentix_sim_private_messages') || '[]');
+                allSimMsgs.push({
+                    ...payload,
+                    created_at: new Date().toISOString()
+                });
+                localStorage.setItem('tentix_sim_private_messages', JSON.stringify(allSimMsgs));
+                input.value = '';
+                await loadFriendChatHistory();
+                const msgBox = document.getElementById('friends-chat-messages');
+                if (msgBox) msgBox.scrollTop = msgBox.scrollHeight;
+            } else {
+                const res = await fetch(`${API_BASE_URL}/api/chat/send`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (data.success) {
+                    input.value = '';
+                    await loadFriendChatHistory();
+                    const msgBox = document.getElementById('friends-chat-messages');
+                    if (msgBox) msgBox.scrollTop = msgBox.scrollHeight;
+                } else {
+                    showToast("Fehler beim Senden!", "error");
+                }
+            }
+        } catch (err) {
+            console.error("Failed to send message:", err);
+            showToast("Fehler beim Senden!", "error");
+        }
     }
 
     // --- Shop Cart Logic ---
@@ -8421,11 +8913,38 @@
         document.getElementById('cart-vat-value').innerText = formatPrice(vatVal);
     }
     
+    function syncCreatorCodeInputs(e, targetId) {
+        const targetInput = document.getElementById(targetId);
+        if (targetInput) {
+            targetInput.value = e.target.value;
+        }
+        const status = document.getElementById('shop-creator-status');
+        const cartStatus = document.getElementById('cart-creator-status');
+        if (status) status.style.display = 'none';
+        if (cartStatus) cartStatus.style.display = 'none';
+    }
+
+    let selectedCartPaymentMethod = 'paypal';
+    function selectCartPayment(method) {
+        selectedCartPaymentMethod = method;
+        document.querySelectorAll('.cart-pay-btn').forEach(btn => {
+            if (btn.getAttribute('data-method') === method) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    }
+
     function applyShopCreatorCode() {
         const input = document.getElementById('shop-creator-input');
+        const cartInput = document.getElementById('cart-creator-input');
         const status = document.getElementById('shop-creator-status');
-        if (!input || !status) return;
-        const val = input.value.trim().toUpperCase();
+        const cartStatus = document.getElementById('cart-creator-status');
+        
+        const activeInput = document.activeElement && document.activeElement.id === 'cart-creator-input' ? cartInput : input;
+        if (!activeInput) return;
+        const val = activeInput.value.trim().toUpperCase();
         
         if (!val) {
             showToast(currentLang === 'de' ? "Creator Code darf nicht leer sein!" : "Creator Code cannot be empty!", "error");
@@ -8438,15 +8957,20 @@
         if (codeObj) {
             localStorage.setItem('applied_creator_code', val);
             localStorage.setItem('applied_creator_code_time', Date.now().toString());
-            status.innerText = `Code '${val}' aktiv (${codeObj.discount}% Rabatt)`;
-            status.style.color = '#00ff80';
-            status.style.display = 'block';
+            
+            const text = `Code '${val}' aktiv (${codeObj.discount}% Rabatt)`;
+            if (status) { status.innerText = text; status.style.color = '#00ff80'; status.style.display = 'block'; }
+            if (cartStatus) { cartStatus.innerText = text; cartStatus.style.color = '#00ff80'; cartStatus.style.display = 'block'; }
+            if (input) input.value = val;
+            if (cartInput) cartInput.value = val;
+            
             showToast(currentLang === 'de' ? `Creator Code '${val}' angewendet!` : `Creator Code '${val}' applied!`, "success");
             updateCartUI();
         } else {
-            status.innerText = currentLang === 'de' ? "Ungültiger Creator Code!" : "Invalid Creator Code!";
-            status.style.color = '#ff4b4b';
-            status.style.display = 'block';
+            const text = currentLang === 'de' ? "Ungültiger Creator Code!" : "Invalid Creator Code!";
+            if (status) { status.innerText = text; status.style.color = '#ff4b4b'; status.style.display = 'block'; }
+            if (cartStatus) { cartStatus.innerText = text; cartStatus.style.color = '#ff4b4b'; cartStatus.style.display = 'block'; }
+            
             showToast(currentLang === 'de' ? "Ungültiger Code!" : "Invalid Code!", "error");
         }
     }
@@ -8454,6 +8978,11 @@
     function checkCreatorCodeExpiration() {
         const code = localStorage.getItem('applied_creator_code');
         const time = localStorage.getItem('applied_creator_code_time');
+        const status = document.getElementById('shop-creator-status');
+        const cartStatus = document.getElementById('cart-creator-status');
+        const input = document.getElementById('shop-creator-input');
+        const cartInput = document.getElementById('cart-creator-input');
+
         if (code && time) {
             const elapsed = Date.now() - parseInt(time, 10);
             const limit = 30 * 24 * 3600 * 1000; // 30 days
@@ -8461,16 +8990,17 @@
                 localStorage.removeItem('applied_creator_code');
                 localStorage.removeItem('applied_creator_code_time');
                 showToast(currentLang === 'de' ? `Dein Creator-Code '${code}' ist nach 30 Tagen abgelaufen!` : `Your creator code '${code}' has expired after 30 days!`, "warning");
-                const status = document.getElementById('shop-creator-status');
                 if (status) status.style.display = 'none';
+                if (cartStatus) cartStatus.style.display = 'none';
             } else {
-                const status = document.getElementById('shop-creator-status');
                 const codes = JSON.parse(localStorage.getItem('tentix_creator_codes') || '[]');
                 const codeObj = codes.find(c => c.code.toUpperCase() === code.toUpperCase());
-                if (status && codeObj) {
-                    status.innerText = `Code '${code}' aktiv (${codeObj.discount}% Rabatt)`;
-                    status.style.color = '#00ff80';
-                    status.style.display = 'block';
+                if (codeObj) {
+                    const text = `Code '${code}' aktiv (${codeObj.discount}% Rabatt)`;
+                    if (status) { status.innerText = text; status.style.color = '#00ff80'; status.style.display = 'block'; }
+                    if (cartStatus) { cartStatus.innerText = text; cartStatus.style.color = '#00ff80'; cartStatus.style.display = 'block'; }
+                    if (input) input.value = code;
+                    if (cartInput) cartInput.value = code;
                 }
             }
         }
@@ -8490,6 +9020,14 @@
         if (activeCode) {
             const discountVal = subtotal * (activeCode.discount / 100);
             total = subtotal - discountVal;
+        }
+        
+        const formattedTotal = total.toFixed(2);
+        const itemNames = shoppingCart.map(item => item.title).join(', ');
+        const paypalUrl = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=liesesandro4@gmail.com&currency_code=EUR&amount=${formattedTotal}&item_name=${encodeURIComponent('TENTIX: ' + itemNames)}`;
+        
+        if (window.api && window.api.openExternalLink) {
+            window.api.openExternalLink(paypalUrl);
         }
         
         showToast(currentLang === 'de' ? `Zahlung von ${formatPrice(total)} wird verarbeitet...` : `Processing payment of ${formatPrice(total)}...`, "info");

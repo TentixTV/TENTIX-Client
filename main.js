@@ -249,6 +249,21 @@ ipcMain.handle('download-mod', async (event, args) => {
     }
 });
 
+ipcMain.handle('uninstall-mod', async (event, filename) => {
+    try {
+        const modsDir = path.join(app.getPath('appData'), '.tentixclient', 'mods');
+        const filePath = path.join(modsDir, filename);
+        if (fs.existsSync(filePath)) {
+            fs.unlinkSync(filePath);
+            return true;
+        }
+        return false;
+    } catch (e) {
+        console.error("Uninstall mod error:", e);
+        return false;
+    }
+});
+
 ipcMain.handle('login-microsoft', async () => {
     try {
         const authManager = new msmc.Auth("select_account");
