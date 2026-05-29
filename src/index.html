@@ -627,19 +627,18 @@
             transform: scale(1);
         }
 
-        /* Payment Drawer Pulsation */
         @keyframes paymentPulse {
             0% {
                 border-color: rgba(0, 225, 255, 0.15) !important;
-                box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.65), 0 0 10px rgba(0, 225, 255, 0.1) !important;
+                box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.65), 0 0 0 0 rgba(0, 225, 255, 0.3) !important;
             }
             50% {
-                border-color: rgba(0, 225, 255, 0.4) !important;
-                box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.65), 0 0 25px rgba(0, 225, 255, 0.25) !important;
+                border-color: rgba(0, 225, 255, 0.35) !important;
+                box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.65), 0 -5px 12px 6px rgba(0, 225, 255, 0.15) !important;
             }
             100% {
                 border-color: rgba(0, 225, 255, 0.15) !important;
-                box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.65), 0 0 10px rgba(0, 225, 255, 0.1) !important;
+                box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.65), 0 -10px 22px 12px rgba(0, 225, 255, 0) !important;
             }
         }
         #shop-payment-container:not(.expanded) {
@@ -925,31 +924,64 @@
              -webkit-app-region: no-drag;
          }
          .cart-drawer::before {
-             content: '';
-             position: absolute;
-             top: 0;
-             left: 0;
-             width: 3px;
-             height: 100%;
-             background: linear-gradient(to top, #00d4ff 0%, #ff4b4b 100%);
-             filter: blur(0.5px);
-             z-index: 2001;
-         }
-         .cart-drawer::after {
-             content: '';
-             position: absolute;
-             top: 0;
-             left: -15px;
-             width: 15px;
-             height: 100%;
-             background: linear-gradient(to top, rgba(0, 212, 255, 0.25) 0%, rgba(255, 75, 75, 0.25) 100%);
-             filter: blur(15px);
-             pointer-events: none;
-             z-index: 1999;
-         }
-         .cart-drawer.open {
-             right: 0;
-         }
+              content: '';
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 3px;
+              height: 100%;
+              background: linear-gradient(to top, #00d4ff 0%, #ff4b4b 35%, #00d4ff 65%, #ff4b4b 100%);
+              background-size: 100% 200%;
+              animation: gradientShift 8s ease-in-out infinite;
+              filter: blur(0.5px);
+              z-index: 2001;
+          }
+          .cart-drawer::after {
+              content: '';
+              position: absolute;
+              top: 0;
+              left: -15px;
+              width: 15px;
+              height: 100%;
+              background: linear-gradient(to top, rgba(0, 212, 255, 0.25) 0%, rgba(255, 75, 75, 0.25) 35%, rgba(0, 212, 255, 0.25) 65%, rgba(255, 75, 75, 0.25) 100%);
+              background-size: 100% 200%;
+              animation: gradientShift 8s ease-in-out infinite;
+              filter: blur(15px);
+              pointer-events: none;
+              z-index: 1999;
+          }
+          @keyframes gradientShift {
+              0% { background-position: 50% 0%; }
+              50% { background-position: 50% 100%; }
+              100% { background-position: 50% 0%; }
+          }
+          .cart-toggle-btn {
+              cursor: pointer;
+              background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+              border: 1px solid rgba(255, 255, 255, 0.06);
+              border-radius: 8px;
+              padding: 10px 18px;
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              font-size: 13px;
+              font-weight: 700;
+              color: #fff;
+              box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.01);
+              transition: all 0.2s ease;
+          }
+          .cart-toggle-btn:hover {
+              background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.03) 100%);
+              border-color: rgba(var(--accent-blue-rgb), 0.3);
+              box-shadow: 0 0 12px rgba(var(--accent-blue-rgb), 0.1), inset 0 0 10px rgba(255, 255, 255, 0.03);
+              transform: translateY(-1px);
+          }
+          .cart-toggle-btn:active {
+              transform: translateY(1px);
+          }
+          .cart-drawer.open {
+              right: 0;
+          }
          .cart-item {
              display: flex;
              align-items: center;
@@ -2484,10 +2516,10 @@
                     </svg>
                     TENTIX <span style="color: var(--accent-blue);" id="ui-shop-title-accent">SHOP</span>
                 </div>
-                <div onclick="toggleCartDrawer()" style="cursor: pointer; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 18px; display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: #fff; box-shadow: inset 0 0 10px rgba(255,255,255,0.02); transition: 0.2s;" class="cart-toggle-btn">
+                <div onclick="toggleCartDrawer()" class="cart-toggle-btn">
                     <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: var(--accent-blue);"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
                     <span>Einkaufswagen</span>
-                    <div style="background: var(--accent-blue); color: #000; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900;" id="shop-cart-badge">0</div>
+                    <div style="background: var(--accent-blue); color: #000; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; transform: scale(0); opacity: 0; transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease; pointer-events: none;" id="shop-cart-badge">0</div>
                 </div>
             </div>
             
@@ -9169,7 +9201,16 @@
     
     function updateCartUI() {
         const badge = document.getElementById('shop-cart-badge');
-        if (badge) badge.innerText = shoppingCart.length;
+        if (badge) {
+            badge.innerText = shoppingCart.length;
+            if (shoppingCart.length > 0) {
+                badge.style.transform = 'scale(1)';
+                badge.style.opacity = '1';
+            } else {
+                badge.style.transform = 'scale(0)';
+                badge.style.opacity = '0';
+            }
+        }
         
         const list = document.getElementById('cart-items-list');
         if (!list) return;
