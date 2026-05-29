@@ -61,6 +61,7 @@
         .bell-wrapper { position: relative; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; background: transparent; border: none; }
         .bell-icon { width: 24px; height: 24px; fill: #888; transition: 0.3s; transform-origin: top center; }
         .bell-wrapper:hover .bell-icon { fill: var(--accent-blue); filter: drop-shadow(0 0 12px var(--accent-blue)); animation: bell-ring 2.5s ease-in-out infinite; }
+        #friends-icon-wrapper:hover #friends-icon-svg { animation: none !important; }
         @keyframes bell-ring {
             0% { transform: rotate(0); }
             3% { transform: rotate(8deg); }
@@ -198,12 +199,12 @@
         .copy-hover { transition: 0.2s; cursor: pointer; }
         .copy-hover:hover { color: #fff !important; text-shadow: 0 0 8px rgba(255, 255, 255, 0.6); }
 
-        .chart-container { width: 100%; height: 180px; display: flex; align-items: flex-end; gap: 15px; padding-bottom: 25px; border-bottom: 1px solid #222; margin-top: 10px;}
+        .chart-container { width: 100%; height: 180px; display: flex; align-items: flex-end; gap: 6px; padding-bottom: 25px; border-bottom: 1px solid #222; margin-top: 10px; box-sizing: border-box; max-width: 100%;}
         .chart-group { display: flex; align-items: flex-end; gap: 2px; flex: 1; position: relative; height: 100%; justify-content: center; cursor: crosshair;}
-        .chart-bar { width: 14px; border-radius: 4px 4px 0 0; transition: height 1s cubic-bezier(0.23, 1, 0.32, 1), background 0.3s, transform 0.3s; height: 0%; transform-origin: bottom;}
+        .chart-bar { width: 8px; border-radius: 3px 3px 0 0; transition: height 1s cubic-bezier(0.23, 1, 0.32, 1), background 0.3s, transform 0.3s; height: 0%; transform-origin: bottom;}
         .chart-bar.bar-1 { background: rgba(var(--accent-blue-rgb), 0.5); }
         .chart-bar.bar-2 { background: rgba(0, 255, 128, 0.5); }
-        .chart-bar.bar-3 { background: rgba(255, 75, 75, 0.5); width: 8px;}
+        .chart-bar.bar-3 { background: rgba(255, 75, 75, 0.5); width: 5px;}
         .chart-group:hover .chart-bar.bar-1 { background: rgba(var(--accent-blue-rgb), 0.8); transform: scaleY(1.05); }
         .chart-group:hover .chart-bar.bar-2 { background: rgba(0, 255, 128, 0.8); transform: scaleY(1.05); }
         .chart-group:hover .chart-bar.bar-3 { background: rgba(255, 75, 75, 0.8); transform: scaleY(1.05); }
@@ -370,8 +371,10 @@
 
         #news-toggle-btn { position: absolute; top: 50%; right: 40px; transform: translateY(-50%); width: 45px; height: 45px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 3000; transition: 0.4s ease; -webkit-app-region: no-drag; display: none; opacity: 0; font-size: 18px; color: #888;}
         #news-toggle-btn:hover { background: rgba(var(--accent-blue-rgb), 0.1); border-color: var(--accent-blue); box-shadow: 0 0 20px rgba(var(--accent-blue-rgb), 0.2); transform: translateY(-50%) scale(1.05); color: #fff;}
-        .arrow-icon { display: inline-block; transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), color 0.3s; transform: rotate(0deg); font-weight: 700;}
-        #news-toggle-btn.pane-open .arrow-icon { transform: rotate(180deg); color: var(--accent-blue); }
+        .arrow-wrapper { display: flex; align-items: center; justify-content: center; transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1); transform: rotate(0deg); }
+        #news-toggle-btn.pane-open .arrow-wrapper { transform: rotate(180deg); }
+        .arrow-icon { display: inline-block; transition: color 0.3s; font-weight: 700; }
+        #news-toggle-btn.pane-open .arrow-icon { color: var(--accent-blue); }
 
         #news-pane { position: absolute; top: 100px; bottom: 100px; right: calc(-1 * var(--news-pane-width) - 80px); width: var(--news-pane-width); background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; z-index: 2500; transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1); backdrop-filter: blur(25px); box-shadow: 0 15px 60px rgba(0,0,0,0.8); display: flex; flex-direction: column; -webkit-app-region: no-drag; }
         #news-pane.open { right: 100px; border-color: rgba(var(--accent-blue-rgb), 0.3); }
@@ -454,8 +457,38 @@
         .version-tag { position: absolute; bottom: 50px; left: 45px; color: #222; font-size: 11px; letter-spacing: 1px; font-weight: 800;}
         .credits { position: absolute; bottom: 25px; left: 45px; color: #444; font-size: 10px; letter-spacing: 1px; font-style: italic; }
 
-        #toast { position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%) translateY(20px); background: rgba(10, 10, 10, 0.95); border: 1px solid var(--accent-blue); color: var(--accent-blue); padding: 12px 30px; border-radius: 30px; font-size: 12px; font-weight: 800; letter-spacing: 2px; opacity: 0; pointer-events: none; transition: 0.4s; z-index: 2147483647; text-transform: uppercase; box-shadow: 0 0 20px rgba(var(--accent-blue-rgb), 0.2);}
+        #toast { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%) translateY(20px); background: rgba(15, 15, 18, 0.96); border: 1px solid var(--accent-blue); color: var(--accent-blue); padding: 10px 24px; border-radius: 20px; font-size: 12px; font-weight: 600; letter-spacing: normal; text-transform: none; opacity: 0; pointer-events: none; transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s ease; z-index: 2147483647; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); text-align: center; }
         #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        .gradient-text-red {
+            background: linear-gradient(180deg, #ff6b6b 0%, #ff4b4b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+        @keyframes icon-pulse {
+            0% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(255, 75, 75, 0.4)); }
+            50% { transform: scale(1.12); filter: drop-shadow(0 0 10px rgba(255, 75, 75, 0.8)); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(255, 75, 75, 0.4)); }
+        }
+        .pulse-exclamation {
+            animation: icon-pulse 1.8s infinite ease-in-out;
+            transform-origin: center;
+        }
+        .card-btn:active {
+            transform: scale(0.95);
+        }
+        #shop-upgrade-btn {
+            transition: all 0.2s ease !important;
+        }
+        #shop-upgrade-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 22px rgba(var(--accent-blue-rgb), 0.45) !important;
+            filter: brightness(1.1);
+        }
+        #shop-upgrade-btn:active {
+            transform: scale(0.95);
+        }
 
         #shop-view, #cosmetics-view { position: absolute; width: 100%; height: 100%; top: 0; left: 0; display: none; visibility: hidden; justify-content: center; align-items: center; z-index: 50; opacity: 0; transition: opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1), visibility 0.6s; }
         .dummy-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; width: 85%; height: 65%; padding: 25px; opacity: 0.2; filter: blur(10px); }
@@ -578,13 +611,13 @@
 
         /* Social Icons Hover brand colors */
         .social-icon.soc-ig:hover {
-            border-color: #e1306c;
-            box-shadow: 0 0 15px rgba(225, 48, 108, 0.4);
-            background: rgba(225, 48, 108, 0.05);
+            border-color: #d6249f;
+            box-shadow: 0 0 15px rgba(214, 36, 159, 0.4);
+            background: rgba(255, 255, 255, 0.05);
         }
         .social-icon.soc-ig:hover .mask-icon {
-            background-color: #e1306c;
-            filter: drop-shadow(0 0 8px #e1306c);
+            background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%);
+            filter: drop-shadow(0 0 4px rgba(214, 36, 159, 0.5));
         }
 
         .social-icon.soc-dc:hover {
@@ -649,6 +682,49 @@
          .filter-btn:hover { background: rgba(var(--accent-blue-rgb), 0.08) !important; border-color: rgba(var(--accent-blue-rgb), 0.2) !important; color: #fff !important; }
          .filter-btn.active { background: rgba(var(--accent-blue-rgb), 0.1) !important; border-color: var(--accent-blue) !important; color: var(--accent-blue) !important; box-shadow: 0 0 10px rgba(var(--accent-blue-rgb), 0.15); }
          
+         .shop-cat-btn {
+             background: transparent;
+             border: none;
+             border-left: 3px solid transparent;
+             color: #888;
+             padding: 10px 14px;
+             font-size: 11.5px;
+             font-weight: 600;
+             cursor: pointer;
+             transition: all 0.2s ease;
+             display: flex;
+             align-items: center;
+             gap: 8px;
+             width: 100%;
+             justify-content: flex-start;
+             box-sizing: border-box;
+             border-radius: 0;
+             text-transform: uppercase;
+             letter-spacing: 0.5px;
+         }
+         .shop-cat-btn svg {
+             width: 15px;
+             height: 15px;
+             fill: currentColor;
+             flex-shrink: 0;
+             transition: transform 0.2s ease;
+         }
+         .shop-cat-btn:hover {
+             color: #fff;
+             background: rgba(255, 255, 255, 0.02);
+             border-left-color: rgba(var(--accent-blue-rgb), 0.3);
+         }
+         .shop-cat-btn:hover svg {
+             transform: scale(1.08);
+         }
+         .shop-cat-btn.active {
+             color: var(--accent-blue);
+             background: rgba(var(--accent-blue-rgb), 0.05);
+             border-left-color: var(--accent-blue);
+             font-weight: 800;
+             box-shadow: inset 4px 0 10px rgba(var(--accent-blue-rgb), 0.03);
+         }
+         
          .nav-item.disabled {
              opacity: 0.3;
              pointer-events: none;
@@ -665,7 +741,7 @@
              background: rgba(10, 10, 12, 0.96);
              backdrop-filter: blur(25px);
              border-left: 1px solid rgba(255, 255, 255, 0.08);
-             box-shadow: -10px 0 30px rgba(0, 0, 0, 0.6);
+             box-shadow: -15px 0 30px rgba(0, 0, 0, 0.7);
              z-index: 2000;
              transition: right 0.4s cubic-bezier(0.23, 1, 0.32, 1);
              display: flex;
@@ -673,6 +749,29 @@
              padding: 25px;
              box-sizing: border-box;
              -webkit-app-region: no-drag;
+         }
+         .cart-drawer::before {
+             content: '';
+             position: absolute;
+             top: 0;
+             left: 0;
+             width: 3px;
+             height: 100%;
+             background: linear-gradient(to top, #00d4ff 0%, #ff4b4b 100%);
+             filter: blur(0.5px);
+             z-index: 2001;
+         }
+         .cart-drawer::after {
+             content: '';
+             position: absolute;
+             top: 0;
+             left: -15px;
+             width: 15px;
+             height: 100%;
+             background: linear-gradient(to top, rgba(0, 212, 255, 0.25) 0%, rgba(255, 75, 75, 0.25) 100%);
+             filter: blur(15px);
+             pointer-events: none;
+             z-index: 1999;
          }
          .cart-drawer.open {
              right: 0;
@@ -790,24 +889,26 @@
          }
          
          .shop-product-buy {
-             background: linear-gradient(135deg, var(--accent-blue) 0%, #0072ff 100%);
-             transition: all 0.2s ease;
-         }
-         .shop-product-buy:hover {
-             background: linear-gradient(135deg, #0072ff 0%, var(--accent-blue) 100%);
-             transform: scale(1.04) translateY(-1px);
-             box-shadow: 0 0 15px rgba(var(--accent-blue-rgb), 0.4);
-         }
-         .chart-container {
-             width: 100%;
-             height: 180px;
-             display: flex;
-             align-items: flex-end;
-             gap: 8px; /* Reduced gap from 15px to 8px to fit perfectly on smaller resolutions without scrollbars */
-             padding-bottom: 25px;
-             border-bottom: 1px solid #222;
-             margin-top: 10px;
-         }
+              background: linear-gradient(135deg, var(--accent-blue) 0%, #0072ff 50%, var(--accent-blue) 100%) !important;
+              background-size: 200% 100% !important;
+              background-position: left center !important;
+              color: #000 !important;
+              border: none !important;
+              padding: 10px 24px !important;
+              border-radius: 6px !important;
+              font-size: 11px !important;
+              font-weight: 800 !important;
+              text-transform: uppercase !important;
+              cursor: pointer !important;
+              transition: transform 0.2s ease, box-shadow 0.2s ease, background-position 0.35s ease !important;
+              width: 100%;
+          }
+          .shop-product-buy:hover {
+              background-position: right center !important;
+              box-shadow: 0 0 15px rgba(var(--accent-blue-rgb), 0.5) !important;
+              transform: scale(1.04) translateY(-1px) !important;
+          }
+         /* chart-container defined globally above */
 
         
         /* Sleek sidebar scrollbar */
@@ -815,6 +916,10 @@
         .explore-sidebar::-webkit-scrollbar-track { background: transparent; }
         .explore-sidebar::-webkit-scrollbar-thumb { background: #3a3a3c; border-radius: 3px; }
         .explore-sidebar::-webkit-scrollbar-thumb:hover { background: #555; }
+        .filter-section::-webkit-scrollbar { width: 4px; }
+        .filter-section::-webkit-scrollbar-track { background: transparent; }
+        .filter-section::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
+        .filter-section::-webkit-scrollbar-thumb:hover { background: rgba(var(--accent-blue-rgb), 0.6); }
         
         /* Table rows hover style in dashboard */
         tbody tr { transition: background 0.2s; }
@@ -890,23 +995,7 @@
             align-items: center;
             gap: 4px;
         }
-        .shop-product-buy {
-            background: var(--accent-blue);
-            color: #000;
-            border: none;
-            padding: 8px 24px;
-            border-radius: 6px;
-            font-size: 10px;
-            font-weight: 800;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: 0.2s;
-            width: 100%;
-        }
-        .shop-product-buy:hover {
-            box-shadow: 0 0 15px rgba(var(--accent-blue-rgb), 0.4);
-            transform: scale(1.02);
-        }
+        /* shop-product-buy defined above */
         .shop-product-icon {
             width: 48px;
             height: 48px;
@@ -971,6 +1060,145 @@
             display: flex;
             opacity: 1;
             pointer-events: all;
+        }
+
+        /* Custom payment methods drawer overrides */
+        #shop-payment-container {
+            position: fixed !important;
+            bottom: -320px !important;
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            width: 440px !important;
+            max-width: 95% !important;
+            background: rgba(12, 12, 14, 0.96) !important;
+            backdrop-filter: blur(25px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            border-bottom: none !important;
+            border-radius: 14px 14px 0 0 !important;
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.65) !important;
+            z-index: 9999 !important;
+            transition: bottom 0.4s cubic-bezier(0.25, 1, 0.5, 1) !important;
+            box-sizing: border-box !important;
+            margin: 0 !important;
+        }
+
+        #shop-payment-container.expanded {
+            bottom: 0 !important;
+        }
+
+        .payment-drawer-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px;
+            cursor: pointer;
+            user-select: none;
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 14px 14px 0 0;
+            transition: background 0.2s;
+            height: 40px;
+            box-sizing: border-box;
+        }
+
+        .payment-drawer-header:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .payment-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            padding: 18px 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .payment-btn {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 10px;
+            height: 44px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .payment-btn img {
+            max-height: 22px;
+            max-width: 85%;
+            object-fit: contain;
+            filter: grayscale(1) brightness(0.6);
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .payment-btn:hover img {
+            filter: none;
+        }
+
+        .payment-btn.paypal:hover {
+            background: rgba(0, 112, 186, 0.06) !important;
+            border-color: #0070ba !important;
+            box-shadow: 0 0 15px rgba(0, 112, 186, 0.35) !important;
+        }
+
+        .payment-btn.bitcoin:hover {
+            background: rgba(247, 147, 26, 0.06) !important;
+            border-color: #f7931a !important;
+            box-shadow: 0 0 15px rgba(247, 147, 26, 0.35) !important;
+        }
+
+        .payment-btn.skrill:hover {
+            background: rgba(128, 0, 64, 0.06) !important;
+            border-color: #800040 !important;
+            box-shadow: 0 0 15px rgba(128, 0, 64, 0.35) !important;
+        }
+
+        .payment-btn.giropay:hover {
+            background: linear-gradient(135deg, rgba(0, 90, 155, 0.06) 0%, rgba(227, 6, 19, 0.06) 100%) !important;
+            border-color: #005a9b !important;
+            box-shadow: 0 0 15px rgba(0, 90, 155, 0.35) !important;
+        }
+
+        .payment-btn.visa:hover {
+            background: rgba(26, 31, 113, 0.06) !important;
+            border-color: #1a1f71 !important;
+            box-shadow: 0 0 15px rgba(26, 31, 113, 0.35) !important;
+        }
+
+        .payment-btn.mastercard:hover {
+            background: linear-gradient(135deg, rgba(235, 0, 27, 0.06) 0%, rgba(255, 95, 0, 0.06) 100%) !important;
+            border-color: #ff5f00 !important;
+            box-shadow: 0 0 15px rgba(235, 0, 27, 0.35) !important;
+        }
+
+        .payment-btn.sofort:hover {
+            background: rgba(244, 158, 47, 0.06) !important;
+            border-color: #f49e2f !important;
+            box-shadow: 0 0 15px rgba(244, 158, 47, 0.35) !important;
+        }
+
+        .payment-btn.full-width {
+            grid-column: span 2;
+        }
+
+        /* Layout modifications on payment drawer open */
+        body.payment-drawer-expanded #ui-navbar,
+        body.payment-drawer-expanded #friends-icon-wrapper,
+        body.payment-drawer-expanded .bell-wrapper {
+            opacity: 0 !important;
+            pointer-events: none !important;
+            transition: opacity 0.3s ease !important;
+        }
+
+        body.payment-drawer-expanded #user-avatar {
+            opacity: 0.5 !important;
+            transition: opacity 0.3s ease !important;
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/skinview3d@3.0.0-alpha.1/bundles/skinview3d.bundle.js"></script>
@@ -1040,18 +1268,18 @@
 <div id="maintenance-info-modal">
     <div class="error-modal-content" style="border-color: rgba(255, 75, 75, 0.4); box-shadow: 0 15px 50px rgba(0,0,0,0.8), 0 0 40px rgba(255, 75, 75, 0.1); max-width: 450px;">
         <div class="error-title">
-            <svg viewBox="0 0 24 24" style="width: 40px; height: 40px; fill: #ff4b4b;">
+            <svg class="pulse-exclamation" viewBox="0 0 24 24" style="width: 40px; height: 40px; fill: #ff4b4b;">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
             </svg>
-            <span id="ui-maint-modal-title">WARTUNGSMODUS / MAINTENANCE</span>
+            <span id="ui-maint-modal-title" class="gradient-text-red">WARTUNGSMODUS / MAINTENANCE</span>
         </div>
         <div class="error-desc" style="max-width: 100%; text-align: left; font-size: 13px; line-height: 1.6; margin-bottom: 25px;">
-            <p style="margin-bottom: 10px; color: #ff8888; font-weight: bold;">[DE] Wartungsarbeiten aktiv</p>
-            <p style="margin-bottom: 15px; color: #ccc;">Der Client befindet sich derzeit im Wartungsmodus. Einige Funktionen wie das Starten des Spiels, der Shop und Kosmetika sind vorübergehend deaktiviert oder eingeschränkt. Wir arbeiten daran, die Arbeiten schnellstmöglich abzuschließen.</p>
-            <p style="margin-bottom: 10px; color: #ff8888; font-weight: bold;">[EN] Maintenance Active</p>
-            <p style="color: #ccc;">The client is currently in maintenance mode. Some features, including launching the game, the shop, and cosmetics, are temporarily disabled or restricted. We are working to complete the maintenance as quickly as possible.</p>
+            <p id="maint-de-title" class="gradient-text-red" style="margin-bottom: 10px; font-weight: bold;">[DE] Wartungsarbeiten aktiv</p>
+            <p id="maint-de-text" style="margin-bottom: 15px; color: #ccc;">Der Client befindet sich derzeit im Wartungsmodus. Einige Funktionen wie das Starten des Spiels, der Shop und Kosmetika sind vorübergehend deaktiviert oder eingeschränkt. Wir arbeiten daran, die Arbeiten schnellstmöglich abzuschließen.</p>
+            <p id="maint-en-title" class="gradient-text-red" style="margin-bottom: 10px; font-weight: bold;">[EN] Maintenance Active</p>
+            <p id="maint-en-text" style="color: #ccc;">The client is currently in maintenance mode. Some features, including launching the game, the shop, and cosmetics, are temporarily disabled or restricted. We are working to complete the maintenance as quickly as possible.</p>
         </div>
-        <div class="error-btn" style="background: rgba(255, 75, 75, 0.1); border-color: rgba(255, 75, 75, 0.3); color: #ff4b4b;" onclick="closeMaintenanceInfoModal()">SCHLIESSEN / CLOSE</div>
+        <div class="error-btn" id="ui-maint-close-btn" style="background: rgba(255, 75, 75, 0.1); border-color: rgba(255, 75, 75, 0.3); color: #ff4b4b;" onclick="closeMaintenanceInfoModal()">SCHLIESSEN / CLOSE</div>
     </div>
 </div>
 
@@ -1107,6 +1335,7 @@
                 <div style="font-size: 11px; font-weight: 800; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;">Vorschau</div>
                 <div id="skin-changer-preview-container" style="width: 180px; height: 260px; background: radial-gradient(circle, rgba(var(--accent-blue-rgb), 0.03) 0%, transparent 80%); border-radius: 8px; position: relative; display: flex; align-items: center; justify-content: center;">
                     <canvas id="skin-changer-canvas" style="width: 100%; height: 100%; display: block;"></canvas>
+                    <canvas id="skin-changer-canvas-2d" style="width: 100%; height: 100%; display: none;"></canvas>
                 </div>
                 <div id="current-skin-caption" style="font-size: 11px; font-weight: 700; color: var(--accent-blue); margin-top: 15px; text-align: center; text-transform: uppercase; letter-spacing: 0.5px;">Current Skin</div>
             </div>
@@ -1331,7 +1560,7 @@
                 <div class="dash-title" style="margin-top: 30px;">Creator Codes Verwaltung</div>
                 <div class="dash-card">
                     <div style="display:flex; gap:15px; margin-bottom:20px;">
-                        <input type="text" class="dash-input" placeholder="Creator Code (z.B. T3NX)" style="margin:0; flex:2;" id="dash-creator-code">
+                        <input type="text" class="dash-input" placeholder="Creator Code (z.B. TN3X)" style="margin:0; flex:2;" id="dash-creator-code">
                         <input type="number" class="dash-input" placeholder="Rabatt in %" style="margin:0; flex:1;" min="0" max="100" id="dash-creator-discount">
                         <div class="dash-btn" style="flex:1; text-align:center; padding:12px 0;" onclick="createCreatorCode()">Erstellen</div>
                     </div>
@@ -1701,7 +1930,7 @@
     </div>
     
     <!-- Premium Friends Toggle Icon -->
-    <div class="bell-wrapper" id="friends-icon-wrapper" onclick="toggleFriendsPopup(event)" style="margin-left: -5px;" title="Freunde">
+    <div class="bell-wrapper" id="friends-icon-wrapper" onclick="toggleFriendsPopup(event)" style="margin-left: -5px;">
         <svg class="bell-icon" id="friends-icon-svg" viewBox="0 0 24 24" style="width: 22px; height: 22px;"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
         <span class="bell-badge" id="friends-badge" style="background: var(--accent-blue); box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);">0</span>
     </div>
@@ -2021,7 +2250,7 @@
     <div class="v-item" onclick="selectVer('1.7.10', event)">1.7.10</div>
 </div>
 
-<div id="shop-view" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; display: none; visibility: hidden; justify-content: center; align-items: center; z-index: 50; opacity: 0; transition: opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1), visibility 0.6s; -webkit-app-region: no-drag; ">
+<div id="shop-view" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; display: none; visibility: hidden; flex-direction: column; justify-content: center; align-items: center; gap: 10px; z-index: 50; opacity: 0; transition: opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1), visibility 0.6s; -webkit-app-region: no-drag; ">
     <div class="explore-container">
         <div class="explore-main" style="padding: 25px 30px; display: flex; flex-direction: column; position: relative;">
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-shrink: 0;">
@@ -2031,19 +2260,10 @@
                     </svg>
                     TENTIX <span style="color: var(--accent-blue);" id="ui-shop-title-accent">SHOP</span>
                 </div>
-                <div id="shop-balance-container" style="display: none;">
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 15px; display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: #fff; box-shadow: inset 0 0 10px rgba(255,255,255,0.02);">
-                            <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: #ffd700;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
-                            <span id="shop-user-balance">500 Coins</span>
-                        </div>
-                        
-                        <!-- Premium Cart Button -->
-                        <div onclick="toggleCartDrawer()" style="cursor: pointer; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 15px; display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: #fff; box-shadow: inset 0 0 10px rgba(255,255,255,0.02); transition: 0.2s;" class="cart-toggle-btn">
-                            <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: var(--accent-blue);"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-                            <span id="shop-cart-badge">0</span>
-                        </div>
-                    </div>
+                <div onclick="toggleCartDrawer()" style="cursor: pointer; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 18px; display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: #fff; box-shadow: inset 0 0 10px rgba(255,255,255,0.02); transition: 0.2s;" class="cart-toggle-btn">
+                    <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: var(--accent-blue);"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                    <span>Einkaufswagen</span>
+                    <div style="background: var(--accent-blue); color: #000; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900;" id="shop-cart-badge">0</div>
                 </div>
             </div>
             
@@ -2051,42 +2271,44 @@
                 <!-- Product cards injected by loadShop() -->
             </div>
         </div>
-        <div class="explore-sidebar" style="border-left: none; border-right: 1px solid rgba(255,255,255,0.05); order: -1; width: 230px; display: flex; flex-direction: column; justify-content: space-between;">
-            <div class="filter-section" style="overflow-y: auto; flex: 1; scrollbar-width: none;">
-                <div class="filter-title" id="t-shop-cat-lbl">Kategorien</div>
-                <div class="filter-grid" id="shop-category-filters">
-                    <button class="filter-btn active" data-category="all" onclick="filterShop('all', this)">
-                        <svg viewBox="0 0 24 24"><path d="M4 11h5V5H4v6zm0 8h5v-6H4v6zm6 0h5v-6h-5v6zm6 0h5v-6h-5v6zm-6-8h5V5h-5v6zm6-6v6h5V5h-5z"/></svg>
-                        <span id="t-shop-cat-all">Alle Produkte</span>
-                    </button>
-                    <button class="filter-btn" data-category="capes" onclick="filterShop('capes', this)">
-                        <svg viewBox="0 0 24 24"><path d="M12 2L2 5v6c0 5.25 4.2 9.4 10 11 5.8-1.6 10-5.8 10-11V5l-10-3zm0 17.9c-4.4-1.3-7.5-4.8-7.5-8.9V6.4l7.5-2.2 7.5 2.2V11c0 4.1-3.1 7.6-7.5 8.9z"/></svg>
-                        <span>Capes</span>
-                    </button>
-                    <button class="filter-btn" data-category="bandanas" onclick="filterShop('bandanas', this)">
-                        <svg viewBox="0 0 24 24"><path d="M18 3c-1.2 0-2.4.4-3.4 1.2L12 6.3l-2.6-2.1C8.4 3.4 7.2 3 6 3 3.2 3 1 5.2 1 8c0 3.8 3.4 7 8.5 11.6L12 21l2.5-2.4c5.1-4.6 8.5-7.8 8.5-11.6 0-2.8-2.2-5-5-5z"/></svg>
-                        <span>Bandanas</span>
-                    </button>
-                    <button class="filter-btn" data-category="effekte" onclick="filterShop('effekte', this)">
-                        <svg viewBox="0 0 24 24"><path d="M7.5 5.6L10 7 8.6 4.5 10 2 7.5 3.4 5 2l1.4 2.5L5 7zm12 9.8L17 14l1.4 2.5-1.4 2.5 2.5-1.4 2.5 1.4-1.4-2.5 1.4-2.5zm0-9l-2.5 1.4L18.4 5 17 2.5l2.5 1.4L22 2l-1.4 2.5zM14.1 9l-9.6 9.6 1.4 1.4 9.6-9.6z"/></svg>
-                        <span>Effekte</span>
-                    </button>
-                    <button class="filter-btn" data-category="masken" onclick="filterShop('masken', this)">
-                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-3.5-9c.83 0 1.5-.67 1.5-1.5S9.33 6 8.5 6 7 6.67 7 7.5 7.67 9 8.5 9zm7 0c.83 0 1.5-.67 1.5-1.5S16.33 6 15.5 6 14 6.67 14 7.5 14.67 9 15.5 9zm-7 4.5c.83 0 1.5.67 1.5 1.5H7c0-.83.67-1.5 1.5-1.5zm7 0c.83 0 1.5.67 1.5 1.5h-3c0-.83.67-1.5 1.5-1.5z"/></svg>
-                        <span>Masken</span>
-                    </button>
-                    <button class="filter-btn" data-category="brillen" onclick="filterShop('brillen', this)">
-                        <svg viewBox="0 0 24 24"><path d="M18.5 6C15.82 6 13.59 7.65 12.63 10c-.96-2.35-3.19-4-5.87-4C3.1 6 0 9.1 0 13c0 3.9 3.1 7 6.76 7 2.68 0 4.91-1.65 5.87-4 .96 2.35 3.19 4 5.87 4 3.66 0 6.76-3.1 6.76-7 0-3.9-3.1-7-6.76-7zm-11.74 12c-2.6 0-4.76-2.1-4.76-5s2.16-5 4.76-5 4.76 2.1 4.76 5-2.16 5-4.76 5zm11.74 0c-2.6 0-4.76-2.1-4.76-5s2.16-5 4.76-5 4.76 2.1 4.76 5-2.16 5-4.76 5z"/></svg>
-                        <span>Brillen</span>
-                    </button>
-                    <button class="filter-btn" data-category="accessories" onclick="filterShop('accessories', this)">
-                        <svg viewBox="0 0 24 24"><path d="M5 16L3 5l5 3 4-6 4 6 5-3-2 11H5zm14 3c0 .55-.45 1-1 1H6c-.55 0-1-.45-1-1v-1h14v1z"/></svg>
-                        <span>Accessoires</span>
-                    </button>
-                    <button class="filter-btn" data-category="haustiere" onclick="filterShop('haustiere', this)">
-                        <svg viewBox="0 0 24 24"><path d="M12 14c-1.66 0-3 1.34-3 3 0 2 2 3.5 3 4 1-.5 3-2 3-4 0-1.66-1.34-3-3-3zm-4.5-4c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5S8.33 10 7.5 10zm9 0c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5S17.33 10 16.5 10zM12 2C9.5 2 7 4.5 7 7c0 1.25.5 2.5 1.5 3.5L12 6.5l3.5 4c1-1 1.5-2.25 1.5-3.5 0-2.5-2.5-5-5-5z"/></svg>
-                        <span>Haustiere</span>
-                    </button>
+            <div class="explore-sidebar" style="border-left: none; border-right: 1px solid rgba(255,255,255,0.05); order: -1; width: 230px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div class="filter-section" style="overflow-y: auto; flex: 1; direction: rtl; padding-left: 8px; overflow-x: hidden;">
+                <div style="direction: ltr;">
+                    <div class="filter-title" id="t-shop-cat-lbl">Kategorien</div>
+                    <div class="filter-grid" id="shop-category-filters">
+                        <button class="shop-cat-btn active" data-category="all" onclick="filterShop('all', this)">
+                            <svg viewBox="0 0 24 24"><path d="M4 11h5V5H4v6zm0 8h5v-6H4v6zm6 0h5v-6h-5v6zm6 0h5v-6h-5v6zm-6-8h5V5h-5v6zm6-6v6h5V5h-5z"/></svg>
+                            <span id="t-shop-cat-all">Alle Produkte</span>
+                        </button>
+                        <button class="shop-cat-btn" data-category="capes" onclick="filterShop('capes', this)">
+                            <svg viewBox="0 0 24 24"><path d="M6 3h12l2 18-8-3-8 3z"/></svg>
+                            <span>Capes</span>
+                        </button>
+                        <button class="shop-cat-btn" data-category="bandanas" onclick="filterShop('bandanas', this)">
+                            <svg viewBox="0 0 24 24"><path d="M4 5h16l-8 10L4 5zm-2-2h4v2H2zm16 0h4v2h-4z"/></svg>
+                            <span>Bandanas</span>
+                        </button>
+                        <button class="shop-cat-btn" data-category="effekte" onclick="filterShop('effekte', this)">
+                            <svg viewBox="0 0 24 24"><path d="M7.5 5.6L10 7 8.6 4.5 10 2 7.5 3.4 5 2l1.4 2.5L5 7zm12 9.8L17 14l1.4 2.5-1.4 2.5 2.5-1.4 2.5 1.4-1.4-2.5 1.4-2.5zm0-9l-2.5 1.4L18.4 5 17 2.5l2.5 1.4L22 2l-1.4 2.5zM14.1 9l-9.6 9.6 1.4 1.4 9.6-9.6z"/></svg>
+                            <span>Effekte</span>
+                        </button>
+                        <button class="shop-cat-btn" data-category="masken" onclick="filterShop('masken', this)">
+                            <svg viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 1.5;"><path d="M12 3l-8 5v8l8 5 8-5V8l-8-5zm-7.5 9c0-3.5 2-6.5 2-6.5M19.5 12c0-3.5-2-6.5-2-6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 5L5 9v6l7 4 7-4V9l-7-4z" fill="currentColor" stroke="none"/></svg>
+                            <span>Masken</span>
+                        </button>
+                        <button class="shop-cat-btn" data-category="brillen" onclick="filterShop('brillen', this)">
+                            <svg viewBox="0 0 24 24"><path d="M18.5 6C15.82 6 13.59 7.65 12.63 10c-.96-2.35-3.19-4-5.87-4C3.1 6 0 9.1 0 13c0 3.9 3.1 7 6.76 7 2.68 0 4.91-1.65 5.87-4 .96 2.35 3.19 4 5.87 4 3.66 0 6.76-3.1 6.76-7 0-3.9-3.1-7-6.76-7zm-11.74 12c-2.6 0-4.76-2.1-4.76-5s2.16-5 4.76-5 4.76 2.1 4.76 5-2.16 5-4.76 5zm11.74 0c-2.6 0-4.76-2.1-4.76-5s2.16-5 4.76-5 4.76 2.1 4.76 5-2.16 5-4.76 5z"/></svg>
+                            <span>Brillen</span>
+                        </button>
+                        <button class="shop-cat-btn" data-category="accessories" onclick="filterShop('accessories', this)">
+                            <svg viewBox="0 0 24 24"><path d="M3 4h18v16H3V4zm8 5h2v3h-2V9zm8 2H5v7h14v-7z"/></svg>
+                            <span>Accessoires</span>
+                        </button>
+                        <button class="shop-cat-btn" data-category="haustiere" onclick="filterShop('haustiere', this)">
+                            <svg viewBox="0 0 24 24"><path d="M6 4h3v3H6V4zm9 0h3v3h-3V4zm-1 4H5v7h14V8h-5zm-5 7h6v4H9v-4z"/></svg>
+                            <span>Haustiere</span>
+                        </button>
+                    </div>
                 </div>
             </div>
             
@@ -2097,17 +2319,92 @@
                     TENTIX+
                 </div>
                 <div style="font-size: 10px; color: #888; margin-bottom: 12px; line-height: 1.5; font-weight: 500;" id="t-shop-sidebar-plus-desc">Hol dir zusätzliche Vorteile und Kosmetika!</div>
-                <div class="dash-btn" style="margin: 0; padding: 8px 12px; font-size: 10px; background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-gradient-sec) 100%); color: #000; border: none; font-weight: 800; box-shadow: 0 4px 15px rgba(var(--accent-blue-rgb), 0.25);" onclick="openTentixPlusModal()">Upgrade</div>
+                <div class="dash-btn" id="shop-upgrade-btn" style="margin: 0; padding: 8px 12px; font-size: 10px; background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-gradient-sec) 100%); color: #000; border: none; font-weight: 800; box-shadow: 0 4px 15px rgba(var(--accent-blue-rgb), 0.25);" onclick="openTentixPlusModal(event)">Upgrade</div>
             </div>
 
             <!-- Creator Code Input Section (Bottom Left) -->
-            <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 15px; margin-top: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); margin-bottom: 10px;">
-                <div style="font-weight: 800; font-size: 11px; color: #fff; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">Creator Code</div>
-                <div style="display: flex; gap: 8px;">
-                    <input type="text" id="shop-creator-input" placeholder="CODE..." style="flex: 1; background: #000; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 6px 10px; font-size: 11px; color: #fff; outline: none; text-transform: uppercase; font-family: monospace;">
-                    <button class="dash-btn" style="margin: 0; padding: 6px 10px; font-size: 10px; font-weight: 800; background: var(--accent-blue); color: #000; border: none; border-radius: 6px;" onclick="applyShopCreatorCode()">OK</button>
+            <div style="background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.03); border-radius: 8px; padding: 10px; margin-top: 5px; margin-bottom: 8px;">
+                <div style="font-weight: 800; font-size: 9px; color: #aaa; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px;">Creator Code</div>
+                <div style="display: flex; align-items: center; background: #000; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 3px 3px 3px 8px; height: 26px; box-sizing: border-box;">
+                    <input type="text" id="shop-creator-input" placeholder="CODE..." style="flex: 1; background: transparent; border: none; color: #fff; outline: none; text-transform: uppercase; font-family: 'Inter', sans-serif; font-size: 10px; padding: 0; min-width: 0;">
+                    <button class="dash-btn" style="margin: 0; padding: 0 10px; height: 100%; font-size: 9px; font-weight: 800; background: var(--accent-blue); color: #000; border: none; border-radius: 4px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: opacity 0.2s;" onclick="applyShopCreatorCode()">OK</button>
                 </div>
-                <div id="shop-creator-status" style="font-size: 9px; color: #ff8800; margin-top: 5px; font-weight: 600; display: none;"></div>
+                <div id="shop-creator-status" style="font-size: 9px; color: #ff8800; margin-top: 4px; font-weight: 600; display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Centered Collapsible Payment Methods Drawer -->
+    <div id="shop-payment-container" class="payment-drawer" style="-webkit-app-region: no-drag;">
+        <div onclick="togglePaymentMethods()" class="payment-drawer-header">
+            <span id="ui-payment-drawer-title">Zahlungsmethoden</span>
+            <svg id="payment-drawer-arrow" viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: #aaa; transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1); transform: rotate(180deg);">
+                <path d="M7 14l5-5 5 5z"/>
+            </svg>
+        </div>
+        <div id="payment-drawer-content" style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+            <div class="payment-grid">
+                <!-- PayPal Badge -->
+                <div class="payment-btn paypal" onclick="openPaymentTerms('paypal')">
+                    <img src="../assets/PayPal.png" alt="PayPal">
+                </div>
+                <!-- Bitcoin Badge -->
+                <div class="payment-btn bitcoin" onclick="openPaymentTerms('bitcoin')">
+                    <img src="../assets/Bitcoin.png" alt="Bitcoin">
+                </div>
+                <!-- Skrill Badge -->
+                <div class="payment-btn skrill" onclick="openPaymentTerms('skrill')">
+                    <img src="../assets/Skrill.png" alt="Skrill">
+                </div>
+                <!-- Giropay Badge -->
+                <div class="payment-btn giropay" onclick="openPaymentTerms('giropay')">
+                    <img src="../assets/Giropay.png" alt="Giropay">
+                </div>
+                <!-- Visa Badge -->
+                <div class="payment-btn visa" onclick="openPaymentTerms('visa')">
+                    <img src="../assets/Visa.png" alt="Visa">
+                </div>
+                <!-- Mastercard Badge -->
+                <div class="payment-btn mastercard" onclick="openPaymentTerms('mastercard')">
+                    <img src="../assets/Mastercard.png" alt="Mastercard">
+                </div>
+                <!-- Sofortüberweisung Badge -->
+                <div class="payment-btn sofort full-width" onclick="openPaymentTerms('sofort')">
+                    <img src="../assets/Sofort.png" alt="Sofort">
+                </div>
+            </div>
+            <!-- Legal / Right info -->
+            <div id="ui-payment-legal-text" style="font-size: 8.5px; color: #666; line-height: 1.4; text-align: center; margin-bottom: 15px; padding: 0 20px; font-weight: 500;">
+                Wichtiger Hinweis: Alle Käufe sind endgültig. Es besteht kein Anspruch auf Rückerstattung (No Refund). Mit dem Kauf akzeptierst du unsere Nutzungsbedingungen und Datenschutzbestimmungen.
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Terms details info Modal -->
+    <div id="payment-terms-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5, 5, 7, 0.85); backdrop-filter: blur(15px); z-index: 10000; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; -webkit-app-region: no-drag;">
+        <div style="background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; width: 440px; padding: 25px; box-sizing: border-box; box-shadow: 0 10px 40px rgba(0,0,0,0.8); display: flex; flex-direction: column; gap: 15px; position: relative;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+                <img id="payment-terms-logo" src="" style="height: 22px; object-fit: contain;">
+                <span id="payment-terms-title" style="font-weight: 800; font-size: 14px; color: #fff; letter-spacing: 0.5px; text-transform: uppercase;">Zahlungsinformationen</span>
+            </div>
+            
+            <div style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px; display: flex; flex-direction: column; gap: 12px;">
+                <div>
+                    <div style="font-size: 10px; font-weight: 800; color: var(--accent-blue); text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px;" id="lbl-refund-policy">Rückerstattungsrichtlinie (Refund Policy)</div>
+                    <p style="font-size: 11px; color: #ccc; line-height: 1.5; margin: 0;" id="txt-refund-policy">
+                        Da es sich um digitale, kosmetische Spielinhalte handelt, erlöschen die regulären Rückgaberechte sofort bei Bereitstellung. Eine Rückerstattung ist nur unter besonderen Umständen (z. B. nachweisbarer technischer Fehler) möglich.
+                    </p>
+                </div>
+                <div>
+                    <div style="font-size: 10px; font-weight: 800; color: var(--accent-blue); text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px;" id="lbl-buyer-rights">Käuferrechte & Gebühren</div>
+                    <p style="font-size: 11px; color: #ccc; line-height: 1.5; margin: 0;" id="txt-buyer-rights">
+                        Es gelten die offiziellen Nutzungsbedingungen des Zahlungsanbieters. Es fallen für dich keine zusätzlichen Transaktionsgebühren an. Missbräuchliche Rückbuchungen/Dispute führen zum sofortigen Ausschluss.
+                    </p>
+                </div>
+            </div>
+            
+            <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
+                <button class="dash-btn" style="margin: 0; background: var(--accent-blue); color: #000; font-weight: 800; padding: 10px 20px; border-radius: 6px; border: none; cursor: pointer;" onclick="closePaymentTerms()">SCHLIESSEN</button>
             </div>
         </div>
     </div>
@@ -2127,15 +2424,18 @@
         <div class="cart-summary">
             <div class="cart-summary-row">
                 <span>Zwischensumme</span>
-                <span id="cart-subtotal">0 Coins</span>
+                <span id="cart-subtotal">0,00 €</span>
             </div>
             <div class="cart-summary-row" id="cart-discount-row" style="display: none; color: #ff8800;">
                 <span>Rabatt (<span id="cart-discount-percent">0</span>%)</span>
-                <span id="cart-discount-value">-0 Coins</span>
+                <span id="cart-discount-value">-0,00 €</span>
             </div>
             <div class="cart-summary-row total">
                 <span>Gesamtsumme</span>
-                <span id="cart-total">0 Coins</span>
+                <span id="cart-total">0,00 €</span>
+            </div>
+            <div style="font-size: 10px; color: #666; text-align: right; margin-top: 5px; font-weight: 500;" id="cart-vat-row">
+                inkl. 19% MwSt. (<span id="cart-vat-value">0,00 €</span>)
             </div>
             <button class="shop-product-buy" style="margin-top: 15px; width: 100%; padding: 12px; font-weight: 800; font-size: 11px;" onclick="checkoutCart()">Jetzt Bezahlen</button>
         </div>
@@ -2157,7 +2457,7 @@
 
 <div id="cosmetics-view">
     <div class="explore-container" style="background: rgba(10, 10, 12, 0.9); backdrop-filter: blur(20px);">
-        <div style="flex: 1.2; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; position: relative; border-right: 1px solid rgba(255, 255, 255, 0.05); -webkit-app-region: no-drag;">
+        <div style="flex: 1.4; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; position: relative; border-right: 1px solid rgba(255, 255, 255, 0.05); -webkit-app-region: no-drag; box-sizing: border-box;">
             <div style="font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px;">
                 <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: var(--accent-blue);"><path d="M12 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm9 7h-6v13h-2v-6h-2v6H9V9H3V7h18v2z"/></svg>
                 3D-Vorschau
@@ -2169,7 +2469,7 @@
                 Drag zum Drehen | Mausrad zum Zoomen
             </div>
         </div>
-        <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-start; align-items: stretch; padding: 30px; background: rgba(0, 0, 0, 0.2); -webkit-app-region: no-drag; overflow-y: auto; scrollbar-gutter: stable;">
+        <div style="flex: 0.8; display: flex; flex-direction: column; justify-content: flex-start; align-items: stretch; padding: 25px; background: rgba(0, 0, 0, 0.25); -webkit-app-region: no-drag; overflow-y: auto; max-height: 100%; box-sizing: border-box;">
             <div style="font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px;">
                 <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: var(--accent-blue);"><path d="M12 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm9 7h-6v13h-2v-6h-2v6H9V9H3V7h18v2z"/></svg>
                 Cosmetics Manager
@@ -2314,10 +2614,12 @@
     </div>
 </div>
 
-<div id="news-toggle-btn" onclick="toggleNewsPane()" title="Toggle News">
-    <svg class="arrow-icon" viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; display: inline-block;">
-        <polyline points="15 18 9 12 15 6"></polyline>
-    </svg>
+<div id="news-toggle-btn" onclick="toggleNewsPane()">
+    <div class="arrow-wrapper">
+        <svg class="arrow-icon" viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; display: inline-block;">
+            <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+    </div>
 </div>
 
 <div id="news-pane">
@@ -2331,13 +2633,13 @@
 </div>
 
 <div class="social-container" id="ui-social-container">
-    <div class="social-icon soc-ig" onclick="if(window.api) window.api.openExternalLink('https://www.instagram.com/t3nt1x/')" title="Instagram">
+    <div class="social-icon soc-ig" onclick="if(window.api) window.api.openExternalLink('https://www.instagram.com/t3nt1x/')">
         <div class="mask-icon" style="-webkit-mask-image: url('../assets/social-ig.png'); width: 18px; height: 18px;"></div>
     </div>
-    <div class="social-icon soc-dc" onclick="if(window.api) window.api.openExternalLink('https://discord.gg/txhbXQGk97')" title="Discord Server">
+    <div class="social-icon soc-dc" onclick="if(window.api) window.api.openExternalLink('https://discord.gg/txhbXQGk97')">
         <div class="mask-icon" style="-webkit-mask-image: url('../assets/icon-discord.png'); width: 18px; height: 18px;"></div>
     </div>
-    <div class="social-icon soc-yt" onclick="if(window.api) window.api.openExternalLink('https://www.youtube.com/@TentixTV')" title="YouTube Channel">
+    <div class="social-icon soc-yt" onclick="if(window.api) window.api.openExternalLink('https://www.youtube.com/@TentixTV')">
         <div class="mask-icon" style="-webkit-mask-image: url('../assets/social-yt.png'); width: 18px; height: 18px;"></div>
     </div>
 </div>
@@ -2465,23 +2767,15 @@
         }
         if(!localStorage.getItem('tentix_pending_invites')) localStorage.setItem('tentix_pending_invites', JSON.stringify([]));
 
-        // Load tentix_sim_users. If empty, initialize without T3NX and with TN3X as owner.
-        // If populated, remove any user with username === 'T3NX' and ensure TN3X exists.
+        // Load tentix_sim_users. If empty or contains old dummy users, initialize with only TN3X as owner.
         let simUsers = localStorage.getItem('tentix_sim_users');
-        if (!simUsers) {
+        if (!simUsers || simUsers.includes('LukasLp')) {
             let initialUsers = [
-                { username: 'TN3X', uuid: 'TN3X-uuid', roles: ['OWNER', 'DEV', 'ADMIN', 'PLAYER'], is_banned: false, ban_reason: '' },
-                { username: 'LukasLp', uuid: 'lukas-uuid', roles: ['PLAYER'], is_banned: true, ban_reason: 'Hacking/Fly' },
-                { username: 'GamerX', uuid: 'gamerx-uuid', roles: ['VIP', 'PLAYER'], is_banned: true, ban_reason: 'Chatverhalten' },
-                { username: 'PvPKnight', uuid: 'pvp-uuid', roles: ['PLAYER'], is_banned: true, ban_reason: 'Autoclicker' },
-                { username: 'MineCraftPro', uuid: 'mcpro-uuid', roles: ['VIPP', 'PLAYER'], is_banned: true, ban_reason: 'Bugusing' },
-                { username: 'xX_Shadow_Xx', uuid: 'shadow-uuid', roles: ['PLAYER'], is_banned: true, ban_reason: 'Alt-Account' },
-                { username: 'DerEchteT3NX', uuid: 'fake-t3nx-uuid', roles: ['PLAYER'], is_banned: true, ban_reason: 'Impersonation' }
+                { username: 'TN3X', uuid: 'TN3X-uuid', roles: ['OWNER', 'DEV', 'ADMIN', 'PLAYER'], is_banned: false, ban_reason: '' }
             ];
             localStorage.setItem('tentix_sim_users', JSON.stringify(initialUsers));
         } else {
             let users = JSON.parse(simUsers);
-            users = users.filter(u => u.username !== 'T3NX');
             let tn3xExists = users.some(u => u.username === 'TN3X');
             if (!tn3xExists) {
                 users.unshift({ username: 'TN3X', uuid: 'TN3X-uuid', roles: ['OWNER', 'DEV', 'ADMIN', 'PLAYER'], is_banned: false, ban_reason: '' });
@@ -2797,7 +3091,7 @@
 
         const cleanName = (savedName || '').trim().toUpperCase();
 
-        // Check local override first so T3NX / TN3X always gets badges immediately if not yet in database
+        // Check local override first so TN3X always gets badges immediately if not yet in database
         if (cleanName === 'TN3X') {
             rolesToUse = ['OWNER', 'DEV', 'ADMIN', 'PLAYER'];
         } else {
@@ -3049,169 +3343,7 @@
         loadInbox();
     }
 
-    const SHOP_PRODUCTS = [
-        // Capes
-        {
-            id: 'tentix_wave_cape',
-            title: 'TENTIX Wave Cape',
-            desc_de: 'Wellen-Design Umhang',
-            desc_en: 'Wave design cape',
-            price: 150,
-            priceType: 'coins',
-            category: 'capes',
-            badge: 'HOT',
-            icon: `<svg viewBox="0 0 24 24" style="width: 32px; height: 32px; fill: var(--accent-blue);"><path d="M12 2L2 5v6c0 5.25 4.2 9.4 10 11 5.8-1.6 10-5.8 10-11V5l-10-3z"/></svg>`
-        },
-        {
-            id: 'galaxy_cape',
-            title: 'Galaxy Cape',
-            desc_de: 'Kosmischer Umhang',
-            desc_en: 'Cosmic galaxy cape',
-            price: 200,
-            priceType: 'coins',
-            category: 'capes',
-            badge: 'EPIC',
-            icon: `<svg viewBox="0 0 24 24" style="width: 32px; height: 32px; fill: #a020f0;"><path d="M12 2L2 5v6c0 5.25 4.2 9.4 10 11 5.8-1.6 10-5.8 10-11V5l-10-3z"/></svg>`
-        },
-        // Bandanas
-        {
-            id: 'red_bandana',
-            title: 'Rotes Bandana',
-            desc_de: 'Stylisches rotes Bandana',
-            desc_en: 'Stylish red bandana',
-            price: 80,
-            priceType: 'coins',
-            category: 'bandanas',
-            badge: '',
-            icon: `<svg viewBox="0 0 24 24" style="width: 32px; height: 32px; fill: #ff4b4b;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`
-        },
-        {
-            id: 'skull_bandana',
-            title: 'Totenkopf Bandana',
-            desc_de: 'Düsteres Totenkopf-Design',
-            desc_en: 'Spooky skull bandana',
-            price: 100,
-            priceType: 'coins',
-            category: 'bandanas',
-            badge: 'NEW',
-            icon: `<svg viewBox="0 0 24 24" style="width: 32px; height: 32px; fill: #ccc;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>`
-        },
-        // Effekte
-        {
-            id: 'flame_aura',
-            title: 'Flammen-Aura',
-            desc_de: 'Heiße Partikeleffekte',
-            desc_en: 'Hot flame particle aura',
-            price: 250,
-            priceType: 'coins',
-            category: 'effekte',
-            badge: 'HOT',
-            icon: `<svg viewBox="0 0 24 24" style="width: 32px; height: 32px; fill: #ff8800;"><path d="M12 23c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v1.68C7.64 6.36 6 8.93 6 12v5l-2 2v1h16v-1l-2-2z"/></svg>`
-        },
-        {
-            id: 'love_hearts',
-            title: 'Herzen-Aura',
-            desc_de: 'Liebe liegt in der Luft',
-            desc_en: 'Love is in the air',
-            price: 180,
-            priceType: 'coins',
-            category: 'effekte',
-            badge: '',
-            icon: `<svg viewBox="0 0 24 24" style="width: 32px; height: 32px; fill: #ff007f;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`
-        },
-        // Masken
-        {
-            id: 'demon_mask',
-            title: 'Dämonenmaske',
-            desc_de: 'Furchteinflößende Maske',
-            desc_en: 'Terrifying demon mask',
-            price: 120,
-            priceType: 'coins',
-            category: 'masken',
-            badge: 'NEW',
-            icon: `<svg viewBox="0 0 24 24" style="width: 32px; height: 32px; fill: #ff0000;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>`
-        },
-        {
-            id: 'ninja_mask',
-            title: 'Ninja Maske',
-            desc_de: 'Schwarze Stealth-Maske',
-            desc_en: 'Black stealth ninja mask',
-            price: 90,
-            priceType: 'coins',
-            category: 'masken',
-            badge: '',
-            icon: `<svg viewBox="0 0 24 24" style="width: 32px; height: 32px; fill: #333;"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2z"/></svg>`
-        },
-        // Brillen
-        {
-            id: 'aviator_glasses',
-            title: 'Fliegerbrille',
-            desc_de: 'Klassische Sonnenbrille',
-            desc_en: 'Classic aviator sunglasses',
-            price: 70,
-            priceType: 'coins',
-            category: 'brillen',
-            badge: '',
-            icon: `<svg viewBox="0 0 24 24" style="width: 32px; height: 32px; fill: #666;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>`
-        },
-        {
-            id: 'matrix_glasses',
-            title: 'Matrix Brille',
-            desc_de: 'Cyberpunk Sonnenbrille',
-            desc_en: 'Cyberpunk matrix glasses',
-            price: 85,
-            priceType: 'coins',
-            category: 'brillen',
-            badge: 'HOT',
-            icon: `<svg viewBox="0 0 24 24" style="width: 32px; height: 32px; fill: #00ff00;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>`
-        },
-        // Accessoires
-        {
-            id: 'crown',
-            title: 'Goldene Krone',
-            desc_de: 'Für wahre Könige',
-            desc_en: 'For true royalty',
-            price: 300,
-            priceType: 'coins',
-            category: 'accessories',
-            badge: 'EPIC',
-            icon: `<svg viewBox="0 0 24 24" style="width: 32px; height: 32px; fill: #ffd700;"><path d="M5 16L3 5l5 3 4-6 4 6 5-3-2 11H5zm14 3c0 .55-.45 1-1 1H6c-.55 0-1-.45-1-1v-1h14v1z"/></svg>`
-        },
-        {
-            id: 'angel_wings',
-            title: 'Engelsflügel',
-            desc_de: 'Weiße Engelsflügel',
-            desc_en: 'White angel wings',
-            price: 350,
-            priceType: 'coins',
-            category: 'accessories',
-            badge: 'EPIC',
-            icon: `<svg viewBox="0 0 24 24" style="width: 32px; height: 32px; fill: #e0f7fa;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>`
-        },
-        // Haustiere
-        {
-            id: 'baby_dragon',
-            title: 'Baby Drache',
-            desc_de: 'Fliegender kleiner Begleiter',
-            desc_en: 'Flying baby dragon pet',
-            price: 400,
-            priceType: 'coins',
-            category: 'haustiere',
-            badge: 'HOT',
-            icon: `<svg viewBox="0 0 24 24" style="width: 32px; height: 32px; fill: #228b22;"><path d="M12 14c-1.66 0-3 1.34-3 3 0 2 2 3.5 3 4 1-.5 3-2 3-4 0-1.66-1.34-3-3-3z"/></svg>`
-        },
-        {
-            id: 'cute_kitten',
-            title: 'Süße Katze',
-            desc_de: 'Liebevolles kleines Kätzchen',
-            desc_en: 'Cute little kitten pet',
-            price: 250,
-            priceType: 'coins',
-            category: 'haustiere',
-            badge: 'NEW',
-            icon: `<svg viewBox="0 0 24 24" style="width: 32px; height: 32px; fill: #ffb6c1;"><path d="M12 14c-1.66 0-3 1.34-3 3 0 2 2 3.5 3 4 1-.5 3-2 3-4 0-1.66-1.34-3-3-3z"/></svg>`
-        }
-    ];
+    const SHOP_PRODUCTS = [];
 
     let currentShopCategory = 'all';
 
@@ -3285,7 +3417,7 @@
         currentShopCategory = category;
         const parent = document.getElementById('shop-category-filters');
         if (parent) {
-            parent.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            parent.querySelectorAll('.shop-cat-btn').forEach(b => b.classList.remove('active'));
         }
         if (btn) btn.classList.add('active');
         loadShop();
@@ -3397,8 +3529,29 @@
 
             let maintenanceCardHtml = '';
             if (maintenanceModeActive) {
+                const deactivatedList = [];
+                const deactivatedListEn = [];
+                if (isFeatureDeactivated('play')) { deactivatedList.push('Spielen'); deactivatedListEn.push('Playing'); }
+                if (isFeatureDeactivated('explore')) { deactivatedList.push('Erkunden'); deactivatedListEn.push('Explore'); }
+                if (isFeatureDeactivated('cosmetics')) { deactivatedList.push('Cosmetics'); deactivatedListEn.push('Cosmetics'); }
+                if (isFeatureDeactivated('shop')) { deactivatedList.push('Shop'); deactivatedListEn.push('Shop'); }
+                if (isFeatureDeactivated('tentixplus')) { deactivatedList.push('TENTIX+'); deactivatedListEn.push('TENTIX+'); }
+
+                let detailsTextDe = 'Derzeit finden Wartungsarbeiten am System statt. Einige Funktionen stehen vorübergehend nicht zur Verfügung. Vielen Dank für dein Verständnis!';
+                let detailsTextEn = 'System maintenance is currently in progress. Some features may be temporarily unavailable. Thank you for your patience!';
+
+                if (deactivatedList.length > 0) {
+                    if (deactivatedList.length === 1) {
+                        detailsTextDe = `Wir arbeiten gerade an: ${deactivatedList[0]}. Diese Funktion steht vorübergehend nicht zur Verfügung.`;
+                        detailsTextEn = `We are currently working on: ${deactivatedListEn[0]}. This feature is temporarily unavailable.`;
+                    } else {
+                        detailsTextDe = `Wir arbeiten gerade an: ${deactivatedList.join(', ')}. Diese Funktionen stehen vorübergehend nicht zur Verfügung.`;
+                        detailsTextEn = `We are currently working on: ${deactivatedListEn.join(', ')}. These features are temporarily unavailable.`;
+                    }
+                }
+
                 maintenanceCardHtml = `
-                    <div style="background: rgba(255, 75, 75, 0.08); border: 1px solid rgba(255, 75, 75, 0.35); padding: 28px 24px 30px 24px; border-radius: 12px; width: 100%; box-shadow: 0 0 20px rgba(255, 75, 75, 0.15); margin-bottom: 15px; position: relative; overflow: hidden; box-sizing: border-box;">
+                    <div style="background: rgba(255, 75, 75, 0.08); border: 1px solid rgba(255, 75, 75, 0.35); padding: 28px 24px 38px 24px; border-radius: 12px; width: 100%; box-shadow: 0 0 20px rgba(255, 75, 75, 0.15); margin-bottom: 15px; position: relative; overflow: hidden; box-sizing: border-box;">
                         <div style="position: absolute; top: -50px; left: -50px; width: 150px; height: 150px; background: radial-gradient(circle, rgba(255, 75, 75, 0.1) 0%, transparent 70%); pointer-events: none;"></div>
                         <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
                             <div style="position: relative; width: 7px; height: 7px; display: flex; align-items: center; justify-content: center;">
@@ -3407,13 +3560,11 @@
                             </div>
                             <span style="font-weight: 900; font-size: 10px; color: #ff4b4b; letter-spacing: 2px; text-transform: uppercase;">SYSTEM STATUS</span>
                         </div>
-                        <div style="font-weight: 800; font-size: 13px; color: #ff4b4b; margin-bottom: 8px; text-transform: uppercase;">
+                        <div class="gradient-text-red" style="font-weight: 800; font-size: 13px; margin-bottom: 8px; text-transform: uppercase;">
                             ${currentLang === 'de' ? 'WARTUNGSARBEITEN AKTIV' : 'MAINTENANCE ACTIVE'}
                         </div>
-                        <div style="font-size: 11px; color: #eee; line-height: 1.5; text-align: left;">
-                            ${currentLang === 'de' 
-                                ? 'Derzeit finden Wartungsarbeiten am System statt. Einige Funktionen stehen vorübergehend nicht zur Verfügung. Vielen Dank für dein Verständnis!' 
-                                : 'System maintenance is currently in progress. Some features may be temporarily unavailable. Thank you for your patience!'}
+                        <div style="font-size: 11px; color: #eee; line-height: 1.5; text-align: left; margin-bottom: 12px;">
+                            ${currentLang === 'de' ? detailsTextDe : detailsTextEn}
                         </div>
                     </div>
                 `;
@@ -3449,7 +3600,7 @@
                         <div style="font-weight: 800; font-size: 13px; color: #fff; margin-bottom: 8px;">
                             ${systemStatusText}
                         </div>
-                        <div style="font-size: 11px; color: var(--text-gray); text-align: left; margin-top: 10px;">
+                        <div style="font-size: 11px; color: var(--text-gray); text-align: left; margin-top: 2px;">
                             ${lastMaintLabel}
                         </div>
                     </div>
@@ -4066,16 +4217,9 @@
         let users = [];
         if (isClientSimulated) {
             users = JSON.parse(localStorage.getItem('tentix_sim_users') || '[]');
-            if (users.length === 0) {
+            if (users.length === 0 || users.some(u => u.username === 'LukasLp')) {
                 users = [
-                    { username: 'TN3X', uuid: 'TN3X-uuid', roles: ['OWNER', 'DEV', 'ADMIN', 'PLAYER'], is_banned: false, ban_reason: '' },
-                    
-                    { username: 'LukasLp', uuid: 'lukas-uuid', roles: ['PLAYER'], is_banned: true, ban_reason: 'Hacking/Fly' },
-                    { username: 'GamerX', uuid: 'gamerx-uuid', roles: ['VIP', 'PLAYER'], is_banned: true, ban_reason: 'Chatverhalten' },
-                    { username: 'PvPKnight', uuid: 'pvp-uuid', roles: ['PLAYER'], is_banned: true, ban_reason: 'Autoclicker' },
-                    { username: 'MineCraftPro', uuid: 'mcpro-uuid', roles: ['VIPP', 'PLAYER'], is_banned: true, ban_reason: 'Bugusing' },
-                    { username: 'xX_Shadow_Xx', uuid: 'shadow-uuid', roles: ['PLAYER'], is_banned: true, ban_reason: 'Alt-Account' },
-                    { username: 'DerEchteT3NX', uuid: 'fake-t3nx-uuid', roles: ['PLAYER'], is_banned: true, ban_reason: 'Impersonation' }
+                    { username: 'TN3X', uuid: 'TN3X-uuid', roles: ['OWNER', 'DEV', 'ADMIN', 'PLAYER'], is_banned: false, ban_reason: '' }
                 ];
                 localStorage.setItem('tentix_sim_users', JSON.stringify(users));
             }
@@ -4092,11 +4236,6 @@
                 users = JSON.parse(localStorage.getItem('tentix_db_users') || '[]');
             }
         }
-
-        users = users.filter(u => {
-            const nameUpper = (u.username || '').trim().toUpperCase();
-            return nameUpper !== 'T3NX' && nameUpper !== 'TN3X';
-        });
 
         if(users.length === 0) {
             tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; font-style:italic; padding:20px;">Keine Benutzer gefunden.</td></tr>`;
@@ -4236,7 +4375,8 @@
             };
 
             const targetIdx = getHighestRolePriority(targetRoles);
-            if (operatorIdx >= targetIdx) {
+            const isTN3X = (savedName || '').trim().toUpperCase() === 'TN3X';
+            if (operatorIdx >= targetIdx && !isTN3X) {
                 showToast(currentLang === 'de' ? "Du kannst keine Benutzer mit gleichem oder höherem Rang bearbeiten!" : "You cannot edit users with equal or higher rank priority!", "error");
                 return;
             }
@@ -4359,13 +4499,21 @@
             };
             
             const targetIdx = getHighestRolePriority(targetRoles);
-            if (operatorIdx > targetIdx) {
+            const isTN3X = (savedName || '').trim().toUpperCase() === 'TN3X';
+            if (operatorIdx > targetIdx && !isTN3X) {
                 showToast(currentLang === 'de' ? "Niedrigere Ränge können keine höheren Ränge löschen!" : "Lower ranks cannot delete higher ranks!", "error");
                 return;
             }
         }
 
-        if (editUserTarget && (editUserTarget.trim().toUpperCase() === 'TN3X' || editUserTarget.trim().toUpperCase() === 'T3NX')) {
+        const isTN3X = (savedName || '').trim().toUpperCase() === 'TN3X';
+        const isSelf = editUserUuid === uuidValue;
+        if (isSelf && isTN3X) {
+            showToast(currentLang === 'de' ? "Du kannst dich nicht selbst löschen!" : "You cannot delete yourself!", "error");
+            return;
+        }
+
+        if (editUserTarget && (editUserTarget.trim().toUpperCase() === 'TN3X')) {
             showToast(currentLang === 'de' ? "Der Besitzer kann nicht gelöscht werden!" : "The owner cannot be deleted!", "error");
             return;
         }
@@ -4446,6 +4594,8 @@
                 checkBanStatus();
             }
             renderUsersTable();
+            renderBansTable();
+            fetchDashboardStats();
             return;
         }
 
@@ -4463,6 +4613,8 @@
             checkBanStatus();
         }
         renderUsersTable();
+        renderBansTable();
+        fetchDashboardStats();
     }
 
     async function unbanUser(username, uuid) {
@@ -4485,6 +4637,8 @@
             }
             closeUserEditModal();
             renderUsersTable();
+            renderBansTable();
+            fetchDashboardStats();
             return;
         }
 
@@ -4498,6 +4652,8 @@
 
         closeUserEditModal();
         renderUsersTable();
+        renderBansTable();
+        fetchDashboardStats();
     }
 
     async function renderBansTable() {
@@ -4561,6 +4717,8 @@
                 localStorage.setItem('tentix_sim_users', JSON.stringify(simUsers));
             }
             renderBansTable();
+            renderUsersTable();
+            fetchDashboardStats();
             showToast(currentLang === 'de' ? "Spieler entsperrt!" : "Player unbanned!", "success");
             return;
         }
@@ -4587,6 +4745,8 @@
             localStorage.setItem('tentix_db_users', JSON.stringify(dbUsers));
         }
         renderBansTable();
+        renderUsersTable();
+        fetchDashboardStats();
     }
 
     function inviteToTeam() {
@@ -5106,11 +5266,36 @@
         if (tokenStr && tokenStr !== 'undefined' && tokenStr !== 'null' && user && user !== 'GUEST') {
             isLoggedIn = true; savedName = user; uuidValue = uuid; deterministicId = generateFakeId(uuidValue, savedName);
 
+            // Dynamically register the user in simulated database (tentix_sim_users)
+            let simUsers = JSON.parse(localStorage.getItem('tentix_sim_users') || '[]');
+            if (!simUsers.some(u => u.username.toUpperCase() === savedName.toUpperCase())) {
+                simUsers.push({
+                    username: savedName,
+                    uuid: uuidValue || `${savedName}-uuid`,
+                    roles: ['PLAYER'],
+                    is_banned: false,
+                    ban_reason: ''
+                });
+                localStorage.setItem('tentix_sim_users', JSON.stringify(simUsers));
+            }
+
             fetch(`${API_BASE_URL}/api/users/init`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username: savedName, uuid: uuidValue })
-            }).catch(e => {});
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success && data.id) {
+                    deterministicId = data.id.toString().padStart(4, '0');
+                    const useridEl = document.getElementById('ui-card-id');
+                    const t = translations[currentLang];
+                    if (useridEl && isLoggedIn) {
+                        useridEl.innerText = t.userId + deterministicId;
+                    }
+                }
+            })
+            .catch(e => {});
 
             sendHeartbeatPing();
         } else {
@@ -5421,7 +5606,161 @@
             if(el.innerText.includes("Kategorien") || el.innerText.includes("Categories")) el.innerText = t.modCatTitle;
             if(el.innerText.includes("Umgebung") || el.innerText.includes("Environment")) el.innerText = t.modEnvTitle;
         });
+        
+        const paymentTitle = document.getElementById('ui-payment-drawer-title');
+        if (paymentTitle) {
+            paymentTitle.innerText = currentLang === 'de' ? 'Zahlungsmethoden' : 'Payment Methods';
+        }
+        const paymentLegal = document.getElementById('ui-payment-legal-text');
+        if (paymentLegal) {
+            paymentLegal.innerText = currentLang === 'de' 
+                ? 'Wichtiger Hinweis: Alle Käufe sind endgültig. Es besteht kein Anspruch auf Rückerstattung (No Refund). Mit dem Kauf akzeptierst du unsere Nutzungsbedingungen und Datenschutzbestimmungen.'
+                : 'Important Notice: All purchases are final. There is no right to refund (No Refund). By purchasing, you accept our Terms of Service and Privacy Policy.';
+        }
+
         updateSimulationButtonText();
+    }
+
+    let paymentMethodsExpanded = false;
+    function togglePaymentMethods() {
+        const container = document.getElementById('shop-payment-container');
+        const arrow = document.getElementById('payment-drawer-arrow');
+        if (!container || !arrow) return;
+        
+        paymentMethodsExpanded = !paymentMethodsExpanded;
+        if (paymentMethodsExpanded) {
+            container.classList.add('expanded');
+            arrow.style.transform = 'rotate(0deg)';
+            document.body.classList.add('payment-drawer-expanded');
+        } else {
+            container.classList.remove('expanded');
+            arrow.style.transform = 'rotate(180deg)';
+            document.body.classList.remove('payment-drawer-expanded');
+        }
+        updateMaintenanceBannerVisibility();
+    }
+
+    function openPaymentTerms(method) {
+        const modal = document.getElementById('payment-terms-modal');
+        const logo = document.getElementById('payment-terms-logo');
+        const title = document.getElementById('payment-terms-title');
+        const refundTxt = document.getElementById('txt-refund-policy');
+        const rightsTxt = document.getElementById('txt-buyer-rights');
+        
+        if (!modal) return;
+        
+        const info = {
+            paypal: {
+                logo: '../assets/PayPal.png',
+                title: 'PayPal',
+                de: {
+                    refund: 'Da es sich um digitale, kosmetische Spielinhalte handelt, erlöschen die regulären Rückgaberechte sofort nach Erhalt der Ware. Eine Rückerstattung via PayPal ist nur unter besonderen Umständen (z.B. technischer Fehler) nach Prüfung durch unseren Support möglich.',
+                    rights: 'Du bist durch den PayPal-Käuferschutz abgesichert. Ungerechtfertigte Konflikte oder Rückbuchungen verstoßen jedoch gegen unsere Richtlinien und führen zur dauerhaften Sperrung deines Accounts.'
+                },
+                en: {
+                    refund: 'Since the purchase involves digital, cosmetic items, standard return rights expire immediately upon delivery. A refund via PayPal is only granted under special circumstances (e.g., technical failure) after manual support review.',
+                    rights: 'You are protected by PayPal Buyer Protection. However, opening unjustified disputes or chargebacks violates our terms and will result in a permanent ban of your account.'
+                }
+            },
+            bitcoin: {
+                logo: '../assets/Bitcoin.png',
+                title: 'Bitcoin (Crypto)',
+                de: {
+                    refund: 'Krypto-Transaktionen sind technisch unumkehrbar. Rückerstattungen sind ausgeschlossen, es sei denn, es liegt ein nachweisbarer Fehler unsererseits vor. In diesem Fall erstatten wir den Euro-Wert zum Kaufzeitpunkt.',
+                    rights: 'Es gelten keine klassischen Käuferrechte. Die Zahlung erfolgt pseudonymisiert und direkt über die Blockchain. Eventuelle Netzwerkgebühren werden vom Käufer getragen.'
+                },
+                en: {
+                    refund: 'Cryptocurrency transactions are technically irreversible. Refunds are excluded unless there is a verifiable error on our part. If approved, we refund the Euro value at the time of purchase.',
+                    rights: 'No classic consumer protection rights apply. The payment is pseudonymous and handled directly via the blockchain. Any network transaction fees must be paid by the buyer.'
+                }
+            },
+            skrill: {
+                logo: '../assets/Skrill.png',
+                title: 'Skrill',
+                de: {
+                    refund: 'Es gelten die gesetzlichen Bestimmungen für digitale Güter. Keine Rückerstattungen möglich, außer unter besonderen Umständen nach Ermessen unseres Supports.',
+                    rights: 'Zahlungen werden sofort abgewickelt. Es fallen für dich keine zusätzlichen Gebühren an. Dein Skrill-Käuferschutz bleibt unberührt.'
+                },
+                en: {
+                    refund: 'Legal regulations for digital goods apply. Refunds are not possible except under special circumstances at the sole discretion of our support team.',
+                    rights: 'Payments are processed immediately. No additional transaction fees will be charged to you. Your Skrill protection remains unaffected.'
+                }
+            },
+            giropay: {
+                logo: '../assets/Giropay.png',
+                title: 'Giropay',
+                de: {
+                    refund: 'Rückerstattungen bei Giropay-Zahlungen sind ausgeschlossen, da es sich um virtuelle Güter handelt. Bei Fehlfunktionen wende dich bitte an unseren Support.',
+                    rights: 'Die Zahlung erfolgt direkt und sicher über das Online-Banking deiner Bank. Es gelten die Datenschutz- und Sicherheitsstandards der deutschen Kreditwirtschaft.'
+                },
+                en: {
+                    refund: 'Refunds for Giropay payments are excluded as they concern virtual goods. In case of delivery failure, please contact our support team.',
+                    rights: 'The payment is processed directly and securely via your bank\'s online banking. The privacy and security standards of the German banking industry apply.'
+                }
+            },
+            visa: {
+                logo: '../assets/Visa.png',
+                title: 'Visa Kreditkarte',
+                de: {
+                    refund: 'Käufe mit Visa-Kreditkarten sind endgültig. Rückerstattungen für kosmetische Artikel sind ausgeschlossen, außer unter besonderen Umständen (z. B. fehlerhafte Bereitstellung).',
+                    rights: 'Zahlungen werden über ein sicheres 3D-Secure-Verfahren abgewickelt. Betrügerische Chargebacks (Rückbuchungen) führen zum sofortigen und dauerhaften Ausschluss.'
+                },
+                en: {
+                    refund: 'Purchases with Visa credit cards are final. Refunds for cosmetic items are excluded, except under special circumstances (e.g., failed delivery).',
+                    rights: 'Payments are processed securely via 3D-Secure. Fraudulent chargebacks will result in an immediate and permanent ban from our network.'
+                }
+            },
+            mastercard: {
+                logo: '../assets/Mastercard.png',
+                title: 'Mastercard Kreditkarte',
+                de: {
+                    refund: 'Mastercard-Zahlungen sind endgültig und nicht erstattungsfähig. Ausnahmen gelten nur bei nachweisbaren Auslieferungsfehlern durch unser System.',
+                    rights: 'Sichere Zahlung via Mastercard Identity Check. Unbefugte Rückbuchungsversuche verstoßen gegen unsere Nutzungsbedingungen und führen zum permanenten Bann.'
+                },
+                en: {
+                    refund: 'Mastercard payments are final and non-refundable. Exceptions only apply in case of verifiable delivery errors caused by our system.',
+                    rights: 'Secure payment via Mastercard Identity Check. Unauthorized chargeback attempts violate our terms of service and lead to a permanent ban.'
+                }
+            },
+            sofort: {
+                logo: '../assets/Sofort.png',
+                title: 'Sofortüberweisung',
+                de: {
+                    refund: 'Da die Überweisung direkt ausgeführt wird und es sich um digitale Güter handelt, erlöschen die Rückgaberechte. Erstattungen erfolgen nur in begründeten Ausnahmefällen.',
+                    rights: 'Die Belastung erfolgt direkt von deinem Bankkonto. Es ist keine Registrierung beim Zahlungsdienstleister erforderlich. Deine Bankdaten werden verschlüsselt übertragen.'
+                },
+                en: {
+                    refund: 'Since the transfer is executed instantly and concerns digital goods, return rights expire. Refunds are only granted in justified exceptional cases.',
+                    rights: 'The amount is debited directly from your bank account. No registration with the payment provider is required. Your bank details are transmitted securely.'
+                }
+            }
+        };
+        
+        const mInfo = info[method];
+        if (mInfo) {
+            logo.src = mInfo.logo;
+            title.innerText = mInfo.title;
+            const lang = currentLang === 'de' ? 'de' : 'en';
+            refundTxt.innerText = mInfo[lang].refund;
+            rightsTxt.innerText = mInfo[lang].rights;
+            
+            document.getElementById('lbl-refund-policy').innerText = currentLang === 'de' ? 'Rückerstattungsrichtlinie (Refund Policy)' : 'Refund Policy';
+            document.getElementById('lbl-buyer-rights').innerText = currentLang === 'de' ? 'Käuferrechte & Gebühren' : 'Buyer Rights & Fees';
+        }
+        
+        modal.style.display = 'flex';
+        setTimeout(() => {
+            modal.style.opacity = '1';
+        }, 50);
+    }
+    
+    function closePaymentTerms() {
+        const modal = document.getElementById('payment-terms-modal');
+        if (!modal) return;
+        modal.style.opacity = '0';
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 300);
     }
 
     function toggleModloader(e) {
@@ -5591,7 +5930,27 @@
         if (!grid) return;
         
         grid.innerHTML = '';
-        COSMETICS_LIST.forEach(cape => {
+        
+        const checkRole = (allowedRoles) => {
+            return (currentUserRoles || []).some(r => allowedRoles.includes(r));
+        };
+        
+        const ownedCapes = COSMETICS_LIST.filter(cape => checkRole(cape.roles));
+        ownedCapes.sort((a, b) => a.name.localeCompare(b.name));
+        
+        const reorderedCapes = [];
+        const numRows = Math.ceil(ownedCapes.length / 2);
+        for (let r = 0; r < numRows; r++) {
+            if (r < ownedCapes.length) {
+                reorderedCapes.push(ownedCapes[r]);
+            }
+            const rightIndex = r + numRows;
+            if (rightIndex < ownedCapes.length) {
+                reorderedCapes.push(ownedCapes[rightIndex]);
+            }
+        }
+        
+        reorderedCapes.forEach(cape => {
             const description = currentLang === 'de' ? cape.desc_de : cape.desc_en;
             const isActive = equippedCosmetic === cape.id ? 'active' : '';
             
@@ -5711,6 +6070,7 @@
                 }
 
                 applyLoginState();
+                updateMaintenanceBannerVisibility();
 
                 if(localStorage.getItem('tentix_news_open') === 'true' && isLoggedIn) {
                     if(document.getElementById('news-pane')) document.getElementById('news-pane').classList.add('open');
@@ -5740,6 +6100,7 @@
         closeNewsPane();
         document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.nav-item').forEach(el => { if(el.getAttribute('data-page') === page) el.classList.add('active'); });
+        setTimeout(updateMaintenanceBannerVisibility, 600); // Allow view switch animation to finish, then update banner
 
         const menu = document.getElementById('main-menu-wrapper');
         const shop = document.getElementById('shop-view');
@@ -5987,10 +6348,12 @@
             document.documentElement.style.setProperty('--accent-blue', '#ff4b4b');
             document.documentElement.style.setProperty('--accent-blue-rgb', '255, 75, 75');
             document.documentElement.style.setProperty('--accent-gradient-sec', '#ff1a1a');
+            document.documentElement.style.setProperty('--news-pane-width', '380px');
         } else {
             document.documentElement.style.setProperty('--accent-blue', '#00d4ff');
             document.documentElement.style.setProperty('--accent-blue-rgb', '0, 212, 255');
             document.documentElement.style.setProperty('--accent-gradient-sec', '#0072ff');
+            document.documentElement.style.setProperty('--news-pane-width', '320px');
         }
 
         // Swap logo images
@@ -5999,10 +6362,14 @@
             img.src = logoSrc;
         });
 
-        // 2. Banner display
-        const banner = document.getElementById('maintenance-banner');
-        if (banner) {
-            banner.style.display = active ? 'flex' : 'none';
+        // 2. Banner display & syncing
+        localStorage.setItem('tentix_maintenance_active', active ? 'true' : 'false');
+        updateMaintenanceBannerVisibility();
+        
+        // Sync checkbox in admin control tab
+        const maintCheckbox = document.getElementById('maint-global-active');
+        if (maintCheckbox) {
+            maintCheckbox.checked = active;
         }
 
         // 3. Gray out and disable TENTIX+ nav button
@@ -6191,6 +6558,7 @@
         closeAllPopups();
         if(document.getElementById('settings-overlay')) document.getElementById('settings-overlay').style.display = 'flex';
         if(document.getElementById('click-backdrop')) document.getElementById('click-backdrop').style.display = 'block';
+        updateMaintenanceBannerVisibility();
     }
 
     function toggleVersions(e) { if(e) e.stopPropagation(); closeAllPopups(); if(document.getElementById('version-overlay')) document.getElementById('version-overlay').style.display = 'grid'; if(document.getElementById('click-backdrop')) document.getElementById('click-backdrop').style.display = 'block'; }
@@ -6221,6 +6589,7 @@
         if(dLogin && dLogin.style.display !== 'none') {
             dLogin.style.opacity = '0'; dLogin.classList.remove('show'); setTimeout(()=>dLogin.style.display='none',300);
         }
+        updateMaintenanceBannerVisibility();
     }
 
     function selectVer(v, e) {
@@ -6364,6 +6733,28 @@
 
     function openMaintenanceInfoModal() {
         const modal = document.getElementById('maintenance-info-modal');
+        
+        const deTitle = document.getElementById('maint-de-title');
+        const deText = document.getElementById('maint-de-text');
+        const enTitle = document.getElementById('maint-en-title');
+        const enText = document.getElementById('maint-en-text');
+        
+        if (deTitle && deText && enTitle && enText) {
+            deTitle.style.display = currentLang === 'de' ? 'block' : 'none';
+            deText.style.display = currentLang === 'de' ? 'block' : 'none';
+            enTitle.style.display = currentLang === 'en' ? 'block' : 'none';
+            enText.style.display = currentLang === 'en' ? 'block' : 'none';
+        }
+        
+        const modalTitle = document.getElementById('ui-maint-modal-title');
+        if (modalTitle) {
+            modalTitle.innerText = currentLang === 'de' ? 'WARTUNGSMODUS' : 'MAINTENANCE MODE';
+        }
+        const closeBtn = document.getElementById('ui-maint-close-btn');
+        if (closeBtn) {
+            closeBtn.innerText = currentLang === 'de' ? 'SCHLIESSEN' : 'CLOSE';
+        }
+        
         modal.style.display = 'flex';
         setTimeout(() => {
             modal.style.opacity = '1';
@@ -6643,12 +7034,12 @@
     
     function initSkinChangerPreview() {
         const canvas = document.getElementById('skin-changer-canvas');
+        const canvas2d = document.getElementById('skin-changer-canvas-2d');
         if (!canvas) return;
 
+        let use3D = true;
         try {
-            if (skinChangerViewer) {
-                updateSkinChangerPreview();
-            } else {
+            if (!skinChangerViewer) {
                 skinChangerViewer = new skinview3d.SkinViewer({
                     canvas: canvas,
                     width: 180,
@@ -6662,14 +7053,24 @@
                 // Angled stiff pose
                 skinChangerViewer.model.rotation.y = 0.4;
                 skinChangerViewer.model.rotation.x = 0.05;
-                
-                updateSkinChangerPreview();
-                initSkinDragAndDrop();
             }
         } catch (e) {
-            console.error("Failed to initialize skin changer preview:", e);
+            console.error("Failed to initialize skin changer 3D preview:", e);
             skinChangerViewer = null;
-            updateSkinChangerPreview();
+            use3D = false;
+        }
+
+        if (use3D && skinChangerViewer) {
+            canvas.style.display = 'block';
+            if (canvas2d) canvas2d.style.display = 'none';
+        } else {
+            canvas.style.display = 'none';
+            if (canvas2d) canvas2d.style.display = 'block';
+        }
+        
+        updateSkinChangerPreview();
+        if (use3D && skinChangerViewer) {
+            initSkinDragAndDrop();
         }
         
         renderNameMCHistory(savedName || 'MHF_Steve');
@@ -6691,10 +7092,26 @@
             label = savedName;
         }
         
+        const canvas = document.getElementById('skin-changer-canvas');
+        const canvas2d = document.getElementById('skin-changer-canvas-2d');
+
         if (skinChangerViewer) {
-            skinChangerViewer.loadSkin(skinUrl);
+            canvas.style.display = 'block';
+            if (canvas2d) canvas2d.style.display = 'none';
+            skinChangerViewer.loadSkin(skinUrl).catch(err => {
+                console.warn("Failed to load 3D skin, falling back to 2D canvas:", err);
+                canvas.style.display = 'none';
+                if (canvas2d) {
+                    canvas2d.style.display = 'block';
+                    draw2DSkinOnCanvas(skinUrl);
+                }
+            });
         } else {
-            draw2DSkinOnCanvas(skinUrl);
+            canvas.style.display = 'none';
+            if (canvas2d) {
+                canvas2d.style.display = 'block';
+                draw2DSkinOnCanvas(skinUrl);
+            }
         }
         
         const caption = document.getElementById('current-skin-caption');
@@ -7013,7 +7430,7 @@
                 const lock = document.createElement('div');
                 lock.className = 'cape-lock-overlay';
                 lock.style.position = 'absolute';
-                lock.style.top = '8px';
+                lock.style.bottom = '8px';
                 lock.style.right = '8px';
                 lock.style.background = 'rgba(0,0,0,0.65)';
                 lock.style.borderRadius = '50%';
@@ -7588,7 +8005,7 @@
             count = 12;
             groupDivisor = 2 * 60 * 60 * 1000;
             timeLimit = now - (24 * 60 * 60 * 1000);
-            formatLabel = (ts) => new Date(ts).getHours() + "h";
+            formatLabel = (ts) => String(new Date(ts).getHours()).padStart(2, '0') + ":00";
         } else if (filter === '7T') {
             count = 7;
             groupDivisor = 24 * 3600 * 1000;
@@ -7697,15 +8114,10 @@
     let friendsList = [];
     function loadFriends() {
         const stored = localStorage.getItem('tentix_friends');
-        if (stored) {
+        if (stored && !stored.includes('LukasLp')) {
             friendsList = JSON.parse(stored);
         } else {
-            friendsList = [
-                { username: 'T3NX', uuid: 'T3NX-uuid', online: true },
-                { username: 'LukasLp', uuid: 'lukas-uuid', online: true },
-                { username: 'Sandro', uuid: 'sandro-uuid', online: false },
-                { username: 'Notch', uuid: 'notch-uuid', online: false }
-            ];
+            friendsList = [];
             localStorage.setItem('tentix_friends', JSON.stringify(friendsList));
         }
         updateFriendsBadge();
@@ -7739,19 +8151,27 @@
         } else {
             popup.style.display = 'flex';
             popup.style.flexDirection = 'column';
-            renderFriendsList();
             
             // Periodically toggle fake online states for dynamic feel
             if (Math.random() > 0.5) {
                 friendsList.forEach(f => {
-                    if (f.username !== 'T3NX') {
-                        f.online = Math.random() > 0.45;
+                    f.online = Math.random() > 0.45;
+                    if (f.online) {
+                        const statuses = [
+                            'im Launcher',
+                            'im Spiel auf Server: TENTIX.net',
+                            'im Spiel auf Server: GommeHD.net',
+                            'im Hauptmenü'
+                        ];
+                        f.status = statuses[Math.floor(Math.random() * statuses.length)];
+                    } else {
+                        f.status = 'Offline';
                     }
                 });
                 localStorage.setItem('tentix_friends', JSON.stringify(friendsList));
                 updateFriendsBadge();
-                renderFriendsList();
             }
+            renderFriendsList();
         }
     }
     
@@ -7776,10 +8196,19 @@
         }
         
         const isUuid = val.includes('-');
+        const isOnline = Math.random() > 0.35;
+        const statuses = [
+            'im Launcher',
+            'im Spiel auf Server: TENTIX.net',
+            'im Spiel auf Server: GommeHD.net',
+            'im Hauptmenü'
+        ];
+        
         const newFriend = {
             username: isUuid ? "Spieler" : val,
             uuid: isUuid ? val : val + "-uuid",
-            online: Math.random() > 0.3
+            online: isOnline,
+            status: isOnline ? statuses[Math.floor(Math.random() * statuses.length)] : 'Offline'
         };
         
         friendsList.push(newFriend);
@@ -7797,6 +8226,14 @@
         updateFriendsBadge();
         renderFriendsList();
         showToast(currentLang === 'de' ? "Freund entfernt!" : "Friend removed!", "info");
+    }
+
+    function connectToFriendServer(ip, e) {
+        if (e) e.stopPropagation();
+        showToast(currentLang === 'de' ? `Verbinde mit Server ${ip}...` : `Connecting to server ${ip}...`, "info");
+        setTimeout(() => {
+            showToast(currentLang === 'de' ? `Erfolgreich mit ${ip} verbunden!` : `Successfully connected to ${ip}!`, "success");
+        }, 1500);
     }
     
     function renderFriendsList() {
@@ -7816,22 +8253,50 @@
         
         filtered.forEach(f => {
             const dotColor = f.online ? '#00ff80' : '#555';
-            const statusText = f.online ? 'Online' : 'Offline';
+            let statusText = f.online ? 'Online' : 'Offline';
+            let serverJoinIcon = '';
+            
+            if (f.online) {
+                if (!f.status) {
+                    const statuses = [
+                        'im Launcher',
+                        'im Spiel auf Server: TENTIX.net',
+                        'im Spiel auf Server: GommeHD.net',
+                        'im Hauptmenü'
+                    ];
+                    f.status = statuses[Math.floor(Math.random() * statuses.length)];
+                }
+                statusText = f.status;
+                
+                if (f.status.includes('Server:')) {
+                    const serverIp = f.status.split('Server:')[1].trim();
+                    serverJoinIcon = `
+                        <div class="friend-join-btn" onclick="connectToFriendServer('${serverIp}', event)" style="cursor: pointer; background: rgba(var(--accent-blue-rgb), 0.12); border: 1px solid rgba(var(--accent-blue-rgb), 0.3); border-radius: 4px; padding: 3px 8px; font-size: 9px; font-weight: 800; color: var(--accent-blue); text-transform: uppercase; margin-right: 8px; display: inline-flex; align-items: center; gap: 4px; transition: 0.2s;" onmouseover="this.style.background='var(--accent-blue)'; this.style.color='#000';" onmouseout="this.style.background='rgba(var(--accent-blue-rgb), 0.12)'; this.style.color='var(--accent-blue)';">
+                            <svg viewBox="0 0 24 24" style="width: 10px; height: 10px; fill: currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                            Join
+                        </div>
+                    `;
+                }
+            }
+            
             container.innerHTML += `
-                <div class="friend-item">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <img class="friend-avatar" src="https://minotar.net/avatar/${f.username}/24" onerror="this.src='https://minotar.net/avatar/MHF_Steve/24'">
-                        <div>
-                           <div style="font-size: 11.5px; font-weight: 700; color: #fff;">${f.username}</div>
-                           <div style="display: flex; align-items: center; gap: 4px; font-size: 9px; color: #777; font-weight: 500;">
-                               <div class="friend-status-dot" style="background: ${dotColor};"></div>
-                               ${statusText}
+                <div class="friend-item" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">
+                    <div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0;">
+                        <img class="friend-avatar" src="https://minotar.net/avatar/${f.username}/24" onerror="this.src='https://minotar.net/avatar/MHF_Steve/24'" style="border-radius: 4px; width: 24px; height: 24px;">
+                        <div style="min-width: 0; flex: 1;">
+                           <div style="font-size: 11.5px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${f.username}</div>
+                           <div style="display: flex; align-items: center; gap: 4px; font-size: 9px; color: #777; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                               <div class="friend-status-dot" style="background: ${dotColor}; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;"></div>
+                               <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${statusText}</span>
                            </div>
-                       </div>
-                   </div>
-                   <div class="friends-remove-btn" onclick="removeFriend('${f.uuid}')">✕</div>
-               </div>
-           `;
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        ${serverJoinIcon}
+                        <div class="friends-remove-btn" onclick="removeFriend('${f.uuid}')" style="cursor: pointer; color: #555; padding: 4px 6px; font-size: 10px; transition: 0.2s;" onmouseover="this.style.color='#ff4b4b';" onmouseout="this.style.color='#555';">✕</div>
+                    </div>
+                </div>
+            `;
         });
     }
     
@@ -7844,7 +8309,23 @@
     
     function toggleCartDrawer() {
         const drawer = document.getElementById('cart-drawer');
-        if (drawer) drawer.classList.toggle('open');
+        const winControls = document.getElementById('top-right-controls');
+        if (drawer) {
+            drawer.classList.toggle('open');
+            if (drawer.classList.contains('open')) {
+                if (winControls) {
+                    winControls.style.opacity = '0';
+                    winControls.style.visibility = 'hidden';
+                    winControls.style.pointerEvents = 'none';
+                }
+            } else {
+                if (winControls) {
+                    winControls.style.opacity = '1';
+                    winControls.style.visibility = 'visible';
+                    winControls.style.pointerEvents = 'auto';
+                }
+            }
+        }
     }
     
     function addToCart(productId) {
@@ -7863,12 +8344,22 @@
         const drawer = document.getElementById('cart-drawer');
         if (drawer && !drawer.classList.contains('open')) {
             drawer.classList.add('open');
+            const winControls = document.getElementById('top-right-controls');
+            if (winControls) {
+                winControls.style.opacity = '0';
+                winControls.style.visibility = 'hidden';
+                winControls.style.pointerEvents = 'none';
+            }
         }
     }
     
     function removeFromCart(productId) {
         shoppingCart = shoppingCart.filter(item => item.id !== productId);
         updateCartUI();
+    }
+    
+    function formatPrice(val) {
+        return val.toFixed(2).replace('.', ',') + ' €';
     }
     
     function updateCartUI() {
@@ -7881,8 +8372,9 @@
         
         if (shoppingCart.length === 0) {
             list.innerHTML = `<div style="text-align:center; color:#555; font-size:11px; padding:30px; font-style:italic;">Dein Warenkorb ist leer.</div>`;
-            document.getElementById('cart-subtotal').innerText = '0 Coins';
-            document.getElementById('cart-total').innerText = '0 Coins';
+            document.getElementById('cart-subtotal').innerText = '0,00 €';
+            document.getElementById('cart-total').innerText = '0,00 €';
+            document.getElementById('cart-vat-value').innerText = '0,00 €';
             document.getElementById('cart-discount-row').style.display = 'none';
             return;
         }
@@ -7896,7 +8388,7 @@
                         <div class="cart-item-icon">${item.icon}</div>
                         <div>
                             <div class="cart-item-title">${item.title}</div>
-                            <div class="cart-item-price">${item.price} Coins</div>
+                            <div class="cart-item-price">${formatPrice(item.price)}</div>
                         </div>
                     </div>
                     <div class="cart-item-remove" onclick="removeFromCart('${item.id}')">✕</div>
@@ -7904,25 +8396,29 @@
             `;
         });
         
-        document.getElementById('cart-subtotal').innerText = `${subtotal} Coins`;
+        document.getElementById('cart-subtotal').innerText = formatPrice(subtotal);
         
         const activeCodeStr = localStorage.getItem('applied_creator_code');
         const codes = JSON.parse(localStorage.getItem('tentix_creator_codes') || '[]');
         const activeCode = codes.find(c => c.code.toUpperCase() === (activeCodeStr || '').toUpperCase());
         
+        let total = subtotal;
         if (activeCode) {
             const discountPercent = activeCode.discount;
-            const discountVal = Math.round(subtotal * (discountPercent / 100));
-            const total = subtotal - discountVal;
+            const discountVal = subtotal * (discountPercent / 100);
+            total = subtotal - discountVal;
             
             document.getElementById('cart-discount-percent').innerText = discountPercent;
-            document.getElementById('cart-discount-value').innerText = `-${discountVal} Coins`;
+            document.getElementById('cart-discount-value').innerText = `-${formatPrice(discountVal)}`;
             document.getElementById('cart-discount-row').style.display = 'flex';
-            document.getElementById('cart-total').innerText = `${total} Coins`;
         } else {
             document.getElementById('cart-discount-row').style.display = 'none';
-            document.getElementById('cart-total').innerText = `${subtotal} Coins`;
         }
+        
+        document.getElementById('cart-total').innerText = formatPrice(total);
+        
+        const vatVal = total - (total / 1.19);
+        document.getElementById('cart-vat-value').innerText = formatPrice(vatVal);
     }
     
     function applyShopCreatorCode() {
@@ -7992,30 +8488,28 @@
         
         let total = subtotal;
         if (activeCode) {
-            const discountVal = Math.round(subtotal * (activeCode.discount / 100));
+            const discountVal = subtotal * (activeCode.discount / 100);
             total = subtotal - discountVal;
         }
         
-        const currentCoins = parseInt(localStorage.getItem('tentix_coins') || '500', 10);
-        if (currentCoins < total) {
-            showToast(currentLang === 'de' ? 'Nicht genügend Coins!' : 'Not enough coins!', 'error');
-            return;
-        }
+        showToast(currentLang === 'de' ? `Zahlung von ${formatPrice(total)} wird verarbeitet...` : `Processing payment of ${formatPrice(total)}...`, "info");
         
-        const newCoins = currentCoins - total;
-        localStorage.setItem('tentix_coins', newCoins);
-        updateShopBalanceDisplay();
-        
-        // Grant all cosmetics/purchases in the cart
-        shoppingCart.forEach(item => {
-            localStorage.setItem(`tentix_unlocked_${item.id}`, 'true');
-        });
-        
-        shoppingCart = [];
-        updateCartUI();
-        toggleCartDrawer();
-        showToast(currentLang === 'de' ? "Kauf erfolgreich abgeschlossen!" : "Purchase completed successfully!", "success");
-        updateCosmeticsLocks();
+        setTimeout(() => {
+            shoppingCart.forEach(item => {
+                localStorage.setItem(`tentix_unlocked_${item.id}`, 'true');
+            });
+            
+            shoppingCart = [];
+            updateCartUI();
+            
+            const drawer = document.getElementById('cart-drawer');
+            if (drawer && drawer.classList.contains('open')) {
+                toggleCartDrawer();
+            }
+            
+            showToast(currentLang === 'de' ? "Kauf erfolgreich abgeschlossen!" : "Purchase completed successfully!", "success");
+            updateCosmeticsLocks();
+        }, 1500);
     }
 
     // --- Admin Creator Codes Manager ---
@@ -8183,6 +8677,26 @@
         if (active) {
             localStorage.setItem('tentix_last_maintenance', new Date().toISOString());
         }
+        
+        // Synchronize with system status maintenance state
+        if (maintenanceModeActive !== active) {
+            maintenanceModeActive = active;
+            if (isClientSimulated) {
+                localStorage.setItem('tentix_sim_maintenance', active ? 'true' : 'false');
+                applyMaintenanceModeState(active);
+            } else {
+                fetch(`${API_BASE_URL}/api/system/maintenance`, { method: 'POST' })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            applyMaintenanceModeState(data.maintenance);
+                        }
+                    }).catch(() => {});
+            }
+        } else {
+            applyMaintenanceModeState(active);
+        }
+        
         updateNavMaintenanceState();
         loadNews(); 
     }
@@ -8242,54 +8756,120 @@
         });
         
         // Update global maintenance banner visibility
+        updateMaintenanceBannerVisibility();
+    }
+
+    function updateMaintenanceBannerVisibility() {
         const banner = document.getElementById('maintenance-banner');
-        if (banner) {
-            const maintActive = localStorage.getItem('tentix_maintenance_active') === 'true';
-            banner.style.display = maintActive ? 'flex' : 'none';
+        if (!banner) return;
+        
+        const maintActive = localStorage.getItem('tentix_maintenance_active') === 'true';
+        const activeTabEl = document.querySelector('.nav-item.active');
+        const currentTab = activeTabEl ? activeTabEl.getAttribute('data-page') : 'start';
+        const settingsOpen = document.getElementById('settings-overlay') && document.getElementById('settings-overlay').style.display === 'flex';
+        
+        if (maintActive && isAppReady && currentTab === 'start' && !settingsOpen && !paymentMethodsExpanded) {
+            banner.style.display = 'flex';
+        } else {
+            banner.style.display = 'none';
         }
     }
 
     // --- 2D Pixel Steve Skin Fallback Renderer ---
     function draw2DSkinOnCanvas(skinUrlOrDataUrl) {
-        const canvas = document.getElementById('skin-changer-canvas');
+        const canvas = document.getElementById('skin-changer-canvas-2d');
         if (!canvas) return;
+        canvas.width = 180;
+        canvas.height = 260;
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
         
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
+        // Procedural pixel Steve immediate drawing
+        ctx.imageSmoothingEnabled = false;
+        const scale = 4.5;
+        const charW = 16 * scale;
+        const charH = 32 * scale;
+        const xOffset = (canvas.width - charW) / 2;
+        const yOffset = (canvas.height - charH) / 2;
+        
+        // Head (Peach skin)
+        ctx.fillStyle = '#db9c72';
+        ctx.fillRect(xOffset + 4 * scale, yOffset, 8 * scale, 8 * scale);
+        // Hair (Brown)
+        ctx.fillStyle = '#543b23';
+        ctx.fillRect(xOffset + 4 * scale, yOffset, 8 * scale, 2.5 * scale);
+        // Eyes (Blue/White)
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(xOffset + 5 * scale, yOffset + 3.5 * scale, 2 * scale, 1 * scale);
+        ctx.fillRect(xOffset + 9 * scale, yOffset + 3.5 * scale, 2 * scale, 1 * scale);
+        ctx.fillStyle = '#2c53a6';
+        ctx.fillRect(xOffset + 6 * scale, yOffset + 3.5 * scale, 1 * scale, 1 * scale);
+        ctx.fillRect(xOffset + 9 * scale, yOffset + 3.5 * scale, 1 * scale, 1 * scale);
+        // Mouth (Reddish brown)
+        ctx.fillStyle = '#a05c3c';
+        ctx.fillRect(xOffset + 6 * scale, yOffset + 5.5 * scale, 4 * scale, 1.5 * scale);
+        
+        // Torso (Cyan shirt)
+        ctx.fillStyle = '#00a6ad';
+        ctx.fillRect(xOffset + 4 * scale, yOffset + 8 * scale, 8 * scale, 12 * scale);
+        
+        // Left Arm (Cyan sleeve, peach skin)
+        ctx.fillStyle = '#00a6ad';
+        ctx.fillRect(xOffset, yOffset + 8 * scale, 4 * scale, 4 * scale);
+        ctx.fillStyle = '#db9c72';
+        ctx.fillRect(xOffset, yOffset + 12 * scale, 4 * scale, 8 * scale);
+        
+        // Right Arm (Cyan sleeve, peach skin)
+        ctx.fillStyle = '#00a6ad';
+        ctx.fillRect(xOffset + 12 * scale, yOffset + 8 * scale, 4 * scale, 4 * scale);
+        ctx.fillStyle = '#db9c72';
+        ctx.fillRect(xOffset + 12 * scale, yOffset + 12 * scale, 4 * scale, 8 * scale);
+        
+        // Left Leg (Dark blue pants, grey shoes)
+        ctx.fillStyle = '#4c3e85';
+        ctx.fillRect(xOffset + 4 * scale, yOffset + 20 * scale, 4 * scale, 10 * scale);
+        ctx.fillStyle = '#555555';
+        ctx.fillRect(xOffset + 4 * scale, yOffset + 30 * scale, 4 * scale, 2 * scale);
+        
+        // Right Leg (Dark blue pants, grey shoes)
+        ctx.fillStyle = '#4c3e85';
+        ctx.fillRect(xOffset + 8 * scale, yOffset + 20 * scale, 4 * scale, 10 * scale);
+        ctx.fillStyle = '#555555';
+        ctx.fillRect(xOffset + 8 * scale, yOffset + 30 * scale, 4 * scale, 2 * scale);
+        
         const img = new Image();
         img.crossOrigin = "anonymous";
         img.src = skinUrlOrDataUrl || 'https://minotar.net/skin/MHF_Steve';
         img.onload = function() {
-            const w = canvas.width;
-            const h = canvas.height;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.imageSmoothingEnabled = false;
             
-            const scale = 5;
-            const charW = 16 * scale;
-            const charH = 32 * scale;
-            const xOffset = (w - charW) / 2;
-            const yOffset = (h - charH) / 2;
-            
+            // Draw actual skin
             // Head
             ctx.drawImage(img, 8, 8, 8, 8, xOffset + 4 * scale, yOffset, 8 * scale, 8 * scale);
             ctx.drawImage(img, 40, 8, 8, 8, xOffset + 4 * scale, yOffset, 8 * scale, 8 * scale); // Helm layer
             
             // Torso
             ctx.drawImage(img, 20, 20, 8, 12, xOffset + 4 * scale, yOffset + 8 * scale, 8 * scale, 12 * scale);
+            ctx.drawImage(img, 20, 36, 8, 12, xOffset + 4 * scale, yOffset + 8 * scale, 8 * scale, 12 * scale); // Torso layer
             
             // Left Arm
             ctx.drawImage(img, 44, 20, 4, 12, xOffset, yOffset + 8 * scale, 4 * scale, 12 * scale);
+            ctx.drawImage(img, 44, 36, 4, 12, xOffset, yOffset + 8 * scale, 4 * scale, 12 * scale); // Left arm layer
             
             // Right Arm
             ctx.drawImage(img, 44, 20, 4, 12, xOffset + 12 * scale, yOffset + 8 * scale, 4 * scale, 12 * scale);
+            ctx.drawImage(img, 44, 36, 4, 12, xOffset + 12 * scale, yOffset + 8 * scale, 4 * scale, 12 * scale); // Right arm layer
             
             // Left Leg
             ctx.drawImage(img, 4, 20, 4, 12, xOffset + 4 * scale, yOffset + 20 * scale, 4 * scale, 12 * scale);
+            ctx.drawImage(img, 4, 36, 4, 12, xOffset + 4 * scale, yOffset + 20 * scale, 4 * scale, 12 * scale); // Left leg layer
             
             // Right Leg
             ctx.drawImage(img, 4, 20, 4, 12, xOffset + 8 * scale, yOffset + 20 * scale, 4 * scale, 12 * scale);
+            ctx.drawImage(img, 4, 36, 4, 12, xOffset + 8 * scale, yOffset + 20 * scale, 4 * scale, 12 * scale); // Right leg layer
         };
     }
 
