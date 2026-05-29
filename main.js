@@ -117,7 +117,9 @@ async function initDiscord() {
         });
 
         const handleFailure = (err) => {
-            console.error("Discord RPC failure:", err ? (err.message || err) : "unknown error");
+            if (err && err !== "Disconnected" && err.message !== "Disconnected") {
+                console.error("Discord RPC failure:", err ? (err.message || err) : "unknown error");
+            }
             if (rpc === client) rpc = null;
             if (connectingClient === client) connectingClient = null;
             try {
@@ -132,10 +134,19 @@ async function initDiscord() {
 
         client.login({ clientId }).catch(handleFailure);
     } catch (e) {
-        console.error("Failed to initialize Discord RPC:", e);
+        // Only log if it's not a standard connection failure
+        if (e && e.message !== "Could not connect") {
+            console.error("Failed to initialize Discord RPC:", e);
+        }
         scheduleRetry();
     }
 }
+
+let currentActivity = {
+    details: 'Im Launcher',
+    state: 'Bereitet sich vor...',
+    startTimestamp: new Date()
+};
 
 function updateActivity() {
     if (!rpc) return;
@@ -145,9 +156,9 @@ function updateActivity() {
     }
 
     rpc.setActivity({
-        details: 'Im Launcher',
-        state: 'Bereitet sich vor...',
-        startTimestamp: new Date(),
+        details: currentActivity.details,
+        state: currentActivity.state,
+        startTimestamp: currentActivity.startTimestamp,
         largeImageKey: 'tentix_logo',
         largeImageText: 'TENTIX Client',
         instance: false,
@@ -192,6 +203,23 @@ ipcMain.on('set-autostart', (event, isEnabled) => {
 ipcMain.on('update-discord-rp', (event, data) => {
     discordEnabled = data.enabled;
     discordHideAway = data.hideAway;
+    updateActivity();
+});
+
+ipcMain.on('update-drp-status', (event, data) => {
+    if (data.username) {
+        currentActivity.details = `${data.username} | TENTIX`;
+    } else {
+        currentActivity.details = `TENTIX Client`;
+    }
+    if (data.state) {
+        currentActivity.state = data.state;
+    }
+    if (data.startTimestamp) {
+        currentActivity.startTimestamp = new Date(data.startTimestamp);
+    } else if (data.resetTime) {
+        currentActivity.startTimestamp = new Date();
+    }
     updateActivity();
 });
 

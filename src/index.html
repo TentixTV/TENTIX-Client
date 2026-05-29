@@ -378,7 +378,7 @@
         .dl-text-row { display: flex; justify-content: space-between; margin-top: 12px; font-size: 11px; color: var(--accent-blue); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
 
         .ver-container { display: flex; gap: 18px; margin-top: 25px; -webkit-app-region: no-drag; align-items: center; justify-content: center;}
-        .ver-display { background: rgba(255,255,255,0.03); border: 1px solid rgba(var(--accent-blue-rgb), 0.2); color: var(--accent-blue); padding: 14px 40px; border-radius: 30px; font-size: 12px; cursor: pointer; transition: 0.3s; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; white-space: nowrap;}
+        .ver-display { background: rgba(255,255,255,0.03); border: 1px solid rgba(var(--accent-blue-rgb), 0.2); color: var(--accent-blue); padding: 10px 30px; border-radius: 30px; font-size: 11px; cursor: pointer; transition: 0.3s; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; line-height: 1.3;}
         .ver-display:hover { background: rgba(var(--accent-blue-rgb), 0.1); border-color: var(--accent-blue); box-shadow: 0 0 20px rgba(var(--accent-blue-rgb), 0.3); }
 
         .mod-display { background: rgba(255,255,255,0.03); border: 1px solid var(--accent-blue); color: var(--accent-blue); padding: 14px 35px; border-radius: 30px; font-size: 12px; font-weight: 800; cursor: pointer; transition: 0.3s; box-shadow: 0 0 15px rgba(var(--accent-blue-rgb), 0.15); text-transform: uppercase; letter-spacing: 1px;}
@@ -395,7 +395,7 @@
         #news-pane.open { right: 100px; border-color: rgba(var(--accent-blue-rgb), 0.3); }
         .news-header { padding: 30px 30px 20px 30px; font-size: 18px; font-weight: 800; color: #fff; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 12px;}
         .news-header svg { width: 22px; height: 22px; fill: var(--accent-blue); }
-        .news-content { flex: 1; padding: 30px; display: flex; align-items: center; overflow-y: auto; flex-direction: column; gap: 15px; justify-content: center;}
+        .news-content { flex: 1; padding: 15px 30px 30px 30px; display: flex; align-items: center; overflow-y: auto; flex-direction: column; gap: 15px; justify-content: flex-start;}
         .news-empty-card { width: 100%; height: 100%; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; display: flex; justify-content: center; align-items: center; color: #666; font-size: 13px; letter-spacing: 1px; font-style: italic; text-align: center; padding: 25px;}
 
         /* Erkunden Tab */
@@ -469,7 +469,33 @@
         .lang-selector { position: absolute; bottom: 30px; right: 45px; font-size: 12px; letter-spacing: 2px; color: #333; -webkit-app-region: no-drag; font-weight: 800;}
         .lang-selector span { cursor: pointer; transition: 0.2s; padding: 6px; }
         .active-lang { color: var(--accent-blue) !important; text-shadow: 0 0 8px var(--accent-blue);}
-        .version-tag { position: absolute; bottom: 50px; left: 45px; color: #222; font-size: 11px; letter-spacing: 1px; font-weight: 800;}
+        .version-tag {
+            position: absolute;
+            bottom: 50px;
+            left: 45px;
+            font-size: 11px;
+            letter-spacing: 1px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            background: linear-gradient(120deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.25) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            -webkit-app-region: no-drag;
+        }
+        .version-tag:hover {
+            background: linear-gradient(120deg, var(--accent-blue) 0%, var(--accent-gradient-sec) 50%, var(--accent-blue) 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textGradientShift 1.5s linear infinite;
+            filter: drop-shadow(0 0 6px rgba(var(--accent-blue-rgb), 0.6));
+            transform: scale(1.04) translateY(-1px);
+        }
+        @keyframes textGradientShift {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
         .credits { position: absolute; bottom: 25px; left: 45px; color: #444; font-size: 10px; letter-spacing: 1px; font-style: italic; }
 
         #toast { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%) translateY(20px); background: rgba(15, 15, 18, 0.96); border: 1px solid var(--accent-blue); color: var(--accent-blue); padding: 10px 24px; border-radius: 20px; font-size: 12px; font-weight: 600; letter-spacing: normal; text-transform: none; opacity: 0; pointer-events: none; transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s ease; z-index: 2147483647; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); text-align: center; }
@@ -641,6 +667,13 @@
                 box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.65), 0 -10px 22px 12px rgba(0, 225, 255, 0) !important;
             }
         }
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.18); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.18); }
+            70% { transform: scale(1); }
+        }
         #shop-payment-container:not(.expanded) {
             animation: paymentPulse 2.5s infinite ease-in-out !important;
         }
@@ -811,6 +844,24 @@
         .social-icon.soc-yt:hover .mask-icon {
             background-color: #ff0000;
             filter: drop-shadow(0 0 8px #ff0000);
+        }
+
+        .social-icon.soc-space:hover {
+            border-color: #80f3ff;
+            box-shadow: 0 0 15px rgba(128, 243, 255, 0.4);
+            background: rgba(128, 243, 255, 0.05);
+        }
+        .social-icon.soc-space:hover .mask-icon {
+            background: linear-gradient(135deg, #80f3ff 0%, #0072ff 50%, #ffffff 100%);
+            filter: drop-shadow(0 0 8px #80f3ff);
+        }
+
+        #friends-popup {
+            resize: both;
+            overflow: hidden;
+            max-height: 800px !important;
+            min-width: 280px;
+            min-height: 250px;
         }
 
         /* 1-Column Sidebar Layout for explore category and filter buttons */
@@ -1126,6 +1177,10 @@
         .filter-section::-webkit-scrollbar-track { background: transparent; }
         .filter-section::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
         .filter-section::-webkit-scrollbar-thumb:hover { background: rgba(var(--accent-blue-rgb), 0.6); }
+        .cosmetics-panel-content::-webkit-scrollbar { width: 5px; }
+        .cosmetics-panel-content::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.15); border-radius: 4px; }
+        .cosmetics-panel-content::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.12); border-radius: 4px; transition: background 0.2s; }
+        .cosmetics-panel-content::-webkit-scrollbar-thumb:hover { background: rgba(var(--accent-blue-rgb), 0.4); }
         
         /* Table rows hover style in dashboard */
         tbody tr { transition: background 0.2s; }
@@ -1211,6 +1266,27 @@
         }
         .shop-product-card:hover .shop-product-icon {
             transform: scale(1.1) rotate(3deg);
+        }
+        .shop-product-preview {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #ccc;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 9px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+            text-transform: uppercase;
+        }
+        .shop-product-preview:hover {
+            background: rgba(var(--accent-blue-rgb), 0.08);
+            border-color: rgba(var(--accent-blue-rgb), 0.2);
+            color: #fff;
+        }
+        .shop-product-card.previewing {
+            border-color: var(--accent-blue) !important;
+            box-shadow: 0 0 15px rgba(var(--accent-blue-rgb), 0.25) !important;
         }
         
         /* NameMC / Skin Changer premium cards */
@@ -2197,7 +2273,7 @@
         <div style="padding: 10px 15px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; gap: 8px;">
             <input type="text" id="friends-search-input" placeholder="Suche nach Name oder UUID..." style="flex: 1; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 6px 10px; font-size: 11px; color: #fff; outline: none;" oninput="filterFriendsList()">
         </div>
-        <div id="friends-list-content" style="flex: 1; overflow-y: auto; padding: 5px 0; max-height: 280px; min-height: 150px; scrollbar-width: thin; max-height: 280px;">
+        <div id="friends-list-content" style="flex: 1; overflow-y: auto; padding: 5px 0; min-height: 120px; scrollbar-width: thin;">
             <!-- Friends list dynamically rendered -->
         </div>
     </div>
@@ -2516,10 +2592,16 @@
                     </svg>
                     TENTIX <span style="color: var(--accent-blue);" id="ui-shop-title-accent">SHOP</span>
                 </div>
-                <div onclick="toggleCartDrawer()" class="cart-toggle-btn">
-                    <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: var(--accent-blue);"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-                    <span>Einkaufswagen</span>
-                    <div style="background: var(--accent-blue); color: #000; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; transform: scale(0); opacity: 0; transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease; pointer-events: none;" id="shop-cart-badge">0</div>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <div onclick="openDonationModal()" class="cart-toggle-btn" style="background: rgba(var(--accent-blue-rgb), 0.05); border: 1px dashed rgba(var(--accent-blue-rgb), 0.4);">
+                        <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: var(--accent-blue);"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        <span>Spenden</span>
+                    </div>
+                    <div onclick="toggleCartDrawer()" class="cart-toggle-btn">
+                        <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: var(--accent-blue);"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                        <span>Einkaufswagen</span>
+                        <div style="background: var(--accent-blue); color: #000; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; transform: scale(0); opacity: 0; transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease; pointer-events: none;" id="shop-cart-badge">0</div>
+                    </div>
                 </div>
             </div>
             
@@ -2753,6 +2835,52 @@
     </div>
 </div>
 
+<!-- Donation Modal -->
+<div id="donation-modal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(15px); display: none; align-items: center; justify-content: center; z-index: 9999; -webkit-app-region: no-drag;">
+    <div style="background: linear-gradient(135deg, #0e0f11 0%, #151619 100%); border: 1px solid rgba(var(--accent-blue-rgb), 0.25); border-radius: 20px; width: 460px; padding: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.8), inset 0 0 40px rgba(var(--accent-blue-rgb), 0.05); text-align: center; position: relative; box-sizing: border-box; transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);">
+        
+        <!-- Header -->
+        <div style="font-weight: 900; font-size: 18px; text-transform: uppercase; letter-spacing: 1.5px; background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-gradient-sec) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: var(--accent-blue); filter: drop-shadow(0 0 8px var(--accent-blue)); animation: heartBeat 1.2s infinite ease-in-out; display: inline-block; transform-origin: center;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            TENTIX UNTERSTÜTZEN
+        </div>
+        
+        <!-- Info Text -->
+        <div style="font-size: 11.5px; color: #bbb; line-height: 1.6; margin-bottom: 20px; font-weight: 500; background: rgba(255, 255, 255, 0.01); border: 1px solid rgba(255, 255, 255, 0.04); padding: 15px; border-radius: 12px; text-align: left;">
+            Spenden sind komplett <strong>freiwillig</strong> und helfen dem Client-Team sehr, um mehr Server-Ressourcen bereitzustellen, die Mod-Downloads zu beschleunigen und die Weiterentwicklung voranzutreiben. <strong>Aufgrund anfallender Transaktionsgebühren beträgt der Mindestbetrag für eine Spende 2,00 €.</strong>
+        </div>
+
+        <!-- Custom Amount Slider & Input -->
+        <div style="text-align: left; margin-bottom: 20px;">
+            <label style="font-size: 9px; font-weight: 800; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; display: block;">Spendenbetrag (€)</label>
+            <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 8px;">
+                <input type="number" id="donation-amount-input" value="10" min="2" step="1" style="width: 70px; background: #000; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; padding: 6px; color: #fff; font-weight: 800; font-size: 13px; text-align: center; outline: none; font-family: inherit;">
+                <input type="range" id="donation-amount-range" min="2" max="100" value="10" style="flex: 1; accent-color: var(--accent-blue);">
+            </div>
+        </div>
+
+        <!-- Payment Method List -->
+        <div style="text-align: left; margin-bottom: 25px;">
+            <label style="font-size: 9px; font-weight: 800; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; display: block;">Zahlungsmethode auswählen</label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;" id="donation-methods-grid">
+                <div class="pay-method-opt active" onclick="selectDonationMethod('paypal', this)" style="border: 1px solid #0079c1; padding: 12px; border-radius: 8px; background: rgba(0, 121, 193, 0.1); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s;">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" style="height: 14px;">
+                </div>
+                <div class="pay-method-opt" onclick="selectDonationMethod('credit', this)" style="border: 1px solid rgba(255,255,255,0.06); padding: 12px; border-radius: 8px; background: rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: 0.2s;">
+                    <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: #aaa;"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+                    <span style="font-size: 10.5px; font-weight: 700; color: #fff;">Kreditkarte</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div style="display: flex; gap: 12px; justify-content: flex-end;">
+            <button class="dash-btn" style="margin: 0; padding: 10px 20px; font-size: 10.5px; font-weight: 800; background: rgba(255,255,255,0.03); color: #ccc; border: 1px solid rgba(255,255,255,0.1);" onclick="closeDonationModal()">Abbrechen</button>
+            <button class="dash-btn" style="margin: 0; padding: 10px 24px; font-size: 10.5px; font-weight: 800; background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-gradient-sec) 100%); color: #000; border: none; box-shadow: 0 5px 20px rgba(var(--accent-blue-rgb), 0.35);" onclick="executeDonation()">Jetzt spenden</button>
+        </div>
+    </div>
+</div>
+
 <div id="tentixplus-view" style="display: none; visibility: hidden; opacity: 0; transition: opacity 0.5s ease, visibility 0.5s; -webkit-app-region: no-drag; width: 100%; height: 100%; justify-content: center; align-items: center; position: absolute; top: 0; left: 0; z-index: 50;">
     <div class="coming-soon-popup" style="background: rgba(10, 10, 12, 0.9); backdrop-filter: blur(25px); border: 1px solid rgba(var(--accent-blue-rgb), 0.25); box-shadow: 0 0 50px rgba(var(--accent-blue-rgb), 0.15); border-radius: 16px; padding: 40px 60px; width: 450px; text-align: center; position: relative;">
         <div style="font-size: 28px; font-weight: 900; color: #fff; margin-bottom: 20px; letter-spacing: 1px;" id="tentixplus-view-title">
@@ -2781,7 +2909,7 @@
             </div>
         </div>
         <div style="flex: 1.6; display: flex; flex-direction: row; align-items: stretch; background: rgba(0, 0, 0, 0.25); -webkit-app-region: no-drag; max-height: 100%; box-sizing: border-box; overflow: hidden;">
-            <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-start; align-items: stretch; padding: 25px; overflow-y: auto; overflow-x: hidden; max-height: 100%; box-sizing: border-box;">
+            <div class="cosmetics-panel-content" style="flex: 1; display: flex; flex-direction: column; justify-content: flex-start; align-items: stretch; padding: 25px; overflow-y: auto; overflow-x: hidden; max-height: 100%; box-sizing: border-box;">
                 <div style="font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px;">
                     <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: var(--accent-blue);"><path d="M12 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm9 7h-6v13h-2v-6h-2v6H9V9H3V7h18v2z"/></svg>
                     Cosmetics Manager
@@ -2858,7 +2986,12 @@
         </div>
         <div class="explore-sidebar">
             <div class="filter-section">
-                <div class="filter-title">Kategorien</div>
+                <div class="filter-title" style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>Kategorien</span>
+                    <button class="filter-btn" id="installed-filter-tab" onclick="toggleInstalledFilter(this)" style="margin: 0; padding: 4px 10px; font-size: 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08); background: transparent; color: #aaa; font-weight: 700; cursor: pointer; transition: all 0.2s; text-transform: uppercase;">
+                        Installiert
+                    </button>
+                </div>
                 <div class="filter-grid" id="cat-filters">
                     <div class="filter-btn" data-state="0" data-val="adventure" onclick="toggleCat(this)"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Adventure</div>
                     <div class="filter-btn" data-state="0" data-val="cursed" onclick="toggleCat(this)"><svg viewBox="0 0 24 24"><path d="M12 2a9 9 0 00-9 9v11l3-2 3 2 3-2 3 2 3-2 3 2V11a9 9 0 00-9-9zm-3 8a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm6 0a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg> Cursed</div>
@@ -2956,6 +3089,7 @@
         <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg>
         <span id="t-news-header">News</span>
     </div>
+    <div id="news-status-container" style="padding: 20px 30px 0 30px; flex-shrink: 0;"></div>
     <div class="news-content" id="ui-news-content">
         <div class="news-empty-card" id="t-news-empty">Stay tuned for updates...</div>
     </div>
@@ -2970,6 +3104,9 @@
     </div>
     <div class="social-icon soc-yt" onclick="if(window.api) window.api.openExternalLink('https://www.youtube.com/@TentixTV')">
         <div class="mask-icon" style="-webkit-mask-image: url('../assets/social-yt.png'); width: 18px; height: 18px;"></div>
+    </div>
+    <div class="social-icon soc-space" onclick="if(window.api) window.api.openExternalLink('https://tentix.space')">
+        <div class="mask-icon" style="-webkit-mask-image: url('../assets/tentixspace.png'); width: 18px; height: 18px;"></div>
     </div>
 </div>
 
@@ -2992,6 +3129,7 @@
 
     let modrinthOffset = 0;
     let isFetchingMods = false;
+    let isShowingInstalledModsOnly = false;
     let activeCats = [];
     let activeEnvs = [];
     let activeLoaders = [];
@@ -3269,7 +3407,36 @@
         'PLAYER': { name: 'Spieler', color: '#fff', bg: 'rgba(255,255,255,0.1)', border: 'rgba(255,255,255,0.2)', svg: '<path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>' }
     };
 
+    function toggleInstalledFilter(element) {
+        if (!element) return;
+        isShowingInstalledModsOnly = !isShowingInstalledModsOnly;
+        
+        element.classList.toggle('active', isShowingInstalledModsOnly);
+        
+        if (isShowingInstalledModsOnly) {
+            // Reset active categories to make it clean
+            document.querySelectorAll('#cat-filters .filter-btn').forEach(btn => {
+                if (btn.id !== 'installed-filter-tab') {
+                    btn.classList.remove('active');
+                    btn.setAttribute('data-state', '0');
+                    btn.style.color = '';
+                    btn.style.borderColor = '';
+                }
+            });
+            activeCats = [];
+        }
+        
+        modrinthOffset = 0;
+        triggerModSearch(false);
+    }
+
     function toggleCat(el) {
+        if (isShowingInstalledModsOnly) {
+            isShowingInstalledModsOnly = false;
+            const installedBtn = document.getElementById('installed-filter-tab');
+            if (installedBtn) installedBtn.classList.remove('active');
+        }
+
         const state = el.getAttribute('data-state');
         const val = el.getAttribute('data-val');
         const parentId = el.parentNode.id;
@@ -3317,6 +3484,102 @@
         }
 
         isFetchingMods = true;
+
+        if (isShowingInstalledModsOnly) {
+            if (isLoadMore) {
+                isFetchingMods = false;
+                return;
+            }
+            const installed = JSON.parse(localStorage.getItem('tentix_installed_mods') || '[]');
+            if (installed.length === 0) {
+                box.innerHTML = `<div style="color: #666; font-style: italic; text-align: center; margin-top: 50px;">${currentLang === 'de' ? 'Keine installierten Mods gefunden.' : 'No installed mods found.'}</div>`;
+                isFetchingMods = false;
+                return;
+            }
+            try {
+                const res = await fetch(`https://api.modrinth.com/v2/projects?ids=${encodeURIComponent(JSON.stringify(installed))}`);
+                const data = await res.json();
+                
+                if (Array.isArray(data) && data.length > 0) {
+                    let hits = data.map(mod => ({
+                        slug: mod.slug,
+                        project_id: mod.id,
+                        id: mod.id,
+                        title: mod.title,
+                        description: mod.description,
+                        icon_url: mod.icon_url,
+                        downloads: mod.downloads || 0,
+                        categories: mod.categories || [],
+                        date_modified: mod.updated || mod.published || new Date().toISOString(),
+                        client_side: mod.client_side,
+                        server_side: mod.server_side,
+                        author: 'Modrinth'
+                    }));
+
+                    const searchVal = query.toLowerCase().trim();
+                    if (searchVal) {
+                        hits = hits.filter(mod => mod.title.toLowerCase().includes(searchVal) || mod.description.toLowerCase().includes(searchVal));
+                    }
+
+                    if (hits.length === 0) {
+                        box.innerHTML = `<div style="color: #666; font-style: italic; text-align: center; margin-top: 50px;">${translations[currentLang].modNoFound}</div>`;
+                        isFetchingMods = false;
+                        return;
+                    }
+
+                    let html = '';
+                    const standardMods = ['fabric-api', 'sodium', 'iris', 'lithium', 'modmenu'];
+                    hits.forEach(mod => {
+                        let tagsHtml = mod.categories.slice(0, 3).map(c => `<span class="mod-tag">${c}</span>`).join('');
+                        let dlCount = (mod.downloads / 1000000).toFixed(2) + "M";
+                        let date = new Date(mod.date_modified).toLocaleDateString();
+
+                        let isStandard = standardMods.includes(mod.slug);
+                        let installBtnHtml = '';
+                        const dataInstalled = currentLang === 'de' ? '✓ Installiert' : '✓ Installed';
+                        const dataUninstall = currentLang === 'de' ? 'Deinstallieren' : 'Uninstall';
+                        installBtnHtml = `<div class="mod-btn installed-btn" data-installed="${dataInstalled}" data-uninstall="${dataUninstall}" onclick="uninstallMod('${mod.id}', '${mod.title.replace(/'/g, "\\'")}', this)"></div>`;
+
+                        let envTags = '';
+                        if(mod.client_side !== 'unsupported') envTags += `<span class="mod-env-badge"><svg viewBox="0 0 24 24"><path d="M21 2H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h7v2H8v2h8v-2h-2v-2h7c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H3V4h18v12z"/></svg> Client</span>`;
+                        if(mod.server_side !== 'unsupported') envTags += `<span class="mod-env-badge"><svg viewBox="0 0 24 24"><path d="M20 3H4c-1.1 0-2 .9-2 2v4c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-1 5H5V5h14v3zm1 5H4c-1.1 0-2 .9-2 2v4c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-4c0-1.1-.9-2-2-2zm-1 5H5v-3h14v3z"/></svg> Server</span>`;
+
+                        html += `
+                            <div class="mod-card">
+                                <img src="${mod.icon_url || '../assets/TENTIX.png'}" class="mod-icon" onerror="this.src='../assets/TENTIX.png'">
+                                <div class="mod-info">
+                                    <div class="mod-title-row">
+                                        <div class="mod-title">${mod.title}</div>
+                                    </div>
+                                    <div class="mod-desc">${mod.description}</div>
+                                    <div class="mod-meta">
+                                        <div class="mod-author"><img src="${mod.icon_url || '../assets/TENTIX.png'}" onerror="this.src='../assets/TENTIX.png'"> ${mod.author || 'Unbekannt'}</div>
+                                        ${tagsHtml}
+                                        ${envTags}
+                                    </div>
+                                </div>
+                                <div class="mod-actions">
+                                    <div class="mod-stats-install-wrap">
+                                        <div class="mod-stats">⬇ ${dlCount} • ${date}</div>
+                                        <div style="display:flex; gap:10px;">
+                                            <div class="mod-btn btn-view" onclick="if(window.api) window.api.openExternalLink('https://modrinth.com/mod/${mod.slug}')">${translations[currentLang].modBtnView}</div>
+                                            ${installBtnHtml}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    box.innerHTML = html;
+                } else {
+                    box.innerHTML = `<div style="color: #666; font-style: italic; text-align: center; margin-top: 50px;">${translations[currentLang].modNoFound}</div>`;
+                }
+            } catch (e) {
+                box.innerHTML = `<div style="color: #ff4b4b; font-style: italic; text-align: center; margin-top: 50px;">${translations[currentLang].modError}</div>`;
+            }
+            isFetchingMods = false;
+            return;
+        }
 
         let url = `https://api.modrinth.com/v2/search?limit=15&offset=${modrinthOffset}&query=${encodeURIComponent(query)}&index=${sort}`;
 
@@ -3767,9 +4030,10 @@
                 }
 
                 const buyText = currentLang === 'de' ? 'Hinzufügen' : 'Add to Cart';
+                const previewBtnHtml = p.cosmeticId ? `<button class="shop-product-preview" onclick="previewCosmeticInShop('${p.cosmeticId}', event)">Vorschau</button>` : '';
 
                 html += `
-                    <div class="shop-product-card">
+                    <div class="shop-product-card" id="shop-card-${p.id}">
                         ${badgeHtml}
                         <div class="shop-product-icon">
                             ${p.icon}
@@ -3779,7 +4043,10 @@
                         <div class="shop-product-price">
                             ${priceHtml}
                         </div>
-                        <button class="shop-product-buy" onclick="addToCart('${p.id}')">${buyText}</button>
+                        <div style="display: flex; gap: 8px; width: 100%; margin-top: auto; align-items: center; justify-content: center;">
+                            ${previewBtnHtml}
+                            <button class="shop-product-buy" style="flex: 1;" onclick="addToCart('${p.id}')">${buyText}</button>
+                        </div>
                     </div>
                 `;
             });
@@ -3982,7 +4249,11 @@
                 `;
             }
 
-            let html = maintenanceCardHtml;
+            const statusContainer = document.getElementById('news-status-container');
+            if (statusContainer) {
+                statusContainer.innerHTML = maintenanceCardHtml;
+            }
+            let html = '';
             let dashHtml = '';
 
             if(news.length > 0) {
@@ -3992,6 +4263,7 @@
                     let titleColor = 'var(--accent-blue)';
 
                     if (n.image_url === 'MAINTENANCE_RED') {
+                        if (!maintenanceModeActive) return;
                         imgHtml = `
                             <div style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100px; background: rgba(255, 75, 75, 0.1); border: 1px dashed rgba(255, 75, 75, 0.3); border-radius: 8px; margin-bottom: 10px;">
                                 <svg viewBox="0 0 24 24" style="width: 40px; height: 40px; fill: none; stroke: #ff4b4b; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 10px rgba(255,75,75,0.4));">
@@ -4026,7 +4298,7 @@
                 content.innerHTML = html;
                 dashList.innerHTML = dashHtml;
             } else {
-                content.innerHTML = html + `<div class="news-empty-card" id="t-news-empty">${translations[currentLang].newsEmpty || "Stay tuned for updates..."}</div>`;
+                content.innerHTML = `<div class="news-empty-card" id="t-news-empty">${translations[currentLang].newsEmpty || "Stay tuned for updates..."}</div>`;
                 dashList.innerHTML = `<div style="color:#888; font-style:italic; font-size:12px;">Keine News veröffentlicht.</div>`;
             }
         } catch(e) {
@@ -5769,6 +6041,10 @@
         if (tokenStr && tokenStr !== 'undefined' && tokenStr !== 'null' && user && user !== 'GUEST') {
             isLoggedIn = true; savedName = user; uuidValue = uuid; deterministicId = generateFakeId(uuidValue, savedName);
 
+            if (window.api && window.api.updateDiscordRPStatus) {
+                window.api.updateDiscordRPStatus({ username: savedName, state: 'Im Menü' });
+            }
+
             // Dynamically register the user in simulated database (tentix_sim_users)
             let simUsers = JSON.parse(localStorage.getItem('tentix_sim_users') || '[]');
             if (!simUsers.some(u => u.username.toUpperCase() === savedName.toUpperCase())) {
@@ -5803,6 +6079,9 @@
             sendHeartbeatPing();
         } else {
             isLoggedIn = false; savedName = 'GUEST'; uuidValue = 'NOT LOGGED IN'; deterministicId = '----'; localStorage.removeItem('tentix_logged');
+            if (window.api && window.api.updateDiscordRPStatus) {
+                window.api.updateDiscordRPStatus({ username: 'GUEST', state: 'Im Menü' });
+            }
             regDate = '--';
             if(document.getElementById('ui-card-reg')) document.getElementById('ui-card-reg').innerText = (currentLang === 'de' ? "REGISTRIERT: " : "REGISTERED: ") + regDate;
         }
@@ -6762,6 +7041,8 @@
                 shop.style.visibility = 'visible'; shop.style.display = 'flex';
                 setTimeout(() => shop.style.opacity = '1', 50);
                 loadShop();
+                initShopViewer();
+                updateShopViewerSkin();
             }, 500);
         } else if (page === 'tentixplus') {
             menu.style.opacity = '0';
@@ -6864,21 +7145,50 @@
         }
     }
 
+    function getProgressBarLabel(taskType) {
+        const type = (taskType || '').toLowerCase();
+        if (currentLang === 'de') {
+            if (type === 'natives') return 'Systembibliotheken entpacken...';
+            if (type === 'classes' || type === 'jar' || type === 'libraries' || type === 'library') return 'Spieldateien vorbereiten...';
+            if (type === 'assets' || type === 'resource') return 'Grafiken & Sounds herunterladen...';
+            if (type === 'mods' || type === 'mod') return 'Client-Mods synchronisieren...';
+            return 'Dateien werden geladen...';
+        } else {
+            if (type === 'natives') return 'Extracting system libraries...';
+            if (type === 'classes' || type === 'jar' || type === 'libraries' || type === 'library') return 'Preparing game libraries...';
+            if (type === 'assets' || type === 'resource') return 'Downloading game graphics & audio...';
+            if (type === 'mods' || type === 'mod') return 'Syncing client mods list...';
+            return 'Loading game files...';
+        }
+    }
+
     if(window.api && window.api.onLaunchProgress) {
         window.api.onLaunchProgress((data) => {
             if(data.type === 'progress') {
                 if(document.getElementById('dl-bar')) document.getElementById('dl-bar').style.width = ((data.task / data.total) * 100) + "%";
-                if(document.getElementById('dl-status')) document.getElementById('dl-status').innerText = (currentLang === 'de' ? "LADE " : "LOADING ") + (data.taskType || "FILES").toUpperCase();
+                if(document.getElementById('dl-status')) document.getElementById('dl-status').innerText = getProgressBarLabel(data.taskType);
                 if(document.getElementById('dl-stats')) document.getElementById('dl-stats').innerText = data.task + " / " + data.total;
+                
+                if (window.api.updateDiscordRPStatus) {
+                    window.api.updateDiscordRPStatus({ username: savedName, state: (currentLang === 'de' ? "Installiert Spieldateien..." : "Installing files...") });
+                }
             }
             if(data.type === 'data') {
                 if(document.getElementById('dl-status')) document.getElementById('dl-status').innerText = "STARTING...";
                 if(document.getElementById('play-btn')) document.getElementById('play-btn').innerText = "GAME RUNNING";
                 if(localStorage.getItem('tentix_vis') === 'hide' && window.api.minimize) { window.api.minimize(); }
+                
+                if (window.api.updateDiscordRPStatus) {
+                    window.api.updateDiscordRPStatus({ username: savedName, state: (currentLang === 'de' ? "Spielt auf TENTIX.tv" : "Playing on TENTIX.tv"), startTimestamp: Date.now() });
+                }
             }
             if(data.type === 'close') {
                 if(document.getElementById('dl-container')) document.getElementById('dl-container').style.display = 'none';
                 if(document.getElementById('play-btn')) { document.getElementById('play-btn').innerText = currentLang === 'de' ? "SPIELEN" : "PLAY"; document.getElementById('play-btn').disabled = false; }
+                
+                if (window.api.updateDiscordRPStatus) {
+                    window.api.updateDiscordRPStatus({ username: savedName, state: "Im Menü", resetTime: true });
+                }
             }
         });
     }
@@ -7406,6 +7716,81 @@
         }
     }
 
+    let shopViewer = null;
+
+    function initShopViewer() {
+        if (shopViewer) return;
+        try {
+            const canvas = document.getElementById('shop-skin-canvas');
+            if (!canvas) return;
+            
+            shopViewer = new skinview3d.SkinViewer({
+                canvas: canvas,
+                width: 180,
+                height: 210
+            });
+            
+            shopViewer.controls.enableZoom = true;
+            shopViewer.controls.minPolarAngle = 0.3;
+            shopViewer.controls.maxPolarAngle = 1.9;
+            
+            shopViewer.autoRotate = true;
+            shopViewer.autoRotateSpeed = 0.5;
+            shopViewer.animations.add(skinview3d.WalkingAnimation).speed = 0.6;
+            
+            updateShopViewerSkin();
+        } catch (e) {
+            console.error("Failed to initialize shop skinview3d:", e);
+        }
+    }
+
+    function updateShopViewerSkin() {
+        if (!shopViewer) return;
+        shopViewer.model = skinChangerModelType;
+        const customSkin = localStorage.getItem('tentix_custom_skin');
+        if (customSkin) {
+            shopViewer.loadSkin(customSkin, { model: skinChangerModelType });
+            return;
+        }
+        let skinUrl = 'https://minotar.net/skin/MHF_Steve';
+        if (isLoggedIn && uuidValue && uuidValue !== 'NOT LOGGED IN') {
+            skinUrl = `https://minotar.net/skin/${uuidValue.trim()}`;
+        } else if (isLoggedIn && savedName && savedName !== 'GUEST') {
+            skinUrl = `https://minotar.net/skin/${savedName.trim()}`;
+        }
+        shopViewer.loadSkin(skinUrl, { model: skinChangerModelType });
+    }
+
+    function previewCosmeticInShop(cosmeticId, event) {
+        if (event) event.stopPropagation();
+        
+        initShopViewer();
+        if (!shopViewer) return;
+
+        document.querySelectorAll('.shop-product-card').forEach(card => {
+            card.classList.remove('previewing');
+        });
+        
+        if (event && event.target) {
+            let target = event.target;
+            while (target && !target.classList.contains('shop-product-card')) {
+                target = target.parentNode;
+            }
+            if (target) {
+                target.classList.add('previewing');
+            }
+        }
+
+        const capeObj = COSMETICS_LIST.find(c => c.id === cosmeticId);
+        if (capeObj) {
+            const dataUrl = generateCapeDataUrl(cosmeticId);
+            shopViewer.loadCape(dataUrl);
+            const nameEl = document.getElementById('shop-preview-name');
+            if (nameEl) nameEl.innerText = capeObj.name;
+            showToast(currentLang === 'de' ? `${capeObj.name} in 3D geladen!` : `${capeObj.name} loaded in 3D!`, "info");
+        }
+    }
+
     let cosmeticsViewer = null;
 
     function initCosmeticsViewer() {
@@ -7452,6 +7837,7 @@
     }
 
     function updateCosmeticsSkin() {
+        updateShopViewerSkin();
         if (!cosmeticsViewer) return;
         cosmeticsViewer.model = skinChangerModelType;
         const customSkin = localStorage.getItem('tentix_custom_skin');
@@ -8948,6 +9334,7 @@
         } else {
             popup.style.display = 'flex';
             popup.style.flexDirection = 'column';
+            restoreFriendsPopupSize();
             
             // Periodically toggle fake online states for dynamic feel
             if (Math.random() > 0.5) {
@@ -9516,6 +9903,112 @@
         }
     }
     
+    let selectedDonationMethod = 'paypal';
+
+    function openDonationModal() {
+        const modal = document.getElementById('donation-modal');
+        if (!modal) return;
+        modal.style.display = 'flex';
+        setTimeout(() => {
+            modal.firstElementChild.style.transform = 'scale(1)';
+        }, 10);
+        
+        // Sync inputs
+        const donationInput = document.getElementById('donation-amount-input');
+        const donationRange = document.getElementById('donation-amount-range');
+        if (donationInput && donationRange) {
+            donationInput.value = 10;
+            donationRange.value = 10;
+        }
+    }
+
+    function closeDonationModal() {
+        const modal = document.getElementById('donation-modal');
+        if (!modal) return;
+        modal.firstElementChild.style.transform = 'scale(0.9)';
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 200);
+    }
+
+    function selectDonationMethod(method, element) {
+        selectedDonationMethod = method;
+        document.querySelectorAll('#donation-methods-grid .pay-method-opt').forEach(opt => {
+            opt.classList.remove('active');
+            opt.style.borderColor = 'rgba(255,255,255,0.06)';
+            opt.style.background = 'rgba(0,0,0,0.2)';
+        });
+        element.classList.add('active');
+        if (method === 'paypal') {
+            element.style.borderColor = '#0079c1';
+            element.style.background = 'rgba(0, 121, 193, 0.1)';
+        } else {
+            element.style.borderColor = 'var(--accent-blue)';
+            element.style.background = 'rgba(var(--accent-blue-rgb), 0.05)';
+        }
+    }
+
+    function executeDonation() {
+        const amtInput = document.getElementById('donation-amount-input');
+        const amt = amtInput ? parseFloat(amtInput.value) : 10;
+        if (isNaN(amt) || amt < 2) {
+            showToast(currentLang === 'de' ? "Mindestspende beträgt 2,00 €." : "Minimum donation is €2.00.", "error");
+            return;
+        }
+        closeDonationModal();
+        showToast(currentLang === 'de' ? "Weiterleitung zu PayPal..." : "Redirecting to PayPal...", "success");
+        const formattedAmt = amt.toFixed(2);
+        const paypalUrl = `https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=liesesandro4@gmail.com&item_name=Tentix%20Client%20Support&amount=${formattedAmt}&currency_code=EUR`;
+        if (window.api && window.api.openExternalLink) {
+            window.api.openExternalLink(paypalUrl);
+        } else {
+            window.open(paypalUrl, '_blank');
+        }
+    }
+
+    function restoreFriendsPopupSize() {
+        const currentUser = localStorage.getItem('tentix_username') || 'guest';
+        const width = localStorage.getItem(`friends_popup_width_${currentUser}`);
+        const height = localStorage.getItem(`friends_popup_height_${currentUser}`);
+        const popup = document.getElementById('friends-popup');
+        if (popup) {
+            if (width) popup.style.width = width + 'px';
+            if (height) popup.style.height = height + 'px';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const donationInput = document.getElementById('donation-amount-input');
+        const donationRange = document.getElementById('donation-amount-range');
+        if (donationInput && donationRange) {
+            donationInput.addEventListener('input', () => {
+                donationRange.value = donationInput.value;
+            });
+            donationRange.addEventListener('input', () => {
+                donationInput.value = donationRange.value;
+            });
+        }
+
+        const friendsPopup = document.getElementById('friends-popup');
+        if (friendsPopup) {
+            restoreFriendsPopupSize();
+            const resizeObserver = new ResizeObserver(entries => {
+                for (let entry of entries) {
+                    const width = Math.round(entry.contentRect.width);
+                    const height = Math.round(entry.contentRect.height);
+                    if (width > 50 && height > 50) {
+                        if (friendsPopup.style.display === 'flex' || friendsPopup.style.display === 'block') {
+                            const currentUser = localStorage.getItem('tentix_username') || 'guest';
+                            localStorage.setItem(`friends_popup_width_${currentUser}`, width);
+                            localStorage.setItem(`friends_popup_height_${currentUser}`, height);
+                        }
+                    }
+                }
+            });
+            resizeObserver.observe(friendsPopup);
+        }
+    });
+
     function checkoutCart() {
         if (shoppingCart.length === 0) return;
         

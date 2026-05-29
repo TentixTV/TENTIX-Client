@@ -9,6 +9,7 @@ contextBridge.exposeInMainWorld('api', {
     checkUpdates: () => ipcRenderer.send('check-updates'),
     installUpdate: () => ipcRenderer.send('install-update'),
     updateDiscordRP: (data) => ipcRenderer.send('update-discord-rp', data),
+    updateDiscordRPStatus: (data) => ipcRenderer.send('update-drp-status', data),
     setAutostart: (isEnabled) => ipcRenderer.send('set-autostart', isEnabled),
     getTotalRam: () => ipcRenderer.invoke('get-total-ram'),
     loginWithMicrosoft: () => ipcRenderer.invoke('login-microsoft'),
