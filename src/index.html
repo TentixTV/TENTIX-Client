@@ -2553,7 +2553,7 @@
                         Creator Code
                         <div class="tooltip tooltip-up" style="cursor: help; display: inline-flex; align-items: center; justify-content: center; width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.1); color: #fff; font-size: 8px; font-weight: 800;">
                             ?
-                            <span class="tooltiptext wide-tooltip tooltip-gray" style="z-index: 10000; bottom: 150%;">Mit einem Creator Code kannst du Sparen und Creator unterstützen! / Use a Creator Code to save money and support creators!</span>
+                            <span id="t-shop-creator-tooltip" class="tooltiptext wide-tooltip tooltip-gray" style="z-index: 10000; bottom: 150%;"></span>
                         </div>
                     </div>
                 </div>
@@ -2661,7 +2661,7 @@
                     Creator Code
                     <div class="tooltip tooltip-up" style="cursor: help; display: inline-flex; align-items: center; justify-content: center; width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.1); color: #fff; font-size: 8px; font-weight: 800;">
                         ?
-                        <span class="tooltiptext wide-tooltip tooltip-gray" style="z-index: 10000; bottom: 150%;">Mit einem Creator Code kannst du Sparen und Creator unterstützen! / Use a Creator Code to save money and support creators!</span>
+                        <span id="t-cart-creator-tooltip" class="tooltiptext wide-tooltip tooltip-gray" style="z-index: 10000; bottom: 150%;"></span>
                     </div>
                 </div>
             </div>
@@ -2982,7 +2982,8 @@
             tPlusDesc: "You do not have TENTIX+ to choose your extras here.<br><br>Get TENTIX+ for exclusive cosmetics, profile effects, and beta access!",
             btnBack: "BACK",
             maintText: "We are currently in maintenance mode",
-            maintTooltip: "As long as the client is in maintenance mode, some functions are disabled, or those that are also affected"
+            maintTooltip: "As long as the client is in maintenance mode, some functions are disabled, or those that are also affected",
+            creatorCodeTooltip: "Use a Creator Code to save money and support creators!"
         },
         de: {
             latest: "Neueste Version", ready: "BEREIT", welcome: "WILLKOMMEN, ", player: "SPIELER", play: "SPIELEN", loginReq: "BITTE EINLOGGEN!",
@@ -3017,7 +3018,8 @@
             tPlusDesc: "Du hast kein TENTIX+ um hier deine Extras auszuwählen.<br><br>Hol dir TENTIX+ für exklusive Kosmetika, Profileffekte und Beta-Zugang!",
             btnBack: "ZURÜCK",
             maintText: "Wir sind aktuell im Wartungsmodus",
-            maintTooltip: "Solange der Client im Wartungsmodus ist sind manche Funktionen deaktiviert, bzw. die auch davon betroffen sind"
+            maintTooltip: "Solange der Client im Wartungsmodus ist sind manche Funktionen deaktiviert, bzw. die auch davon betroffen sind",
+            creatorCodeTooltip: "Mit einem Creator Code kannst du sparen und Creator unterstützen!"
         }
     };
 
@@ -5868,6 +5870,8 @@
         setElText('t-cosmetics-title', t.cosTitle);
         setElText('t-cosmetics-desc', t.cosDesc);
         setElText('t-cosmetics-back', t.csBack || "ZURÜCK");
+        setElText('t-shop-creator-tooltip', t.creatorCodeTooltip);
+        setElText('t-cart-creator-tooltip', t.creatorCodeTooltip);
         
         const plusTitleEl = document.getElementById('tentixplus-view-title');
         if(plusTitleEl) plusTitleEl.innerHTML = t.tPlusTitle || 'TENTIX <span style="background: linear-gradient(135deg, var(--accent-blue) 0%, #0072ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">PLUS</span>';
