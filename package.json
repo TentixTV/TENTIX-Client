@@ -16,7 +16,7 @@
     "publish": {
       "provider": "github",
       "owner": "TentixTV",
-      "repo": "tentix-launcher"
+      "repo": "TENTIX-Client"
     },
     "mac": {
       "icon": "build/icon.png",
@@ -38,7 +38,7 @@
       "shortcutName": "TENTIX Client"
     }
   },
-  "repository": "github:TentixTV/tentix-launcher",
+  "repository": "github:TentixTV/TENTIX-Client",
   "keywords": [],
   "author": "TENTIX - Sandro",
   "license": "ISC",

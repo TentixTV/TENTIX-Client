@@ -350,6 +350,10 @@ autoUpdater.on('update-available', () => mainWindow.webContents.send('update-sta
 autoUpdater.on('update-not-available', () => mainWindow.webContents.send('update-status', { status: 'latest' }));
 autoUpdater.on('download-progress', (progressObj) => mainWindow.webContents.send('update-progress', progressObj.percent));
 autoUpdater.on('update-downloaded', () => mainWindow.webContents.send('update-status', { status: 'downloaded' }));
+autoUpdater.on('error', (err) => {
+    console.error("AutoUpdater error:", err);
+    mainWindow.webContents.send('update-status', { status: 'error', error: err ? err.message : "Unknown error" });
+});
 
 ipcMain.on('check-updates', () => {
     if (app.isPackaged) {

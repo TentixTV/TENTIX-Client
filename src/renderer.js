@@ -2788,6 +2788,13 @@
             showToast(translations[currentLang].updLatestToast || "Du bist auf der aktuellsten Version! (v0.1.0)", "success");
             setTimeout(() => { updateState = 'idle'; updateUpdateUI(); }, 2000);
         }
+        else if(data.status === 'error') {
+            updateState = 'latest';
+            if(ping) ping.style.display = 'none';
+            updateUpdateUI();
+            showToast(currentLang === 'de' ? "Update-Fehler: " + (data.error || "Unbekannter Fehler") : "Update Error: " + (data.error || "Unknown Error"), "error");
+            setTimeout(() => { updateState = 'idle'; updateUpdateUI(); }, 3000);
+        }
     }
 
     function onUpdateProgressReceived(percent) {
