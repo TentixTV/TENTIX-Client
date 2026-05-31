@@ -1031,6 +1031,26 @@
               50% { background-position: 50% 100%; }
               100% { background-position: 50% 0%; }
           }
+           .cart-close-btn {
+               width: 24px;
+               height: 24px;
+               display: flex;
+               justify-content: center;
+               align-items: center;
+               border-radius: 50%;
+               color: #666;
+               cursor: pointer;
+               transition: all 0.2s ease;
+               background: rgba(255,255,255,0.02);
+               border: 1px solid rgba(255,255,255,0.05);
+           }
+           .cart-close-btn:hover {
+               color: #fff;
+               background: rgba(255, 75, 75, 0.15);
+               border-color: rgba(255, 75, 75, 0.3);
+               box-shadow: 0 0 10px rgba(255, 75, 75, 0.2);
+               transform: scale(1.1);
+           }
           .cart-toggle-btn {
               cursor: pointer;
               background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
@@ -2954,7 +2974,7 @@
                 <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: var(--accent-blue);"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
                 Einkaufswagen
             </div>
-            <div onclick="toggleCartDrawer()" style="cursor: pointer; color: #888; transition: 0.2s;"><svg viewBox="0 0 24 24" style="width: 10px; height: 10px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></div>
+            <div class="cart-close-btn" onclick="toggleCartDrawer()"><svg viewBox="0 0 24 24" style="width: 10px; height: 10px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></div>
         </div>
         <div id="cart-items-list" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; scrollbar-width: thin;">
             <!-- Cart items here -->
