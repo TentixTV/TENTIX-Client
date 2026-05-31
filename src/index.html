@@ -981,26 +981,25 @@
          }
          
          /* Shopping Cart Drawer CSS */
-          .cart-drawer {
-              position: absolute;
-              top: 0;
-              right: -320px;
-              width: 320px;
-              height: 100%;
-              background: rgba(10, 10, 12, 0.96);
-              backdrop-filter: blur(25px);
-              border-left: 1px solid rgba(255, 255, 255, 0.08);
-              box-shadow: -15px 0 30px rgba(0, 0, 0, 0.7);
-              z-index: 3100;
-              transition: right 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-              display: flex;
-              flex-direction: column;
-              padding: 25px;
-              box-sizing: border-box;
-              -webkit-app-region: no-drag;
-              visibility: hidden;
-              pointer-events: none;
-          }
+         .cart-drawer {
+             position: absolute;
+             top: 0;
+             right: -380px;
+             width: 320px;
+             height: 100%;
+             background: rgba(10, 10, 12, 0.96);
+             backdrop-filter: blur(25px);
+             border-left: 1px solid rgba(255, 255, 255, 0.08);
+             box-shadow: -15px 0 30px rgba(0, 0, 0, 0.7);
+             z-index: 3100;
+             transition: right 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+             display: flex;
+             flex-direction: column;
+             padding: 25px;
+             box-sizing: border-box;
+             -webkit-app-region: no-drag;
+             pointer-events: none;
+         }
          .cart-drawer::before {
               content: '';
               position: absolute;
@@ -1073,11 +1072,10 @@
           .cart-toggle-btn:active {
               transform: translateY(1px);
           }
-           .cart-drawer.open {
-               right: 0;
-               visibility: visible;
-               pointer-events: auto;
-           }
+            .cart-drawer.open {
+                right: 0;
+                pointer-events: auto;
+            }
          .cart-item {
              display: flex;
              align-items: center;
@@ -7270,6 +7268,12 @@
 
     function navTo(page) {
         closeNewsPane();
+        if (page !== 'shop') {
+            const drawer = document.getElementById('cart-drawer');
+            if (drawer && drawer.classList.contains('open')) {
+                drawer.classList.remove('open');
+            }
+        }
         document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.nav-item').forEach(el => { if(el.getAttribute('data-page') === page) el.classList.add('active'); });
         setTimeout(updateMaintenanceBannerVisibility, 600); // Allow view switch animation to finish, then update banner
@@ -11551,14 +11555,17 @@
         const modal = document.getElementById('design-speed-warning-modal');
         if (modal) {
             modal.style.display = 'flex';
-            modal.offsetHeight; // force reflow
-            modal.classList.add('show');
+            setTimeout(() => {
+                modal.style.opacity = '1';
+                modal.classList.add('show');
+            }, 10);
         }
     }
 
     function closeSpeedWarningModal() {
         const modal = document.getElementById('design-speed-warning-modal');
         if (modal) {
+            modal.style.opacity = '0';
             modal.classList.remove('show');
             setTimeout(() => { modal.style.display = 'none'; }, 300);
         }
