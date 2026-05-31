@@ -117,7 +117,7 @@
         .tooltip-up .tooltiptext { bottom: 130%; left: 50%; transform: translateX(-50%); }
         .tooltip-right .tooltiptext { top: 50%; left: 110%; transform: translateY(-50%); }
         .tooltip-left .tooltiptext { top: 50%; right: 130%; transform: translateY(-50%); }
-        .tooltiptext.wide-tooltip { width: 160px; white-space: normal; line-height: 1.35; text-align: center; font-size: 8px !important; padding: 4px 8px !important; }
+        .tooltiptext.wide-tooltip { width: 220px; white-space: normal; line-height: 1.35; text-align: center; font-size: 10.5px !important; padding: 8px 12px !important; }
         .tooltiptext.tooltip-red { border-color: #ff4b4b !important; color: #ff4b4b !important; background-color: rgba(20, 10, 10, 0.95) !important; box-shadow: 0 5px 20px rgba(255, 75, 75, 0.15) !important; }
         .tooltiptext.tooltip-blue { border-color: var(--accent-blue) !important; color: var(--accent-blue) !important; background-color: rgba(10, 15, 20, 0.95) !important; box-shadow: 0 5px 20px rgba(var(--accent-blue-rgb), 0.15) !important; }
         .tooltiptext.tooltip-orange { border-color: #ffb84d !important; color: #ffb84d !important; background-color: rgba(20, 15, 10, 0.95) !important; box-shadow: 0 5px 20px rgba(255, 184, 77, 0.15) !important; }
@@ -155,7 +155,15 @@
         .action-text { font-size: 13px; font-weight: 800; color: var(--accent-blue); letter-spacing: 6px; text-transform: uppercase; }
 
         .error-modal-content { background: var(--card-bg); border: 1px solid rgba(255, 75, 75, 0.4); border-radius: 16px; padding: 40px; text-align: center; box-shadow: 0 15px 50px rgba(0,0,0,0.8), 0 0 40px rgba(255, 75, 75, 0.1); max-width: 400px; transform: scale(0.9); transition: 0.3s cubic-bezier(0.23, 1, 0.32, 1); }
-        .show .error-modal-content { transform: scale(1); }
+        .show .error-modal-content,
+        .show .redeem-content,
+        .show .dash-login-content,
+        .show .dash-edit-content,
+        .show .msg-read-content,
+        .show .tj-content,
+        #forced-restart-modal.show > div {
+            animation: fancyPopupEntry 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
         .error-title { font-size: 18px; font-weight: 800; color: #ff4b4b; letter-spacing: 1px; margin-bottom: 15px; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 12px;}
         .error-desc { font-size: 13px; color: var(--text-gray); line-height: 1.5; margin-bottom: 25px; text-align: center; max-width: 300px;}
         .error-btn { background: rgba(255, 75, 75, 0.1); border: 1px solid rgba(255, 75, 75, 0.3); color: #ff4b4b; padding: 12px 30px; font-size: 12px; font-weight: 800; border-radius: 8px; cursor: pointer; transition: 0.2s; display: inline-block; letter-spacing: 1px;}
@@ -1027,7 +1035,7 @@
          .cart-drawer {
              position: absolute;
              top: 0;
-             right: -320px;
+             right: 0;
              width: 320px;
              height: 100%;
              background: rgba(10, 10, 12, 0.96);
@@ -1035,7 +1043,8 @@
              border-left: 1px solid rgba(255, 255, 255, 0.08);
              box-shadow: -15px 0 30px rgba(0, 0, 0, 0.7);
              z-index: 3100;
-             transition: right 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+             transform: translateX(340px);
+             transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
              display: none;
              flex-direction: column;
              padding: 25px;
@@ -1116,7 +1125,7 @@
               transform: translateY(1px);
           }
             .cart-drawer.open {
-                right: 0;
+                transform: translateX(0);
                 pointer-events: auto;
             }
          .cart-item {
@@ -2377,7 +2386,7 @@
         <div id="add-friend-section" style="display: none; padding: 12px 15px; background: rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.05); flex-direction: column; gap: 8px;">
             <div style="font-size: 9px; font-weight: 800; color: #aaa; text-transform: uppercase; letter-spacing: 0.5px;">Freund hinzufügen</div>
             <div style="display: flex; gap: 8px;">
-                <input type="text" id="add-friend-name" placeholder="Name oder UUID..." style="flex: 1; background: #000; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 6px 10px; font-size: 11px; color: #fff; outline: none; font-family: monospace;">
+                <input type="text" id="add-friend-name" placeholder="Name oder UUID..." style="flex: 1; background: #000; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 6px 10px; font-size: 11px; color: #fff; outline: none;">
                 <button class="dash-btn" style="margin: 0; padding: 6px 12px; font-size: 10px; font-weight: 800; background: var(--accent-blue); color: #000; border: none; border-radius: 6px;" onclick="submitAddFriend()">OK</button>
             </div>
         </div>
@@ -7219,21 +7228,18 @@
         }
 
         try {
-            const usernameToUse = isLoggedIn && savedName ? savedName : 'BETA-GUEST';
-            const uuidToUse = isLoggedIn && uuidValue ? uuidValue : 'BETA-GUEST-UUID';
-            
-            const response = await fetch(`${API_BASE_URL}/api/codes/redeem`, {
+            // Step 1: Verify the beta key exists and is valid WITHOUT consuming it
+            const response = await fetch(`${API_BASE_URL}/api/codes/verify-beta`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ code: key, username: usernameToUse, uuid: uuidToUse, is_beta_menu: true })
+                body: JSON.stringify({ code: key })
             });
             const data = await response.json();
             
-            if (data.success) {
-                localStorage.setItem('tentix_beta_verified', 'true');
-                showToast(currentLang === 'de' ? "ZUGANG GEWÄHRT!" : "ACCESS GRANTED!", "success");
-                hideBetaOverlay();
-                proceedToMainMenu();
+            if (data.success === true) {
+                // Step 2: Store the key as pending and trigger Microsoft OAuth
+                localStorage.setItem('tentix_pending_beta_code', key);
+                loginProcess();
             } else {
                 const errMsg = data.error || (currentLang === 'de' ? "UNGÜLTIGER ODER VERBRAUCHTER BETA KEY!" : "INVALID OR EXPIRED BETA KEY!");
                 showToast(errMsg, "error");
@@ -7483,9 +7489,47 @@
                 localStorage.setItem('tentix_uuid', res.uuid);
                 localStorage.setItem('tentix_mc_token', JSON.stringify(res.mclc_token));
 
-                checkAuthState();
-                updateUI();
-                applyLoginState();
+                // Check if there is a pending beta code to redeem after login
+                const pendingKey = localStorage.getItem('tentix_pending_beta_code');
+                if (pendingKey) {
+                    try {
+                        const redeemResponse = await fetch(`${API_BASE_URL}/api/codes/redeem`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ code: pendingKey, username: res.name, uuid: res.uuid, is_beta_menu: true })
+                        });
+                        const redeemData = await redeemResponse.json();
+
+                        if (redeemData.success) {
+                            localStorage.removeItem('tentix_pending_beta_code');
+                            localStorage.setItem('tentix_beta_verified', 'true');
+                            showToast(currentLang === 'de' ? "ZUGANG GEWÄHRT!" : "ACCESS GRANTED!", "success");
+                            hideBetaOverlay();
+                            proceedToMainMenu();
+                        } else {
+                            localStorage.removeItem('tentix_pending_beta_code');
+                            const errMsg = redeemData.error || (currentLang === 'de' ? "BETA KEY EINLÖSUNG FEHLGESCHLAGEN!" : "BETA KEY REDEMPTION FAILED!");
+                            showToast(errMsg, "error");
+                            localStorage.removeItem('tentix_logged');
+                            localStorage.removeItem('tentix_user');
+                            localStorage.removeItem('tentix_uuid');
+                            localStorage.removeItem('tentix_mc_token');
+                            return;
+                        }
+                    } catch (redeemErr) {
+                        localStorage.removeItem('tentix_pending_beta_code');
+                        showToast(currentLang === 'de' ? "SERVER NICHT ERREICHBAR!" : "SERVER UNREACHABLE!", "error");
+                        localStorage.removeItem('tentix_logged');
+                        localStorage.removeItem('tentix_user');
+                        localStorage.removeItem('tentix_uuid');
+                        localStorage.removeItem('tentix_mc_token');
+                        return;
+                    }
+                } else {
+                    checkAuthState();
+                    updateUI();
+                    applyLoginState();
+                }
             } else {
                 showErrorModal();
             }
@@ -7510,7 +7554,7 @@
 
         if(document.getElementById('dl-container')) document.getElementById('dl-container').style.display = 'block';
 
-        const resParts = (localStorage.getItem('tentix_res') || "1920x1080").split('x');
+        const resParts = (localStorage.getItem('tentix_res') || "1280x720").split('x');
 
         try {
             if (tentixSocket) tentixSocket.emit('activity-update', { uuid: localStorage.getItem('tentix_uuid'), activity: 'im Spiel' });
@@ -7881,11 +7925,24 @@
                 applyMaintenanceModeState(localStorage.getItem('tentix_sim_maintenance') === 'true');
             });
 
+        // Maintenance status polling fallback (every 15s)
+        setInterval(() => {
+            fetch(`${API_BASE_URL}/api/system/status`)
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        applyMaintenanceModeState(data.maintenance);
+                        localStorage.setItem('tentix_sim_maintenance', data.maintenance ? 'true' : 'false');
+                    }
+                })
+                .catch(() => {});
+        }, 15000);
+
         updateOnlineStatus();
 
-        const resParts = (localStorage.getItem('tentix_res') || "1920x1080").split('x');
-        if(document.getElementById('res-w')) document.getElementById('res-w').value = resParts[0] || "1920";
-        if(document.getElementById('res-h')) document.getElementById('res-h').value = resParts[1] || "1080";
+        const resParts = (localStorage.getItem('tentix_res') || "1280x720").split('x');
+        if(document.getElementById('res-w')) document.getElementById('res-w').value = resParts[0] || "1280";
+        if(document.getElementById('res-h')) document.getElementById('res-h').value = resParts[1] || "720";
 
         const visSetting = localStorage.getItem('tentix_vis') || 'keep';
         if (visSetting === 'keep') {
@@ -9979,6 +10036,13 @@
                     }
                 }
             });
+            tentixSocket.on('maintenance-update', (data) => {
+                console.log('🔧 Maintenance update received:', data);
+                if (data && typeof data.active !== 'undefined') {
+                    applyMaintenanceModeState(data.active);
+                    localStorage.setItem('tentix_sim_maintenance', data.active ? 'true' : 'false');
+                }
+            });
             tentixSocket.on('disconnect', () => {
                 console.log('\u274c Socket.IO getrennt');
             });
@@ -10593,7 +10657,7 @@
         });
     }
 
-    function applyShopCreatorCode() {
+    async function applyShopCreatorCode() {
         const input = document.getElementById('shop-creator-input');
         const cartInput = document.getElementById('cart-creator-input');
         const status = document.getElementById('shop-creator-status');
@@ -10608,7 +10672,20 @@
             return;
         }
         
-        const codes = JSON.parse(localStorage.getItem('tentix_creator_codes') || '[]');
+        let codes = [];
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/creator-codes`);
+            const data = await res.json();
+            if (data.success && Array.isArray(data.codes)) {
+                codes = data.codes;
+            } else if (Array.isArray(data)) {
+                codes = data;
+            }
+            localStorage.setItem('tentix_creator_codes', JSON.stringify(codes));
+        } catch (e) {
+            codes = JSON.parse(localStorage.getItem('tentix_creator_codes') || '[]');
+        }
+        
         const codeObj = codes.find(c => c.code.toUpperCase() === val);
         
         if (codeObj) {
@@ -11566,9 +11643,18 @@
                     <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round;"><polyline points="20 6 9 17 4 12"></polyline></svg>
                 </button>
                 
-                <button class="dash-action-btn red-hover" onclick="removeGradientColorAt(${idx})" style="margin-left: auto; padding: 4px 8px; font-size: 9px; font-weight: 800; border-radius: 4px; border: 1px solid rgba(255,75,75,0.2); background: rgba(255,75,75,0.05); color: #ff4b4b; cursor: pointer; transition: 0.2s;" ${colors.length <= 1 ? 'disabled style="opacity: 0.3; pointer-events: none;"' : ''}>
+                ${colors.length <= 1 ? `
+                <div style="position: relative; margin-left: auto; display: inline-block;" onmouseenter="this.querySelector('.remove-tooltip').style.visibility='visible'" onmouseleave="this.querySelector('.remove-tooltip').style.visibility='hidden'">
+                    <span class="remove-tooltip" style="visibility: hidden; position: absolute; bottom: 130%; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.95); color: #ff4b4b; font-size: 9px; font-weight: 700; padding: 6px 10px; border-radius: 6px; white-space: nowrap; border: 1px solid rgba(255,75,75,0.3); box-shadow: 0 4px 15px rgba(0,0,0,0.5); pointer-events: none; z-index: 9999;">Du brauchst mind. 1 Hintergrundfarbe</span>
+                    <button class="dash-action-btn red-hover" disabled style="padding: 4px 8px; font-size: 9px; font-weight: 800; border-radius: 4px; border: 1px solid rgba(255,75,75,0.2); background: rgba(255,75,75,0.05); color: #ff4b4b; cursor: not-allowed; transition: 0.2s; opacity: 0.4; pointer-events: auto;">
+                        Entfernen
+                    </button>
+                </div>
+                ` : `
+                <button class="dash-action-btn red-hover" onclick="removeGradientColorAt(${idx})" style="margin-left: auto; padding: 4px 8px; font-size: 9px; font-weight: 800; border-radius: 4px; border: 1px solid rgba(255,75,75,0.2); background: rgba(255,75,75,0.05); color: #ff4b4b; cursor: pointer; transition: 0.2s;">
                     Entfernen
                 </button>
+                `}
             `;
             container.appendChild(row);
         });
