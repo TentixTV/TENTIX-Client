@@ -36,7 +36,7 @@
 
         ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: #3a3a3c; border-radius: 3px; } ::-webkit-scrollbar-thumb:hover { background: #555; }
 
-        .top-right-controls { position: absolute; top: 30px; right: 40px; display: flex; align-items: flex-start; gap: 15px; z-index: 100005; -webkit-app-region: no-drag; transition: 0.5s ease; }
+        .top-right-controls { position: absolute; top: 30px; right: 40px; display: flex; align-items: flex-start; gap: 15px; z-index: 3000; -webkit-app-region: no-drag; visibility: hidden; opacity: 0; transition: 0.5s ease; }
 
         .update-box { width: 34px; height: 34px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; display: flex; justify-content: center; align-items: center; cursor: pointer; position: relative; transition: 0.3s; }
         .update-box:hover { background: rgba(var(--accent-blue-rgb), 0.1); border-color: var(--accent-blue); box-shadow: 0 0 15px rgba(var(--accent-blue-rgb), 0.3); }
@@ -2732,7 +2732,7 @@
                                 </div>
                                 <div style="display: flex; align-items: center; gap: 15px;">
                                     <span style="color: #666; font-size: 11px; font-weight: 600;">1.00</span>
-                                    <input type="range" id="design-effect-speed-slider" min="1.00" max="5.00" step="0.05" value="2.50" style="flex: 1; -webkit-appearance: none; height: 6px; border-radius: 3px; background: rgba(255,255,255,0.07); outline: none; transition: 0.2s;" oninput="onEffectSpeedChange(this.value)">
+                                    <input type="range" id="design-effect-speed" min="1.00" max="5.00" step="0.05" value="2.50" style="flex: 1; -webkit-appearance: none; height: 6px; border-radius: 3px; background: rgba(255,255,255,0.07); outline: none; transition: 0.2s;" oninput="onEffectSpeedChange(this.value)">
                                     <span style="color: #666; font-size: 11px; font-weight: 600;">5.00</span>
                                 </div>
                             </div>
@@ -2970,84 +2970,6 @@
         </div>
     </div>
 
-    <!-- Shopping Cart Drawer (Right slide out) -->
-    <div class="cart-drawer" id="cart-drawer">
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;">
-            <div style="font-weight: 800; font-size: 14px; color: #fff; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px;">
-                <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: var(--accent-blue);"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-                Einkaufswagen
-            </div>
-            <div class="cart-close-btn" onclick="event.stopPropagation(); toggleCartDrawer()"><svg viewBox="0 0 24 24" style="width: 10px; height: 10px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; pointer-events: none;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></div>
-        </div>
-        <div id="cart-items-list" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; scrollbar-width: thin;">
-            <!-- Cart items here -->
-        </div>
-
-        <!-- Sync Creator Code inside Cart -->
-        <div style="background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.03); border-radius: 8px; padding: 10px; margin-bottom: 12px; -webkit-app-region: no-drag;">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-                <div style="font-weight: 800; font-size: 9px; color: #aaa; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 4px;">
-                    Creator Code
-                    <div class="tooltip tooltip-up" style="cursor: help; display: inline-flex; align-items: center; justify-content: center; width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.1); color: #fff; font-size: 8px; font-weight: 800;">
-                        ?
-                        <span id="t-cart-creator-tooltip" class="tooltiptext wide-tooltip tooltip-gray" style="z-index: 10000; bottom: 150%;"></span>
-                    </div>
-                </div>
-            </div>
-            <div style="display: flex; align-items: center; background: #000; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 3px 3px 3px 8px; height: 26px; box-sizing: border-box;">
-                <input type="text" id="cart-creator-input" placeholder="CODE..." oninput="syncCreatorCodeInputs(event, 'shop-creator-input')" style="flex: 1; background: transparent; border: none; color: #fff; outline: none; text-transform: uppercase; font-family: 'Inter', sans-serif; font-size: 10px; padding: 0; min-width: 0;">
-                <button class="dash-btn" style="margin: 0; padding: 0 10px; height: 100%; font-size: 9px; font-weight: 800; background: var(--accent-blue); color: #000; border: none; border-radius: 4px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: opacity 0.2s;" onclick="applyShopCreatorCode()">OK</button>
-            </div>
-            <div id="cart-creator-status" style="font-size: 9px; color: #ff8800; margin-top: 4px; font-weight: 600; display: none;"></div>
-        </div>
-
-        <!-- Sync Payment Method Selector inside Cart -->
-        <div style="background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.03); border-radius: 8px; padding: 10px; margin-bottom: 12px; -webkit-app-region: no-drag;">
-            <div style="font-weight: 800; font-size: 9px; color: #aaa; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px;">Zahlungsmethode / Payment Method</div>
-            <div class="cart-payment-selector" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
-                <div class="cart-pay-btn active" data-method="paypal" onclick="selectCartPayment('paypal')" title="PayPal">
-                    <img src="../assets/PayPal.png">
-                </div>
-                <div class="cart-pay-btn" data-method="bitcoin" onclick="selectCartPayment('bitcoin')" title="Bitcoin">
-                    <img src="../assets/Bitcoin.png">
-                </div>
-                <div class="cart-pay-btn" data-method="skrill" onclick="selectCartPayment('skrill')" title="Skrill">
-                    <img src="../assets/Skrill.png">
-                </div>
-                <div class="cart-pay-btn" data-method="giropay" onclick="selectCartPayment('giropay')" title="Giropay">
-                    <img src="../assets/Giropay.png">
-                </div>
-                <div class="cart-pay-btn" data-method="visa" onclick="selectCartPayment('visa')" title="Visa">
-                    <img src="../assets/Visa.png">
-                </div>
-                <div class="cart-pay-btn" data-method="mastercard" onclick="selectCartPayment('mastercard')" title="Mastercard">
-                    <img src="../assets/Mastercard.png">
-                </div>
-                <div class="cart-pay-btn" data-method="sofort" onclick="selectCartPayment('sofort')" title="Sofort">
-                    <img src="../assets/Sofort.png">
-                </div>
-            </div>
-        </div>
-
-        <div class="cart-summary">
-            <div class="cart-summary-row">
-                <span>Zwischensumme</span>
-                <span id="cart-subtotal">0,00 €</span>
-            </div>
-            <div class="cart-summary-row" id="cart-discount-row" style="display: none; color: #ff8800;">
-                <span>Rabatt (<span id="cart-discount-percent">0</span>%)</span>
-                <span id="cart-discount-value">-0,00 €</span>
-            </div>
-            <div class="cart-summary-row total">
-                <span>Gesamtsumme</span>
-                <span id="cart-total">0,00 €</span>
-            </div>
-            <div style="font-size: 10px; color: #666; text-align: right; margin-top: 5px; font-weight: 500;" id="cart-vat-row">
-                inkl. 19% MwSt. (<span id="cart-vat-value">0,00 €</span>)
-            </div>
-            <button class="shop-product-buy" style="margin-top: 15px; width: 100%; padding: 12px; font-weight: 800; font-size: 11px;" onclick="checkoutCart()">Jetzt Bezahlen</button>
-        </div>
-    </div>
 </div>
 
 <!-- Donation Modal -->
@@ -7183,6 +7105,16 @@
     }
 
     function showBetaOverlay() {
+        const lScreen = document.getElementById('loading-screen');
+        if (lScreen) {
+            lScreen.style.opacity = "0";
+            setTimeout(() => { lScreen.style.display = 'none'; }, 800);
+        }
+        const winControls = document.getElementById('top-right-controls');
+        if (winControls) {
+            winControls.style.visibility = 'visible';
+            winControls.style.opacity = 1;
+        }
         const betaOverlay = document.getElementById('beta-overlay');
         if (betaOverlay) {
             const betaLangSelect = document.getElementById('beta-lang-select');
@@ -10485,22 +10417,8 @@
     
     function toggleCartDrawer() {
         const drawer = document.getElementById('cart-drawer');
-        const winControls = document.getElementById('top-right-controls');
         if (drawer) {
             drawer.classList.toggle('open');
-            if (drawer.classList.contains('open')) {
-                if (winControls) {
-                    winControls.style.opacity = '0';
-                    winControls.style.visibility = 'hidden';
-                    winControls.style.pointerEvents = 'none';
-                }
-            } else {
-                if (winControls) {
-                    winControls.style.opacity = '1';
-                    winControls.style.visibility = 'visible';
-                    winControls.style.pointerEvents = 'auto';
-                }
-            }
         }
     }
     
@@ -10520,12 +10438,6 @@
         const drawer = document.getElementById('cart-drawer');
         if (drawer && !drawer.classList.contains('open')) {
             drawer.classList.add('open');
-            const winControls = document.getElementById('top-right-controls');
-            if (winControls) {
-                winControls.style.opacity = '0';
-                winControls.style.visibility = 'hidden';
-                winControls.style.pointerEvents = 'none';
-            }
         }
     }
     
@@ -11433,6 +11345,15 @@
             dropdown.classList.remove('open');
         }
         
+        const speedRow = document.getElementById('design-effect-speed-row');
+        if (speedRow) {
+            if (effect === 'empty' || effect === 'metric') {
+                speedRow.style.display = 'none';
+            } else {
+                speedRow.style.display = 'block';
+            }
+        }
+        
         const bg = document.getElementById('app-bg');
         if (bg) {
             bg.classList.toggle('metric-grid', effect === 'metric');
@@ -11560,6 +11481,16 @@
                 addBtn.disabled = false;
                 addBtn.style.opacity = '1';
                 addBtn.style.pointerEvents = 'all';
+            }
+        }
+        
+        const speedRow = document.getElementById('design-effect-speed-row');
+        if (speedRow) {
+            const effect = currentDesignSettings.effect || 'tentix';
+            if (effect === 'empty' || effect === 'metric') {
+                speedRow.style.display = 'none';
+            } else {
+                speedRow.style.display = 'block';
             }
         }
         
@@ -11759,5 +11690,83 @@
     </div>
 </div>
 
+    <!-- Shopping Cart Drawer (Right slide out) -->
+    <div class="cart-drawer" id="cart-drawer">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;">
+            <div style="font-weight: 800; font-size: 14px; color: #fff; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px;">
+                <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: var(--accent-blue);"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                Einkaufswagen
+            </div>
+            <div class="cart-close-btn" onclick="event.stopPropagation(); toggleCartDrawer()"><svg viewBox="0 0 24 24" style="width: 10px; height: 10px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; pointer-events: none;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></div>
+        </div>
+        <div id="cart-items-list" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; scrollbar-width: thin;">
+            <!-- Cart items here -->
+        </div>
+
+        <!-- Sync Creator Code inside Cart -->
+        <div style="background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.03); border-radius: 8px; padding: 10px; margin-bottom: 12px; -webkit-app-region: no-drag;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                <div style="font-weight: 800; font-size: 9px; color: #aaa; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 4px;">
+                    Creator Code
+                    <div class="tooltip tooltip-up" style="cursor: help; display: inline-flex; align-items: center; justify-content: center; width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.1); color: #fff; font-size: 8px; font-weight: 800;">
+                        ?
+                        <span id="t-cart-creator-tooltip" class="tooltiptext wide-tooltip tooltip-gray" style="z-index: 10000; bottom: 150%;"></span>
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; background: #000; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 3px 3px 3px 8px; height: 26px; box-sizing: border-box;">
+                <input type="text" id="cart-creator-input" placeholder="CODE..." oninput="syncCreatorCodeInputs(event, 'shop-creator-input')" style="flex: 1; background: transparent; border: none; color: #fff; outline: none; text-transform: uppercase; font-family: 'Inter', sans-serif; font-size: 10px; padding: 0; min-width: 0;">
+                <button class="dash-btn" style="margin: 0; padding: 0 10px; height: 100%; font-size: 9px; font-weight: 800; background: var(--accent-blue); color: #000; border: none; border-radius: 4px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: opacity 0.2s;" onclick="applyShopCreatorCode()">OK</button>
+            </div>
+            <div id="cart-creator-status" style="font-size: 9px; color: #ff8800; margin-top: 4px; font-weight: 600; display: none;"></div>
+        </div>
+
+        <!-- Sync Payment Method Selector inside Cart -->
+        <div style="background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.03); border-radius: 8px; padding: 10px; margin-bottom: 12px; -webkit-app-region: no-drag;">
+            <div style="font-weight: 800; font-size: 9px; color: #aaa; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px;">Zahlungsmethode / Payment Method</div>
+            <div class="cart-payment-selector" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
+                <div class="cart-pay-btn active" data-method="paypal" onclick="selectCartPayment('paypal')" title="PayPal">
+                    <img src="../assets/PayPal.png">
+                </div>
+                <div class="cart-pay-btn" data-method="bitcoin" onclick="selectCartPayment('bitcoin')" title="Bitcoin">
+                    <img src="../assets/Bitcoin.png">
+                </div>
+                <div class="cart-pay-btn" data-method="skrill" onclick="selectCartPayment('skrill')" title="Skrill">
+                    <img src="../assets/Skrill.png">
+                </div>
+                <div class="cart-pay-btn" data-method="giropay" onclick="selectCartPayment('giropay')" title="Giropay">
+                    <img src="../assets/Giropay.png">
+                </div>
+                <div class="cart-pay-btn" data-method="visa" onclick="selectCartPayment('visa')" title="Visa">
+                    <img src="../assets/Visa.png">
+                </div>
+                <div class="cart-pay-btn" data-method="mastercard" onclick="selectCartPayment('mastercard')" title="Mastercard">
+                    <img src="../assets/Mastercard.png">
+                </div>
+                <div class="cart-pay-btn" data-method="sofort" onclick="selectCartPayment('sofort')" title="Sofort">
+                    <img src="../assets/Sofort.png">
+                </div>
+            </div>
+        </div>
+
+        <div class="cart-summary">
+            <div class="cart-summary-row">
+                <span>Zwischensumme</span>
+                <span id="cart-subtotal">0,00 €</span>
+            </div>
+            <div class="cart-summary-row" id="cart-discount-row" style="display: none; color: #ff8800;">
+                <span>Rabatt (<span id="cart-discount-percent">0</span>%)</span>
+                <span id="cart-discount-value">-0,00 €</span>
+            </div>
+            <div class="cart-summary-row total">
+                <span>Gesamtsumme</span>
+                <span id="cart-total">0,00 €</span>
+            </div>
+            <div style="font-size: 10px; color: #666; text-align: right; margin-top: 5px; font-weight: 500;" id="cart-vat-row">
+                inkl. 19% MwSt. (<span id="cart-vat-value">0,00 €</span>)
+            </div>
+            <button class="shop-product-buy" style="margin-top: 15px; width: 100%; padding: 12px; font-weight: 800; font-size: 11px;" onclick="checkoutCart()">Jetzt Bezahlen</button>
+        </div>
+    </div>
 </body>
 </html>
