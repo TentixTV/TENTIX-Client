@@ -2615,6 +2615,27 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="setting-block" id="block-discord-client-id">
+                            <div style="margin-bottom: 12px;">
+                                <span style="font-size: 13px; font-weight: 800; color: #fff;">Custom Discord Client ID</span>
+                                <div style="font-size: 11px; color: var(--text-gray); margin-top: 4px;">Standard: 405441217766359051</div>
+                            </div>
+                            <input type="text" id="discord-custom-client-id" class="dash-input" placeholder="405441217766359051" style="margin: 0; width: 100%; box-sizing: border-box;" oninput="saveCustomRPCSettings()">
+                        </div>
+                        <div class="setting-block" id="block-discord-details-format">
+                            <div style="margin-bottom: 12px;">
+                                <span style="font-size: 13px; font-weight: 800; color: #fff;">Details-Format</span>
+                                <div style="font-size: 11px; color: var(--text-gray); margin-top: 4px;">Verwende {username} für deinen Namen. Leer lassen für Standard.</div>
+                            </div>
+                            <input type="text" id="discord-custom-details-format" class="dash-input" placeholder="z.B. {username} | TENTIX" style="margin: 0; width: 100%; box-sizing: border-box;" oninput="saveCustomRPCSettings()">
+                        </div>
+                        <div class="setting-block" id="block-discord-state-format">
+                            <div style="margin-bottom: 12px;">
+                                <span style="font-size: 13px; font-weight: 800; color: #fff;">State-Format</span>
+                                <div style="font-size: 11px; color: var(--text-gray); margin-top: 4px;">Verwende {username} für deinen Namen. Leer lassen für Standard.</div>
+                            </div>
+                            <input type="text" id="discord-custom-state-format" class="dash-input" placeholder="z.B. Im Menü" style="margin: 0; width: 100%; box-sizing: border-box;" oninput="saveCustomRPCSettings()">
+                        </div>
                         <div class="setting-block" id="block-discord-join" style="border:none; padding-bottom:0; margin-bottom:0;">
                             <a href="https://discord.gg/txhbXQGk97" target="_blank" class="fancy-banner" onclick="if(window.api) window.api.openExternalLink(this.href); return false;">
                                 <div style="display: flex; align-items: center; justify-content: center; width: 100%;">
@@ -2679,6 +2700,18 @@
                                 <div id="update-dl-fill" style="width: 0%; height: 100%; background: #00ff80; transition: 0.1s;"></div>
                             </div>
                         </div>
+                        <div class="setting-block" id="block-autostart" style="border:none; padding-bottom:0; margin-bottom:0; margin-top:20px;">
+                            <div class="setting-row">
+                                <div class="setting-text-col">
+                                    <div class="setting-title">
+                                        <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: #fff; margin-right: 10px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                                        <span id="t-upd-autostart-title">Autostart</span>
+                                    </div>
+                                    <div class="setting-desc" id="t-upd-autostart-desc" style="margin-bottom:0;">Starte TENTIX automatisch mit Windows</div>
+                                </div>
+                                <div class="toggle-switch" id="ts-autostart" onclick="toggleSwitch(this)"></div>
+                            </div>
+                        </div>
                     </div>
 
                     <div id="tab-design" class="settings-tab">
@@ -2722,12 +2755,9 @@
                                 <div style="display: flex; align-items: center; gap: 8px;">
                                     <span id="t-design-custom-color" style="font-size: 11px; font-weight: 700; color: var(--text-gray); text-transform: uppercase;">Eigene Farbe</span>
                                     <div style="position: relative; width: 34px; height: 34px; border-radius: 50%; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); background: transparent; cursor: pointer; transition: 0.2s;" class="tooltip tooltip-up">
-                                        <input type="color" id="design-picker" style="position: absolute; top: -5px; left: -5px; width: 44px; height: 44px; padding: 0; margin: 0; border: none; cursor: pointer; background: transparent;" oninput="onCustomAccentColorDrag(this.value)">
+                                        <input type="color" id="design-picker" style="position: absolute; top: -5px; left: -5px; width: 44px; height: 44px; padding: 0; margin: 0; border: none; cursor: pointer; background: transparent;" oninput="onCustomColorInput(this.value)">
                                         <span class="tooltiptext">Farbwähler</span>
                                     </div>
-                                    <button id="design-picker-confirm" onclick="confirmCustomAccentColor()" style="display: none; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; border: 1px solid rgba(0, 255, 128, 0.3); background: rgba(0, 255, 128, 0.1); color: #00ff80; cursor: pointer; transition: 0.2s; -webkit-app-region: no-drag;">
-                                        <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round;"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -3471,6 +3501,7 @@
     let systemTotalRam = 8;
     let isBanned = false;
     let currentDashRole = 'GUEST';
+    let isGameLaunchingOrRunning = false;
 
     function initMockDB() {
         let currentAdmins = localStorage.getItem('tentix_admin_accounts');
@@ -5189,6 +5220,12 @@
         });
     }
 
+    function copyDashCode(codeText) {
+        navigator.clipboard.writeText(codeText).then(() => {
+            showToast(currentLang === 'de' ? "CODE KOPIERT!" : "CODE COPIED!", "success");
+        });
+    }
+
     let editUserTarget = null;
     let editUserUuid = null;
     async function openUserEditModal(username, uuid) {
@@ -6082,11 +6119,11 @@
                 let displayCode = safeCode.length === 12 ? safeCode.match(/.{1,4}/g).join('-') : safeCode;
 
                 html += `<tr>
-                    <td class="copy-hover" style="color:#fff; font-family:monospace; letter-spacing:2px;" onclick="copyDashUUID('${safeCode}')" title="Click to copy">${displayCode}</td>
+                    <td class="copy-hover" style="color:#fff; font-family:monospace; letter-spacing:2px;" onclick="copyDashCode('${safeCode}')" title="Click to copy">${displayCode}</td>
                     <td style="color:#ffb84d; font-weight:700;">${ROLE_MAP[c.reward]?.name || c.reward}</td>
                     <td style="font-weight:800;">${c.uses} / ${c.max_uses || c.maxUses}</td>
                     <td>${statusHtml}</td>
-                    <td style="text-align: center;"><span style="color:#ff4b4b; font-weight:800; display: inline-flex; align-items: center; justify-content: center; cursor:pointer; padding: 5px; vertical-align: middle;" onclick="deleteDashCode('${safeCode}')" title="Code löschen"><svg viewBox="0 0 24 24" style="width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span></td>
+                    <td style="text-align: center;"><span style="color:#ff4b4b; font-weight:800; display: inline-flex; align-items: center; justify-content: center; cursor:pointer; padding: 5px; vertical-align: middle;" onclick="deleteDashCode('${safeCode}')" title="Code loeschen"><svg viewBox="0 0 24 24" style="width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span></td>
                 </tr>`;
             });
             tbody.innerHTML = html;
@@ -6516,8 +6553,17 @@
 
         const playBtn = document.getElementById('play-btn');
         if(playBtn) {
-            playBtn.innerText = isLoggedIn ? t.play : t.loginReq;
-            playBtn.disabled = !isLoggedIn || !navigator.onLine || isBanned;
+            if (isGameLaunchingOrRunning) {
+                playBtn.disabled = true;
+                if (playBtn.innerText.includes("RUNNING") || playBtn.innerText.includes("LÄUFT")) {
+                    playBtn.innerText = currentLang === 'de' ? "SPIEL LÄUFT" : "GAME RUNNING";
+                } else {
+                    playBtn.innerText = currentLang === 'de' ? "STARTEN..." : "STARTING...";
+                }
+            } else {
+                playBtn.innerText = isLoggedIn ? t.play : t.loginReq;
+                playBtn.disabled = !isLoggedIn || !navigator.onLine || isBanned;
+            }
         }
 
         setElText('ui-online-label', t.online);
@@ -6717,8 +6763,18 @@
             else adsToggle.classList.remove('active');
         }
 
+        const drpToggle = document.getElementById('ts-discord-rp');
+        if(drpToggle) {
+            if(localStorage.getItem('tentix_drp') !== 'false') drpToggle.classList.add('active');
+            else drpToggle.classList.remove('active');
+        }
+
         const hideToggle = document.getElementById('ts-discord-hide');
-        if(hideToggle) updateDiscordHideTag(hideToggle);
+        if(hideToggle) {
+            if(localStorage.getItem('tentix_drp_hide') === 'true') hideToggle.classList.add('active');
+            else hideToggle.classList.remove('active');
+            updateDiscordHideTag(hideToggle);
+        }
 
         if(!localStorage.getItem('tentix_autostart')) localStorage.setItem('tentix_autostart', 'false');
         const autostartToggle = document.getElementById('ts-autostart');
@@ -7546,6 +7602,27 @@
                             codes[simCodeIdx].uses -= 1;
                             localStorage.setItem('tentix_sim_codes', JSON.stringify(codes));
                             
+                            // Auto-assign PLAYER and BETA roles to simulated user
+                            let simUsers = JSON.parse(localStorage.getItem('tentix_sim_users') || '[]');
+                            let userIdx = simUsers.findIndex(u => u.username.toUpperCase() === res.name.toUpperCase());
+                            if (userIdx !== -1) {
+                                if (!simUsers[userIdx].roles.includes('BETA')) {
+                                    simUsers[userIdx].roles.push('BETA');
+                                }
+                                if (!simUsers[userIdx].roles.includes('PLAYER')) {
+                                    simUsers[userIdx].roles.push('PLAYER');
+                                }
+                            } else {
+                                simUsers.push({
+                                    username: res.name,
+                                    uuid: res.uuid,
+                                    roles: ['PLAYER', 'BETA'],
+                                    is_banned: false,
+                                    ban_reason: ''
+                                });
+                            }
+                            localStorage.setItem('tentix_sim_users', JSON.stringify(simUsers));
+
                             localStorage.removeItem('tentix_pending_beta_code');
                             localStorage.setItem('tentix_beta_verified', 'true');
                             showToast(currentLang === 'de' ? "ZUGANG GEWÄHRT! (Simulation)" : "ACCESS GRANTED! (Simulation)", "success");
@@ -7621,6 +7698,7 @@
 
         const playBtn = document.getElementById('play-btn');
         if(playBtn) playBtn.disabled = true;
+        isGameLaunchingOrRunning = true;
 
         if(document.getElementById('dl-container')) document.getElementById('dl-container').style.display = 'block';
 
@@ -7638,6 +7716,7 @@
             });
 
             if (!result.success) {
+                isGameLaunchingOrRunning = false;
                 if(document.getElementById('dl-container')) document.getElementById('dl-container').style.display = 'none';
                 if(playBtn) {
                     playBtn.innerText = currentLang === 'de' ? "SPIELEN" : "PLAY";
@@ -7647,6 +7726,7 @@
                 alert("Launch Error:\n" + result.error);
             }
         } catch(e) {
+            isGameLaunchingOrRunning = false;
             if(document.getElementById('dl-container')) document.getElementById('dl-container').style.display = 'none';
             if(playBtn) {
                 playBtn.innerText = currentLang === 'de' ? "SPIELEN" : "PLAY";
@@ -7677,6 +7757,7 @@
     if(window.api && window.api.onLaunchProgress) {
         window.api.onLaunchProgress((data) => {
             if(data.type === 'progress') {
+                isGameLaunchingOrRunning = true;
                 if(document.getElementById('dl-bar')) document.getElementById('dl-bar').style.width = ((data.task / data.total) * 100) + "%";
                 if(document.getElementById('dl-status')) document.getElementById('dl-status').innerText = getProgressBarLabel(data.taskType);
                 if(document.getElementById('dl-stats')) document.getElementById('dl-stats').innerText = data.task + " / " + data.total;
@@ -7686,6 +7767,7 @@
                 }
             }
             if(data.type === 'data') {
+                isGameLaunchingOrRunning = true;
                 if(document.getElementById('dl-status')) document.getElementById('dl-status').innerText = "STARTING...";
                 if(document.getElementById('play-btn')) document.getElementById('play-btn').innerText = "GAME RUNNING";
                 if(localStorage.getItem('tentix_vis') === 'hide' && window.api.minimize) { window.api.minimize(); }
@@ -7695,6 +7777,7 @@
                 }
             }
             if(data.type === 'close') {
+                isGameLaunchingOrRunning = false;
                 if(document.getElementById('dl-container')) document.getElementById('dl-container').style.display = 'none';
                 if(document.getElementById('play-btn')) { document.getElementById('play-btn').innerText = currentLang === 'de' ? "SPIELEN" : "PLAY"; document.getElementById('play-btn').disabled = false; }
                 
@@ -8186,6 +8269,19 @@
         if(document.getElementById('settings-overlay')) document.getElementById('settings-overlay').style.display = 'flex';
         if(document.getElementById('click-backdrop')) document.getElementById('click-backdrop').style.display = 'block';
         updateMaintenanceBannerVisibility();
+
+        const clientIdInput = document.getElementById('discord-custom-client-id');
+        if (clientIdInput) {
+            clientIdInput.value = localStorage.getItem('tentix_drp_client_id') || '405441217766359051';
+        }
+        const detailsFormatInput = document.getElementById('discord-custom-details-format');
+        if (detailsFormatInput) {
+            detailsFormatInput.value = localStorage.getItem('tentix_drp_details_format') || '';
+        }
+        const stateFormatInput = document.getElementById('discord-custom-state-format');
+        if (stateFormatInput) {
+            stateFormatInput.value = localStorage.getItem('tentix_drp_state_format') || '';
+        }
     }
 
     function toggleVersions(e) {
@@ -8308,8 +8404,31 @@
         if(window.api && window.api.updateDiscordRP) {
             const enabled = localStorage.getItem('tentix_drp') !== 'false';
             const hideAway = localStorage.getItem('tentix_drp_hide') === 'true';
-            window.api.updateDiscordRP({ enabled, hideAway });
+            
+            const clientId = localStorage.getItem('tentix_drp_client_id') || '405441217766359051';
+            const detailsFormat = localStorage.getItem('tentix_drp_details_format') || '';
+            const stateFormat = localStorage.getItem('tentix_drp_state_format') || '';
+            
+            window.api.updateDiscordRP({ 
+                enabled, 
+                hideAway,
+                clientId,
+                detailsFormat,
+                stateFormat
+            });
         }
+    }
+
+    function saveCustomRPCSettings() {
+        const clientId = document.getElementById('discord-custom-client-id') ? document.getElementById('discord-custom-client-id').value.trim() : '';
+        const detailsFormat = document.getElementById('discord-custom-details-format') ? document.getElementById('discord-custom-details-format').value.trim() : '';
+        const stateFormat = document.getElementById('discord-custom-state-format') ? document.getElementById('discord-custom-state-format').value.trim() : '';
+
+        localStorage.setItem('tentix_drp_client_id', clientId || '405441217766359051');
+        localStorage.setItem('tentix_drp_details_format', detailsFormat);
+        localStorage.setItem('tentix_drp_state_format', stateFormat);
+
+        updateDiscordRP();
     }
 
     function toggleSwitch(element) {
@@ -8328,16 +8447,12 @@
             if(element.id === 'ts-ads') {
                 localStorage.setItem('tentix_ads_enabled', element.classList.contains('active'));
             }
-        }
-    }
-
-    function toggleAutostart(element) {
-        if(element) {
-            element.classList.toggle('active');
-            const isEnabled = element.classList.contains('active');
-            localStorage.setItem('tentix_autostart', isEnabled);
-            if(window.api && window.api.setAutostart) {
-                window.api.setAutostart(isEnabled);
+            if(element.id === 'ts-autostart') {
+                const isEnabled = element.classList.contains('active');
+                localStorage.setItem('tentix_autostart', isEnabled);
+                if(window.api && window.api.setAutostart) {
+                    window.api.setAutostart(isEnabled);
+                }
             }
         }
     }
@@ -9001,6 +9116,37 @@
         }
     }
     
+    function isSlimSkin(img) {
+        if (img.width !== 64 || img.height !== 64) {
+            return false;
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = 64;
+        canvas.height = 64;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        const imgData = ctx.getImageData(0, 0, 64, 64);
+        const getAlpha = (x, y) => {
+            const idx = (y * 64 + x) * 4 + 3;
+            return imgData.data[idx];
+        };
+        let rightArmBorderTransparent = true;
+        for (let y = 16; y < 32; y++) {
+            if (getAlpha(47, y) > 0) {
+                rightArmBorderTransparent = false;
+                break;
+            }
+        }
+        let leftArmBorderTransparent = true;
+        for (let y = 48; y < 64; y++) {
+            if (getAlpha(39, y) > 0) {
+                leftArmBorderTransparent = false;
+                break;
+            }
+        }
+        return rightArmBorderTransparent && leftArmBorderTransparent;
+    }
+
     function processSkinFile(file) {
         if (!file.type.match('image/png')) {
             showToast(currentLang === 'de' ? "Nur PNG-Dateien erlaubt!" : "Only PNG files allowed!", "error");
@@ -9017,8 +9163,12 @@
                 const h = img.height;
                 if ((w === 64 && h === 64) || (w === 64 && h === 32)) {
                     uploadedSkinDataUrl = dataUrl;
+                    
+                    const slim = isSlimSkin(img);
+                    setSkinChangerModel(slim ? 'slim' : 'default');
+                    
                     if (skinChangerViewer) {
-                        skinChangerViewer.loadSkin(dataUrl);
+                        skinChangerViewer.loadSkin(dataUrl, { model: skinChangerModelType });
                     } else {
                         draw2DSkinOnCanvas(dataUrl);
                     }
@@ -9062,37 +9212,82 @@
         showToast(currentLang === 'de' ? "Suche Skin..." : "Searching skin...", "info");
         const skinUrl = `https://mc-heads.net/skin/${query}`;
         
-        const img = new Image();
-        img.crossOrigin = "anonymous";
-        img.src = skinUrl;
-        img.onload = function() {
-            loadSkinFromUrl(skinUrl, query);
+        loadSkinFromUrl(skinUrl, query, () => {
             renderNameMCHistory(query);
             showToast(currentLang === 'de' ? "Skin geladen! Klicke auf Speichern." : "Skin loaded! Click Save to apply.", "success");
-        };
-        img.onerror = function() {
+        }, () => {
             showToast(currentLang === 'de' ? "Spieler nicht gefunden oder Skin-Ladefehler!" : "Player not found or skin load error!", "error");
-        };
+        });
     }
 
-    function loadSkinFromUrl(url, name = null) {
-        uploadedSkinDataUrl = url;
-        if (skinChangerViewer) {
-            skinChangerViewer.loadSkin(url);
-        } else {
-            draw2DSkinOnCanvas(url);
-        }
-        const btn = document.getElementById('skin-upload-apply-btn');
-        if (btn) {
-            btn.style.opacity = '1';
-            btn.style.pointerEvents = 'all';
-        }
-        const caption = document.getElementById('current-skin-caption');
-        if (caption) {
-            const displayName = name || (currentLang === 'de' ? "Ausgewählter Skin" : "Selected Skin");
-            caption.innerText = (currentLang === 'de' ? 'Vorschau: ' : 'Preview: ') + displayName;
-        }
-        showToast(currentLang === 'de' ? "Skin geladen! Klicke auf Speichern." : "Skin loaded! Click Save to apply.", "info");
+    function loadSkinFromUrl(url, name = null, onSuccess = null, onFailure = null) {
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.src = url;
+        img.onload = function() {
+            const slim = isSlimSkin(img);
+            setSkinChangerModel(slim ? 'slim' : 'default');
+            
+            uploadedSkinDataUrl = url;
+            if (skinChangerViewer) {
+                skinChangerViewer.loadSkin(url, { model: skinChangerModelType }).catch(err => {
+                    console.warn("Failed to load 3D skin, falling back to 2D canvas:", err);
+                    const canvas = document.getElementById('skin-changer-canvas');
+                    const canvas2d = document.getElementById('skin-changer-canvas-2d');
+                    if (canvas) canvas.style.display = 'none';
+                    if (canvas2d) {
+                        canvas2d.style.display = 'block';
+                        draw2DSkinOnCanvas(url);
+                    }
+                });
+            } else {
+                draw2DSkinOnCanvas(url);
+            }
+            const btn = document.getElementById('skin-upload-apply-btn');
+            if (btn) {
+                btn.style.opacity = '1';
+                btn.style.pointerEvents = 'all';
+            }
+            const caption = document.getElementById('current-skin-caption');
+            if (caption) {
+                const displayName = name || (currentLang === 'de' ? "Ausgewählter Skin" : "Selected Skin");
+                caption.innerText = (currentLang === 'de' ? 'Vorschau: ' : 'Preview: ') + displayName;
+            }
+            if (onSuccess) onSuccess();
+            else showToast(currentLang === 'de' ? "Skin geladen! Klicke auf Speichern." : "Skin loaded! Click Save to apply.", "info");
+        };
+        img.onerror = function() {
+            if (onFailure) {
+                onFailure();
+            } else {
+                uploadedSkinDataUrl = url;
+                if (skinChangerViewer) {
+                    skinChangerViewer.loadSkin(url, { model: skinChangerModelType }).catch(err => {
+                        console.warn("Failed to load 3D skin, falling back to 2D canvas:", err);
+                        const canvas = document.getElementById('skin-changer-canvas');
+                        const canvas2d = document.getElementById('skin-changer-canvas-2d');
+                        if (canvas) canvas.style.display = 'none';
+                        if (canvas2d) {
+                            canvas2d.style.display = 'block';
+                            draw2DSkinOnCanvas(url);
+                        }
+                    });
+                } else {
+                    draw2DSkinOnCanvas(url);
+                }
+                const btn = document.getElementById('skin-upload-apply-btn');
+                if (btn) {
+                    btn.style.opacity = '1';
+                    btn.style.pointerEvents = 'all';
+                }
+                const caption = document.getElementById('current-skin-caption');
+                if (caption) {
+                    const displayName = name || (currentLang === 'de' ? "Ausgewählter Skin" : "Selected Skin");
+                    caption.innerText = (currentLang === 'de' ? 'Vorschau: ' : 'Preview: ') + displayName;
+                }
+                showToast(currentLang === 'de' ? "Skin geladen! Klicke auf Speichern." : "Skin loaded! Click Save to apply.", "info");
+            }
+        };
     }
 
     function saveSkinToHistory(name) {
@@ -10086,7 +10281,7 @@
             tentixSocket.on('connect', () => {
                 console.log('\ud83d\udd0c Socket.IO verbunden');
                 const uuid = localStorage.getItem('tentix_uuid') || '';
-                const username = dashUsername || localStorage.getItem('tentix_username') || '';
+                const username = dashUsername || localStorage.getItem('tentix_user') || '';
                 if (uuid && username) {
                     tentixSocket.emit('register', { username, uuid });
                 }
@@ -10306,7 +10501,7 @@
             showToast(currentLang === 'de' ? "Name darf nicht leer sein!" : "Name cannot be empty!", "error");
             return;
         }
-        const myUsername = dashUsername || localStorage.getItem('tentix_username') || '';
+        const myUsername = dashUsername || localStorage.getItem('tentix_user') || '';
         const myUuid = localStorage.getItem('tentix_uuid') || '';
         if (friendName.toUpperCase() === myUsername.toUpperCase()) {
             showToast('Du kannst dich nicht selbst hinzufügen!', 'error');
@@ -10929,7 +11124,7 @@
     }
 
     function restoreFriendsPopupSize() {
-        const currentUser = localStorage.getItem('tentix_username') || 'guest';
+        const currentUser = localStorage.getItem('tentix_user') || 'guest';
         const width = localStorage.getItem(`friends_popup_width_${currentUser}`);
         const height = localStorage.getItem(`friends_popup_height_${currentUser}`);
         const popup = document.getElementById('friends-popup');
@@ -10988,7 +11183,7 @@
                     const height = Math.round(entry.contentRect.height);
                     if (width > 50 && height > 50) {
                         if (friendsPopup.style.display === 'flex' || friendsPopup.style.display === 'block') {
-                            const currentUser = localStorage.getItem('tentix_username') || 'guest';
+                            const currentUser = localStorage.getItem('tentix_user') || 'guest';
                             localStorage.setItem(`friends_popup_width_${currentUser}`, width);
                             localStorage.setItem(`friends_popup_height_${currentUser}`, height);
                         }

@@ -7,12 +7,30 @@ const msmc = require('msmc');
 const DiscordRPC = require('discord-rpc');
 const { autoUpdater } = require('electron-updater');
 
+// Single Instance Lock
 let mainWindow;
+const gotTheLock = app.requestSingleInstanceLock();
+if (!gotTheLock) {
+    app.quit();
+    process.exit(0);
+} else {
+    app.on('second-instance', (event, commandLine, workingDirectory) => {
+        if (mainWindow) {
+            if (mainWindow.isMinimized()) mainWindow.restore();
+            if (!mainWindow.isVisible()) mainWindow.show();
+            mainWindow.focus();
+        }
+    });
+}
+
 let tray = null;
 let rpc = null;
 let discordEnabled = true;
 let discordHideAway = false;
-const clientId = '405441217766359051';
+let currentClientId = '405441217766359051';
+let customDetailsFormat = '';
+let customStateFormat = '';
+let lastUsername = 'GUEST';
 const launcher = new Client();
 
 let retryTimeout = null;
@@ -44,30 +62,47 @@ function createWindow() {
     mainWindow.on('maximize', () => mainWindow.webContents.send('window-maximized', true));
     mainWindow.on('unmaximize', () => mainWindow.webContents.send('window-maximized', false));
 
+    mainWindow.on('close', (event) => {
+        if (!app.isQuitting) {
+            event.preventDefault();
+            mainWindow.hide();
+        }
+        return false;
+    });
+
     mainWindow.on('show', updateActivity);
     mainWindow.on('hide', updateActivity);
 }
 
 function createTray() {
-    const iconPath = path.join(__dirname, 'build', 'icon.png');
-    if (fs.existsSync(iconPath)) {
-        tray = new Tray(iconPath);
-        const contextMenu = Menu.buildFromTemplate([
-            { label: 'TENTIX Öffnen', click: () => mainWindow.show() },
-            { type: 'separator' },
-            { label: 'Beenden', click: () => { app.isQuitting = true; app.quit(); } }
-        ]);
-        tray.setToolTip('TENTIX Client');
-        tray.setContextMenu(contextMenu);
-        tray.on('click', () => mainWindow.show());
+    try {
+        let iconPath = path.join(__dirname, 'assets', 'icon-game.png');
+        if (!fs.existsSync(iconPath)) {
+            iconPath = path.join(__dirname, 'build', 'icon.png');
+        }
+        if (fs.existsSync(iconPath)) {
+            tray = new Tray(iconPath);
+            const contextMenu = Menu.buildFromTemplate([
+                { label: 'TENTIX Öffnen', click: () => mainWindow.show() },
+                { type: 'separator' },
+                { label: 'Beenden', click: () => { app.isQuitting = true; app.quit(); } }
+            ]);
+            tray.setToolTip('TENTIX Client');
+            tray.setContextMenu(contextMenu);
+            tray.on('click', () => mainWindow.show());
+        }
+    } catch (e) {
+        console.error("Failed to create tray:", e);
     }
 }
 let connectingClient = null;
 let isConnecting = false;
 
-async function initDiscord() {
-    if (isConnecting) return;
+async function initDiscord(targetClientId) {
+    const targetId = targetClientId || currentClientId;
+    if (isConnecting && targetId === currentClientId) return;
     isConnecting = true;
+    currentClientId = targetId;
 
     if (retryTimeout) {
         clearTimeout(retryTimeout);
@@ -96,18 +131,18 @@ async function initDiscord() {
         if (!retryTimeout) {
             retryTimeout = setTimeout(() => {
                 retryTimeout = null;
-                initDiscord();
+                initDiscord(currentClientId);
             }, 15000);
         }
     };
 
     try {
-        DiscordRPC.register(clientId);
+        DiscordRPC.register(currentClientId);
         const client = new DiscordRPC.Client({ transport: 'ipc' });
         connectingClient = client;
 
         client.on('ready', () => {
-            console.log("Discord RPC connected!");
+            console.log("Discord RPC connected with Client ID:", currentClientId);
             if (connectingClient === client) {
                 connectingClient = null;
             }
@@ -132,9 +167,8 @@ async function initDiscord() {
         client.on('disconnected', () => handleFailure("Disconnected"));
         client.on('error', handleFailure);
 
-        client.login({ clientId }).catch(handleFailure);
+        client.login({ clientId: currentClientId }).catch(handleFailure);
     } catch (e) {
-        // Only log if it's not a standard connection failure
         if (e && e.message !== "Could not connect") {
             console.error("Failed to initialize Discord RPC:", e);
         }
@@ -155,9 +189,19 @@ function updateActivity() {
         return;
     }
 
+    let details = currentActivity.details;
+    let state = currentActivity.state;
+
+    if (customDetailsFormat) {
+        details = customDetailsFormat.replace(/{username}/g, lastUsername);
+    }
+    if (customStateFormat) {
+        state = customStateFormat.replace(/{username}/g, lastUsername);
+    }
+
     rpc.setActivity({
-        details: currentActivity.details,
-        state: currentActivity.state,
+        details: details,
+        state: state,
         startTimestamp: currentActivity.startTimestamp,
         largeImageKey: 'tentix_logo',
         largeImageText: 'TENTIX Client',
@@ -211,11 +255,23 @@ ipcMain.on('set-autostart', (event, isEnabled) => {
 ipcMain.on('update-discord-rp', (event, data) => {
     discordEnabled = data.enabled;
     discordHideAway = data.hideAway;
+    
+    if (data.clientId && data.clientId !== currentClientId) {
+        initDiscord(data.clientId);
+    }
+    if (data.detailsFormat !== undefined) {
+        customDetailsFormat = data.detailsFormat;
+    }
+    if (data.stateFormat !== undefined) {
+        customStateFormat = data.stateFormat;
+    }
+    
     updateActivity();
 });
 
 ipcMain.on('update-drp-status', (event, data) => {
     if (data.username) {
+        lastUsername = data.username;
         currentActivity.details = `${data.username} | TENTIX`;
     } else {
         currentActivity.details = `TENTIX Client`;
