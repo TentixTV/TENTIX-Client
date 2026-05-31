@@ -42,7 +42,12 @@
         .update-box:hover { background: rgba(var(--accent-blue-rgb), 0.1); border-color: var(--accent-blue); box-shadow: 0 0 15px rgba(var(--accent-blue-rgb), 0.3); }
         .update-icon { width: 16px; height: 16px; fill: #888; transition: fill 0.3s, opacity 0.3s; z-index: 2; }
         .update-box:hover .update-icon { fill: #fff; }
-        .update-ping { position: absolute; top: -4px; right: -4px; width: 10px; height: 10px; background: #ffcc00; border-radius: 50%; box-shadow: 0 0 10px #ffcc00; display: none; z-index: 3;}
+        .update-ping { position: absolute; top: -4px; right: -4px; width: 10px; height: 10px; background: #ffcc00; border-radius: 50%; box-shadow: 0 0 10px #ffcc00; display: none; z-index: 3; animation: updatePingPulse 1.2s infinite ease-in-out; }
+        @keyframes updatePingPulse {
+            0% { transform: scale(0.9); opacity: 0.8; }
+            50% { transform: scale(1.25); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.8; }
+        }
         .update-progress-fill { position: absolute; bottom: 0; left: 0; width: 100%; height: 0%; background: rgba(var(--accent-blue-rgb), 0.3); border-radius: 8px; transition: height 0.2s; z-index: 1;}
 
         .win-control-group { position: relative; display: flex; flex-direction: column; width: 34px; height: 34px; align-items: center;}
@@ -6147,6 +6152,7 @@
     window.addEventListener('offline', updateOnlineStatus);
 
     let updateState = 'idle';
+    let appVersion = '0.1.0';
 
     let mockUpdateTimeout = null;
     let mockUpdateInterval = null;
@@ -6168,19 +6174,25 @@
 
                 mockUpdateTimeout = setTimeout(() => {
                     onUpdateStatusReceived({ status: 'available' });
-
-                    let progress = 0;
-                    mockUpdateInterval = setInterval(() => {
-                        progress += Math.random() * 12 + 5;
-                        if (progress >= 100) {
-                            progress = 100;
-                            clearInterval(mockUpdateInterval);
-                            onUpdateStatusReceived({ status: 'downloaded' });
-                        }
-                        onUpdateProgressReceived(progress);
-                    }, 300);
-
                 }, 1500);
+            }
+        } else if (updateState === 'available') {
+            updateState = 'downloading';
+            updateUpdateUI();
+            if (window.api && window.api.downloadUpdate) {
+                window.api.downloadUpdate();
+            } else {
+                if (mockUpdateInterval) clearInterval(mockUpdateInterval);
+                let progress = 0;
+                mockUpdateInterval = setInterval(() => {
+                    progress += Math.random() * 12 + 5;
+                    if (progress >= 100) {
+                        progress = 100;
+                        clearInterval(mockUpdateInterval);
+                        onUpdateStatusReceived({ status: 'downloaded' });
+                    }
+                    onUpdateProgressReceived(progress);
+                }, 300);
             }
         } else if (updateState === 'ready') {
             const modal = document.getElementById('forced-restart-modal');
@@ -6203,13 +6215,26 @@
             updateUpdateUI();
         }
         else if(data.status === 'available') {
+            updateState = 'available';
+            if(ping) {
+                ping.style.display = 'block';
+                ping.style.background = '#ffcc00';
+                ping.style.boxShadow = '0 0 10px #ffcc00';
+            }
+            updateUpdateUI();
+        }
+        else if(data.status === 'downloading') {
             updateState = 'downloading';
-            if(ping) ping.style.display = 'block';
+            if(ping) ping.style.display = 'none';
             updateUpdateUI();
         }
         else if(data.status === 'downloaded') {
             updateState = 'ready';
-            if(ping) ping.style.display = 'block';
+            if(ping) {
+                ping.style.display = 'block';
+                ping.style.background = '#00ff80';
+                ping.style.boxShadow = '0 0 10px #00ff80';
+            }
             updateUpdateUI();
 
             const modal = document.getElementById('forced-restart-modal');
@@ -6225,7 +6250,7 @@
             updateState = 'latest';
             if(ping) ping.style.display = 'none';
             updateUpdateUI();
-            showToast(translations[currentLang].updLatestToast || "Du bist auf der aktuellsten Version! (v0.1.0)", "success");
+            showToast((translations[currentLang].updLatestToast || "Du bist auf der aktuellsten Version! (v0.1.0)").replace("v0.1.0", "v" + appVersion), "success");
             setTimeout(() => { updateState = 'idle'; updateUpdateUI(); }, 2000);
         }
         else if(data.status === 'error') {
@@ -6295,23 +6320,62 @@
             const p = '<path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/>';
             icon.innerHTML = p; if(setIcon) setIcon.innerHTML = p;
             tooltip.innerText = t.updIdle || "Update den Launcher";
+            
+            const btnText = document.getElementById('t-upd-btn-txt');
+            if(btnText) btnText.innerText = currentLang === 'de' ? "Nach Updates suchen" : "Check for updates";
+            const statusDesc = document.getElementById('t-upd-status-desc');
+            if(statusDesc) {
+                statusDesc.innerText = (currentLang === 'de' ? "Version " : "Version ") + appVersion + " BETA" + (currentLang === 'de' ? " installiert" : " installed");
+                statusDesc.style.color = 'var(--accent-blue)';
+            }
         } else if(updateState === 'checking') {
             const p = '<path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/>';
             icon.innerHTML = p; if(setIcon) { setIcon.innerHTML = p; }
             icon.classList.add('spin-anim');
             tooltip.innerText = t.updCheck || "Checking...";
+            
+            const btnText = document.getElementById('t-upd-btn-txt');
+            if(btnText) btnText.innerText = currentLang === 'de' ? "Prüfe..." : "Checking...";
+        } else if(updateState === 'available') {
+            const p = '<path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/>';
+            icon.innerHTML = p; if(setIcon) setIcon.innerHTML = p;
+            tooltip.innerText = currentLang === 'de' ? "Update verfügbar!" : "Update available!";
+            
+            const btnText = document.getElementById('t-upd-btn-txt');
+            if(btnText) btnText.innerText = currentLang === 'de' ? "Jetzt herunterladen" : "Download now";
+            const statusDesc = document.getElementById('t-upd-status-desc');
+            if(statusDesc) {
+                statusDesc.innerText = currentLang === 'de' ? "Ein neues Update ist verfügbar!" : "A new update is available!";
+                statusDesc.style.color = '#ffcc00';
+            }
         } else if(updateState === 'downloading') {
             const p = '<path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>';
             icon.innerHTML = p; if(setIcon) { setIcon.innerHTML = p; }
             icon.classList.add('bounce-anim');
             box.classList.add('downloading');
             tooltip.innerText = t.updDl || "Downloading...";
+            
+            const btnText = document.getElementById('t-upd-btn-txt');
+            if(btnText) btnText.innerText = currentLang === 'de' ? "Wird heruntergeladen..." : "Downloading...";
+            const statusDesc = document.getElementById('t-upd-status-desc');
+            if(statusDesc) {
+                statusDesc.innerText = currentLang === 'de' ? "Update wird heruntergeladen..." : "Downloading update...";
+                statusDesc.style.color = 'var(--accent-blue)';
+            }
         } else if(updateState === 'ready') {
             const p = '<path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>';
             icon.innerHTML = p; if(setIcon) setIcon.innerHTML = p;
             box.classList.add('ready');
             icon.classList.add('check-pop-anim');
             tooltip.innerText = t.updReady || "Click to restart & install";
+            
+            const btnText = document.getElementById('t-upd-btn-txt');
+            if(btnText) btnText.innerText = currentLang === 'de' ? "Neustarten & Installieren" : "Restart & Install";
+            const statusDesc = document.getElementById('t-upd-status-desc');
+            if(statusDesc) {
+                statusDesc.innerText = currentLang === 'de' ? "Update bereit zur Installation!" : "Update ready to install!";
+                statusDesc.style.color = '#00ff80';
+            }
         } else if(updateState === 'latest') {
             const p = '<path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>';
             icon.innerHTML = p; if(setIcon) setIcon.innerHTML = p;
@@ -8202,6 +8266,22 @@
                 onUpdateProgressReceived(percent);
             });
         }
+
+        if (window.api && window.api.getAppVersion) {
+            window.api.getAppVersion().then(v => {
+                appVersion = v;
+                document.querySelectorAll('.version-tag').forEach(el => {
+                    el.textContent = 'v' + v + ' BETA';
+                });
+                updateUpdateUI();
+            });
+        }
+
+        setTimeout(() => {
+            if (window.api && window.api.checkUpdates) {
+                window.api.checkUpdates();
+            }
+        }, 5000);
     }
 
     function setLang(l, e) { if(e) e.stopPropagation(); currentLang = l; localStorage.setItem('tentix_lang', l); updateUI(); }
@@ -10429,11 +10509,34 @@
 
     // --- Friends System ---
     let friendsList = [];
+    let incomingRequests = [];
+    let outgoingRequests = [];
+
     function loadFriends() {
         try {
             const stored = localStorage.getItem('tentix_friends');
             if (stored) friendsList = JSON.parse(stored);
         } catch(e) { friendsList = []; }
+
+        if (isClientSimulated) {
+            try {
+                const storedIn = localStorage.getItem('tentix_sim_incoming_requests');
+                if (storedIn) incomingRequests = JSON.parse(storedIn);
+                else {
+                    incomingRequests = [
+                        { uuid: 'sim-req-1', username: 'GamerGuy123', created_at: new Date().toISOString() }
+                    ];
+                    localStorage.setItem('tentix_sim_incoming_requests', JSON.stringify(incomingRequests));
+                }
+            } catch(e) { incomingRequests = []; }
+
+            try {
+                const storedOut = localStorage.getItem('tentix_sim_outgoing_requests');
+                if (storedOut) outgoingRequests = JSON.parse(storedOut);
+                else outgoingRequests = [];
+            } catch(e) { outgoingRequests = []; }
+        }
+
         updateFriendsBadge();
         loadFriendsFromServer();
     }
@@ -10448,16 +10551,24 @@
             if (data.success && data.friends) {
                 friendsList = data.friends;
                 localStorage.setItem('tentix_friends', JSON.stringify(friendsList));
-                renderFriendsList();
-                updateFriendsBadge();
             }
+
+            const reqRes = await fetch(`${API_BASE_URL}/api/friends/request/list?uuid=${encodeURIComponent(uuid)}`);
+            const reqData = await reqRes.json();
+            if (reqData.success) {
+                incomingRequests = reqData.incoming || [];
+                outgoingRequests = reqData.outgoing || [];
+            }
+
+            renderFriendsList();
+            updateFriendsBadge();
         } catch(e) { console.log('Friends load error:', e); }
     }
-    
+
     function updateFriendsBadge() {
         const badge = document.getElementById('friends-badge');
         if (!badge) return;
-        const onlineCount = friendsList.filter(f => f.online).length;
+        const onlineCount = (friendsList || []).filter(f => f.online).length;
         badge.innerText = onlineCount;
         if (onlineCount > 0) {
             badge.style.transform = 'scale(1)';
@@ -10465,12 +10576,12 @@
             badge.style.transform = 'scale(0)';
         }
     }
-    
+
     function toggleFriendsPopup(e) {
         if (e) e.stopPropagation();
         const popup = document.getElementById('friends-popup');
         if (!popup) return;
-        
+
         if (popup.style.display === 'flex' || popup.style.display === 'block') {
             closeAllPopups();
         } else {
@@ -10480,19 +10591,77 @@
             const backdrop = document.getElementById('click-backdrop');
             if (backdrop) backdrop.style.display = 'block';
             restoreFriendsPopupSize();
-            
-            // Load real friend statuses from server
+
             loadFriendsFromServer();
             renderFriendsList();
         }
     }
-    
+
     function toggleAddFriendSection() {
         const sec = document.getElementById('add-friend-section');
         if (!sec) return;
         sec.style.display = sec.style.display === 'none' ? 'flex' : 'none';
     }
-    
+
+    async function acceptFriendRequest(senderUuid, senderUsername, e) {
+        if (e) e.stopPropagation();
+        const myUuid = localStorage.getItem('tentix_uuid') || '';
+        if (isClientSimulated) {
+            incomingRequests = incomingRequests.filter(r => r.uuid !== senderUuid);
+            localStorage.setItem('tentix_sim_incoming_requests', JSON.stringify(incomingRequests));
+            if (!friendsList.some(f => f.uuid === senderUuid)) {
+                friendsList.push({ uuid: senderUuid, username: senderUsername, online: false, activity: null });
+                localStorage.setItem('tentix_friends', JSON.stringify(friendsList));
+            }
+            renderFriendsList();
+            updateFriendsBadge();
+            showToast(`${senderUsername} akzeptiert!`, 'success');
+            return;
+        }
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/friends/request/accept`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ sender_uuid: senderUuid, receiver_uuid: myUuid })
+            });
+            const data = await res.json();
+            if (data.success) {
+                showToast(`${senderUsername} akzeptiert!`, 'success');
+                loadFriendsFromServer();
+            } else {
+                showToast(data.error || 'Fehler', 'error');
+            }
+        } catch(e) { showToast('Verbindungsfehler!', 'error'); }
+    }
+
+    async function declineFriendRequest(friendUuid, isOutgoing, e) {
+        if (e) e.stopPropagation();
+        const myUuid = localStorage.getItem('tentix_uuid') || '';
+        const senderUuid = isOutgoing ? myUuid : friendUuid;
+        const receiverUuid = isOutgoing ? friendUuid : myUuid;
+        if (isClientSimulated) {
+            incomingRequests = incomingRequests.filter(r => r.uuid !== friendUuid);
+            localStorage.setItem('tentix_sim_incoming_requests', JSON.stringify(incomingRequests));
+            outgoingRequests = outgoingRequests.filter(r => r.uuid !== friendUuid);
+            localStorage.setItem('tentix_sim_outgoing_requests', JSON.stringify(outgoingRequests));
+            renderFriendsList();
+            showToast(currentLang === 'de' ? 'Anfrage abgelehnt/abgebrochen!' : 'Request declined/cancelled!', 'info');
+            return;
+        }
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/friends/request/decline`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ sender_uuid: senderUuid, receiver_uuid: receiverUuid })
+            });
+            const data = await res.json();
+            if (data.success) {
+                showToast(currentLang === 'de' ? 'Anfrage abgelehnt/abgebrochen!' : 'Request declined/cancelled!', 'info');
+                loadFriendsFromServer();
+            } else {
+                showToast(data.error || 'Fehler', 'error');
+            }
+        } catch(e) { showToast('Verbindungsfehler!', 'error'); }
+    }
+
     async function submitAddFriend() {
         const input = document.getElementById('add-friend-name');
         if (!input) return;
@@ -10512,30 +10681,59 @@
             return;
         }
         if (isClientSimulated) {
-            friendsList.push({ username: friendName, uuid: friendName + '-uuid', online: false, activity: null });
-            localStorage.setItem('tentix_friends', JSON.stringify(friendsList));
-            renderFriendsList(); updateFriendsBadge();
+            const incomingIdx = incomingRequests.findIndex(r => r.username.toUpperCase() === friendName.toUpperCase());
+            if (incomingIdx !== -1) {
+                const req = incomingRequests[incomingIdx];
+                incomingRequests.splice(incomingIdx, 1);
+                localStorage.setItem('tentix_sim_incoming_requests', JSON.stringify(incomingRequests));
+
+                friendsList.push({ uuid: req.uuid, username: req.username, online: false, activity: null });
+                localStorage.setItem('tentix_friends', JSON.stringify(friendsList));
+
+                renderFriendsList();
+                updateFriendsBadge();
+                input.value = ''; toggleAddFriendSection();
+                showToast(currentLang === 'de' ? `${req.username} wurde als Freund hinzugefügt!` : `${req.username} added as friend!`, 'success');
+                return;
+            }
+            if (outgoingRequests.some(r => r.username.toUpperCase() === friendName.toUpperCase())) {
+                showToast(currentLang === 'de' ? "Anfrage bereits ausstehend!" : "Request already pending!", "error");
+                return;
+            }
+            outgoingRequests.push({ username: friendName, uuid: friendName + '-uuid', created_at: new Date().toISOString() });
+            localStorage.setItem('tentix_sim_outgoing_requests', JSON.stringify(outgoingRequests));
+            renderFriendsList();
             input.value = ''; toggleAddFriendSection();
-            showToast(`${friendName} hinzugefügt!`, 'success');
+            showToast(currentLang === 'de' ? `Freundschaftsanfrage an ${friendName} gesendet!` : `Friend request sent to ${friendName}!`, 'success');
             return;
         }
         try {
             const findRes = await fetch(`${API_BASE_URL}/api/users/find?username=${encodeURIComponent(friendName)}`);
             const findData = await findRes.json();
             if (!findData.success) { showToast('Spieler nicht gefunden!', 'error'); return; }
-            const addRes = await fetch(`${API_BASE_URL}/api/friends/add`, {
+
+            const addRes = await fetch(`${API_BASE_URL}/api/friends/request/send`, {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user_uuid: myUuid, user_username: myUsername, friend_uuid: findData.user.uuid, friend_username: findData.user.username })
+                body: JSON.stringify({
+                    sender_uuid: myUuid,
+                    sender_username: myUsername,
+                    receiver_uuid: findData.user.uuid,
+                    receiver_username: findData.user.username
+                })
             });
             const addData = await addRes.json();
             if (addData.success) {
-                showToast(`${findData.user.username} wurde als Freund hinzugefügt!`, 'success');
+                if (addData.accepted) {
+                    showToast(`${findData.user.username} wurde als Freund hinzugefügt!`, 'success');
+                } else {
+                    showToast(currentLang === 'de' ? `Freundschaftsanfrage an ${findData.user.username} gesendet!` : `Friend request sent to ${findData.user.username}!`, 'success');
+                }
                 input.value = ''; toggleAddFriendSection();
                 loadFriendsFromServer();
             } else { showToast(addData.error || 'Fehler', 'error'); }
         } catch(e) { showToast('Verbindungsfehler!', 'error'); }
     }
-    
+
     async function removeFriend(uuid) {
         const myUuid = localStorage.getItem('tentix_uuid') || '';
         if (!isClientSimulated) {
@@ -10560,63 +10758,124 @@
             showToast(currentLang === 'de' ? `Erfolgreich mit ${ip} verbunden!` : `Successfully connected to ${ip}!`, "success");
         }, 1500);
     }
-    
+
     function renderFriendsList() {
         const container = document.getElementById('friends-list-content');
         const search = document.getElementById('friends-search-input')?.value.toLowerCase() || '';
         if (!container) return;
         container.innerHTML = '';
-        
-        const filtered = friendsList.filter(f => f.username.toLowerCase().includes(search) || f.uuid.toLowerCase().includes(search));
-        
-        if (filtered.length === 0) {
-            container.innerHTML = `<div style="text-align: center; color: #444; font-size: 11px; padding: 20px; font-style: italic;">Keine Freunde gefunden</div>`;
+
+        const filterVal = (item) => item.username.toLowerCase().includes(search) || item.uuid.toLowerCase().includes(search);
+
+        const filteredIncoming = (incomingRequests || []).filter(filterVal);
+        const filteredFriends = (friendsList || []).filter(filterVal);
+        const filteredOutgoing = (outgoingRequests || []).filter(filterVal);
+
+        if (filteredIncoming.length === 0 && filteredFriends.length === 0 && filteredOutgoing.length === 0) {
+            container.innerHTML = `<div style="text-align: center; color: #444; font-size: 11px; padding: 20px; font-style: italic;">` + (currentLang === 'de' ? "Keine Einträge gefunden" : "No entries found") + `</div>`;
             return;
         }
-        
-        filtered.sort((a, b) => (b.online ? 1 : 0) - (a.online ? 1 : 0));
-        
-        filtered.forEach(f => {
-            const dotColor = f.online ? '#00ff80' : '#555';
-            let statusText = f.online ? 'Online' : 'Offline';
-            let serverJoinIcon = '';
-            
-            if (f.online) {
-                statusText = f.activity || 'im Client';
-                
-                if ((f.activity || '').includes('Server:')) {
-                    const serverIp = f.activity.split('Server:')[1].trim();
-                    serverJoinIcon = `
-                        <div class="friend-join-btn" onclick="connectToFriendServer('${serverIp}', event)" style="cursor: pointer; background: rgba(var(--accent-blue-rgb), 0.12); border: 1px solid rgba(var(--accent-blue-rgb), 0.3); border-radius: 4px; padding: 3px 8px; font-size: 9px; font-weight: 800; color: var(--accent-blue); text-transform: uppercase; margin-right: 8px; display: inline-flex; align-items: center; gap: 4px; transition: 0.2s;" onmouseover="this.style.background='var(--accent-blue)'; this.style.color='#000';" onmouseout="this.style.background='rgba(var(--accent-blue-rgb), 0.12)'; this.style.color='var(--accent-blue)';">
-                            <svg viewBox="0 0 24 24" style="width: 10px; height: 10px; fill: currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
-                            Join
-                        </div>
-                    `;
-                }
-            }
-            
+
+        // 1. INCOMING REQUESTS
+        if (filteredIncoming.length > 0) {
             container.innerHTML += `
-                <div class="friend-item" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,0.02);">
-                    <div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0;">
-                        <img class="friend-avatar" src="https://minotar.net/avatar/${f.username}/24" onerror="this.src='https://minotar.net/avatar/MHF_Steve/24'" style="border-radius: 4px; width: 24px; height: 24px;">
-                        <div style="min-width: 0; flex: 1;">
-                           <div style="font-size: 11.5px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${f.username}</div>
-                           <div style="display: flex; align-items: center; gap: 4px; font-size: 9px; color: #777; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                               <div class="friend-status-dot" style="background: ${dotColor}; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;"></div>
-                               <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${statusText}</span>
-                           </div>
-                        </div>
-                    </div>
-                    <div style="display: flex; align-items: center;">
-                        ${serverJoinIcon}
-                        <div class="friend-chat-btn" onclick="openFriendChat('${f.uuid}', '${f.username.replace(/'/g, "\\'")}', event)" style="cursor: pointer; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 4px; padding: 3px 6px; display: inline-flex; align-items: center; margin-right: 6px; transition: 0.2s;" onmouseover="this.style.background='rgba(0, 225, 255, 0.1)'; this.style.borderColor='rgba(0, 225, 255, 0.3)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.borderColor='rgba(255, 255, 255, 0.1)';">
-                            <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; fill: currentColor; color: #aaa;"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
-                        </div>
-                        <div class="friends-remove-btn" onclick="removeFriend('${f.uuid}')" style="cursor: pointer; color: #555; padding: 4px 6px; font-size: 10px; transition: 0.2s;" onmouseover="this.style.color='#ff4b4b';" onmouseout="this.style.color='#555';">✕</div>
-                    </div>
+                <div style="font-size: 9px; font-weight: 800; color: var(--accent-blue); padding: 10px 12px 6px 12px; border-bottom: 1px solid rgba(255,255,255,0.02); display: flex; align-items: center; justify-content: space-between; letter-spacing: 0.5px;">
+                    <span>` + (currentLang === 'de' ? "ANFRAGEN" : "REQUESTS") + ` (${filteredIncoming.length})</span>
                 </div>
             `;
-        });
+            filteredIncoming.forEach(r => {
+                container.innerHTML += `
+                    <div class="friend-item" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.02);">
+                        <div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0;">
+                            <img class="friend-avatar" src="https://minotar.net/avatar/${r.username}/24" onerror="this.src='https://minotar.net/avatar/MHF_Steve/24'" style="border-radius: 4px; width: 24px; height: 24px;">
+                            <div style="min-width: 0; flex: 1;">
+                               <div style="font-size: 11.5px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${r.username}</div>
+                            </div>
+                        </div>
+                        <div class="friend-request-actions" style="display: flex; align-items: center; gap: 6px;">
+                            <button onclick="acceptFriendRequest('${r.uuid}', '${r.username.replace(/'/g, "\\'")}', event)" style="cursor: pointer; background: rgba(0, 255, 128, 0.12); border: 1px solid rgba(0, 255, 128, 0.3); border-radius: 4px; padding: 4px 8px; font-size: 9px; font-weight: 800; color: #00ff80; text-transform: uppercase; transition: 0.2s;" onmouseover="this.style.background='#00ff80'; this.style.color='#000';" onmouseout="this.style.background='rgba(0, 255, 128, 0.12)'; this.style.color='#00ff80';">Annehmen</button>
+                            <button onclick="declineFriendRequest('${r.uuid}', false, event)" style="cursor: pointer; background: rgba(255, 75, 75, 0.12); border: 1px solid rgba(255, 75, 75, 0.3); border-radius: 4px; padding: 4px 8px; font-size: 9px; font-weight: 800; color: #ff4b4b; text-transform: uppercase; transition: 0.2s;" onmouseover="this.style.background='#ff4b4b'; this.style.color='#000';" onmouseout="this.style.background='rgba(255, 75, 75, 0.12)'; this.style.color='#ff4b4b';">Ablehnen</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // 2. ACCEPTED FRIENDS
+        if (filteredFriends.length > 0) {
+            container.innerHTML += `
+                <div style="font-size: 9px; font-weight: 800; color: #888; padding: 10px 12px 6px 12px; border-bottom: 1px solid rgba(255,255,255,0.02); display: flex; align-items: center; justify-content: space-between; letter-spacing: 0.5px;">
+                    <span>` + (currentLang === 'de' ? "MEINE FREUNDE" : "MY FRIENDS") + ` (${filteredFriends.length})</span>
+                </div>
+            `;
+            filteredFriends.sort((a, b) => (b.online ? 1 : 0) - (a.online ? 1 : 0));
+            filteredFriends.forEach(f => {
+                const dotColor = f.online ? '#00ff80' : '#555';
+                let statusText = f.online ? 'Online' : 'Offline';
+                let serverJoinIcon = '';
+
+                if (f.online) {
+                    statusText = f.activity || 'im Client';
+
+                    if ((f.activity || '').includes('Server:')) {
+                        const serverIp = f.activity.split('Server:')[1].trim();
+                        serverJoinIcon = `
+                            <div class="friend-join-btn" onclick="connectToFriendServer('${serverIp}', event)" style="cursor: pointer; background: rgba(var(--accent-blue-rgb), 0.12); border: 1px solid rgba(var(--accent-blue-rgb), 0.3); border-radius: 4px; padding: 3px 8px; font-size: 9px; font-weight: 800; color: var(--accent-blue); text-transform: uppercase; margin-right: 8px; display: inline-flex; align-items: center; gap: 4px; transition: 0.2s;" onmouseover="this.style.background='var(--accent-blue)'; this.style.color='#000';" onmouseout="this.style.background='rgba(var(--accent-blue-rgb), 0.12)'; this.style.color='var(--accent-blue)';">
+                                <svg viewBox="0 0 24 24" style="width: 10px; height: 10px; fill: currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                                Join
+                            </div>
+                        `;
+                    }
+                }
+
+                container.innerHTML += `
+                    <div class="friend-item" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.02);">
+                        <div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0;">
+                            <img class="friend-avatar" src="https://minotar.net/avatar/${f.username}/24" onerror="this.src='https://minotar.net/avatar/MHF_Steve/24'" style="border-radius: 4px; width: 24px; height: 24px;">
+                            <div style="min-width: 0; flex: 1;">
+                               <div style="font-size: 11.5px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${f.username}</div>
+                               <div style="display: flex; align-items: center; gap: 4px; font-size: 9px; color: #777; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                   <div class="friend-status-dot" style="background: ${dotColor}; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;"></div>
+                                   <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${statusText}</span>
+                               </div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center;">
+                            ${serverJoinIcon}
+                            <div class="friend-chat-btn" onclick="openFriendChat('${f.uuid}', '${f.username.replace(/'/g, "\\'")}', event)" style="cursor: pointer; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 4px; padding: 3px 6px; display: inline-flex; align-items: center; margin-right: 6px; transition: 0.2s;" onmouseover="this.style.background='rgba(0, 225, 255, 0.1)'; this.style.borderColor='rgba(0, 225, 255, 0.3)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.borderColor='rgba(255, 255, 255, 0.1)';">
+                                <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; fill: currentColor; color: #aaa;"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+                            </div>
+                            <div class="friends-remove-btn" onclick="removeFriend('${f.uuid}')" style="cursor: pointer; color: #555; padding: 4px 6px; font-size: 10px; transition: 0.2s;" onmouseover="this.style.color='#ff4b4b';" onmouseout="this.style.color='#555';">✕</div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // 3. OUTGOING REQUESTS (PENDING)
+        if (filteredOutgoing.length > 0) {
+            container.innerHTML += `
+                <div style="font-size: 9px; font-weight: 800; color: #666; padding: 10px 12px 6px 12px; border-bottom: 1px solid rgba(255,255,255,0.02); display: flex; align-items: center; justify-content: space-between; letter-spacing: 0.5px;">
+                    <span>` + (currentLang === 'de' ? "AUSSTEHEND" : "PENDING") + ` (${filteredOutgoing.length})</span>
+                </div>
+            `;
+            filteredOutgoing.forEach(r => {
+                container.innerHTML += `
+                    <div class="friend-item" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.02);">
+                        <div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0;">
+                            <img class="friend-avatar" src="https://minotar.net/avatar/${r.username}/24" onerror="this.src='https://minotar.net/avatar/MHF_Steve/24'" style="border-radius: 4px; width: 24px; height: 24px; opacity: 0.6;">
+                            <div style="min-width: 0; flex: 1;">
+                               <div style="font-size: 11.5px; font-weight: 700; color: #aaa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${r.username}</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="font-size: 8px; font-weight: 800; color: #ffbb00; background: rgba(255, 187, 0, 0.1); border: 1px solid rgba(255, 187, 0, 0.2); border-radius: 4px; padding: 2px 5px; text-transform: uppercase; letter-spacing: 0.5px;">Ausstehend</span>
+                            <div class="friends-remove-btn" onclick="declineFriendRequest('${r.uuid}', true, event)" style="cursor: pointer; color: #555; padding: 4px 6px; font-size: 10px; transition: 0.2s;" onmouseover="this.style.color='#ff4b4b';" onmouseout="this.style.color='#555';">✕</div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
     }
     
     function filterFriendsList() {
@@ -10659,6 +10918,11 @@
 
     async function openFriendChat(friendUuid, friendUsername, e) {
         if (e) e.stopPropagation();
+        
+        if (!friendsList.some(f => f.uuid === friendUuid)) {
+            showToast(currentLang === 'de' ? "Ihr müsst befreundet sein, um chatten zu können!" : "You must be friends to chat!", "error");
+            return;
+        }
         
         activeChatFriendUuid = friendUuid;
         activeChatFriendName = friendUsername;

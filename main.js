@@ -409,6 +409,8 @@ launcher.on('data', (e) => mainWindow.webContents.send('launch-progress', { type
 launcher.on('progress', (e) => mainWindow.webContents.send('launch-progress', { type: 'progress', task: e.task, total: e.total, taskType: e.type }));
 launcher.on('close', (e) => mainWindow.webContents.send('launch-progress', { type: 'close', code: e }));
 
+autoUpdater.autoDownload = false;
+
 autoUpdater.on('checking-for-update', () => mainWindow.webContents.send('update-status', { status: 'checking' }));
 autoUpdater.on('update-available', () => mainWindow.webContents.send('update-status', { status: 'available' }));
 autoUpdater.on('update-not-available', () => mainWindow.webContents.send('update-status', { status: 'latest' }));
@@ -427,4 +429,13 @@ ipcMain.on('check-updates', () => {
         setTimeout(() => mainWindow.webContents.send('update-status', { status: 'latest' }), 2000);
     }
 });
+ipcMain.on('download-update', () => {
+    if (app.isPackaged) {
+        autoUpdater.downloadUpdate();
+    } else {
+        // Mock progress for development if requested
+        mainWindow.webContents.send('update-status', { status: 'downloading' });
+    }
+});
 ipcMain.on('install-update', () => autoUpdater.quitAndInstall());
+ipcMain.handle('get-app-version', () => app.getVersion());
