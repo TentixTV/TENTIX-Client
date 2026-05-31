@@ -155,14 +155,14 @@
         .action-text { font-size: 13px; font-weight: 800; color: var(--accent-blue); letter-spacing: 6px; text-transform: uppercase; }
 
         .error-modal-content { background: var(--card-bg); border: 1px solid rgba(255, 75, 75, 0.4); border-radius: 16px; padding: 40px; text-align: center; box-shadow: 0 15px 50px rgba(0,0,0,0.8), 0 0 40px rgba(255, 75, 75, 0.1); max-width: 400px; transform: scale(0.9); transition: 0.3s cubic-bezier(0.23, 1, 0.32, 1); }
-        .show .error-modal-content,
+        .show .error-modal-content:not(#design-speed-warning-modal .error-modal-content),
         .show .redeem-content,
         .show .dash-login-content,
         .show .dash-edit-content,
         .show .msg-read-content,
         .show .tj-content,
         #forced-restart-modal.show > div {
-            animation: fancyPopupEntry 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            transform: scale(1);
         }
         .error-title { font-size: 18px; font-weight: 800; color: #ff4b4b; letter-spacing: 1px; margin-bottom: 15px; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 12px;}
         .error-desc { font-size: 13px; color: var(--text-gray); line-height: 1.5; margin-bottom: 25px; text-align: center; max-width: 300px;}
@@ -185,12 +185,12 @@
                 opacity: 1;
             }
         }
-        @keyframes pulseAccentGlow {
+        @keyframes pulseRedGlow {
             0%, 100% {
-                box-shadow: 0 15px 50px rgba(0,0,0,0.85), 0 0 25px rgba(var(--accent-blue-rgb), 0.15);
+                box-shadow: 0 15px 50px rgba(0,0,0,0.85), 0 0 25px rgba(255, 75, 75, 0.15);
             }
             50% {
-                box-shadow: 0 15px 50px rgba(0,0,0,0.85), 0 0 45px rgba(var(--accent-blue-rgb), 0.35);
+                box-shadow: 0 15px 50px rgba(0,0,0,0.85), 0 0 45px rgba(255, 75, 75, 0.35);
             }
         }
         @keyframes warningIconShake {
@@ -199,8 +199,8 @@
             25%, 45%, 65%, 85% { transform: scale(1.15) rotate(6deg); }
         }
         #design-speed-warning-modal.show .error-modal-content {
-            animation: fancyPopupEntry 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, pulseAccentGlow 2.5s infinite ease-in-out;
-            border-color: rgba(var(--accent-blue-rgb), 0.35);
+            animation: fancyPopupEntry 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, pulseRedGlow 2.5s infinite ease-in-out;
+            border-color: rgba(255, 75, 75, 0.35);
         }
         #design-speed-warning-modal.show .error-title svg {
             animation: warningIconShake 1.1s cubic-bezier(0.36, 0.07, 0.19, 0.97) both 0.4s;
@@ -476,7 +476,7 @@
 
         /* Erkunden Tab */
         #explore-view { position: absolute; width: 100%; height: 100%; top: 0; left: 0; display: none; visibility: hidden; justify-content: center; align-items: center; z-index: 50; opacity: 0; transition: opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1), visibility 0.6s; -webkit-app-region: no-drag; }
-        .explore-container { width: 90%; height: 80%; background: var(--card-bg); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.05); display: flex; overflow: hidden; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8); margin: 0 auto; margin-top: 40px; }
+        .explore-container { width: 90%; height: 80%; background: var(--card-bg); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.05); display: flex; overflow: hidden; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8); margin: 0 auto; margin-top: 40px; transition: opacity 0.4s cubic-bezier(0.23, 1, 0.32, 1); }
         .explore-main { flex: 1; display: flex; flex-direction: column; padding: 30px; }
         .explore-sidebar { width: 280px; flex-shrink: 0; background: #0f0f11; border-left: 1px solid rgba(255, 255, 255, 0.05); padding: 30px; overflow-y: auto; scrollbar-gutter: stable;}
         .explore-header { display: flex; align-items: center; margin-bottom: 20px; gap: 20px;}
@@ -1044,7 +1044,8 @@
              box-shadow: -15px 0 30px rgba(0, 0, 0, 0.7);
              z-index: 3100;
              transform: translateX(340px);
-             transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+             opacity: 0;
+             transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s ease;
              display: none;
              flex-direction: column;
              padding: 25px;
@@ -2874,7 +2875,7 @@
                 <!-- Product cards injected by loadShop() -->
             </div>
         </div>
-            <div class="explore-sidebar" style="border-left: none; border-right: 1px solid rgba(255,255,255,0.05); order: -1; width: 230px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div class="explore-sidebar" style="border-left: none; border-right: 1px solid rgba(255,255,255,0.05); order: -1; width: 230px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden !important;">
             <div class="filter-section" style="overflow-y: auto; flex: 1; direction: rtl; padding-left: 8px; overflow-x: hidden;">
                 <div style="direction: ltr;">
                     <div class="filter-title" id="t-shop-cat-lbl">Kategorien</div>
@@ -7324,12 +7325,25 @@
         if (page === 'shop') {
             if (drawer) {
                 drawer.style.display = 'flex';
+                setTimeout(() => {
+                    const activeTab = document.querySelector('.nav-item.active');
+                    if (activeTab && activeTab.getAttribute('data-page') === 'shop') {
+                        drawer.style.opacity = '1';
+                    }
+                }, 550);
             }
+            updateShopViewOpacity();
         } else {
             if (drawer) {
                 drawer.classList.remove('open');
-                drawer.style.display = 'none';
+                drawer.style.opacity = '0';
+                setTimeout(() => {
+                    if (drawer.style.opacity === '0') {
+                        drawer.style.display = 'none';
+                    }
+                }, 400);
             }
+            updateShopViewOpacity();
         }
         document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.nav-item').forEach(el => { if(el.getAttribute('data-page') === page) el.classList.add('active'); });
@@ -8077,19 +8091,37 @@
         localStorage.setItem('tentix_res', `${w}x${h}`);
     }
 
-    function handleAccountClick() { closeAllPopups(); if(document.getElementById('account-card')) document.getElementById('account-card').style.display = 'flex'; if(document.getElementById('click-backdrop')) document.getElementById('click-backdrop').style.display = 'block'; }
+    function handleAccountClick() {
+        const card = document.getElementById('account-card');
+        if (!card) return;
+        if (card.style.display === 'flex' || card.style.display === 'block') {
+            closeAllPopups();
+        } else {
+            closeAllPopups();
+            card.style.display = 'flex';
+            const backdrop = document.getElementById('click-backdrop');
+            if (backdrop) backdrop.style.display = 'block';
+        }
+    }
 
     function toggleInbox(e) {
         if(e) e.stopPropagation();
-        closeAllPopups();
-        if(document.getElementById('inbox-popup')) document.getElementById('inbox-popup').style.display = 'flex';
-        if(document.getElementById('click-backdrop')) document.getElementById('click-backdrop').style.display = 'block';
+        const inbox = document.getElementById('inbox-popup');
+        if (!inbox) return;
+        if (inbox.style.display === 'flex' || inbox.style.display === 'block') {
+            closeAllPopups();
+        } else {
+            closeAllPopups();
+            inbox.style.display = 'flex';
+            const backdrop = document.getElementById('click-backdrop');
+            if (backdrop) backdrop.style.display = 'block';
 
-        const badge = document.getElementById('bell-badge');
-        if(badge) {
-            badge.innerText = '0';
-            badge.classList.remove('show');
-            badge.classList.add('empty');
+            const badge = document.getElementById('bell-badge');
+            if(badge) {
+                badge.innerText = '0';
+                badge.classList.remove('show');
+                badge.classList.add('empty');
+            }
         }
     }
 
@@ -8100,7 +8132,19 @@
         updateMaintenanceBannerVisibility();
     }
 
-    function toggleVersions(e) { if(e) e.stopPropagation(); closeAllPopups(); if(document.getElementById('version-overlay')) document.getElementById('version-overlay').style.display = 'grid'; if(document.getElementById('click-backdrop')) document.getElementById('click-backdrop').style.display = 'block'; }
+    function toggleVersions(e) {
+        if(e) e.stopPropagation();
+        const ver = document.getElementById('version-overlay');
+        if (!ver) return;
+        if (ver.style.display === 'grid' || ver.style.display === 'flex' || ver.style.display === 'block') {
+            closeAllPopups();
+        } else {
+            closeAllPopups();
+            ver.style.display = 'grid';
+            const backdrop = document.getElementById('click-backdrop');
+            if (backdrop) backdrop.style.display = 'block';
+        }
+    }
 
     function switchSettingsTab(tabId, el) {
         const searchInput = document.getElementById('settings-search');
@@ -8126,7 +8170,7 @@
     }
 
     function closeAllPopups() {
-        const ids = ['account-card', 'inbox-popup', 'version-overlay', 'settings-overlay', 'click-backdrop'];
+        const ids = ['account-card', 'inbox-popup', 'version-overlay', 'settings-overlay', 'click-backdrop', 'friends-popup', 'friends-chat-popup'];
         ids.forEach(id => { if(document.getElementById(id)) document.getElementById(id).style.display = 'none'; });
         const dLogin = document.getElementById('dash-login-modal');
         if(dLogin && dLogin.style.display !== 'none') {
@@ -10176,17 +10220,14 @@
         const popup = document.getElementById('friends-popup');
         if (!popup) return;
         
-        // Close other popups
-        const inbox = document.getElementById('inbox-popup');
-        if (inbox) inbox.style.display = 'none';
-        const accountCard = document.getElementById('account-card');
-        if (accountCard) accountCard.classList.remove('active');
-        
         if (popup.style.display === 'flex' || popup.style.display === 'block') {
-            popup.style.display = 'none';
+            closeAllPopups();
         } else {
+            closeAllPopups();
             popup.style.display = 'flex';
             popup.style.flexDirection = 'column';
+            const backdrop = document.getElementById('click-backdrop');
+            if (backdrop) backdrop.style.display = 'block';
             restoreFriendsPopupSize();
             
             // Load real friend statuses from server
@@ -10531,10 +10572,28 @@
     // --- Shop Cart Logic ---
     let shoppingCart = [];
     
+    function updateShopViewOpacity() {
+        const drawer = document.getElementById('cart-drawer');
+        const shopView = document.getElementById('shop-view');
+        if (shopView && drawer) {
+            const container = shopView.querySelector('.explore-container');
+            if (container) {
+                if (drawer.classList.contains('open')) {
+                    container.style.opacity = '0.45';
+                    container.style.pointerEvents = 'none';
+                } else {
+                    container.style.opacity = '1';
+                    container.style.pointerEvents = 'auto';
+                }
+            }
+        }
+    }
+
     function toggleCartDrawer() {
         const drawer = document.getElementById('cart-drawer');
         if (drawer) {
             drawer.classList.toggle('open');
+            updateShopViewOpacity();
         }
     }
     
@@ -10554,6 +10613,7 @@
         const drawer = document.getElementById('cart-drawer');
         if (drawer && !drawer.classList.contains('open')) {
             drawer.classList.add('open');
+            updateShopViewOpacity();
         }
     }
     
