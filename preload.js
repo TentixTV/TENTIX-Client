@@ -5,6 +5,7 @@ contextBridge.exposeInMainWorld('api', {
     close: () => ipcRenderer.send('window-close'),
     maximize: () => ipcRenderer.send('window-maximize'),
     minimize: () => ipcRenderer.send('window-minimize'),
+    drag: (data) => ipcRenderer.send('window-drag', data),
     openExternalLink: (url) => ipcRenderer.send('open-external', url),
     checkUpdates: () => ipcRenderer.send('check-updates'),
     installUpdate: () => ipcRenderer.send('install-update'),

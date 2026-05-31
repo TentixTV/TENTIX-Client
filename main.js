@@ -191,6 +191,14 @@ ipcMain.on('window-maximize', () => {
     else mainWindow.maximize();
 });
 
+ipcMain.on('window-drag', (event, data) => {
+    if (mainWindow && !mainWindow.isMaximized()) {
+        const { deltaX, deltaY } = data;
+        const [x, y] = mainWindow.getPosition();
+        mainWindow.setPosition(x + deltaX, y + deltaY);
+    }
+});
+
 ipcMain.on('open-external', (event, url) => shell.openExternal(url));
 
 ipcMain.on('set-autostart', (event, isEnabled) => {
