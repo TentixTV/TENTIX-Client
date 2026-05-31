@@ -991,7 +991,7 @@
              backdrop-filter: blur(25px);
              border-left: 1px solid rgba(255, 255, 255, 0.08);
              box-shadow: -15px 0 30px rgba(0, 0, 0, 0.7);
-             z-index: 2000;
+             z-index: 3100;
              transition: right 0.4s cubic-bezier(0.23, 1, 0.32, 1);
              display: flex;
              flex-direction: column;
@@ -1006,7 +1006,7 @@
               left: 0;
               width: 3px;
               height: 100%;
-              background: linear-gradient(to top, #00d4ff 0%, #ff4b4b 35%, #00d4ff 65%, #ff4b4b 100%);
+              background: linear-gradient(to top, var(--cart-color-1, #00d4ff) 0%, var(--cart-color-2, #ff4b4b) 35%, var(--cart-color-1, #00d4ff) 65%, var(--cart-color-2, #ff4b4b) 100%);
               background-size: 100% 200%;
               animation: gradientShift 8s ease-in-out infinite;
               filter: blur(0.5px);
@@ -1019,7 +1019,7 @@
               left: -15px;
               width: 15px;
               height: 100%;
-              background: linear-gradient(to top, rgba(0, 212, 255, 0.25) 0%, rgba(255, 75, 75, 0.25) 35%, rgba(0, 212, 255, 0.25) 65%, rgba(255, 75, 75, 0.25) 100%);
+              background: linear-gradient(to top, rgba(var(--cart-color-1-rgb, 0, 212, 255), 0.25) 0%, rgba(var(--cart-color-2-rgb, 255, 75, 75), 0.25) 35%, rgba(var(--cart-color-1-rgb, 0, 212, 255), 0.25) 65%, rgba(var(--cart-color-2-rgb, 255, 75, 75), 0.25) 100%);
               background-size: 100% 200%;
               animation: gradientShift 8s ease-in-out infinite;
               filter: blur(15px);
@@ -4482,8 +4482,8 @@
                 const lastMaintLabel = currentLang === 'de' ? `Letzte Wartung: ${lastMaintText}` : `Last Maintenance: ${lastMaintText}`;
 
                 maintenanceCardHtml = `
-                    <div style="background: rgba(0, 212, 255, 0.05); border: 1px solid rgba(0, 212, 255, 0.2); padding: 18px 20px 20px 20px; border-radius: 12px; width: 100%; box-shadow: 0 0 15px rgba(0, 212, 255, 0.08); margin-bottom: 15px; position: relative; overflow: hidden; box-sizing: border-box;">
-                        <div style="position: absolute; top: -50px; left: -50px; width: 150px; height: 150px; background: radial-gradient(circle, rgba(0, 212, 255, 0.05) 0%, transparent 70%); pointer-events: none;"></div>
+                    <div style="background: rgba(var(--accent-blue-rgb), 0.05); border: 1px solid rgba(var(--accent-blue-rgb), 0.2); padding: 18px 20px 20px 20px; border-radius: 12px; width: 100%; box-shadow: 0 0 15px rgba(var(--accent-blue-rgb), 0.08); margin-bottom: 15px; position: relative; overflow: hidden; box-sizing: border-box;">
+                        <div style="position: absolute; top: -50px; left: -50px; width: 150px; height: 150px; background: radial-gradient(circle, rgba(var(--accent-blue-rgb), 0.05) 0%, transparent 70%); pointer-events: none;"></div>
                         <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
                             <div style="position: relative; width: 7px; height: 7px; display: flex; align-items: center; justify-content: center;">
                                 <div style="position: absolute; width: 7px; height: 7px; background-color: #00ff80; border-radius: 50%;"></div>
@@ -7804,11 +7804,30 @@
             document.documentElement.style.setProperty('--accent-blue-rgb', '255, 75, 75');
             document.documentElement.style.setProperty('--accent-gradient-sec', '#ff1a1a');
             document.documentElement.style.setProperty('--news-pane-width', '380px');
+            
+            document.documentElement.style.setProperty('--cart-color-1', '#ff4b4b');
+            document.documentElement.style.setProperty('--cart-color-1-rgb', '255, 75, 75');
+            document.documentElement.style.setProperty('--cart-color-2', '#ff1a1a');
+            document.documentElement.style.setProperty('--cart-color-2-rgb', '255, 26, 26');
         } else {
             document.documentElement.style.setProperty('--accent-blue', typeof currentDesignSettings !== 'undefined' ? currentDesignSettings.accent : '#00d4ff');
             document.documentElement.style.setProperty('--accent-blue-rgb', typeof currentDesignSettings !== 'undefined' ? currentDesignSettings.accentRgb : '0, 212, 255');
             document.documentElement.style.setProperty('--accent-gradient-sec', typeof currentDesignSettings !== 'undefined' ? currentDesignSettings.accentSec : '#0072ff');
             document.documentElement.style.setProperty('--news-pane-width', '320px');
+            
+            if (typeof currentDesignSettings !== 'undefined') {
+                if (currentDesignSettings.accent === '#00d4ff') {
+                    document.documentElement.style.setProperty('--cart-color-1', '#00d4ff');
+                    document.documentElement.style.setProperty('--cart-color-1-rgb', '0, 212, 255');
+                    document.documentElement.style.setProperty('--cart-color-2', '#ff4b4b');
+                    document.documentElement.style.setProperty('--cart-color-2-rgb', '255, 75, 75');
+                } else {
+                    document.documentElement.style.setProperty('--cart-color-1', currentDesignSettings.accent);
+                    document.documentElement.style.setProperty('--cart-color-1-rgb', currentDesignSettings.accentRgb);
+                    document.documentElement.style.setProperty('--cart-color-2', currentDesignSettings.accentSec);
+                    document.documentElement.style.setProperty('--cart-color-2-rgb', getHexRgb(currentDesignSettings.accentSec));
+                }
+            }
         }
 
         // Swap logo images
@@ -11424,6 +11443,18 @@
             document.documentElement.style.setProperty('--accent-blue', currentDesignSettings.accent);
             document.documentElement.style.setProperty('--accent-blue-rgb', currentDesignSettings.accentRgb);
             document.documentElement.style.setProperty('--accent-gradient-sec', currentDesignSettings.accentSec);
+            
+            if (currentDesignSettings.accent === '#00d4ff') {
+                document.documentElement.style.setProperty('--cart-color-1', '#00d4ff');
+                document.documentElement.style.setProperty('--cart-color-1-rgb', '0, 212, 255');
+                document.documentElement.style.setProperty('--cart-color-2', '#ff4b4b');
+                document.documentElement.style.setProperty('--cart-color-2-rgb', '255, 75, 75');
+            } else {
+                document.documentElement.style.setProperty('--cart-color-1', currentDesignSettings.accent);
+                document.documentElement.style.setProperty('--cart-color-1-rgb', currentDesignSettings.accentRgb);
+                document.documentElement.style.setProperty('--cart-color-2', currentDesignSettings.accentSec);
+                document.documentElement.style.setProperty('--cart-color-2-rgb', getHexRgb(currentDesignSettings.accentSec));
+            }
         }
         
         updateBgStyle();
