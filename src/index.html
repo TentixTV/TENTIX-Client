@@ -7,7 +7,16 @@
     <style>
         :root { --accent-blue: #00d4ff; --accent-blue-rgb: 0, 212, 255; --accent-gradient-sec: #0072ff; --bg-dark: #0c0c0c; --card-bg: #141416; --sidebar-bg: #0f0f11; --settings-bg: #111113; --border-color: rgba(255,255,255,0.06); --text-gray: #8b8b93; --news-pane-width: 320px; }
         * { user-select: none; -webkit-user-select: none; box-sizing: border-box; outline: none; margin: 0; padding: 0; }
-        body { background-color: transparent; color: white; font-family: 'Inter', sans-serif; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; width: 100vw; -webkit-app-region: drag; }
+        body { background-color: transparent; color: white; font-family: 'Inter', sans-serif; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; width: 100vw; -webkit-app-region: no-drag; }
+        #titlebar { position: fixed; top: 0; left: 0; width: 100%; height: 32px; -webkit-app-region: drag; z-index: 9998; pointer-events: auto; }
+        #friends-unread-badge { position: absolute; top: -4px; right: -4px; background: #ff4b4b; color: #fff; font-size: 9px; font-weight: 800; min-width: 16px; height: 16px; border-radius: 8px; display: flex; align-items: center; justify-content: center; padding: 0 4px; transform: scale(0); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); z-index: 10; box-shadow: 0 0 8px rgba(255, 75, 75, 0.5); }
+        #friends-unread-badge.show { transform: scale(1); }
+        #friend-online-toast { position: fixed; bottom: 80px; left: 20px; background: rgba(15, 15, 18, 0.92); backdrop-filter: blur(20px); border: 1px solid rgba(0, 255, 128, 0.25); border-radius: 12px; padding: 12px 16px; display: flex; align-items: center; gap: 10px; z-index: 5000; transform: translateY(20px); opacity: 0; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); pointer-events: none; box-shadow: 0 0 20px rgba(0, 255, 128, 0.15); -webkit-app-region: no-drag; }
+        #friend-online-toast.show { transform: translateY(0); opacity: 1; }
+        #friend-online-toast .toast-avatar { width: 32px; height: 32px; border-radius: 6px; border: 1px solid rgba(0, 255, 128, 0.3); }
+        #friend-online-toast .toast-info { display: flex; flex-direction: column; gap: 2px; }
+        #friend-online-toast .toast-name { color: #fff; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; }
+        #friend-online-toast .toast-status { color: #00ff80; font-size: 10px; font-weight: 600; }
 
         #app-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: var(--bg-dark); z-index: -2; opacity: 0; transition: opacity 0.8s ease; pointer-events: none; }
         #bg-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; opacity: 0; transition: opacity 1s ease, filter 0.6s cubic-bezier(0.23, 1, 0.32, 1); pointer-events: none; }
@@ -1484,12 +1493,21 @@
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/skinview3d@3.0.0-alpha.1/bundles/skinview3d.bundle.js"></script>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 </head>
 <body>
+<div id="titlebar"></div>
 
 <div id="app-bg"></div>
 <div id="click-backdrop" onclick="closeAllPopups()"></div>
 <div id="toast">COPIED!</div>
+<div id="friend-online-toast">
+    <img class="toast-avatar" id="online-toast-avatar" src="" alt="">
+    <div class="toast-info">
+        <span class="toast-name" id="online-toast-name"></span>
+        <span class="toast-status" id="online-toast-status">ist jetzt online</span>
+    </div>
+</div>
 <canvas id="bg-canvas"></canvas>
 
 <div id="loading-screen">
@@ -2247,6 +2265,7 @@
     <div class="bell-wrapper" id="friends-icon-wrapper" onclick="toggleFriendsPopup(event)" style="margin-left: -5px;">
         <svg class="bell-icon" id="friends-icon-svg" viewBox="0 0 24 24" style="width: 22px; height: 22px;"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
         <span class="bell-badge" id="friends-badge" style="background: var(--accent-blue); box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);">0</span>
+        <span id="friends-unread-badge"></span>
     </div>
 
     <div class="inbox-popup" id="inbox-popup">
@@ -3127,6 +3146,10 @@
     let eventTimerInterval = null;
     let isAppReady = false;
     let currentUserRoles = ['PLAYER'];
+    let tentixSocket = null;
+    let unreadCounts = {};
+    let onlineToastQueue = [];
+    let onlineToastShowing = false;
 
     let modrinthOffset = 0;
     let isFetchingMods = false;
@@ -6094,6 +6117,13 @@
                         useridEl.innerText = t.userId + deterministicId;
                     }
                 }
+                if (data.roles) {
+                    currentUserRoles = data.roles;
+                }
+                if (data.has_beta_access === false) {
+                    localStorage.removeItem('tentix_beta_verified');
+                }
+                connectSocket();
             })
             .catch(e => {});
 
@@ -6946,6 +6976,7 @@
     }
 
     function proceedToMainMenu() {
+        connectSocket();
         const lScreen = document.getElementById('loading-screen');
         if(lScreen) {
             lScreen.style.opacity = "0";
@@ -7176,6 +7207,7 @@
         const resParts = (localStorage.getItem('tentix_res') || "1920x1080").split('x');
 
         try {
+            if (tentixSocket) tentixSocket.emit('activity-update', { uuid: localStorage.getItem('tentix_uuid'), activity: 'im Spiel' });
             const result = await window.api.launchMinecraft({
                 token: JSON.parse(tokenStr),
                 version: lastVer,
@@ -9350,18 +9382,147 @@
             }
         }, 1500);
     }
+    // ==================== SOCKET.IO CLIENT ====================
+    
+    function connectSocket() {
+        if (tentixSocket) return;
+        if (isClientSimulated) return;
+        try {
+            tentixSocket = io(API_BASE_URL, {
+                transports: ['websocket', 'polling'],
+                reconnection: true,
+                reconnectionDelay: 2000
+            });
+            tentixSocket.on('connect', () => {
+                console.log('\ud83d\udd0c Socket.IO verbunden');
+                const uuid = localStorage.getItem('tentix_uuid') || '';
+                const username = dashUsername || localStorage.getItem('tentix_username') || '';
+                if (uuid && username) {
+                    tentixSocket.emit('register', { username, uuid });
+                }
+            });
+            tentixSocket.on('chat-message', (data) => {
+                if (activeChatFriendUuid && data.sender_uuid === activeChatFriendUuid) {
+                    // Chat is open with this sender - render directly
+                    loadFriendChatHistory();
+                } else {
+                    if (data.sender_uuid) {
+                        unreadCounts[data.sender_uuid] = (unreadCounts[data.sender_uuid] || 0) + 1;
+                        updateUnreadBadge();
+                    }
+                }
+            });
+            tentixSocket.on('friend-online', (data) => {
+                updateFriendOnlineStatus(data.uuid, true, data.activity || 'im Client');
+                showFriendOnlineToast(data.username, data.activity || 'im Client');
+                updateFriendsBadge();
+            });
+            tentixSocket.on('friend-offline', (data) => {
+                updateFriendOnlineStatus(data.uuid, false, null);
+                updateFriendsBadge();
+            });
+            tentixSocket.on('friend-activity', (data) => {
+                updateFriendOnlineStatus(data.uuid, true, data.activity);
+            });
+            tentixSocket.on('friend-added', (data) => {
+                showToast(`${data.username} ist jetzt dein Freund!`, 'success');
+                loadFriendsFromServer();
+            });
+            tentixSocket.on('typing', (data) => {
+                if (activeChatFriendUuid && data.sender_uuid === activeChatFriendUuid) {
+                    const container = document.getElementById('friends-chat-messages');
+                    if (container) {
+                        let indicator = document.getElementById('typing-indicator');
+                        if (!indicator) {
+                            indicator = document.createElement('div');
+                            indicator.id = 'typing-indicator';
+                            indicator.style.cssText = 'color: #666; font-size: 11px; font-style: italic; padding: 4px 8px;';
+                            container.appendChild(indicator);
+                        }
+                        indicator.textContent = `${data.sender} tippt...`;
+                        clearTimeout(indicator._timeout);
+                        indicator._timeout = setTimeout(() => { if (indicator.parentNode) indicator.remove(); }, 3000);
+                    }
+                }
+            });
+            tentixSocket.on('disconnect', () => {
+                console.log('\u274c Socket.IO getrennt');
+            });
+        } catch (e) {
+            console.error('Socket.IO Fehler:', e);
+        }
+    }
+    
+    function updateFriendOnlineStatus(uuid, online, activity) {
+        const friend = friendsList.find(f => f.uuid === uuid);
+        if (friend) {
+            friend.online = online;
+            friend.activity = activity;
+            renderFriendsList();
+        }
+    }
+    
+    function updateUnreadBadge() {
+        const badge = document.getElementById('friends-unread-badge');
+        if (!badge) return;
+        const total = Object.values(unreadCounts).reduce((s, c) => s + c, 0);
+        if (total > 0) {
+            badge.textContent = total > 99 ? '99+' : total;
+            badge.classList.add('show');
+        } else {
+            badge.classList.remove('show');
+        }
+    }
+    
+    function showFriendOnlineToast(username, activity) {
+        onlineToastQueue.push({ username, activity });
+        if (!onlineToastShowing) processOnlineToastQueue();
+    }
+    
+    function processOnlineToastQueue() {
+        if (onlineToastQueue.length === 0) { onlineToastShowing = false; return; }
+        onlineToastShowing = true;
+        const { username, activity } = onlineToastQueue.shift();
+        const toast = document.getElementById('friend-online-toast');
+        const avatar = document.getElementById('online-toast-avatar');
+        const name = document.getElementById('online-toast-name');
+        const status = document.getElementById('online-toast-status');
+        if (!toast) return;
+        avatar.src = `https://minotar.net/helm/${username}/32`;
+        name.textContent = username;
+        status.textContent = activity || 'ist jetzt online';
+        toast.classList.add('show');
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => processOnlineToastQueue(), 500);
+        }, 4000);
+    }
 
     // --- Friends System ---
     let friendsList = [];
     function loadFriends() {
-        const stored = localStorage.getItem('tentix_friends');
-        if (stored && !stored.includes('LukasLp')) {
-            friendsList = JSON.parse(stored);
-        } else {
-            friendsList = [];
-            localStorage.setItem('tentix_friends', JSON.stringify(friendsList));
-        }
+        try {
+            const stored = localStorage.getItem('tentix_friends');
+            if (stored) friendsList = JSON.parse(stored);
+        } catch(e) { friendsList = []; }
         updateFriendsBadge();
+        loadFriendsFromServer();
+    }
+
+    async function loadFriendsFromServer() {
+        if (isClientSimulated) return;
+        const uuid = localStorage.getItem('tentix_uuid') || '';
+        if (!uuid) return;
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/friends/list?uuid=${encodeURIComponent(uuid)}`);
+            const data = await res.json();
+            if (data.success && data.friends) {
+                friendsList = data.friends;
+                localStorage.setItem('tentix_friends', JSON.stringify(friendsList));
+                renderFriendsList();
+                updateFriendsBadge();
+            }
+        } catch(e) { console.log('Friends load error:', e); }
     }
     
     function updateFriendsBadge() {
@@ -9394,25 +9555,8 @@
             popup.style.flexDirection = 'column';
             restoreFriendsPopupSize();
             
-            // Periodically toggle fake online states for dynamic feel
-            if (Math.random() > 0.5) {
-                friendsList.forEach(f => {
-                    f.online = Math.random() > 0.45;
-                    if (f.online) {
-                        const statuses = [
-                            'im Launcher',
-                            'im Spiel auf Server: TENTIX.net',
-                            'im Spiel auf Server: GommeHD.net',
-                            'im Hauptmenü'
-                        ];
-                        f.status = statuses[Math.floor(Math.random() * statuses.length)];
-                    } else {
-                        f.status = 'Offline';
-                    }
-                });
-                localStorage.setItem('tentix_friends', JSON.stringify(friendsList));
-                updateFriendsBadge();
-            }
+            // Load real friend statuses from server
+            loadFriendsFromServer();
             renderFriendsList();
         }
     }
@@ -9423,46 +9567,59 @@
         sec.style.display = sec.style.display === 'none' ? 'flex' : 'none';
     }
     
-    function submitAddFriend() {
+    async function submitAddFriend() {
         const input = document.getElementById('add-friend-name');
         if (!input) return;
-        const val = input.value.trim();
-        if (!val) {
-            showToast(currentLang === 'de' ? "Name oder UUID darf nicht leer sein!" : "Name or UUID cannot be empty!", "error");
+        const friendName = input.value.trim();
+        if (!friendName) {
+            showToast(currentLang === 'de' ? "Name darf nicht leer sein!" : "Name cannot be empty!", "error");
             return;
         }
-        
-        if (friendsList.some(f => f.username.toLowerCase() === val.toLowerCase() || f.uuid === val)) {
+        const myUsername = dashUsername || localStorage.getItem('tentix_username') || '';
+        const myUuid = localStorage.getItem('tentix_uuid') || '';
+        if (friendName.toUpperCase() === myUsername.toUpperCase()) {
+            showToast('Du kannst dich nicht selbst hinzufügen!', 'error');
+            return;
+        }
+        if (friendsList.some(f => f.username.toUpperCase() === friendName.toUpperCase())) {
             showToast(currentLang === 'de' ? "Bereits in der Freundesliste!" : "Already in friends list!", "error");
             return;
         }
-        
-        const isUuid = val.includes('-');
-        const isOnline = Math.random() > 0.35;
-        const statuses = [
-            'im Launcher',
-            'im Spiel auf Server: TENTIX.net',
-            'im Spiel auf Server: GommeHD.net',
-            'im Hauptmenü'
-        ];
-        
-        const newFriend = {
-            username: isUuid ? "Spieler" : val,
-            uuid: isUuid ? val : val + "-uuid",
-            online: isOnline,
-            status: isOnline ? statuses[Math.floor(Math.random() * statuses.length)] : 'Offline'
-        };
-        
-        friendsList.push(newFriend);
-        localStorage.setItem('tentix_friends', JSON.stringify(friendsList));
-        updateFriendsBadge();
-        renderFriendsList();
-        input.value = '';
-        toggleAddFriendSection();
-        showToast(currentLang === 'de' ? `${val} hinzugefügt!` : `${val} added!`, "success");
+        if (isClientSimulated) {
+            friendsList.push({ username: friendName, uuid: friendName + '-uuid', online: false, activity: null });
+            localStorage.setItem('tentix_friends', JSON.stringify(friendsList));
+            renderFriendsList(); updateFriendsBadge();
+            input.value = ''; toggleAddFriendSection();
+            showToast(`${friendName} hinzugefügt!`, 'success');
+            return;
+        }
+        try {
+            const findRes = await fetch(`${API_BASE_URL}/api/users/find?username=${encodeURIComponent(friendName)}`);
+            const findData = await findRes.json();
+            if (!findData.success) { showToast('Spieler nicht gefunden!', 'error'); return; }
+            const addRes = await fetch(`${API_BASE_URL}/api/friends/add`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_uuid: myUuid, user_username: myUsername, friend_uuid: findData.user.uuid, friend_username: findData.user.username })
+            });
+            const addData = await addRes.json();
+            if (addData.success) {
+                showToast(`${findData.user.username} wurde als Freund hinzugefügt!`, 'success');
+                input.value = ''; toggleAddFriendSection();
+                loadFriendsFromServer();
+            } else { showToast(addData.error || 'Fehler', 'error'); }
+        } catch(e) { showToast('Verbindungsfehler!', 'error'); }
     }
     
-    function removeFriend(uuid) {
+    async function removeFriend(uuid) {
+        const myUuid = localStorage.getItem('tentix_uuid') || '';
+        if (!isClientSimulated) {
+            try {
+                await fetch(`${API_BASE_URL}/api/friends/remove`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_uuid: myUuid, friend_uuid: uuid })
+                });
+            } catch(e) {}
+        }
         friendsList = friendsList.filter(f => f.uuid !== uuid);
         localStorage.setItem('tentix_friends', JSON.stringify(friendsList));
         updateFriendsBadge();
@@ -9499,19 +9656,10 @@
             let serverJoinIcon = '';
             
             if (f.online) {
-                if (!f.status) {
-                    const statuses = [
-                        'im Launcher',
-                        'im Spiel auf Server: TENTIX.net',
-                        'im Spiel auf Server: GommeHD.net',
-                        'im Hauptmenü'
-                    ];
-                    f.status = statuses[Math.floor(Math.random() * statuses.length)];
-                }
-                statusText = f.status;
+                statusText = f.activity || 'im Client';
                 
-                if (f.status.includes('Server:')) {
-                    const serverIp = f.status.split('Server:')[1].trim();
+                if ((f.activity || '').includes('Server:')) {
+                    const serverIp = f.activity.split('Server:')[1].trim();
                     serverJoinIcon = `
                         <div class="friend-join-btn" onclick="connectToFriendServer('${serverIp}', event)" style="cursor: pointer; background: rgba(var(--accent-blue-rgb), 0.12); border: 1px solid rgba(var(--accent-blue-rgb), 0.3); border-radius: 4px; padding: 3px 8px; font-size: 9px; font-weight: 800; color: var(--accent-blue); text-transform: uppercase; margin-right: 8px; display: inline-flex; align-items: center; gap: 4px; transition: 0.2s;" onmouseover="this.style.background='var(--accent-blue)'; this.style.color='#000';" onmouseout="this.style.background='rgba(var(--accent-blue-rgb), 0.12)'; this.style.color='var(--accent-blue)';">
                             <svg viewBox="0 0 24 24" style="width: 10px; height: 10px; fill: currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
@@ -9597,6 +9745,17 @@
         const chatPopup = document.getElementById('friends-chat-popup');
         if (chatPopup) {
             chatPopup.style.display = 'flex';
+        }
+        
+        // Mark messages as read
+        if (!isClientSimulated && activeChatFriendUuid) {
+            const myUuid = localStorage.getItem('tentix_uuid') || '';
+            fetch(`${API_BASE_URL}/api/chat/mark-read`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ recipient_uuid: myUuid, sender_uuid: activeChatFriendUuid })
+            }).catch(() => {});
+            delete unreadCounts[activeChatFriendUuid];
+            updateUnreadBadge();
         }
         
         await loadFriendChatHistory();
@@ -9696,7 +9855,9 @@
         const payload = {
             sender: senderUuid,
             recipient: friendUuid,
-            content: encryptedText
+            content: encryptedText,
+            sender_uuid: localStorage.getItem('tentix_uuid') || '',
+            recipient_uuid: activeChatFriendUuid
         };
         
         try {
