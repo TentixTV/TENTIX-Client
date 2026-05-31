@@ -7223,6 +7223,7 @@
                     playBtn.innerText = currentLang === 'de' ? "SPIELEN" : "PLAY";
                     playBtn.disabled = false;
                 }
+                if (tentixSocket) tentixSocket.emit('activity-update', { uuid: localStorage.getItem('tentix_uuid'), activity: 'im Client' });
                 alert("Launch Error:\n" + result.error);
             }
         } catch(e) {
@@ -7231,6 +7232,7 @@
                 playBtn.innerText = currentLang === 'de' ? "SPIELEN" : "PLAY";
                 playBtn.disabled = false;
             }
+            if (tentixSocket) tentixSocket.emit('activity-update', { uuid: localStorage.getItem('tentix_uuid'), activity: 'im Client' });
             alert("Launch Error:\n" + e.message);
         }
     }
@@ -7276,6 +7278,9 @@
                 if(document.getElementById('dl-container')) document.getElementById('dl-container').style.display = 'none';
                 if(document.getElementById('play-btn')) { document.getElementById('play-btn').innerText = currentLang === 'de' ? "SPIELEN" : "PLAY"; document.getElementById('play-btn').disabled = false; }
                 
+                if (tentixSocket) {
+                    tentixSocket.emit('activity-update', { uuid: localStorage.getItem('tentix_uuid'), activity: 'im Client' });
+                }
                 if (window.api.updateDiscordRPStatus) {
                     window.api.updateDiscordRPStatus({ username: savedName, state: "Im Menü", resetTime: true });
                 }
