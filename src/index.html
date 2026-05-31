@@ -5956,16 +5956,22 @@
         localStorage.setItem('tentix_db_codes', JSON.stringify(codes));
 
         try {
-            await fetch(`${API_BASE_URL}/api/codes/generate`, {
+            const response = await fetch(`${API_BASE_URL}/api/codes/generate`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ code: cVal, reward: rewardVal, uses: usesVal, max_uses: usesVal, expires_at: expiresAt })
             });
-        } catch(e) {}
-
-        if(document.getElementById('dash-new-code')) document.getElementById('dash-new-code').value = '';
-        showToast("CODE ERSTELLT!", "success");
-        renderCodesTable();
+            const data = await response.json();
+            if (data.success) {
+                if(document.getElementById('dash-new-code')) document.getElementById('dash-new-code').value = '';
+                showToast(currentLang === 'de' ? "CODE ERSTELLT!" : "CODE CREATED!", "success");
+                renderCodesTable();
+            } else {
+                showToast(currentLang === 'de' ? `FEHLER: ${data.error}` : `ERROR: ${data.error}`, "error");
+            }
+        } catch(e) {
+            showToast(currentLang === 'de' ? "VERBINDUNGSFEHLER!" : "CONNECTION ERROR!", "error");
+        }
     }
 
     async function deleteDashCode(codeId) {
@@ -7228,6 +7234,33 @@
             btn.disabled = true;
         }
 
+        if (isClientSimulated) {
+            let codes = JSON.parse(localStorage.getItem('tentix_sim_codes') || '[]');
+            const simCode = codes.find(c => c.code.toUpperCase() === key);
+            if (simCode) {
+                if (simCode.uses <= 0) {
+                    showToast(currentLang === 'de' ? "Code wurde bereits aufgebraucht." : "Code has already been consumed.", "error");
+                } else if (simCode.reward !== 'BETA') {
+                    showToast(currentLang === 'de' ? "Dieser Code ist kein Beta-Code." : "This code is not a Beta Code.", "error");
+                } else {
+                    localStorage.setItem('tentix_pending_beta_code', key);
+                    loginProcess();
+                }
+            } else if (key === 'TENTIX-BETA-BYPASS') {
+                localStorage.setItem('tentix_beta_verified', 'true');
+                showToast("Bypass gewährt (Offline Mode)", "success");
+                hideBetaOverlay();
+                proceedToMainMenu();
+            } else {
+                showToast(currentLang === 'de' ? "Code existiert nicht." : "Code does not exist.", "error");
+            }
+            if (btn) {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+            return;
+        }
+
         try {
             // Step 1: Verify the beta key exists and is valid WITHOUT consuming it
             const response = await fetch(`${API_BASE_URL}/api/codes/verify-beta`, {
@@ -7506,6 +7539,29 @@
                 // Check if there is a pending beta code to redeem after login
                 const pendingKey = localStorage.getItem('tentix_pending_beta_code');
                 if (pendingKey) {
+                    if (isClientSimulated) {
+                        let codes = JSON.parse(localStorage.getItem('tentix_sim_codes') || '[]');
+                        const simCodeIdx = codes.findIndex(c => c.code.toUpperCase() === pendingKey.toUpperCase());
+                        if (simCodeIdx !== -1 && codes[simCodeIdx].uses > 0) {
+                            codes[simCodeIdx].uses -= 1;
+                            localStorage.setItem('tentix_sim_codes', JSON.stringify(codes));
+                            
+                            localStorage.removeItem('tentix_pending_beta_code');
+                            localStorage.setItem('tentix_beta_verified', 'true');
+                            showToast(currentLang === 'de' ? "ZUGANG GEWÄHRT! (Simulation)" : "ACCESS GRANTED! (Simulation)", "success");
+                            hideBetaOverlay();
+                            proceedToMainMenu();
+                        } else {
+                            localStorage.removeItem('tentix_pending_beta_code');
+                            showToast(currentLang === 'de' ? "Code wurde bereits aufgebraucht." : "Code has already been consumed.", "error");
+                            localStorage.removeItem('tentix_logged');
+                            localStorage.removeItem('tentix_user');
+                            localStorage.removeItem('tentix_uuid');
+                            localStorage.removeItem('tentix_mc_token');
+                        }
+                        return;
+                    }
+
                     try {
                         const redeemResponse = await fetch(`${API_BASE_URL}/api/codes/redeem`, {
                             method: 'POST',
