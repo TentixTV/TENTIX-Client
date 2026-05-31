@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, shell, Tray, Menu } = require('electron');
+const { app, BrowserWindow, ipcMain, shell, Tray, Menu, nativeImage } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
@@ -81,20 +81,37 @@ function createTray() {
             iconPath = path.join(__dirname, 'build', 'icon.png');
         }
         if (fs.existsSync(iconPath)) {
-            tray = new Tray(iconPath);
+            const image = nativeImage.createFromPath(iconPath);
+            tray = new Tray(image);
             const contextMenu = Menu.buildFromTemplate([
-                { label: 'TENTIX Öffnen', click: () => mainWindow.show() },
+                { label: 'TENTIX Öffnen', click: () => {
+                    if (mainWindow) {
+                        if (mainWindow.isMinimized()) mainWindow.restore();
+                        mainWindow.show();
+                        mainWindow.focus();
+                    }
+                }},
                 { type: 'separator' },
                 { label: 'Beenden', click: () => { app.isQuitting = true; app.quit(); } }
             ]);
             tray.setToolTip('TENTIX Client');
             tray.setContextMenu(contextMenu);
-            tray.on('click', () => mainWindow.show());
+            tray.on('click', () => {
+                if (mainWindow) {
+                    if (mainWindow.isMinimized()) mainWindow.restore();
+                    mainWindow.show();
+                    mainWindow.focus();
+                }
+            });
         }
     } catch (e) {
         console.error("Failed to create tray:", e);
     }
 }
+
+app.on('before-quit', () => {
+    app.isQuitting = true;
+});
 let connectingClient = null;
 let isConnecting = false;
 

@@ -2360,7 +2360,10 @@
             <div class="card-btn" id="ui-tentixplus-btn" onclick="openTentixPlusModal(event)" style="display: none; font-weight: 800; background: linear-gradient(135deg, var(--accent-blue) 0%, #0072ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 10px rgba(var(--accent-blue-rgb), 0.3);">
                 TENTIX+
             </div>
-            <div class="card-btn" id="ui-open-settings-btn" onclick="openSettings()">Einstellungen</div>
+            <div class="card-btn" id="ui-open-settings-btn" onclick="openSettings()" style="position: relative;">
+                <span>Einstellungen</span>
+                <div class="update-ping" id="settings-btn-update-ping" style="position: absolute; top: 12px; right: 12px; width: 8px; height: 8px; background: #ffcc00; border-radius: 50%; box-shadow: 0 0 8px #ffcc00; display: none; z-index: 3; animation: updatePingPulse 1.2s infinite ease-in-out;"></div>
+            </div>
             <div class="card-btn red-hover" id="ui-logout-btn" onclick="logout()" style="color: #ff4b4b; display: none;">Abmelden</div>
         </div>
     </div>
@@ -2384,16 +2387,37 @@
     <!-- Premium Friends Popup Panel -->
     <div class="inbox-popup" id="friends-popup" style="left: 135px; width: 340px; display: none;">
         <div class="inbox-header" style="border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px; display: flex; align-items: center; justify-content: space-between;">
-            <span style="font-weight: 800; font-size: 13px; color: #fff; letter-spacing: 0.5px;">FREUNDE</span>
-            <span style="font-size: 10px; color: var(--accent-blue); cursor: pointer; font-weight: 800;" onclick="toggleAddFriendSection()">+ HINZUFÜGEN</span>
+            <span id="friends-header-title" style="font-weight: 800; font-size: 12px; color: #fff; letter-spacing: 0.5px; text-transform: uppercase; cursor: pointer;" onclick="switchFriendsTab('friends')">FREUNDE</span>
+            <div style="display: flex; gap: 12px; align-items: center; -webkit-app-region: no-drag;">
+                <!-- Icon 1: Erhaltene Freundschaftsanfragen -->
+                <div class="tooltip tooltip-down" id="friends-tab-incoming" onclick="switchFriendsTab('incoming')" style="cursor: pointer; color: #888; display: flex; align-items: center; transition: 0.2s;" onmouseover="if(currentFriendsTab!=='incoming')this.style.color='#00d4ff'" onmouseout="if(currentFriendsTab!=='incoming')this.style.color='#888'">
+                    <svg viewBox="0 0 24 24" style="width: 15px; height: 15px; fill: currentColor;"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    <span class="tooltiptext" id="t-tt-incoming" style="z-index:9999;">Erhaltene Freundschaftsanfragen</span>
+                </div>
+                <!-- Icon 2: Ausstehende Freundschaftsanfragen -->
+                <div class="tooltip tooltip-down" id="friends-tab-outgoing" onclick="switchFriendsTab('outgoing')" style="cursor: pointer; color: #888; display: flex; align-items: center; transition: 0.2s;" onmouseover="if(currentFriendsTab!=='outgoing')this.style.color='#00d4ff'" onmouseout="if(currentFriendsTab!=='outgoing')this.style.color='#888'">
+                    <svg viewBox="0 0 24 24" style="width: 15px; height: 15px; fill: currentColor;"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                    <span class="tooltiptext" id="t-tt-outgoing" style="z-index:9999;">Ausstehende Freundschaftsanfragen</span>
+                </div>
+                <!-- Icon 3: Blockierte Konten -->
+                <div class="tooltip tooltip-down" id="friends-tab-blocked" onclick="switchFriendsTab('blocked')" style="cursor: pointer; color: #888; display: flex; align-items: center; transition: 0.2s;" onmouseover="if(currentFriendsTab!=='blocked')this.style.color='#ff4b4b'" onmouseout="if(currentFriendsTab!=='blocked')this.style.color='#888'">
+                    <svg viewBox="0 0 24 24" style="width: 15px; height: 15px; fill: currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.53c-.26-.81-1-1.4-1.9-1.4h-1v-3c0-.55-.45-1-1-1h-6v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.4z"/></svg>
+                    <span class="tooltiptext" id="t-tt-blocked" style="z-index:9999;">Blockierte Konten</span>
+                </div>
+                <span style="font-size: 10px; color: var(--accent-blue); cursor: pointer; font-weight: 800; margin-left: 4px;" onclick="toggleAddFriendSection()">+ HINZUFÜGEN</span>
+            </div>
         </div>
         
         <!-- Toggleable Add Friend Area -->
         <div id="add-friend-section" style="display: none; padding: 12px 15px; background: rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.05); flex-direction: column; gap: 8px;">
-            <div style="font-size: 9px; font-weight: 800; color: #aaa; text-transform: uppercase; letter-spacing: 0.5px;">Freund hinzufügen</div>
-            <div style="display: flex; gap: 8px;">
-                <input type="text" id="add-friend-name" placeholder="Name oder UUID..." style="flex: 1; background: #000; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 6px 10px; font-size: 11px; color: #fff; outline: none;">
-                <button class="dash-btn" style="margin: 0; padding: 6px 12px; font-size: 10px; font-weight: 800; background: var(--accent-blue); color: #000; border: none; border-radius: 6px;" onclick="submitAddFriend()">OK</button>
+            <div style="font-size: 9px; font-weight: 800; color: #aaa; text-transform: uppercase; letter-spacing: 0.5px;">Spieler suchen / blockieren</div>
+            <div style="display: flex; gap: 8px; -webkit-app-region: no-drag;">
+                <input type="text" id="add-friend-name" placeholder="Name suchen..." style="flex: 1; background: #000; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 6px 10px; font-size: 11px; color: #fff; outline: none;" onkeydown="if(event.key === 'Enter') searchPlayers()">
+                <button class="dash-btn" style="margin: 0; padding: 6px 12px; font-size: 10px; font-weight: 800; background: var(--accent-blue); color: #000; border: none; border-radius: 6px;" onclick="searchPlayers()">SUCHEN</button>
+            </div>
+            <!-- Search Results Container -->
+            <div id="add-friend-search-results" style="max-height: 120px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; padding-top: 4px; scrollbar-width: thin; -webkit-app-region: no-drag;">
+                <!-- Dynamically populated -->
             </div>
         </div>
 
@@ -2452,9 +2476,10 @@
                 <div class="mask-icon" style="-webkit-mask-image: url('../assets/icon-privacy.png'); width: 20px; height: 20px; margin-right: 14px;"></div>
                 <span id="t-priv-title">Privatsphäre</span>
             </div>
-            <div class="sidebar-item" id="t-tab-updater" onclick="switchSettingsTab('tab-updater', this)">
+            <div class="sidebar-item" id="t-tab-updater" onclick="switchSettingsTab('tab-updater', this)" style="position: relative;">
                 <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: #8b8b93; margin-right: 14px; transition: 0.2s;" class="updater-icon"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
                 <span id="t-upd-tab">Updater</span>
+                <div class="update-ping" id="settings-sidebar-update-ping" style="position: absolute; top: 16px; right: 16px; width: 8px; height: 8px; background: #ffcc00; border-radius: 50%; box-shadow: 0 0 8px #ffcc00; display: none; z-index: 3; animation: updatePingPulse 1.2s infinite ease-in-out;"></div>
             </div>
             <div class="sidebar-item" id="t-tab-design" onclick="switchSettingsTab('tab-design', this)">
                 <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: #8b8b93; margin-right: 14px; transition: 0.2s;" class="design-tab-icon"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.08-.61-.58-1.07-1.2-1.07H16.5c-.83 0-1.5-.67-1.5-1.5 0-.58.33-1.09.82-1.35.49-.26.82-.78.82-1.37 0-1.88-2.02-3.35-4.64-3.35zM6.5 12c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9s1.5.67 1.5 1.5S7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
@@ -6206,35 +6231,41 @@
         }
     }
 
-    function onUpdateStatusReceived(data) {
-        const ping = document.getElementById('update-ping-anim');
+    function setUpdatePingDisplay(displayStyle, color = '#ffcc00') {
+        const ping1 = document.getElementById('update-ping-anim');
+        const ping2 = document.getElementById('settings-btn-update-ping');
+        const ping3 = document.getElementById('settings-sidebar-update-ping');
+        
+        [ping1, ping2, ping3].forEach(p => {
+            if (p) {
+                p.style.display = displayStyle;
+                if (displayStyle !== 'none') {
+                    p.style.background = color;
+                    p.style.boxShadow = `0 0 10px ${color}`;
+                }
+            }
+        });
+    }
 
+    function onUpdateStatusReceived(data) {
         if(data.status === 'checking') {
             updateState = 'checking';
-            if(ping) ping.style.display = 'none';
+            setUpdatePingDisplay('none');
             updateUpdateUI();
         }
         else if(data.status === 'available') {
             updateState = 'available';
-            if(ping) {
-                ping.style.display = 'block';
-                ping.style.background = '#ffcc00';
-                ping.style.boxShadow = '0 0 10px #ffcc00';
-            }
+            setUpdatePingDisplay('block', '#ffcc00');
             updateUpdateUI();
         }
         else if(data.status === 'downloading') {
             updateState = 'downloading';
-            if(ping) ping.style.display = 'none';
+            setUpdatePingDisplay('none');
             updateUpdateUI();
         }
         else if(data.status === 'downloaded') {
             updateState = 'ready';
-            if(ping) {
-                ping.style.display = 'block';
-                ping.style.background = '#00ff80';
-                ping.style.boxShadow = '0 0 10px #00ff80';
-            }
+            setUpdatePingDisplay('block', '#00ff80');
             updateUpdateUI();
 
             const modal = document.getElementById('forced-restart-modal');
@@ -6248,14 +6279,14 @@
         }
         else if(data.status === 'latest') {
             updateState = 'latest';
-            if(ping) ping.style.display = 'none';
+            setUpdatePingDisplay('none');
             updateUpdateUI();
             showToast((translations[currentLang].updLatestToast || "Du bist auf der aktuellsten Version! (v0.1.0)").replace("v0.1.0", "v" + appVersion), "success");
             setTimeout(() => { updateState = 'idle'; updateUpdateUI(); }, 2000);
         }
         else if(data.status === 'error') {
             updateState = 'latest';
-            if(ping) ping.style.display = 'none';
+            setUpdatePingDisplay('none');
             updateUpdateUI();
             let errText = data.error || "Unbekannter Fehler";
             if (errText.includes("No published versions on GitHub") || errText.toLowerCase().includes("github")) {
@@ -8271,7 +8302,7 @@
             window.api.getAppVersion().then(v => {
                 appVersion = v;
                 document.querySelectorAll('.version-tag').forEach(el => {
-                    el.textContent = 'v' + v + ' BETA';
+                    el.textContent = 'v0.1.0 BETA';
                 });
                 updateUpdateUI();
             });
@@ -10511,6 +10542,8 @@
     let friendsList = [];
     let incomingRequests = [];
     let outgoingRequests = [];
+    let blockedUsers = [];
+    let currentFriendsTab = 'friends'; // 'friends', 'incoming', 'outgoing', 'blocked'
 
     function loadFriends() {
         try {
@@ -10535,6 +10568,12 @@
                 if (storedOut) outgoingRequests = JSON.parse(storedOut);
                 else outgoingRequests = [];
             } catch(e) { outgoingRequests = []; }
+
+            try {
+                const storedBlocked = localStorage.getItem('tentix_sim_blocked');
+                if (storedBlocked) blockedUsers = JSON.parse(storedBlocked);
+                else blockedUsers = [];
+            } catch(e) { blockedUsers = []; }
         }
 
         updateFriendsBadge();
@@ -10558,6 +10597,12 @@
             if (reqData.success) {
                 incomingRequests = reqData.incoming || [];
                 outgoingRequests = reqData.outgoing || [];
+            }
+
+            const blockRes = await fetch(`${API_BASE_URL}/api/friends/blocked/list?uuid=${encodeURIComponent(uuid)}`);
+            const blockData = await blockRes.json();
+            if (blockData.success) {
+                blockedUsers = blockData.blocked || [];
             }
 
             renderFriendsList();
@@ -10759,6 +10804,201 @@
         }, 1500);
     }
 
+    function switchFriendsTab(tab) {
+        currentFriendsTab = tab;
+        
+        const tabIncoming = document.getElementById('friends-tab-incoming');
+        const tabOutgoing = document.getElementById('friends-tab-outgoing');
+        const tabBlocked = document.getElementById('friends-tab-blocked');
+        const headerTitle = document.getElementById('friends-header-title');
+        
+        if (tabIncoming) tabIncoming.style.color = '#888';
+        if (tabOutgoing) tabOutgoing.style.color = '#888';
+        if (tabBlocked) tabBlocked.style.color = '#888';
+        if (headerTitle) headerTitle.style.color = '#888';
+        
+        if (tab === 'incoming' && tabIncoming) {
+            tabIncoming.style.color = 'var(--accent-blue)';
+        } else if (tab === 'outgoing' && tabOutgoing) {
+            tabOutgoing.style.color = 'var(--accent-blue)';
+        } else if (tab === 'blocked' && tabBlocked) {
+            tabBlocked.style.color = '#ff4b4b';
+        } else if (tab === 'friends' && headerTitle) {
+            headerTitle.style.color = '#fff';
+        }
+        
+        renderFriendsList();
+    }
+
+    async function blockUser(uuid, username) {
+        const myUuid = localStorage.getItem('tentix_uuid') || '';
+        if (isClientSimulated) {
+            if (!blockedUsers.some(b => b.uuid === uuid)) {
+                blockedUsers.push({ uuid, username, created_at: new Date().toISOString() });
+                localStorage.setItem('tentix_sim_blocked', JSON.stringify(blockedUsers));
+            }
+            friendsList = friendsList.filter(f => f.uuid !== uuid);
+            localStorage.setItem('tentix_friends', JSON.stringify(friendsList));
+            incomingRequests = incomingRequests.filter(r => r.uuid !== uuid);
+            localStorage.setItem('tentix_sim_incoming_requests', JSON.stringify(incomingRequests));
+            outgoingRequests = outgoingRequests.filter(r => r.uuid !== uuid);
+            localStorage.setItem('tentix_sim_outgoing_requests', JSON.stringify(outgoingRequests));
+            
+            renderFriendsList();
+            updateFriendsBadge();
+            showToast(`${username} blockiert!`, 'info');
+            return;
+        }
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/friends/block`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_uuid: myUuid, blocked_uuid: uuid, blocked_username: username })
+            });
+            const data = await res.json();
+            if (data.success) {
+                showToast(`${username} blockiert!`, 'info');
+                loadFriendsFromServer();
+            } else {
+                showToast(data.error || 'Fehler', 'error');
+            }
+        } catch(e) { showToast('Verbindungsfehler!', 'error'); }
+    }
+
+    async function unblockUser(uuid, username) {
+        const myUuid = localStorage.getItem('tentix_uuid') || '';
+        if (isClientSimulated) {
+            blockedUsers = blockedUsers.filter(b => b.uuid !== uuid);
+            localStorage.setItem('tentix_sim_blocked', JSON.stringify(blockedUsers));
+            renderFriendsList();
+            showToast(`${username} entblockt!`, 'success');
+            return;
+        }
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/friends/unblock`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_uuid: myUuid, blocked_uuid: uuid })
+            });
+            const data = await res.json();
+            if (data.success) {
+                showToast(`${username} entblockt!`, 'success');
+                loadFriendsFromServer();
+            } else {
+                showToast(data.error || 'Fehler', 'error');
+            }
+        } catch(e) { showToast('Verbindungsfehler!', 'error'); }
+    }
+
+    async function searchPlayers() {
+        const input = document.getElementById('add-friend-name');
+        const resultsContainer = document.getElementById('add-friend-search-results');
+        if (!input || !resultsContainer) return;
+        
+        const query = input.value.trim();
+        if (!query) {
+            resultsContainer.innerHTML = '';
+            return;
+        }
+        
+        resultsContainer.innerHTML = `<div style="text-align: center; color: #888; font-size: 10px; padding: 10px 0;">Suchen...</div>`;
+        
+        const myUsername = dashUsername || localStorage.getItem('tentix_user') || '';
+        if (query.toUpperCase() === myUsername.toUpperCase()) {
+            resultsContainer.innerHTML = `<div style="text-align: center; color: #ff4b4b; font-size: 10px; padding: 10px 0;">Das bist du!</div>`;
+            return;
+        }
+        
+        if (isClientSimulated) {
+            setTimeout(() => {
+                const results = [
+                    { uuid: query + '-uuid', username: query }
+                ];
+                renderSearchResults(results);
+            }, 300);
+            return;
+        }
+        
+        try {
+            const findRes = await fetch(`${API_BASE_URL}/api/users/find?username=${encodeURIComponent(query)}`);
+            const findData = await findRes.json();
+            if (findData.success && findData.user) {
+                renderSearchResults([findData.user]);
+            } else {
+                resultsContainer.innerHTML = `<div style="text-align: center; color: #ff4b4b; font-size: 10px; padding: 10px 0;">Spieler nicht gefunden!</div>`;
+            }
+        } catch(e) {
+            resultsContainer.innerHTML = `<div style="text-align: center; color: #ff4b4b; font-size: 10px; padding: 10px 0;">Fehler bei der Suche!</div>`;
+        }
+    }
+
+    function renderSearchResults(users) {
+        const resultsContainer = document.getElementById('add-friend-search-results');
+        if (!resultsContainer) return;
+        resultsContainer.innerHTML = '';
+        
+        if (users.length === 0) {
+            resultsContainer.innerHTML = `<div style="text-align: center; color: #888; font-size: 10px; padding: 10px 0;">Keine Spieler gefunden</div>`;
+            return;
+        }
+        
+        users.forEach(u => {
+            resultsContainer.innerHTML += `
+                <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.02); padding: 6px 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.04);">
+                    <div style="display: flex; align-items: center; gap: 8px; min-width: 0; flex: 1;">
+                        <img src="https://minotar.net/avatar/${u.username}/16" onerror="this.src='https://minotar.net/avatar/MHF_Steve/16'" style="border-radius: 3px; width: 16px; height: 16px;">
+                        <span style="font-size: 11px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${u.username}</span>
+                    </div>
+                    <div style="display: flex; gap: 6px; align-items: center;">
+                        <button onclick="sendFriendRequestFromSearch('${u.uuid}', '${u.username.replace(/'/g, "\\'")}')" style="cursor: pointer; background: rgba(0, 212, 255, 0.12); border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 4px; padding: 3px 6px; font-size: 9px; font-weight: 800; color: #00d4ff; text-transform: uppercase; transition: 0.2s;" onmouseover="this.style.background='#00d4ff'; this.style.color='#000';" onmouseout="this.style.background='rgba(0, 212, 255, 0.12)'; this.style.color='#00d4ff';">+ Anfrage</button>
+                        <button onclick="blockUser('${u.uuid}', '${u.username.replace(/'/g, "\\'")}')" style="cursor: pointer; background: rgba(255, 75, 75, 0.12); border: 1px solid rgba(255, 75, 75, 0.3); border-radius: 4px; padding: 3px 6px; font-size: 9px; font-weight: 800; color: #ff4b4b; text-transform: uppercase; transition: 0.2s;" onmouseover="this.style.background='#ff4b4b'; this.style.color='#000';" onmouseout="this.style.background='rgba(255, 75, 75, 0.12)'; this.style.color='#ff4b4b';">Block</button>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    async function sendFriendRequestFromSearch(uuid, username) {
+        const myUsername = dashUsername || localStorage.getItem('tentix_user') || '';
+        const myUuid = localStorage.getItem('tentix_uuid') || '';
+        
+        if (friendsList.some(f => f.uuid === uuid)) {
+            showToast(currentLang === 'de' ? "Bereits in der Freundesliste!" : "Already in friends list!", "error");
+            return;
+        }
+        
+        if (isClientSimulated) {
+            if (outgoingRequests.some(r => r.uuid === uuid)) {
+                showToast(currentLang === 'de' ? "Anfrage bereits ausstehend!" : "Request already pending!", "error");
+                return;
+            }
+            outgoingRequests.push({ username, uuid, created_at: new Date().toISOString() });
+            localStorage.setItem('tentix_sim_outgoing_requests', JSON.stringify(outgoingRequests));
+            renderFriendsList();
+            showToast(currentLang === 'de' ? `Freundschaftsanfrage an ${username} gesendet!` : `Friend request sent to ${username}!`, 'success');
+            return;
+        }
+        
+        try {
+            const addRes = await fetch(`${API_BASE_URL}/api/friends/request/send`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    sender_uuid: myUuid,
+                    sender_username: myUsername,
+                    receiver_uuid: uuid,
+                    receiver_username: username
+                })
+            });
+            const addData = await addRes.json();
+            if (addData.success) {
+                if (addData.accepted) {
+                    showToast(`${username} wurde als Freund hinzugefügt!`, 'success');
+                } else {
+                    showToast(currentLang === 'de' ? `Freundschaftsanfrage an ${username} gesendet!` : `Friend request sent to ${username}!`, 'success');
+                }
+                loadFriendsFromServer();
+            } else { showToast(addData.error || 'Fehler', 'error'); }
+        } catch(e) { showToast('Verbindungsfehler!', 'error'); }
+    }
+
     function renderFriendsList() {
         const container = document.getElementById('friends-list-content');
         const search = document.getElementById('friends-search-input')?.value.toLowerCase() || '';
@@ -10767,47 +11007,19 @@
 
         const filterVal = (item) => item.username.toLowerCase().includes(search) || item.uuid.toLowerCase().includes(search);
 
-        const filteredIncoming = (incomingRequests || []).filter(filterVal);
-        const filteredFriends = (friendsList || []).filter(filterVal);
-        const filteredOutgoing = (outgoingRequests || []).filter(filterVal);
-
-        if (filteredIncoming.length === 0 && filteredFriends.length === 0 && filteredOutgoing.length === 0) {
-            container.innerHTML = `<div style="text-align: center; color: #444; font-size: 11px; padding: 20px; font-style: italic;">` + (currentLang === 'de' ? "Keine Einträge gefunden" : "No entries found") + `</div>`;
-            return;
-        }
-
-        // 1. INCOMING REQUESTS
-        if (filteredIncoming.length > 0) {
-            container.innerHTML += `
-                <div style="font-size: 9px; font-weight: 800; color: var(--accent-blue); padding: 10px 12px 6px 12px; border-bottom: 1px solid rgba(255,255,255,0.02); display: flex; align-items: center; justify-content: space-between; letter-spacing: 0.5px;">
-                    <span>` + (currentLang === 'de' ? "ANFRAGEN" : "REQUESTS") + ` (${filteredIncoming.length})</span>
-                </div>
-            `;
-            filteredIncoming.forEach(r => {
-                container.innerHTML += `
-                    <div class="friend-item" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.02);">
-                        <div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0;">
-                            <img class="friend-avatar" src="https://minotar.net/avatar/${r.username}/24" onerror="this.src='https://minotar.net/avatar/MHF_Steve/24'" style="border-radius: 4px; width: 24px; height: 24px;">
-                            <div style="min-width: 0; flex: 1;">
-                               <div style="font-size: 11.5px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${r.username}</div>
-                            </div>
-                        </div>
-                        <div class="friend-request-actions" style="display: flex; align-items: center; gap: 6px;">
-                            <button onclick="acceptFriendRequest('${r.uuid}', '${r.username.replace(/'/g, "\\'")}', event)" style="cursor: pointer; background: rgba(0, 255, 128, 0.12); border: 1px solid rgba(0, 255, 128, 0.3); border-radius: 4px; padding: 4px 8px; font-size: 9px; font-weight: 800; color: #00ff80; text-transform: uppercase; transition: 0.2s;" onmouseover="this.style.background='#00ff80'; this.style.color='#000';" onmouseout="this.style.background='rgba(0, 255, 128, 0.12)'; this.style.color='#00ff80';">Annehmen</button>
-                            <button onclick="declineFriendRequest('${r.uuid}', false, event)" style="cursor: pointer; background: rgba(255, 75, 75, 0.12); border: 1px solid rgba(255, 75, 75, 0.3); border-radius: 4px; padding: 4px 8px; font-size: 9px; font-weight: 800; color: #ff4b4b; text-transform: uppercase; transition: 0.2s;" onmouseover="this.style.background='#ff4b4b'; this.style.color='#000';" onmouseout="this.style.background='rgba(255, 75, 75, 0.12)'; this.style.color='#ff4b4b';">Ablehnen</button>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        // 2. ACCEPTED FRIENDS
-        if (filteredFriends.length > 0) {
+        if (currentFriendsTab === 'friends') {
+            const filteredFriends = (friendsList || []).filter(filterVal);
+            if (filteredFriends.length === 0) {
+                container.innerHTML = `<div style="text-align: center; color: #444; font-size: 11px; padding: 20px; font-style: italic;">` + (currentLang === 'de' ? "Keine Freunde online/offline" : "No friends online/offline") + `</div>`;
+                return;
+            }
+            
             container.innerHTML += `
                 <div style="font-size: 9px; font-weight: 800; color: #888; padding: 10px 12px 6px 12px; border-bottom: 1px solid rgba(255,255,255,0.02); display: flex; align-items: center; justify-content: space-between; letter-spacing: 0.5px;">
                     <span>` + (currentLang === 'de' ? "MEINE FREUNDE" : "MY FRIENDS") + ` (${filteredFriends.length})</span>
                 </div>
             `;
+            
             filteredFriends.sort((a, b) => (b.online ? 1 : 0) - (a.online ? 1 : 0));
             filteredFriends.forEach(f => {
                 const dotColor = f.online ? '#00ff80' : '#555';
@@ -10851,14 +11063,49 @@
                 `;
             });
         }
+        else if (currentFriendsTab === 'incoming') {
+            const filteredIncoming = (incomingRequests || []).filter(filterVal);
+            if (filteredIncoming.length === 0) {
+                container.innerHTML = `<div style="text-align: center; color: #444; font-size: 11px; padding: 20px; font-style: italic;">` + (currentLang === 'de' ? "Keine Freundschaftsanfragen erhalten" : "No friend requests received") + `</div>`;
+                return;
+            }
 
-        // 3. OUTGOING REQUESTS (PENDING)
-        if (filteredOutgoing.length > 0) {
             container.innerHTML += `
-                <div style="font-size: 9px; font-weight: 800; color: #666; padding: 10px 12px 6px 12px; border-bottom: 1px solid rgba(255,255,255,0.02); display: flex; align-items: center; justify-content: space-between; letter-spacing: 0.5px;">
-                    <span>` + (currentLang === 'de' ? "AUSSTEHEND" : "PENDING") + ` (${filteredOutgoing.length})</span>
+                <div style="font-size: 9px; font-weight: 800; color: var(--accent-blue); padding: 10px 12px 6px 12px; border-bottom: 1px solid rgba(255,255,255,0.02); display: flex; align-items: center; justify-content: space-between; letter-spacing: 0.5px;">
+                    <span>` + (currentLang === 'de' ? "ERHALTENE ANFRAGEN" : "INCOMING REQUESTS") + ` (${filteredIncoming.length})</span>
                 </div>
             `;
+            
+            filteredIncoming.forEach(r => {
+                container.innerHTML += `
+                    <div class="friend-item" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.02);">
+                        <div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0;">
+                            <img class="friend-avatar" src="https://minotar.net/avatar/${r.username}/24" onerror="this.src='https://minotar.net/avatar/MHF_Steve/24'" style="border-radius: 4px; width: 24px; height: 24px;">
+                            <div style="min-width: 0; flex: 1;">
+                               <div style="font-size: 11.5px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${r.username}</div>
+                            </div>
+                        </div>
+                        <div class="friend-request-actions" style="display: flex; align-items: center; gap: 6px;">
+                            <button onclick="acceptFriendRequest('${r.uuid}', '${r.username.replace(/'/g, "\\'")}', event)" style="cursor: pointer; background: rgba(0, 255, 128, 0.12); border: 1px solid rgba(0, 255, 128, 0.3); border-radius: 4px; padding: 4px 8px; font-size: 9px; font-weight: 800; color: #00ff80; text-transform: uppercase; transition: 0.2s;" onmouseover="this.style.background='#00ff80'; this.style.color='#000';" onmouseout="this.style.background='rgba(0, 255, 128, 0.12)'; this.style.color='#00ff80';">Annehmen</button>
+                            <button onclick="declineFriendRequest('${r.uuid}', false, event)" style="cursor: pointer; background: rgba(255, 75, 75, 0.12); border: 1px solid rgba(255, 75, 75, 0.3); border-radius: 4px; padding: 4px 8px; font-size: 9px; font-weight: 800; color: #ff4b4b; text-transform: uppercase; transition: 0.2s;" onmouseover="this.style.background='#ff4b4b'; this.style.color='#000';" onmouseout="this.style.background='rgba(255, 75, 75, 0.12)'; this.style.color='#ff4b4b';">Ablehnen</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        else if (currentFriendsTab === 'outgoing') {
+            const filteredOutgoing = (outgoingRequests || []).filter(filterVal);
+            if (filteredOutgoing.length === 0) {
+                container.innerHTML = `<div style="text-align: center; color: #444; font-size: 11px; padding: 20px; font-style: italic;">` + (currentLang === 'de' ? "Keine ausstehenden Freundschaftsanfragen" : "No pending friend requests") + `</div>`;
+                return;
+            }
+
+            container.innerHTML += `
+                <div style="font-size: 9px; font-weight: 800; color: #666; padding: 10px 12px 6px 12px; border-bottom: 1px solid rgba(255,255,255,0.02); display: flex; align-items: center; justify-content: space-between; letter-spacing: 0.5px;">
+                    <span>` + (currentLang === 'de' ? "AUSSTEHENDE ANFRAGEN" : "PENDING REQUESTS") + ` (${filteredOutgoing.length})</span>
+                </div>
+            `;
+            
             filteredOutgoing.forEach(r => {
                 container.innerHTML += `
                     <div class="friend-item" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.02);">
@@ -10871,6 +11118,35 @@
                         <div style="display: flex; align-items: center; gap: 8px;">
                             <span style="font-size: 8px; font-weight: 800; color: #ffbb00; background: rgba(255, 187, 0, 0.1); border: 1px solid rgba(255, 187, 0, 0.2); border-radius: 4px; padding: 2px 5px; text-transform: uppercase; letter-spacing: 0.5px;">Ausstehend</span>
                             <div class="friends-remove-btn" onclick="declineFriendRequest('${r.uuid}', true, event)" style="cursor: pointer; color: #555; padding: 4px 6px; font-size: 10px; transition: 0.2s;" onmouseover="this.style.color='#ff4b4b';" onmouseout="this.style.color='#555';">✕</div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        else if (currentFriendsTab === 'blocked') {
+            const filteredBlocked = (blockedUsers || []).filter(filterVal);
+            if (filteredBlocked.length === 0) {
+                container.innerHTML = `<div style="text-align: center; color: #444; font-size: 11px; padding: 20px; font-style: italic;">` + (currentLang === 'de' ? "Keine blockierten Spieler" : "No blocked players") + `</div>`;
+                return;
+            }
+
+            container.innerHTML += `
+                <div style="font-size: 9px; font-weight: 800; color: #ff4b4b; padding: 10px 12px 6px 12px; border-bottom: 1px solid rgba(255,255,255,0.02); display: flex; align-items: center; justify-content: space-between; letter-spacing: 0.5px;">
+                    <span>` + (currentLang === 'de' ? "BLOCKIERTE SPIELER" : "BLOCKED PLAYERS") + ` (${filteredBlocked.length})</span>
+                </div>
+            `;
+            
+            filteredBlocked.forEach(b => {
+                container.innerHTML += `
+                    <div class="friend-item" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.02);">
+                        <div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0;">
+                            <img class="friend-avatar" src="https://minotar.net/avatar/${b.username}/24" onerror="this.src='https://minotar.net/avatar/MHF_Steve/24'" style="border-radius: 4px; width: 24px; height: 24px; opacity: 0.6;">
+                            <div style="min-width: 0; flex: 1;">
+                               <div style="font-size: 11.5px; font-weight: 700; color: #ff4b4b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${b.username}</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <button onclick="unblockUser('${b.uuid}', '${b.username.replace(/'/g, "\\'")}')" style="cursor: pointer; background: rgba(0, 255, 128, 0.12); border: 1px solid rgba(0, 255, 128, 0.3); border-radius: 4px; padding: 4px 8px; font-size: 9px; font-weight: 800; color: #00ff80; text-transform: uppercase; transition: 0.2s;" onmouseover="this.style.background='#00ff80'; this.style.color='#000';" onmouseout="this.style.background='rgba(0, 255, 128, 0.12)'; this.style.color='#00ff80';">Entblocken</button>
                         </div>
                     </div>
                 `;
@@ -11038,6 +11314,11 @@
         const senderUuid = uuidValue || 'guest-uuid';
         const friendUuid = activeChatFriendUuid;
         if (!friendUuid) return;
+        
+        if (!friendsList.some(f => f.uuid === friendUuid)) {
+            showToast(currentLang === 'de' ? "Ihr müsst befreundet sein, um chatten zu können!" : "You must be friends to chat!", "error");
+            return;
+        }
         
         const encryptionKey = [senderUuid, friendUuid].sort().join('-');
         const encryptedText = xorEncrypt(text, encryptionKey);
