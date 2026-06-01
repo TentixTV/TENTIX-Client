@@ -1875,8 +1875,8 @@
                 <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 12px 15px; display: flex; flex-direction: column; gap: 8px;">
                     <div style="font-size: 11px; font-weight: 800; color: #888; text-transform: uppercase; letter-spacing: 1px;">Skin Modell / Model Type</div>
                     <div style="display: flex; gap: 8px;">
-                        <button id="skin-model-btn-classic" class="dash-btn skin-model-select-btn active" style="margin: 0; flex: 1; text-align: center;" onclick="setSkinChangerModel('default')">Normal (Steve)</button>
-                        <button id="skin-model-btn-slim" class="dash-btn skin-model-select-btn" style="margin: 0; flex: 1; text-align: center;" onclick="setSkinChangerModel('slim')">Slim (Alex)</button>
+                        <button id="skin-model-btn-classic" class="dash-btn skin-model-select-btn active" style="margin: 0; flex: 1; text-align: center;" onclick="setSkinChangerModel('default', true)">Normal (Steve)</button>
+                        <button id="skin-model-btn-slim" class="dash-btn skin-model-select-btn" style="margin: 0; flex: 1; text-align: center;" onclick="setSkinChangerModel('slim', true)">Slim (Alex)</button>
                     </div>
                 </div>
 
@@ -2449,8 +2449,8 @@
         <img src="https://minotar.net/avatar/MHF_Steve/40" class="skin-head" id="user-avatar" onclick="handleAccountClick()" alt="Avatar">
         <div class="account-card" id="account-card">
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 2px;">
+                <div id="ui-profile-rank-badge" style="display: none; align-items: center; cursor: pointer;" onclick="navTo('tentixplus')"></div>
                 <span class="card-name" id="ui-card-name">GUEST</span>
-                <div id="ui-profile-rank-badge" style="display: none; align-items: center;"></div>
                 <div class="badges-container" id="ui-badges-container" style="display: none;"></div>
             </div>
             <span class="card-uuid copy-hover" id="ui-card-uuid" onclick="copyUUID(event)" title="Click to copy">NOT LOGGED IN</span>
@@ -3284,9 +3284,10 @@
                     <div style="margin-top: auto; display: flex; flex-direction: column; gap: 8px; width: 100%;">
                         <select id="lite-duration-select" onchange="updateStorePrices()" class="store-select" style="background: #111; border: 1px solid rgba(255,255,255,0.08); color: #fff; font-size: 10px; border-radius: 6px; padding: 6px; outline: none; font-family: inherit; font-weight: 600; cursor: pointer;">
                             <option value="1">1 Monat (2,99 €)</option>
-                            <option value="3">3 Monate (8,49 € - 5% Rabatt)</option>
-                            <option value="6">6 Monate (15,99 € - 10% Rabatt)</option>
-                            <option value="12">12 Monate (27,99 € - 20% Rabatt)</option>
+                            <option value="3">3 Monate (8,49 €)</option>
+                            <option value="6">6 Monate (15,99 €)</option>
+                            <option value="12">12 Monate (27,99 €)</option>
+                            <option value="-1">Lifetime (29,99 €)</option>
                         </select>
                         <button id="btn-buy-lite" onclick="addRankToCart('LITE', document.getElementById('lite-duration-select').value)" class="store-buy-btn" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); color: #fff; font-weight: 800; border-radius: 6px; padding: 10px; font-size: 10px; letter-spacing: 0.5px; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">IN DEN EINKAUFSWAGEN</button>
                     </div>
@@ -3333,7 +3334,7 @@
                 </div>
                 <div class="store-card-body" style="padding: 15px; display: flex; flex-direction: column; flex: 1;">
                     <div style="display: flex; align-items: baseline; gap: 4px; margin-bottom: 12px; align-self: flex-start;">
-                        <span id="plus-price-val" style="font-size: 20px; font-weight: 900; color: #fff; letter-spacing: -0.5px;">4,99 €</span>
+                        <span id="plus-price-val" style="font-size: 20px; font-weight: 900; color: #fff; letter-spacing: -0.5px;">7,99 €</span>
                         <span style="font-size: 9px; color: #555;">/ Monat</span>
                     </div>
                     <ul class="store-perks-list" style="list-style: none; padding: 0; margin: 0 0 15px 0; width: 100%; font-size: 10px; display: flex; flex-direction: column; gap: 8px;">
@@ -3345,10 +3346,11 @@
                     </ul>
                     <div style="margin-top: auto; display: flex; flex-direction: column; gap: 8px; width: 100%;">
                         <select id="plus-duration-select" onchange="updateStorePrices()" class="store-select" style="background: #111; border: 1px solid rgba(0, 212, 255, 0.15); color: #fff; font-size: 10px; border-radius: 6px; padding: 6px; outline: none; font-family: inherit; font-weight: 600; cursor: pointer;">
-                            <option value="1">1 Monat (4,99 €)</option>
-                            <option value="3">3 Monate (13,99 € - 5% Rabatt)</option>
-                            <option value="6">6 Monate (26,99 € - 10% Rabatt)</option>
-                            <option value="12">12 Monate (47,99 € - 20% Rabatt)</option>
+                            <option value="1">1 Monat (7,99 €)</option>
+                            <option value="3">3 Monate (21,99 €)</option>
+                            <option value="6">6 Monate (39,99 €)</option>
+                            <option value="12">12 Monate (69,99 €)</option>
+                            <option value="-1">Lifetime (74,99 €)</option>
                         </select>
                         <button id="btn-buy-plus" onclick="addRankToCart('PLUS', document.getElementById('plus-duration-select').value)" class="store-buy-btn" style="background: linear-gradient(135deg, var(--accent-blue) 0%, #0072ff 100%); border: none; color: #000; font-weight: 900; border-radius: 6px; padding: 10px; font-size: 10px; letter-spacing: 0.5px; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(0, 212, 255, 0.25);" onmouseover="this.style.boxShadow='0 6px 20px rgba(0, 212, 255, 0.45)'; this.style.transform='scale(1.02)';" onmouseout="this.style.boxShadow='0 4px 15px rgba(0, 212, 255, 0.25)'; this.style.transform='none';">IN DEN EINKAUFSWAGEN</button>
                     </div>
@@ -3635,6 +3637,10 @@
     let eventTimerInterval = null;
     let isAppReady = false;
     let currentUserRoles = ['PLAYER'];
+    let currentUserRank = 'PLAYER';
+    let currentUserRankExpiresAt = 0;
+    let storeViewerModelManual = false;
+    let skinChangerModelManual = false;
     let tentixSocket = null;
     let unreadCounts = {};
     let onlineToastQueue = [];
@@ -4562,6 +4568,26 @@
             const coins = parseInt(localStorage.getItem('tentix_coins') || '500', 10);
             balanceEl.innerText = `${coins} Coins`;
         }
+        updateUserBalanceDisplay();
+    }
+
+    function updateUserBalanceDisplay(balance) {
+        if (balance === undefined || balance === null) {
+            balance = parseFloat(localStorage.getItem('tentix_balance') || '0.0000');
+        } else {
+            localStorage.setItem('tentix_balance', parseFloat(balance).toFixed(4));
+        }
+        
+        const formatted = parseFloat(balance).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 4 }) + ' €';
+        
+        const shopHeader = document.getElementById('shop-balance-display-header');
+        if (shopHeader) shopHeader.innerText = formatted;
+        
+        const storeUserBalance = document.getElementById('store-user-balance');
+        if (storeUserBalance) storeUserBalance.innerText = formatted;
+        
+        const checkoutUserBalanceLbl = document.getElementById('checkout-user-balance-lbl');
+        if (checkoutUserBalanceLbl) checkoutUserBalanceLbl.innerText = formatted;
     }
 
     async function syncCreatorCodes() {
@@ -9199,14 +9225,7 @@
     function openTentixPlusModal(e) {
         if (e) createClickExplosion(e);
         closeAllPopups();
-        const modal = document.getElementById('tentixplus-modal');
-        const card = document.getElementById('tentixplus-modal-card');
-        if (modal && card) {
-            modal.style.display = 'flex';
-            void modal.offsetWidth;
-            modal.style.opacity = '1';
-            card.style.transform = 'scale(1)';
-        }
+        navTo('tentixplus');
     }
 
     function closeTentixPlusModal() {
@@ -9223,47 +9242,96 @@
 
     function isSkinSlim(imageUrl) {
         return new Promise((resolve) => {
-            const img = new Image();
-            img.crossOrigin = "Anonymous";
-            img.onload = function() {
-                try {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0);
-                    
-                    if (img.width !== 64 || img.height !== 64) {
-                        resolve(false);
-                        return;
-                    }
-                    
-                    const imgData = ctx.getImageData(43, 20, 1, 10).data;
-                    let isTransparent = true;
-                    for (let i = 3; i < imgData.length; i += 4) {
-                        if (imgData[i] !== 0) {
-                            isTransparent = false;
-                            break;
+            if (imageUrl.startsWith('data:')) {
+                const img = new Image();
+                img.onload = function() {
+                    try {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0);
+                        
+                        if (img.width !== 64 || img.height !== 64) {
+                            resolve(false);
+                            return;
                         }
+                        
+                        const imgData = ctx.getImageData(43, 20, 1, 10).data;
+                        let isTransparent = true;
+                        for (let i = 3; i < imgData.length; i += 4) {
+                            if (imgData[i] !== 0) {
+                                isTransparent = false;
+                                break;
+                            }
+                        }
+                        resolve(isTransparent);
+                    } catch (e) {
+                        console.error("isSkinSlim detection error (dataUrl):", e);
+                        resolve(false);
                     }
-                    resolve(isTransparent);
-                } catch (e) {
-                    console.error("isSkinSlim detection error:", e);
+                };
+                img.onerror = function() {
                     resolve(false);
-                }
-            };
-            img.onerror = function() {
-                resolve(false);
-            };
-            img.src = imageUrl;
+                };
+                img.src = imageUrl;
+                return;
+            }
+
+            fetch(imageUrl)
+                .then(r => r.blob())
+                .then(blob => {
+                    const reader = new FileReader();
+                    reader.onloadend = function() {
+                        const dataUrl = reader.result;
+                        const img = new Image();
+                        img.onload = function() {
+                            try {
+                                const canvas = document.createElement('canvas');
+                                canvas.width = img.width;
+                                canvas.height = img.height;
+                                const ctx = canvas.getContext('2d');
+                                ctx.drawImage(img, 0, 0);
+                                
+                                if (img.width !== 64 || img.height !== 64) {
+                                    resolve(false);
+                                    return;
+                                }
+                                
+                                const imgData = ctx.getImageData(43, 20, 1, 10).data;
+                                let isTransparent = true;
+                                for (let i = 3; i < imgData.length; i += 4) {
+                                    if (imgData[i] !== 0) {
+                                        isTransparent = false;
+                                        break;
+                                    }
+                                }
+                                resolve(isTransparent);
+                            } catch (e) {
+                                console.error("isSkinSlim detection error (fetch):", e);
+                                resolve(false);
+                            }
+                        };
+                        img.onerror = function() {
+                            resolve(false);
+                        };
+                        img.src = dataUrl;
+                    };
+                    reader.readAsDataURL(blob);
+                })
+                .catch(e => {
+                    console.error("isSkinSlim fetch error:", e);
+                    resolve(false);
+                });
         });
     }
 
     let storeViewer = null;
     let storeViewerCapeEnabled = true;
     let storeViewerAnimEnabled = true;
-    let storeViewerModelType = 'steve';
+    let storeViewerModelType = 'default';
     let storeViewerWalkingAnimationInstance = null;
+    storeViewerModelManual = false;
 
     function initStoreViewer() {
         if (storeViewer) {
@@ -9282,6 +9350,7 @@
 
             // Mini-Me scale shrink
             storeViewer.playerObject.scale.set(0.65, 0.65, 0.65);
+            storeViewer.playerObject.head.scale.set(1.53846, 1.53846, 1.53846);
 
             storeViewer.controls.enableZoom = true;
             storeViewer.controls.minPolarAngle = 0.3;
@@ -9292,11 +9361,6 @@
 
             // Load skin & animation
             updateStoreViewerSkin();
-            
-            if (storeViewerAnimEnabled) {
-                storeViewerWalkingAnimationInstance = storeViewer.animations.add(skinview3d.WalkingAnimation);
-                storeViewerWalkingAnimationInstance.speed = 0.6;
-            }
         } catch (e) {
             console.error("Failed to initialize store skinview3d:", e);
         }
@@ -9316,29 +9380,48 @@
         }
         
         isSkinSlim(skinUrl).then(isSlim => {
-            const modelToUse = isSlim ? 'alex' : 'steve';
-            storeViewerModelType = modelToUse;
+            const detectedModel = isSlim ? 'slim' : 'default';
+            let modelToUse = detectedModel;
+            if (storeViewerModelManual) {
+                modelToUse = (storeViewerModelType === 'slim') ? 'slim' : 'default';
+            } else {
+                storeViewerModelType = detectedModel;
+            }
+            
             storeViewer.model = modelToUse;
-            storeViewer.loadSkin(skinUrl, { model: modelToUse });
+            
+            storeViewer.loadSkin(skinUrl, { model: modelToUse }).then(() => {
+                // Apply proportional scaling: body/limbs to 0.65, head to 1.53846 (1 / 0.65)
+                storeViewer.playerObject.scale.set(0.65, 0.65, 0.65);
+                storeViewer.playerObject.head.scale.set(1.53846, 1.53846, 1.53846);
+
+                // Load cape inside the then() block!
+                if (storeViewerCapeEnabled) {
+                    const equippedCape = localStorage.getItem('tentix_equipped_cape');
+                    const dataUrl = generateCapeDataUrl(equippedCape || 'cape_neon_blue');
+                    storeViewer.loadCape(dataUrl);
+                } else {
+                    storeViewer.loadCape(null);
+                }
+
+                // Add walking animation inside the then() block!
+                if (storeViewerWalkingAnimationInstance) {
+                    storeViewerWalkingAnimationInstance.remove();
+                    storeViewerWalkingAnimationInstance = null;
+                }
+                if (storeViewerAnimEnabled) {
+                    storeViewerWalkingAnimationInstance = storeViewer.animations.add(skinview3d.WalkingAnimation);
+                    storeViewerWalkingAnimationInstance.speed = 0.6;
+                }
+            }).catch(err => {
+                console.error("storeViewer loadSkin error:", err);
+            });
 
             const btn = document.getElementById('store-model-toggle-btn');
             if (btn) {
-                btn.innerText = modelToUse.toUpperCase();
+                btn.innerText = modelToUse === 'slim' ? 'ALEX' : 'STEVE';
             }
         });
-
-        if (storeViewerCapeEnabled) {
-            const equippedCape = localStorage.getItem('tentix_equipped_cape');
-            if (equippedCape) {
-                const dataUrl = generateCapeDataUrl(equippedCape);
-                storeViewer.loadCape(dataUrl);
-            } else {
-                const dataUrl = generateCapeDataUrl('cape_neon_blue');
-                storeViewer.loadCape(dataUrl);
-            }
-        } else {
-            storeViewer.loadCape(null);
-        }
     }
 
     function toggleStoreViewerCape() {
@@ -9370,26 +9453,15 @@
                 knob.style.left = '2px';
             }
         }
-        if (storeViewer) {
-            if (storeViewerAnimEnabled) {
-                if (!storeViewerWalkingAnimationInstance) {
-                    storeViewerWalkingAnimationInstance = storeViewer.animations.add(skinview3d.WalkingAnimation);
-                    storeViewerWalkingAnimationInstance.speed = 0.6;
-                }
-            } else {
-                if (storeViewerWalkingAnimationInstance) {
-                    storeViewerWalkingAnimationInstance.remove();
-                    storeViewerWalkingAnimationInstance = null;
-                }
-            }
-        }
+        updateStoreViewerSkin();
     }
 
     function toggleStoreViewerModel() {
-        storeViewerModelType = (storeViewerModelType === 'steve') ? 'alex' : 'steve';
+        storeViewerModelManual = true; // Set manual override!
+        storeViewerModelType = (storeViewerModelType === 'slim') ? 'default' : 'slim';
         const btn = document.getElementById('store-model-toggle-btn');
         if (btn) {
-            btn.innerText = storeViewerModelType.toUpperCase();
+            btn.innerText = storeViewerModelType === 'slim' ? 'ALEX' : 'STEVE';
         }
         updateStoreViewerSkin();
     }
@@ -9768,8 +9840,12 @@
         }, 300);
     }
     
+    skinChangerModelManual = false;
     let skinChangerModelType = localStorage.getItem('tentix_skin_model_type') || 'default';
-    function setSkinChangerModel(model) {
+    function setSkinChangerModel(model, isManual = false) {
+        if (isManual) {
+            skinChangerModelManual = true;
+        }
         skinChangerModelType = model;
         localStorage.setItem('tentix_skin_model_type', model);
         
@@ -9866,14 +9942,11 @@
         if (skinChangerViewer) {
             canvas.style.display = 'block';
             if (canvas2d) canvas2d.style.display = 'none';
-            isSkinSlim(skinUrl).then(isSlim => {
-                const detectedModel = isSlim ? 'slim' : 'default';
-                skinChangerModelType = detectedModel;
-                localStorage.setItem('tentix_skin_model_type', detectedModel);
-                
+            if (skinChangerModelManual) {
+                const model = skinChangerModelType;
                 const btnClassic = document.getElementById('skin-model-btn-classic');
                 const btnSlim = document.getElementById('skin-model-btn-slim');
-                if (detectedModel === 'default') {
+                if (model === 'default') {
                     if (btnClassic) btnClassic.classList.add('active');
                     if (btnSlim) btnSlim.classList.remove('active');
                 } else {
@@ -9881,8 +9954,8 @@
                     if (btnSlim) btnSlim.classList.add('active');
                 }
                 
-                skinChangerViewer.model = detectedModel;
-                skinChangerViewer.loadSkin(skinUrl, { model: detectedModel }).catch(err => {
+                skinChangerViewer.model = model;
+                skinChangerViewer.loadSkin(skinUrl, { model: model }).catch(err => {
                     console.warn("Failed to load 3D skin, falling back to 2D canvas:", err);
                     canvas.style.display = 'none';
                     if (canvas2d) {
@@ -9890,7 +9963,33 @@
                         draw2DSkinOnCanvas(skinUrl);
                     }
                 });
-            });
+            } else {
+                isSkinSlim(skinUrl).then(isSlim => {
+                    const detectedModel = isSlim ? 'slim' : 'default';
+                    skinChangerModelType = detectedModel;
+                    localStorage.setItem('tentix_skin_model_type', detectedModel);
+                    
+                    const btnClassic = document.getElementById('skin-model-btn-classic');
+                    const btnSlim = document.getElementById('skin-model-btn-slim');
+                    if (detectedModel === 'default') {
+                        if (btnClassic) btnClassic.classList.add('active');
+                        if (btnSlim) btnSlim.classList.remove('active');
+                    } else {
+                        if (btnClassic) btnClassic.classList.remove('active');
+                        if (btnSlim) btnSlim.classList.add('active');
+                    }
+                    
+                    skinChangerViewer.model = detectedModel;
+                    skinChangerViewer.loadSkin(skinUrl, { model: detectedModel }).catch(err => {
+                        console.warn("Failed to load 3D skin, falling back to 2D canvas:", err);
+                        canvas.style.display = 'none';
+                        if (canvas2d) {
+                            canvas2d.style.display = 'block';
+                            draw2DSkinOnCanvas(skinUrl);
+                        }
+                    });
+                });
+            }
         } else {
             canvas.style.display = 'none';
             if (canvas2d) {
@@ -11748,12 +11847,19 @@
                     }
                 }
 
+                let friendRankIcon = '';
+                if (f.active_rank === 'PLUS' || f.active_rank === 'PREMIUM') {
+                    friendRankIcon = `<img src="../assets/PLUS.png" style="height: 11px; width: auto; vertical-align: middle; filter: drop-shadow(0 0 3px rgba(0, 212, 255, 0.6));" title="TENTIX+">`;
+                } else if (f.active_rank === 'LITE') {
+                    friendRankIcon = `<img src="../assets/LITE.png" style="height: 11px; width: auto; vertical-align: middle; filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.4));" title="TENTIX LITE">`;
+                }
+
                 container.innerHTML += `
                     <div class="friend-item" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.02);">
                         <div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0;">
                             <img class="friend-avatar" src="https://minotar.net/avatar/${f.username}/24" onerror="this.src='https://minotar.net/avatar/MHF_Steve/24'" style="border-radius: 4px; width: 24px; height: 24px;">
                             <div style="min-width: 0; flex: 1;">
-                               <div style="font-size: 11.5px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${f.username}</div>
+                               <div style="font-size: 11.5px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 4px;">${friendRankIcon}${f.username}</div>
                                <div style="display: flex; align-items: center; gap: 4px; font-size: 9px; color: #777; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                                    <div class="friend-status-dot" style="background: ${dotColor}; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;"></div>
                                    <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${statusText}</span>
@@ -11785,12 +11891,19 @@
             `;
             
             filteredIncoming.forEach(r => {
+                let reqRankIcon = '';
+                if (r.active_rank === 'PLUS' || r.active_rank === 'PREMIUM') {
+                    reqRankIcon = `<img src="../assets/PLUS.png" style="height: 11px; width: auto; vertical-align: middle; filter: drop-shadow(0 0 3px rgba(0, 212, 255, 0.6));" title="TENTIX+">`;
+                } else if (r.active_rank === 'LITE') {
+                    reqRankIcon = `<img src="../assets/LITE.png" style="height: 11px; width: auto; vertical-align: middle; filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.4));" title="TENTIX LITE">`;
+                }
+
                 container.innerHTML += `
                     <div class="friend-item" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.02);">
                         <div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0;">
                             <img class="friend-avatar" src="https://minotar.net/avatar/${r.username}/24" onerror="this.src='https://minotar.net/avatar/MHF_Steve/24'" style="border-radius: 4px; width: 24px; height: 24px;">
                             <div style="min-width: 0; flex: 1;">
-                               <div style="font-size: 11.5px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${r.username}</div>
+                               <div style="font-size: 11.5px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 4px;">${reqRankIcon}${r.username}</div>
                             </div>
                         </div>
                         <div class="friend-request-actions" style="display: flex; align-items: center; gap: 6px;">

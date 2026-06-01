@@ -76,34 +76,57 @@ function createWindow() {
 
 function createTray() {
     try {
-        let iconPath = path.join(__dirname, 'assets', 'TENTIX.png');
+        let image = null;
+        let iconPath = path.join(__dirname, 'assets', 'icon-game.png'); // Safe default
+        if (!fs.existsSync(iconPath)) {
+            iconPath = path.join(__dirname, 'assets', 'TENTIX.png');
+        }
         if (!fs.existsSync(iconPath)) {
             iconPath = path.join(__dirname, 'build', 'icon.png');
         }
-        if (fs.existsSync(iconPath)) {
-            const image = nativeImage.createFromPath(iconPath).resize({ width: 16, height: 16 });
-            tray = new Tray(image);
-            const contextMenu = Menu.buildFromTemplate([
-                { label: 'TENTIX Öffnen', click: () => {
-                    if (mainWindow) {
-                        if (mainWindow.isMinimized()) mainWindow.restore();
-                        mainWindow.show();
-                        mainWindow.focus();
-                    }
-                }},
-                { type: 'separator' },
-                { label: 'Beenden', click: () => { app.isQuitting = true; app.quit(); } }
-            ]);
-            tray.setToolTip('TENTIX Client');
-            tray.setContextMenu(contextMenu);
-            tray.on('click', () => {
+        
+        try {
+            if (fs.existsSync(iconPath)) {
+                let tempImg = nativeImage.createFromPath(iconPath);
+                if (!tempImg.isEmpty()) {
+                    image = tempImg.resize({ width: 16, height: 16 });
+                }
+            }
+        } catch (resizeErr) {
+            console.error("Resize failed, using original or empty image:", resizeErr);
+        }
+
+        if (!image || image.isEmpty()) {
+            const backupPath = path.join(__dirname, 'assets', 'icon-game.png');
+            if (fs.existsSync(backupPath)) {
+                image = nativeImage.createFromPath(backupPath);
+            } else {
+                image = nativeImage.createEmpty();
+            }
+        }
+
+        tray = new Tray(image);
+        const contextMenu = Menu.buildFromTemplate([
+            { label: 'TENTIX Öffnen', click: () => {
                 if (mainWindow) {
                     if (mainWindow.isMinimized()) mainWindow.restore();
                     mainWindow.show();
                     mainWindow.focus();
                 }
-            });
-        }
+            }},
+            { type: 'separator' },
+            { label: 'Beenden', click: () => { app.isQuitting = true; app.quit(); } }
+        ]);
+        tray.setToolTip('TENTIX Client');
+        tray.setContextMenu(contextMenu);
+        tray.on('click', () => {
+            if (mainWindow) {
+                if (mainWindow.isMinimized()) mainWindow.restore();
+                mainWindow.show();
+                mainWindow.focus();
+            }
+        });
+        console.log("System tray initialized successfully.");
     } catch (e) {
         console.error("Failed to create tray:", e);
     }
@@ -289,7 +312,8 @@ ipcMain.on('update-discord-rp', (event, data) => {
 ipcMain.on('update-drp-status', (event, data) => {
     if (data.username) {
         lastUsername = data.username;
-        currentActivity.details = `${data.username} | TENTIX`;
+        const rankSuffix = (data.rank && data.rank !== 'PLAYER') ? ` ${data.rank}` : '';
+        currentActivity.details = `${data.username} | TENTIX${rankSuffix}`;
     } else {
         currentActivity.details = `TENTIX Client`;
     }
