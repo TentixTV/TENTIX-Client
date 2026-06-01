@@ -5,6 +5,31 @@
     <title>TENTIX CLIENT</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
+        .premium-rank-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3px 7px;
+            border-radius: 4px;
+            font-size: 9px;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-family: 'Inter', sans-serif;
+            line-height: 1;
+        }
+        .badge-plus {
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            color: #000;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.6);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .badge-lite {
+            background: linear-gradient(135deg, #d1d5db 0%, #9ca3af 100%);
+            color: #000;
+            box-shadow: 0 0 8px rgba(255,255,255,0.3);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
         :root { --accent-blue: #00d4ff; --accent-blue-rgb: 0, 212, 255; --accent-gradient-sec: #0072ff; --bg-dark: #0c0c0c; --card-bg: #141416; --sidebar-bg: #0f0f11; --settings-bg: #111113; --border-color: rgba(255,255,255,0.06); --text-gray: #8b8b93; --news-pane-width: 320px; --cart-color-1: #00d4ff; --cart-color-1-rgb: 0, 212, 255; --cart-color-2: #ff4b4b; --cart-color-2-rgb: 255, 75, 75; }
         * { user-select: none; -webkit-user-select: none; box-sizing: border-box; outline: none; margin: 0; padding: 0; }
         body { background-color: transparent; color: white; font-family: 'Inter', sans-serif; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; width: 100vw; -webkit-app-region: no-drag; }
@@ -2061,7 +2086,25 @@
                         <input type="text" class="dash-input" placeholder="Hours or 'P'" style="margin:0; flex:1;" id="dash-new-exp">
                         <input type="number" class="dash-input" placeholder="Uses" style="margin:0; flex:1;" min="1" id="dash-new-uses">
                         <select class="dash-input" style="margin:0; flex:2;" id="dash-new-reward">
-                            <option value="CREATOR">Reward: Content Creator</option><option value="TWITCH">Reward: Twitch</option><option value="YT">Reward: YouTuber</option><option value="ALPHA">Reward: Alpha Tester</option><option value="BETA">Reward: Beta Tester</option><option value="DONATOR">Reward: Unterstützer</option><option value="VIPP">Reward: VIP+</option><option value="VIP">Reward: VIP</option><option value="PLAYER">Reward: Spieler</option>
+                            <option value="CREATOR">Reward: Content Creator</option>
+                            <option value="TWITCH">Reward: Twitch</option>
+                            <option value="YT">Reward: YouTuber</option>
+                            <option value="ALPHA">Reward: Alpha Tester</option>
+                            <option value="BETA">Reward: Beta Tester</option>
+                            <option value="DONATOR">Reward: Unterstützer</option>
+                            <option value="LITE_1M">Reward: TENTIX LITE (1 Monat)</option>
+                            <option value="LITE_3M">Reward: TENTIX LITE (3 Monate)</option>
+                            <option value="LITE_6M">Reward: TENTIX LITE (6 Monate)</option>
+                            <option value="LITE_12M">Reward: TENTIX LITE (12 Monate)</option>
+                            <option value="LITE_LIFETIME">Reward: TENTIX LITE (Lifetime)</option>
+                            <option value="PLUS_1M">Reward: TENTIX+ (1 Monat)</option>
+                            <option value="PLUS_3M">Reward: TENTIX+ (3 Monate)</option>
+                            <option value="PLUS_6M">Reward: TENTIX+ (6 Monate)</option>
+                            <option value="PLUS_12M">Reward: TENTIX+ (12 Monate)</option>
+                            <option value="PLUS_LIFETIME">Reward: TENTIX+ (Lifetime)</option>
+                            <option value="VIPP">Reward: VIP+</option>
+                            <option value="VIP">Reward: VIP</option>
+                            <option value="PLAYER">Reward: Spieler</option>
                         </select>
                         <div class="dash-btn" style="flex:1; text-align:center; padding:12px 0;" id="t-dash-gen" onclick="generateDashCode()">Erstellen</div>
                     </div>
@@ -3560,7 +3603,7 @@
     </div>
 
     <div id="play-container-wrapper">
-        <p class="welcome-text"><span id="ui-welcome-text">WELCOME, </span><span id="display-name">PLAYER</span></p>
+        <p class="welcome-text" style="display: flex; align-items: center; justify-content: center; gap: 8px;"><span id="ui-welcome-text">WELCOME, </span><span id="start-profile-rank-badge" style="display: none; align-items: center;"></span><span id="display-name">PLAYER</span></p>
         <div class="online-container" id="online-container">
             <div class="pulse-dot"></div>
             <div class="online-text"><span id="ui-online-label">PLAYERS ONLINE: </span><span id="online-count">0</span></div>
@@ -4370,16 +4413,34 @@
         updateCosmeticsLocks();
 
         const rankBadge = document.getElementById('ui-profile-rank-badge');
+        const startRankBadge = document.getElementById('start-profile-rank-badge');
+        let rankBadgeHtml = '';
+        let showRankBadge = false;
+
+        if (rolesToUse.includes('PLUS') || rolesToUse.includes('PREMIUM')) {
+            showRankBadge = true;
+            rankBadgeHtml = `<span class="premium-rank-badge badge-plus" style="cursor: pointer;" onclick="navTo('tentixplus')" title="TENTIX+ Mitglied">PLUS</span>`;
+        } else if (rolesToUse.includes('LITE')) {
+            showRankBadge = true;
+            rankBadgeHtml = `<span class="premium-rank-badge badge-lite" style="cursor: pointer;" onclick="navTo('tentixplus')" title="TENTIX LITE Mitglied">LITE</span>`;
+        }
+
         if (rankBadge) {
-            if (rolesToUse.includes('PLUS') || rolesToUse.includes('PREMIUM')) {
+            if (showRankBadge) {
                 rankBadge.style.display = 'inline-flex';
-                rankBadge.innerHTML = `<img src="../assets/PLUS.png" style="height: 14px; width: auto; filter: drop-shadow(0 0 5px rgba(0, 212, 255, 0.6)); pointer-events: none;" title="TENTIX+ Mitglied">`;
-            } else if (rolesToUse.includes('LITE')) {
-                rankBadge.style.display = 'inline-flex';
-                rankBadge.innerHTML = `<img src="../assets/LITE.png" style="height: 14px; width: auto; filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.4)); pointer-events: none;" title="TENTIX LITE Mitglied">`;
+                rankBadge.innerHTML = rankBadgeHtml;
             } else {
                 rankBadge.style.display = 'none';
                 rankBadge.innerHTML = '';
+            }
+        }
+        if (startRankBadge) {
+            if (showRankBadge) {
+                startRankBadge.style.display = 'inline-flex';
+                startRankBadge.innerHTML = rankBadgeHtml;
+            } else {
+                startRankBadge.style.display = 'none';
+                startRankBadge.innerHTML = '';
             }
         }
 
@@ -11849,9 +11910,9 @@
 
                 let friendRankIcon = '';
                 if (f.active_rank === 'PLUS' || f.active_rank === 'PREMIUM') {
-                    friendRankIcon = `<img src="../assets/PLUS.png" style="height: 11px; width: auto; vertical-align: middle; filter: drop-shadow(0 0 3px rgba(0, 212, 255, 0.6));" title="TENTIX+">`;
+                    friendRankIcon = `<span class="premium-rank-badge badge-plus" style="font-size: 8px; padding: 1px 3.5px; border-radius: 3px; height: 12px; line-height: 10px; margin-right: 2px;" title="TENTIX+">PLUS</span>`;
                 } else if (f.active_rank === 'LITE') {
-                    friendRankIcon = `<img src="../assets/LITE.png" style="height: 11px; width: auto; vertical-align: middle; filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.4));" title="TENTIX LITE">`;
+                    friendRankIcon = `<span class="premium-rank-badge badge-lite" style="font-size: 8px; padding: 1px 3.5px; border-radius: 3px; height: 12px; line-height: 10px; margin-right: 2px;" title="TENTIX LITE">LITE</span>`;
                 }
 
                 container.innerHTML += `
@@ -11893,9 +11954,9 @@
             filteredIncoming.forEach(r => {
                 let reqRankIcon = '';
                 if (r.active_rank === 'PLUS' || r.active_rank === 'PREMIUM') {
-                    reqRankIcon = `<img src="../assets/PLUS.png" style="height: 11px; width: auto; vertical-align: middle; filter: drop-shadow(0 0 3px rgba(0, 212, 255, 0.6));" title="TENTIX+">`;
+                    reqRankIcon = `<span class="premium-rank-badge badge-plus" style="font-size: 8px; padding: 1px 3.5px; border-radius: 3px; height: 12px; line-height: 10px; margin-right: 2px;" title="TENTIX+">PLUS</span>`;
                 } else if (r.active_rank === 'LITE') {
-                    reqRankIcon = `<img src="../assets/LITE.png" style="height: 11px; width: auto; vertical-align: middle; filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.4));" title="TENTIX LITE">`;
+                    reqRankIcon = `<span class="premium-rank-badge badge-lite" style="font-size: 8px; padding: 1px 3.5px; border-radius: 3px; height: 12px; line-height: 10px; margin-right: 2px;" title="TENTIX LITE">LITE</span>`;
                 }
 
                 container.innerHTML += `
