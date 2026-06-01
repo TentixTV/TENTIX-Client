@@ -3282,8 +3282,8 @@
     </div>
 </div>
 
-<div id="tentixplus-view" style="display: none; visibility: hidden; opacity: 0; transition: opacity 0.5s cubic-bezier(0.23, 1, 0.32, 1), visibility 0.5s; -webkit-app-region: no-drag; width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 50; padding: 25px; box-sizing: border-box; overflow-y: auto; background: radial-gradient(circle at center, rgba(15, 17, 28, 0.98) 0%, rgba(8, 8, 12, 0.99) 100%); backdrop-filter: blur(35px); display: flex; flex-direction: column; justify-content: center; align-items: center;">
-    <div style="width: 100%; max-width: 960px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; margin: auto;">
+<div id="tentixplus-view" style="display: none; visibility: hidden; opacity: 0; transition: opacity 0.5s cubic-bezier(0.23, 1, 0.32, 1), visibility 0.5s; -webkit-app-region: no-drag; width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 50; padding: 95px 25px 50px 25px; box-sizing: border-box; overflow-y: auto; background: radial-gradient(circle at center, rgba(15, 17, 28, 0.98) 0%, rgba(8, 8, 12, 0.99) 100%); backdrop-filter: blur(35px); display: flex; flex-direction: column; justify-content: flex-start; align-items: center;">
+    <div style="width: 100%; max-width: 960px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 20px;">
         <!-- Header info centered -->
         <div style="text-align: center; margin-bottom: 5px; position: relative; width: 100%;">
             <div style="position: absolute; left: 0; top: 50%; transform: translateY(-50%);">
@@ -3304,7 +3304,7 @@
         </div>
 
         <!-- 3 Columns Layout (Lite Card | 3D Skin Viewer | Plus Card) -->
-        <div style="display: grid; grid-template-columns: 290px 300px 290px; gap: 20px; width: 100%; justify-content: center; align-items: stretch; margin-top: 5px;">
+        <div style="display: grid; grid-template-columns: 290px 300px 290px; gap: 20px; width: 100%; justify-content: center; align-items: start; margin-top: 5px;">
             <!-- TENTIX LITE -->
             <div id="rank-card-lite" class="premium-store-card" style="border: 1px solid rgba(255, 255, 255, 0.06); box-shadow: 0 10px 30px rgba(0,0,0,0.4); display: flex; flex-direction: column;">
                 <div class="store-card-header" onclick="toggleDisclaimer('lite')" style="background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.005) 100%); display: flex; flex-direction: column; align-items: center; padding: 20px 15px 15px 15px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%)'" onmouseout="this.style.background='linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.005) 100%)'">
@@ -3320,6 +3320,7 @@
                     </div>
                     <ul class="store-perks-list" style="list-style: none; padding: 0; margin: 0 0 15px 0; width: 100%; font-size: 10px; display: flex; flex-direction: column; gap: 8px;">
                         <li style="display: flex; align-items: center; gap: 6px; color: #ccc;"><span style="color: #888; font-weight: bold;">✓</span> <span><strong>0,02 € / Std.</strong> Guthaben verdienen</span></li>
+                        <li style="display: flex; align-items: center; gap: 6px; color: #ccc;"><span style="color: #888; font-weight: bold;">✓</span> <span><strong>40-50+ exklusive Features</strong> & Ränge</span></li>
                         <li style="display: flex; align-items: center; gap: 6px; color: #ccc;"><span style="color: #888; font-weight: bold;">✓</span> <span><strong>LITE Badge</strong> im Profil & Chat</span></li>
                         <li style="display: flex; align-items: center; gap: 6px; color: #ccc;"><span style="color: #888; font-weight: bold;">✓</span> <span>Wöchentliche <strong>Kosmetik-Gifts</strong></span></li>
                         <li style="display: flex; align-items: center; gap: 6px; color: #ccc;"><span style="color: #888; font-weight: bold;">✓</span> <span>Freischaltung des LITE-Capes</span></li>
@@ -3342,9 +3343,18 @@
                             <span id="disclaimer-arrow-lite" style="transition: transform 0.2s; font-size: 7px;">▼</span>
                         </div>
                         <div id="disclaimer-content-lite" style="display: none; font-size: 8px; color: #777; margin-top: 6px; text-align: left; line-height: 1.4; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.02);">
-                            • <strong>Kein Abonnement:</strong> Einmalige Zahlung, keine automatische Verlängerung.<br>
-                            • <strong>Rückerstattung:</strong> Digitale Güter sind vom Rückgaberecht ausgeschlossen.<br>
-                            • <strong>Aktivierung:</strong> Der Rang wird sofort live freigeschaltet.
+                            <div style="margin-bottom: 4px; display: flex; gap: 4px; align-items: flex-start;">
+                                <span style="color: #888;">•</span>
+                                <span><strong>Kein Abonnement:</strong> Einmalige Zahlung, keine automatische Verlängerung.</span>
+                            </div>
+                            <div style="margin-bottom: 4px; display: flex; gap: 4px; align-items: flex-start;">
+                                <span style="color: #888;">•</span>
+                                <span><strong>Rückerstattung:</strong> Digitale Güter sind vom Rückgaberecht ausgeschlossen.</span>
+                            </div>
+                            <div style="display: flex; gap: 4px; align-items: flex-start;">
+                                <span style="color: #888;">•</span>
+                                <span><strong>Aktivierung:</strong> Der Rang wird sofort live freigeschaltet.</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -3395,6 +3405,7 @@
                     </div>
                     <ul class="store-perks-list" style="list-style: none; padding: 0; margin: 0 0 15px 0; width: 100%; font-size: 10px; display: flex; flex-direction: column; gap: 8px;">
                         <li style="display: flex; align-items: center; gap: 6px; color: #ccc;"><span style="color: var(--accent-blue); font-weight: bold;">✓</span> <span><strong>0,12 € / Std.</strong> Guthaben verdienen</span></li>
+                        <li style="display: flex; align-items: center; gap: 6px; color: #ccc;"><span style="color: var(--accent-blue); font-weight: bold;">✓</span> <span><strong>150-200+ exklusive Features</strong> & Ränge</span></li>
                         <li style="display: flex; align-items: center; gap: 6px; color: #ccc;"><span style="color: var(--accent-blue); font-weight: bold;">✓</span> <span>Animiertes <strong>TENTIX+ Badge</strong></span></li>
                         <li style="display: flex; align-items: center; gap: 6px; color: #ccc;"><span style="color: var(--accent-blue); font-weight: bold;">✓</span> <span><strong>Kosmetika & Capes</strong> unbegrenzt</span></li>
                         <li style="display: flex; align-items: center; gap: 6px; color: #ccc;"><span style="color: var(--accent-blue); font-weight: bold;">✓</span> <span><strong>Priority Queue</strong> & Beta-Features</span></li>
@@ -3418,9 +3429,18 @@
                             <span id="disclaimer-arrow-plus" style="transition: transform 0.2s; font-size: 7px;">▼</span>
                         </div>
                         <div id="disclaimer-content-plus" style="display: none; font-size: 8px; color: #777; margin-top: 6px; text-align: left; line-height: 1.4; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.02);">
-                            • <strong>Kein Abonnement:</strong> Einmalige Zahlung, keine automatische Verlängerung.<br>
-                            • <strong>Rückerstattung:</strong> Digitale Güter sind vom Rückgaberecht ausgeschlossen.<br>
-                            • <strong>Aktivierung:</strong> Der Rang wird sofort live freigeschaltet.
+                            <div style="margin-bottom: 4px; display: flex; gap: 4px; align-items: flex-start;">
+                                <span style="color: var(--accent-blue);">•</span>
+                                <span><strong>Kein Abonnement:</strong> Einmalige Zahlung, keine automatische Verlängerung.</span>
+                            </div>
+                            <div style="margin-bottom: 4px; display: flex; gap: 4px; align-items: flex-start;">
+                                <span style="color: var(--accent-blue);">•</span>
+                                <span><strong>Rückerstattung:</strong> Digitale Güter sind vom Rückgaberecht ausgeschlossen.</span>
+                            </div>
+                            <div style="display: flex; gap: 4px; align-items: flex-start;">
+                                <span style="color: var(--accent-blue);">•</span>
+                                <span><strong>Aktivierung:</strong> Der Rang wird sofort live freigeschaltet.</span>
+                            </div>
                         </div>
                     </div>
                 </div>
