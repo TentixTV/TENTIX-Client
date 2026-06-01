@@ -6178,6 +6178,7 @@
 
     let updateState = 'idle';
     let appVersion = '0.1.0';
+    const DISPLAY_VERSION = 'v0.1.0';
 
     let mockUpdateTimeout = null;
     let mockUpdateInterval = null;
@@ -6281,7 +6282,7 @@
             updateState = 'latest';
             setUpdatePingDisplay('none');
             updateUpdateUI();
-            showToast((translations[currentLang].updLatestToast || "Du bist auf der aktuellsten Version! (v0.1.0)").replace("v0.1.0", "v" + appVersion), "success");
+            showToast((translations[currentLang].updLatestToast || "Du bist auf der aktuellsten Version! (v0.1.0)").replace("v0.1.0", DISPLAY_VERSION), "success");
             setTimeout(() => { updateState = 'idle'; updateUpdateUI(); }, 2000);
         }
         else if(data.status === 'error') {
@@ -6355,10 +6356,7 @@
             const btnText = document.getElementById('t-upd-btn-txt');
             if(btnText) btnText.innerText = currentLang === 'de' ? "Nach Updates suchen" : "Check for updates";
             const statusDesc = document.getElementById('t-upd-status-desc');
-            if(statusDesc) {
-                statusDesc.innerText = (currentLang === 'de' ? "Version " : "Version ") + appVersion + " BETA" + (currentLang === 'de' ? " installiert" : " installed");
-                statusDesc.style.color = 'var(--accent-blue)';
-            }
+                statusDesc.innerText = (currentLang === 'de' ? "Version " : "Version ") + DISPLAY_VERSION + (currentLang === 'de' ? " installiert" : " installed");
         } else if(updateState === 'checking') {
             const p = '<path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/>';
             icon.innerHTML = p; if(setIcon) { setIcon.innerHTML = p; }
@@ -8302,7 +8300,7 @@
             window.api.getAppVersion().then(v => {
                 appVersion = v;
                 document.querySelectorAll('.version-tag').forEach(el => {
-                    el.textContent = 'v0.1.0 BETA';
+                    el.textContent = DISPLAY_VERSION + ' BETA';
                 });
                 updateUpdateUI();
             });

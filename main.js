@@ -76,12 +76,12 @@ function createWindow() {
 
 function createTray() {
     try {
-        let iconPath = path.join(__dirname, 'assets', 'icon-game.png');
+        let iconPath = path.join(__dirname, 'assets', 'TENTIX.png');
         if (!fs.existsSync(iconPath)) {
             iconPath = path.join(__dirname, 'build', 'icon.png');
         }
         if (fs.existsSync(iconPath)) {
-            const image = nativeImage.createFromPath(iconPath);
+            const image = nativeImage.createFromPath(iconPath).resize({ width: 16, height: 16 });
             tray = new Tray(image);
             const contextMenu = Menu.buildFromTemplate([
                 { label: 'TENTIX Öffnen', click: () => {
