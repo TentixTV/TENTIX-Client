@@ -9221,6 +9221,44 @@
         }
     }
 
+    function isSkinSlim(imageUrl) {
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.crossOrigin = "Anonymous";
+            img.onload = function() {
+                try {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+                    
+                    if (img.width !== 64 || img.height !== 64) {
+                        resolve(false);
+                        return;
+                    }
+                    
+                    const imgData = ctx.getImageData(43, 20, 1, 10).data;
+                    let isTransparent = true;
+                    for (let i = 3; i < imgData.length; i += 4) {
+                        if (imgData[i] !== 0) {
+                            isTransparent = false;
+                            break;
+                        }
+                    }
+                    resolve(isTransparent);
+                } catch (e) {
+                    console.error("isSkinSlim detection error:", e);
+                    resolve(false);
+                }
+            };
+            img.onerror = function() {
+                resolve(false);
+            };
+            img.src = imageUrl;
+        });
+    }
+
     let storeViewer = null;
     let storeViewerCapeEnabled = true;
     let storeViewerAnimEnabled = true;
@@ -9241,6 +9279,9 @@
                 width: 180,
                 height: 215
             });
+
+            // Mini-Me scale shrink
+            storeViewer.playerObject.scale.set(0.65, 0.65, 0.65);
 
             storeViewer.controls.enableZoom = true;
             storeViewer.controls.minPolarAngle = 0.3;
@@ -9264,8 +9305,6 @@
     function updateStoreViewerSkin() {
         if (!storeViewer) return;
         
-        storeViewer.model = storeViewerModelType;
-        
         const customSkin = localStorage.getItem('tentix_custom_skin');
         let skinUrl = 'https://minotar.net/skin/MHF_Steve';
         if (customSkin) {
@@ -9276,7 +9315,17 @@
             skinUrl = `https://minotar.net/skin/${savedName.trim()}`;
         }
         
-        storeViewer.loadSkin(skinUrl, { model: storeViewerModelType });
+        isSkinSlim(skinUrl).then(isSlim => {
+            const modelToUse = isSlim ? 'alex' : 'steve';
+            storeViewerModelType = modelToUse;
+            storeViewer.model = modelToUse;
+            storeViewer.loadSkin(skinUrl, { model: modelToUse });
+
+            const btn = document.getElementById('store-model-toggle-btn');
+            if (btn) {
+                btn.innerText = modelToUse.toUpperCase();
+            }
+        });
 
         if (storeViewerCapeEnabled) {
             const equippedCape = localStorage.getItem('tentix_equipped_cape');
@@ -9375,19 +9424,20 @@
 
     function updateShopViewerSkin() {
         if (!shopViewer) return;
-        shopViewer.model = skinChangerModelType;
         const customSkin = localStorage.getItem('tentix_custom_skin');
-        if (customSkin) {
-            shopViewer.loadSkin(customSkin, { model: skinChangerModelType });
-            return;
-        }
         let skinUrl = 'https://minotar.net/skin/MHF_Steve';
-        if (isLoggedIn && uuidValue && uuidValue !== 'NOT LOGGED IN') {
+        if (customSkin) {
+            skinUrl = customSkin;
+        } else if (isLoggedIn && uuidValue && uuidValue !== 'NOT LOGGED IN') {
             skinUrl = `https://minotar.net/skin/${uuidValue.trim()}`;
         } else if (isLoggedIn && savedName && savedName !== 'GUEST') {
             skinUrl = `https://minotar.net/skin/${savedName.trim()}`;
         }
-        shopViewer.loadSkin(skinUrl, { model: skinChangerModelType });
+        isSkinSlim(skinUrl).then(isSlim => {
+            const modelToUse = isSlim ? 'slim' : 'default';
+            shopViewer.model = modelToUse;
+            shopViewer.loadSkin(skinUrl, { model: modelToUse });
+        });
     }
 
     function previewCosmeticInShop(cosmeticId, event) {
@@ -9468,19 +9518,20 @@
     function updateCosmeticsSkin() {
         updateShopViewerSkin();
         if (!cosmeticsViewer) return;
-        cosmeticsViewer.model = skinChangerModelType;
         const customSkin = localStorage.getItem('tentix_custom_skin');
-        if (customSkin) {
-            cosmeticsViewer.loadSkin(customSkin, { model: skinChangerModelType });
-            return;
-        }
         let skinUrl = 'https://minotar.net/skin/MHF_Steve';
-        if (isLoggedIn && uuidValue && uuidValue !== 'NOT LOGGED IN') {
+        if (customSkin) {
+            skinUrl = customSkin;
+        } else if (isLoggedIn && uuidValue && uuidValue !== 'NOT LOGGED IN') {
             skinUrl = `https://minotar.net/skin/${uuidValue.trim()}`;
         } else if (isLoggedIn && savedName && savedName !== 'GUEST') {
             skinUrl = `https://minotar.net/skin/${savedName.trim()}`;
         }
-        cosmeticsViewer.loadSkin(skinUrl, { model: skinChangerModelType });
+        isSkinSlim(skinUrl).then(isSlim => {
+            const modelToUse = isSlim ? 'slim' : 'default';
+            cosmeticsViewer.model = modelToUse;
+            cosmeticsViewer.loadSkin(skinUrl, { model: modelToUse });
+        });
     }
 
     async function installMod(modId, modTitle, btn) {
@@ -9815,14 +9866,30 @@
         if (skinChangerViewer) {
             canvas.style.display = 'block';
             if (canvas2d) canvas2d.style.display = 'none';
-            skinChangerViewer.model = skinChangerModelType;
-            skinChangerViewer.loadSkin(skinUrl, { model: skinChangerModelType }).catch(err => {
-                console.warn("Failed to load 3D skin, falling back to 2D canvas:", err);
-                canvas.style.display = 'none';
-                if (canvas2d) {
-                    canvas2d.style.display = 'block';
-                    draw2DSkinOnCanvas(skinUrl);
+            isSkinSlim(skinUrl).then(isSlim => {
+                const detectedModel = isSlim ? 'slim' : 'default';
+                skinChangerModelType = detectedModel;
+                localStorage.setItem('tentix_skin_model_type', detectedModel);
+                
+                const btnClassic = document.getElementById('skin-model-btn-classic');
+                const btnSlim = document.getElementById('skin-model-btn-slim');
+                if (detectedModel === 'default') {
+                    if (btnClassic) btnClassic.classList.add('active');
+                    if (btnSlim) btnSlim.classList.remove('active');
+                } else {
+                    if (btnClassic) btnClassic.classList.remove('active');
+                    if (btnSlim) btnSlim.classList.add('active');
                 }
+                
+                skinChangerViewer.model = detectedModel;
+                skinChangerViewer.loadSkin(skinUrl, { model: detectedModel }).catch(err => {
+                    console.warn("Failed to load 3D skin, falling back to 2D canvas:", err);
+                    canvas.style.display = 'none';
+                    if (canvas2d) {
+                        canvas2d.style.display = 'block';
+                        draw2DSkinOnCanvas(skinUrl);
+                    }
+                });
             });
         } else {
             canvas.style.display = 'none';
