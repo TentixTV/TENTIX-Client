@@ -77,12 +77,15 @@ function createWindow() {
 function createTray() {
     try {
         let image = null;
-        let iconPath = path.join(__dirname, 'assets', 'icon-game.png'); // Safe default
+        let iconPath = path.join(__dirname, 'assets', 'TENTIX.png');
         if (!fs.existsSync(iconPath)) {
-            iconPath = path.join(__dirname, 'assets', 'TENTIX.png');
+            iconPath = path.join(__dirname, 'assets', 'TENTIX2.png');
         }
         if (!fs.existsSync(iconPath)) {
             iconPath = path.join(__dirname, 'build', 'icon.png');
+        }
+        if (!fs.existsSync(iconPath)) {
+            iconPath = path.join(__dirname, 'assets', 'icon-game.png'); // Safe default
         }
         
         try {
