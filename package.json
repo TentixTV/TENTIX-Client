@@ -1,6 +1,6 @@
 {
   "name": "TentixClient",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "TENTIX Client Launcher",
   "main": "main.js",
   "scripts": {

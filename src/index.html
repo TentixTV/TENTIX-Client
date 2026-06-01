@@ -1583,6 +1583,110 @@
             opacity: 0.5 !important;
             transition: opacity 0.3s ease !important;
         }
+
+        .premium-store-card {
+            background: rgba(20, 20, 24, 0.65);
+            backdrop-filter: blur(15px);
+            border-radius: 14px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s, border-color 0.3s;
+            position: relative;
+        }
+        .premium-store-card:hover {
+            transform: translateY(-5px);
+        }
+        .store-card-header {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+        }
+        .store-card-badge {
+            font-size: 8px;
+            font-weight: 900;
+            padding: 2px 7px;
+            border-radius: 10px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .store-card-body {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            align-items: center;
+        }
+        .store-perks-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 15px 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .store-perks-list li {
+            font-size: 10.5px;
+            color: #ccc;
+            line-height: 1.4;
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+        }
+        .perk-check {
+            color: #00ff80;
+            font-weight: 900;
+        }
+        .store-select {
+            background: #000;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: #fff;
+            padding: 6px 8px;
+            font-size: 10px;
+            font-family: inherit;
+            width: 100%;
+            outline: none;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        .store-select:hover {
+            border-color: rgba(255,255,255,0.25);
+        }
+        .store-buy-btn {
+            border: none;
+            border-radius: 6px;
+            padding: 8px;
+            font-weight: 800;
+            font-size: 11px;
+            text-align: center;
+            width: 100%;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+        .store-buy-btn:hover {
+            opacity: 0.9;
+        }
+        .store-buy-btn:active {
+            transform: scale(0.98);
+        }
+        .checkout-pay-btn {
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 10px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: transform 0.1s, opacity 0.2s;
+            font-family: inherit;
+        }
+        .checkout-pay-btn:hover {
+            opacity: 0.9;
+        }
+        .checkout-pay-btn:active {
+            transform: scale(0.97);
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/skinview3d@3.0.0-alpha.1/bundles/skinview3d.bundle.js"></script>
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
@@ -3129,16 +3233,185 @@
     </div>
 </div>
 
-<div id="tentixplus-view" style="display: none; visibility: hidden; opacity: 0; transition: opacity 0.5s ease, visibility 0.5s; -webkit-app-region: no-drag; width: 100%; height: 100%; justify-content: center; align-items: center; position: absolute; top: 0; left: 0; z-index: 50;">
-    <div class="coming-soon-popup" style="background: rgba(10, 10, 12, 0.9); backdrop-filter: blur(25px); border: 1px solid rgba(var(--accent-blue-rgb), 0.25); box-shadow: 0 0 50px rgba(var(--accent-blue-rgb), 0.15); border-radius: 16px; padding: 40px 60px; width: 450px; text-align: center; position: relative;">
-        <div style="font-size: 28px; font-weight: 900; color: #fff; margin-bottom: 20px; letter-spacing: 1px;" id="tentixplus-view-title">
-            TENTIX <span style="background: linear-gradient(135deg, var(--accent-blue) 0%, #0072ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">PLUS</span>
+<div id="tentixplus-view" style="display: none; visibility: hidden; opacity: 0; transition: opacity 0.5s ease, visibility 0.5s; -webkit-app-region: no-drag; width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 50; flex-direction: column; padding: 30px; box-sizing: border-box; overflow-y: auto; background: rgba(10, 10, 12, 0.95); backdrop-filter: blur(25px);">
+    <!-- Header info -->
+    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 900px; margin: 0 auto 20px auto;">
+        <div>
+            <div style="font-size: 24px; font-weight: 900; color: #fff; letter-spacing: 1px;">
+                TENTIX <span style="background: linear-gradient(135deg, var(--accent-blue) 0%, #0072ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">STORE</span>
+            </div>
+            <div style="font-size: 11px; color: #888; font-weight: 500; margin-top: 4px;">Exklusive Ränge, Kosmetika und Profileffekte für TENTIX-Mitglieder.</div>
         </div>
-        <div style="font-size: 13.5px; color: #aaa; line-height: 1.6; font-weight: 500; margin-bottom: 30px; padding: 0 10px;" id="tentixplus-view-desc">
-            Du hast kein TENTIX+ um hier deine Extras auszuwählen.<br><br>
-            Hol dir TENTIX+ für exklusive Kosmetika, Profileffekte und Beta-Zugang!
+        <div style="display: flex; gap: 15px; align-items: center;">
+            <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 8px; text-align: right;">
+                <div style="font-size: 8px; color: #888; font-weight: 800; text-transform: uppercase;">Dein Guthaben</div>
+                <div id="store-user-balance" style="font-size: 13px; font-weight: 900; color: #00ff80; margin-top: 2px;">0,00 €</div>
+            </div>
+            <div class="card-btn" onclick="navTo('start')" style="text-align: center; width: 100px; font-weight: 700; background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #fff; margin: 0; height: 34px; display: flex; align-items: center; justify-content: center;">ZURÜCK</div>
         </div>
-        <div class="card-btn" onclick="navTo('start')" id="tentixplus-view-back" style="text-align: center; width: 120px; font-weight: 700; margin: 0 auto; box-shadow: 0 0 15px rgba(var(--accent-blue-rgb), 0.2); background: transparent; border: 1px solid var(--accent-blue); color: #fff;">ZURÜCK</div>
+    </div>
+
+    <!-- 3 Ranks Grid -->
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; width: 100%; max-width: 900px; margin: 0 auto;">
+        <!-- TENTIX LITE -->
+        <div id="rank-card-lite" class="premium-store-card" style="border: 1px solid rgba(163, 163, 163, 0.15); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <div class="store-card-header" style="background: linear-gradient(135deg, rgba(163,163,163,0.1) 0%, rgba(163,163,163,0.02) 100%);">
+                <span class="store-card-badge" style="background: #a3a3a3; color: #000;">LITE</span>
+                <h3 style="color: #fff; font-size: 18px; font-weight: 900; margin-top: 10px;">TENTIX LITE</h3>
+                <div style="font-size: 10px; color: #888; margin-top: 5px;">Der Einsteiger-Rang</div>
+            </div>
+            <div class="store-card-body">
+                <div style="display: flex; align-items: baseline; gap: 4px; margin-bottom: 15px;">
+                    <span id="lite-price-val" style="font-size: 24px; font-weight: 900; color: #fff;">2,99 €</span>
+                    <span id="lite-price-period" style="font-size: 10px; color: #666;">/ Monat</span>
+                </div>
+                <ul class="store-perks-list">
+                    <li><span class="perk-check">✓</span> <strong>0,02 € / Std.</strong> Guthaben verdienen</li>
+                    <li><span class="perk-check">✓</span> <strong>Wöchentliches Kosmetik</strong>-Paket</li>
+                    <li><span class="perk-check">✓</span> Lite Badge im Profil & Chat</li>
+                </ul>
+                <div style="margin-top: auto; display: flex; flex-direction: column; gap: 8px; width: 100%;">
+                    <select id="lite-duration-select" onchange="updateStorePrices()" class="store-select">
+                        <option value="1">1 Monat (2,99 €)</option>
+                        <option value="3">3 Monate (8,49 € - 5% Rabatt)</option>
+                        <option value="6">6 Monate (15,99 € - 10% Rabatt)</option>
+                        <option value="12">12 Monate (27,99 € - 20% Rabatt)</option>
+                    </select>
+                    <button id="btn-buy-lite" onclick="openCheckout('LITE')" class="store-buy-btn" style="background: #a3a3a3; color: #000;">KAUFEN</button>
+                </div>
+            </div>
+            <!-- Weekly cosmetic selection UI (shown if active rank is LITE) -->
+            <div id="lite-cosmetics-panel" style="display: none; border-top: 1px solid rgba(255,255,255,0.05); padding: 12px; background: rgba(255,255,255,0.01); text-align: left;">
+                <div style="font-size: 9px; font-weight: 800; color: #a3a3a3; text-transform: uppercase; margin-bottom: 6px;">Weekly Lite Selection</div>
+                <div style="font-size: 9px; color: #888; margin-bottom: 8px;">Wähle 1 Cape + 1 Bandana für die Woche:</div>
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <div>
+                        <div style="font-size: 9px; color: #fff; font-weight: 700; margin-bottom: 3px;">Cape:</div>
+                        <select id="lite-weekly-cape" class="store-select" style="font-size: 10px; height: 24px; padding: 0 5px;"></select>
+                    </div>
+                    <div>
+                        <div style="font-size: 9px; color: #fff; font-weight: 700; margin-bottom: 3px;">Bandana:</div>
+                        <select id="lite-weekly-bandana" class="store-select" style="font-size: 10px; height: 24px; padding: 0 5px;"></select>
+                    </div>
+                    <button onclick="saveLiteWeeklySelection()" class="store-buy-btn" style="background: #a3a3a3; color: #000; font-size: 10px; height: 26px; margin-top: 4px;">Ausrüsten</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TENTIX PLUS -->
+        <div id="rank-card-plus" class="premium-store-card" style="border: 1px solid rgba(0, 212, 255, 0.2); box-shadow: 0 10px 30px rgba(0,212,255,0.15);">
+            <div class="store-card-header" style="background: linear-gradient(135deg, rgba(0,212,255,0.1) 0%, rgba(0,212,255,0.02) 100%);">
+                <span class="store-card-badge" style="background: #00d4ff; color: #000; box-shadow: 0 0 10px #00d4ff;">PLUS</span>
+                <h3 style="color: #fff; font-size: 18px; font-weight: 900; margin-top: 10px;">TENTIX+</h3>
+                <div style="font-size: 10px; color: #888; margin-top: 5px;">Für engagierte Spieler</div>
+            </div>
+            <div class="store-card-body">
+                <div style="display: flex; align-items: baseline; gap: 4px; margin-bottom: 15px;">
+                    <span id="plus-price-val" style="font-size: 24px; font-weight: 900; color: #fff;">4,99 €</span>
+                    <span id="plus-price-period" style="font-size: 10px; color: #666;">/ Monat</span>
+                </div>
+                <ul class="store-perks-list">
+                    <li><span class="perk-check" style="color: #00d4ff;">✓</span> <strong>0,12 € / Std.</strong> Guthaben verdienen</li>
+                    <li><span class="perk-check" style="color: #00d4ff;">✓</span> <strong>VIP+ Cape</strong> & Cosmetics inklusive</li>
+                    <li><span class="perk-check" style="color: #00d4ff;">✓</span> Animiertes TENTIX+ Badge</li>
+                    <li><span class="perk-check" style="color: #00d4ff;">✓</span> Bevorzugter Support & Beta-Features</li>
+                </ul>
+                <div style="margin-top: auto; display: flex; flex-direction: column; gap: 8px; width: 100%;">
+                    <select id="plus-duration-select" onchange="updateStorePrices()" class="store-select">
+                        <option value="1">1 Monat (4,99 €)</option>
+                        <option value="3">3 Monate (13,99 € - 5% Rabatt)</option>
+                        <option value="6">6 Monate (26,99 € - 10% Rabatt)</option>
+                        <option value="12">12 Monate (47,99 € - 20% Rabatt)</option>
+                    </select>
+                    <button id="btn-buy-plus" onclick="openCheckout('PLUS')" class="store-buy-btn" style="background: #00d4ff; color: #000; font-weight: 900; box-shadow: 0 0 10px rgba(0,212,255,0.3);">KAUFEN</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TENTIX PREMIUM -->
+        <div id="rank-card-premium" class="premium-store-card" style="border: 1px solid rgba(255, 234, 0, 0.25); box-shadow: 0 10px 30px rgba(255,234,0,0.15);">
+            <div class="store-card-header" style="background: linear-gradient(135deg, rgba(255,234,0,0.1) 0%, rgba(255,234,0,0.02) 100%);">
+                <span class="store-card-badge" style="background: #ffea00; color: #000; box-shadow: 0 0 15px #ffea00;">PREMIUM</span>
+                <h3 style="color: #fff; font-size: 18px; font-weight: 900; margin-top: 10px;">PREMIUM</h3>
+                <div style="font-size: 10px; color: #888; margin-top: 5px;">Die ultimative Erfahrung</div>
+            </div>
+            <div class="store-card-body">
+                <div style="display: flex; align-items: baseline; gap: 4px; margin-bottom: 15px;">
+                    <span id="premium-price-val" style="font-size: 24px; font-weight: 900; color: #fff;">7,99 €</span>
+                    <span id="premium-price-period" style="font-size: 10px; color: #666;">/ Monat</span>
+                </div>
+                <ul class="store-perks-list">
+                    <li><span class="perk-check" style="color: #ffea00;">✓</span> <strong>Mini-Me 3D-Vorschau</strong> auf Startseite</li>
+                    <li><span class="perk-check" style="color: #ffea00;">✓</span> <strong>2 Kostenlose Permanent Cosmetics</strong> alle 3 Monate</li>
+                    <li><span class="perk-check" style="color: #ffea00;">✓</span> Animiertes Premium Badge (Golden Spark)</li>
+                    <li><span class="perk-check" style="color: #ffea00;">✓</span> Zugriff auf alle Capes & Kosmetika</li>
+                </ul>
+                <div style="margin-top: auto; display: flex; flex-direction: column; gap: 8px; width: 100%;">
+                    <select id="premium-duration-select" onchange="updateStorePrices()" class="store-select">
+                        <option value="1">1 Monat (7,99 €)</option>
+                        <option value="3">3 Monate (22,49 € - 5% Rabatt)</option>
+                        <option value="6">6 Monate (42,99 € - 10% Rabatt)</option>
+                        <option value="12">12 Monate (76,99 € - 20% Rabatt)</option>
+                        <option value="-1">Lifetime (74,99 € - Bester Wert!)</option>
+                    </select>
+                    <button id="btn-buy-premium" onclick="openCheckout('PREMIUM')" class="store-buy-btn" style="background: #ffea00; color: #000; font-weight: 900; box-shadow: 0 0 10px rgba(255,234,0,0.3);">KAUFEN</button>
+                </div>
+            </div>
+            <!-- Claim free cosmetics UI (shown if active rank is PREMIUM) -->
+            <div id="premium-claim-panel" style="display: none; border-top: 1px solid rgba(255,255,255,0.05); padding: 12px; background: rgba(255,255,255,0.01); text-align: left;">
+                <div style="font-size: 9px; font-weight: 800; color: #ffea00; text-transform: uppercase; margin-bottom: 6px;">Premium Rewards</div>
+                <div style="font-size: 9px; color: #888; margin-bottom: 8px;" id="premium-claim-status-txt">Wähle 2 kostenlose Kosmetika (Verfügbar):</div>
+                <div style="display: flex; flex-direction: column; gap: 6px;" id="premium-claim-controls">
+                    <select id="premium-claim-cos1" class="store-select" style="font-size: 10px; height: 24px; padding: 0 5px;"></select>
+                    <select id="premium-claim-cos2" class="store-select" style="font-size: 10px; height: 24px; padding: 0 5px;"></select>
+                    <button onclick="claimPremiumCosmetics()" class="store-buy-btn" style="background: #ffea00; color: #000; font-size: 10px; height: 26px; margin-top: 4px;">Freischalten</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Rank Checkout Modal -->
+<div id="checkout-modal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); backdrop-filter: blur(20px); display: none; justify-content: center; align-items: center; z-index: 5000; opacity: 0; transition: opacity 0.3s ease; -webkit-app-region: no-drag;">
+    <div style="background: #0f0f12; border: 1px solid rgba(var(--accent-blue-rgb), 0.25); box-shadow: 0 0 50px rgba(var(--accent-blue-rgb), 0.15); border-radius: 16px; padding: 25px; width: 400px; text-align: left; transform: scale(0.8); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);">
+        <h2 style="font-size: 18px; font-weight: 900; color: #fff; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: space-between;">
+            <span>Bestellung Prüfen</span>
+            <span style="font-size: 10px; color: #666; font-weight: 500;">Checkout v1.0</span>
+        </h2>
+        <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); border-radius: 8px; padding: 12px; margin-bottom: 15px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                <span style="color: #888; font-size: 11px;">Produkt:</span>
+                <span id="checkout-product-name" style="color: #fff; font-weight: 800; font-size: 11px;">-</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                <span style="color: #888; font-size: 11px;">Laufzeit:</span>
+                <span id="checkout-product-duration" style="color: #fff; font-weight: 700; font-size: 11px;">-</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 6px;">
+                <span style="color: #888; font-size: 11px; font-weight: 700;">Gesamtbetrag:</span>
+                <span id="checkout-product-price" style="color: var(--accent-blue); font-weight: 900; font-size: 13px;">0,00 €</span>
+            </div>
+        </div>
+        
+        <div style="font-size: 9px; font-weight: 800; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Zahlungsmethode Wählen</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px;">
+            <button onclick="submitRankPurchase('balance')" id="btn-pay-balance" class="checkout-pay-btn" style="grid-column: span 2; border: 1px solid rgba(0, 255, 128, 0.3); background: rgba(0, 255, 128, 0.05); color: #00ff80;">
+                <span style="display:flex; align-items:center; gap: 6px; justify-content:center;">
+                    <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; fill: currentColor;"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                    Mit Guthaben bezahlen (<span id="checkout-user-balance-lbl">0,00 €</span>)
+                </span>
+            </button>
+            <button onclick="submitRankPurchase('paypal')" class="checkout-pay-btn" style="border: 1px solid rgba(0, 114, 255, 0.3); background: rgba(0, 114, 255, 0.05); color: #0072ff;">
+                PayPal (Simulation)
+            </button>
+            <button onclick="submitRankPurchase('credit')" class="checkout-pay-btn" style="border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.03); color: #fff;">
+                Kreditkarte (Simulation)
+            </button>
+        </div>
+
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+            <button onclick="closeCheckout()" class="dash-btn" style="margin: 0; background: #222; color: #fff;">Abbrechen</button>
+        </div>
     </div>
 </div>
 
@@ -3415,7 +3688,7 @@
             discLang: "Discord Rich Presence Language", discLangDesc: "Select the language for Discord Rich Presence",
             discJoin: "Join the Official TENTIX Discord Server", discJoinDesc: "Get support, news & chat with the community!",
             loginErrTitle: "LOGIN FAILED", loginErrDesc: "We couldn't log you in to Microsoft. The process was canceled or an error occurred.", btnOk: "UNDERSTOOD", errVerTitle: "VERSION ERROR", errVerDesc: "Fabric is not available for this version.",
-            updTab: "Updater", updHeader: "Client Updater", updStatTitle: "Status", updStatDesc: "Version 0.1.0 BETA is installed", updBtn: "Check for updates",
+            updTab: "Updater", updHeader: "Client Updater", updStatTitle: "Status", updStatDesc: "Version v0.1.0 BETA is installed", updBtn: "Check for updates",
             updIdle: "Update the Launcher", updCheck: "Checking for updates...", updDl: "Downloading update...", updReady: "Update ready! Click to install.", updLatest: "You are up to date!", updLatestToast: "You are on the latest version! (v0.1.0)",
             offTitle: "NO INTERNET CONNECTION", offDesc: "Please connect to the internet or LAN to continue.",
             setRedTitle: "Redeem Code", setRedDesc: "Redeem a TENTIX code for exclusive badges or cosmetics.", setRedBtn: "ENTER CODE",
@@ -3474,7 +3747,7 @@
             discLang: "Discord Rich Presence-Sprache", discLangDesc: "Wähle die Sprache für Discord Rich Presence aus",
             discJoin: "Tritt dem Offiziellen TENTIX Discord bei", discJoinDesc: "Erhalte Support, Updates & chatte mit der Community!",
             loginErrTitle: "LOGIN FEHLGESCHLAGEN", loginErrDesc: "Wir konnten dich nicht bei Microsoft einloggen. Der Vorgang wurde abgebrochen oder es trat ein Fehler auf.", btnOk: "VERSTANDEN", errVerTitle: "VERSION FEHLER", errVerDesc: "Fabric ist für diese Version nicht verfügbar.",
-            updTab: "Updater", updHeader: "Client Updater", updStatTitle: "Status", updStatDesc: "Version 0.1.0 BETA installiert", updBtn: "Nach Updates suchen",
+            updTab: "Updater", updHeader: "Client Updater", updStatTitle: "Status", updStatDesc: "Version v0.1.0 BETA installiert", updBtn: "Nach Updates suchen",
             updIdle: "Update den Launcher", updCheck: "Suche nach Updates...", updDl: "Update wird heruntergeladen...", updReady: "Update bereit! Klicken zum Installieren.", updLatest: "Du bist auf der neuesten Version!", updLatestToast: "Du bist auf der aktuellsten Version! (v0.1.0)",
             offTitle: "KEINE INTERNETVERBINDUNG", offDesc: "Bitte stelle eine Verbindung zum Internet oder LAN her, um fortzufahren.",
             setRedTitle: "Code Einlösen", setRedDesc: "Löse einen TENTIX Code für exklusive Badges oder Cosmetics ein.", setRedBtn: "CODE EINGEBEN",
@@ -4299,6 +4572,227 @@
                 localStorage.setItem('tentix_creator_codes', JSON.stringify(data.codes));
             }
         } catch (e) {}
+    }
+
+    let selectedCheckoutCoins = 0;
+    let selectedCheckoutMethod = '';
+
+    async function loadStoreBalance() {
+        const uuid = localStorage.getItem('tentix_uuid') || '';
+        if (!uuid) return;
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/store/balance?uuid=${uuid}`);
+            const data = await res.json();
+            if (data.success) {
+                localStorage.setItem('tentix_coins', data.coins);
+                const display = document.getElementById('store-balance-display');
+                if (display) {
+                    display.innerText = `${data.coins} Coins`;
+                }
+                const checkoutDisplay = document.getElementById('coins-balance-display');
+                if (checkoutDisplay) {
+                    checkoutDisplay.innerText = `${data.coins} Coins`;
+                }
+                updateShopBalanceDisplay();
+            }
+        } catch (e) {
+            console.error("Failed to load store balance:", e);
+        }
+    }
+
+    function updateStorePrices() {
+        const goldSelect = document.getElementById('gold-duration-select');
+        const platSelect = document.getElementById('platinum-duration-select');
+        
+        if (goldSelect) {
+            const goldBtn = document.getElementById('gold-buy-btn');
+            if (goldBtn) {
+                const coins = goldSelect.value;
+                goldBtn.innerText = `FÜR ${coins} COINS FREISCHALTEN`;
+            }
+        }
+        if (platSelect) {
+            const platBtn = document.getElementById('platinum-buy-btn');
+            if (platBtn) {
+                const coins = platSelect.value;
+                platBtn.innerText = `FÜR ${coins} COINS FREISCHALTEN`;
+            }
+        }
+    }
+
+    async function checkActiveRankAndPanels() {
+        const uuid = localStorage.getItem('tentix_uuid') || '';
+        if (!uuid) return;
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/store/ranks?uuid=${uuid}`);
+            const data = await res.json();
+            if (data.success) {
+                const goldBtn = document.getElementById('gold-buy-btn');
+                const goldSelect = document.getElementById('gold-duration-select');
+                const platBtn = document.getElementById('platinum-buy-btn');
+                const platSelect = document.getElementById('platinum-duration-select');
+                
+                if (data.platinum_expires) {
+                    const expiry = new Date(data.platinum_expires).toLocaleDateString('de-DE');
+                    if (platBtn) {
+                        platBtn.innerText = `PLATINUM AKTIV (bis ${expiry})`;
+                        platBtn.disabled = true;
+                        platBtn.style.opacity = '0.6';
+                        platBtn.style.cursor = 'not-allowed';
+                    }
+                    if (platSelect) platSelect.disabled = true;
+                    
+                    if (goldBtn) {
+                        goldBtn.innerText = 'NICHT VERFÜGBAR';
+                        goldBtn.disabled = true;
+                        goldBtn.style.opacity = '0.4';
+                        goldBtn.style.cursor = 'not-allowed';
+                    }
+                    if (goldSelect) goldSelect.disabled = true;
+                } else if (data.gold_expires) {
+                    const expiry = new Date(data.gold_expires).toLocaleDateString('de-DE');
+                    if (goldBtn) {
+                        goldBtn.innerText = `GOLD AKTIV (bis ${expiry})`;
+                        goldBtn.disabled = true;
+                        goldBtn.style.opacity = '0.6';
+                        goldBtn.style.cursor = 'not-allowed';
+                    }
+                    if (goldSelect) goldSelect.disabled = true;
+                    
+                    if (platBtn) {
+                        platBtn.disabled = false;
+                        platBtn.style.opacity = '1';
+                        platBtn.style.cursor = 'pointer';
+                    }
+                    if (platSelect) platSelect.disabled = false;
+                } else {
+                    if (goldBtn) {
+                        goldBtn.disabled = false;
+                        goldBtn.style.opacity = '1';
+                        goldBtn.style.cursor = 'pointer';
+                    }
+                    if (goldSelect) goldSelect.disabled = false;
+                    if (platBtn) {
+                        platBtn.disabled = false;
+                        platBtn.style.opacity = '1';
+                        platBtn.style.cursor = 'pointer';
+                    }
+                    if (platSelect) platSelect.disabled = false;
+                }
+            }
+        } catch (e) {
+            console.error("Failed to check active ranks:", e);
+        }
+    }
+
+    async function buyRank(tier) {
+        const uuid = localStorage.getItem('tentix_uuid') || '';
+        if (!uuid) {
+            showToast("Bitte logge dich ein", "error");
+            return;
+        }
+        
+        let selectEl = document.getElementById(tier === 'gold' ? 'gold-duration-select' : 'platinum-duration-select');
+        if (!selectEl) return;
+        
+        const price = parseInt(selectEl.value, 10);
+        let days = 30;
+        if (price === 1350 || price === 2700) days = 90;
+        else if (price === 4500 || price === 9000) days = 365;
+        
+        const userCoins = parseInt(localStorage.getItem('tentix_coins') || '0', 10);
+        if (userCoins < price) {
+            showToast("Nicht genügend Coins!", "error");
+            return;
+        }
+        
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/store/purchase`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ uuid, tier, days, price })
+            });
+            const data = await res.json();
+            if (data.success) {
+                showToast(`${tier.toUpperCase()}-Rang erfolgreich freigeschaltet!`, "success");
+                loadStoreBalance();
+                checkActiveRankAndPanels();
+            } else {
+                showToast(data.error || "Fehler beim Kauf", "error");
+            }
+        } catch (e) {
+            console.error("Error purchasing rank:", e);
+            showToast("Netzwerkfehler beim Kauf", "error");
+        }
+    }
+
+    function openStoreCheckout(coins) {
+        selectedCheckoutCoins = coins;
+        
+        const checkoutInfo = document.getElementById('checkout-coins-info');
+        if (checkoutInfo) {
+            let price = '5.00';
+            if (coins === 1500) price = '10.00';
+            else if (coins === 3500) price = '20.00';
+            else if (coins === 10000) price = '50.00';
+            checkoutInfo.innerText = `${coins} Coins für €${price}`;
+        }
+        
+        document.body.classList.add('payment-drawer-expanded');
+        const drawer = document.getElementById('ui-payment-drawer');
+        if (drawer) {
+            drawer.classList.add('open');
+        }
+        selectedCheckoutMethod = '';
+        
+        document.querySelectorAll('.payment-btn').forEach(btn => btn.classList.remove('selected'));
+    }
+
+    function selectStorePayMethod(method) {
+        selectedCheckoutMethod = method;
+        document.querySelectorAll('.payment-btn').forEach(btn => btn.classList.remove('selected'));
+        const btn = document.querySelector(`.payment-btn.${method}`);
+        if (btn) btn.classList.add('selected');
+    }
+
+    async function processCheckoutPayment() {
+        if (!selectedCheckoutMethod) {
+            showToast("Bitte wähle eine Zahlungsmethode", "error");
+            return;
+        }
+        
+        const uuid = localStorage.getItem('tentix_uuid') || '';
+        if (!uuid) {
+            showToast("Bitte logge dich ein", "error");
+            return;
+        }
+        
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/store/checkout`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    uuid,
+                    coins: selectedCheckoutCoins,
+                    paymentMethod: selectedCheckoutMethod
+                })
+            });
+            const data = await res.json();
+            if (data.success) {
+                showToast(`Zahlung erfolgreich! ${selectedCheckoutCoins} Coins hinzugefügt.`, "success");
+                
+                document.body.classList.remove('payment-drawer-expanded');
+                const drawer = document.getElementById('ui-payment-drawer');
+                if (drawer) drawer.classList.remove('open');
+                
+                loadStoreBalance();
+            } else {
+                showToast(data.error || "Fehler bei der Zahlung", "error");
+            }
+        } catch (e) {
+            console.error("Error checking out:", e);
+            showToast("Netzwerkfehler bei der Zahlung", "error");
+        }
     }
 
     function loadShop() {
@@ -6356,7 +6850,7 @@
             const btnText = document.getElementById('t-upd-btn-txt');
             if(btnText) btnText.innerText = currentLang === 'de' ? "Nach Updates suchen" : "Check for updates";
             const statusDesc = document.getElementById('t-upd-status-desc');
-                statusDesc.innerText = (currentLang === 'de' ? "Version " : "Version ") + DISPLAY_VERSION + (currentLang === 'de' ? " installiert" : " installed");
+                statusDesc.innerText = (currentLang === 'de' ? "Version " : "Version ") + DISPLAY_VERSION + " BETA" + (currentLang === 'de' ? " installiert" : " installed");
         } else if(updateState === 'checking') {
             const p = '<path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/>';
             icon.innerHTML = p; if(setIcon) { setIcon.innerHTML = p; }
@@ -7660,6 +8154,11 @@
 
                 tentixplus.style.visibility = 'visible'; tentixplus.style.display = 'flex';
                 setTimeout(() => tentixplus.style.opacity = '1', 50);
+
+                // Initialize Premium Store
+                loadStoreBalance();
+                updateStorePrices();
+                checkActiveRankAndPanels();
             }, 500);
         }
     }
@@ -10423,6 +10922,22 @@
                 showToast(`${data.username} ist jetzt dein Freund!`, 'success');
                 loadFriendsFromServer();
             });
+            tentixSocket.on('friend-request-received', (data) => {
+                showToast(currentLang === 'de' ? `Freundschaftsanfrage von ${data.username} erhalten!` : `Friend request received from ${data.username}!`, 'info');
+                loadFriendsFromServer();
+            });
+            tentixSocket.on('friend-request-accepted', (data) => {
+                showToast(currentLang === 'de' ? `${data.username} hat deine Freundschaftsanfrage akzeptiert!` : `${data.username} accepted your friend request!`, 'success');
+                loadFriendsFromServer();
+            });
+            tentixSocket.on('friend-request-declined', (data) => {
+                loadFriendsFromServer();
+            });
+            tentixSocket.on('codes-updated', () => {
+                console.log('🎟️ Codes updated event received');
+                renderCodesTable();
+                renderCreatorCodesTable();
+            });
             tentixSocket.on('typing', (data) => {
                 if (activeChatFriendUuid && data.sender_uuid === activeChatFriendUuid) {
                     const container = document.getElementById('friends-chat-messages');
@@ -10916,10 +11431,12 @@
         }
         
         try {
-            const findRes = await fetch(`${API_BASE_URL}/api/users/find?username=${encodeURIComponent(query)}`);
+            const findRes = await fetch(`${API_BASE_URL}/api/users/search?q=${encodeURIComponent(query)}`);
             const findData = await findRes.json();
-            if (findData.success && findData.user) {
-                renderSearchResults([findData.user]);
+            if (findData.success && findData.users && findData.users.length > 0) {
+                // Filter out myself just in case
+                const filteredUsers = findData.users.filter(u => u.username.toUpperCase() !== myUsername.toUpperCase());
+                renderSearchResults(filteredUsers);
             } else {
                 resultsContainer.innerHTML = `<div style="text-align: center; color: #ff4b4b; font-size: 10px; padding: 10px 0;">Spieler nicht gefunden!</div>`;
             }
