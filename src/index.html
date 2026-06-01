@@ -3307,7 +3307,7 @@
         <div style="display: grid; grid-template-columns: 290px 300px 290px; gap: 20px; width: 100%; justify-content: center; align-items: stretch; margin-top: 5px;">
             <!-- TENTIX LITE -->
             <div id="rank-card-lite" class="premium-store-card" style="border: 1px solid rgba(255, 255, 255, 0.06); box-shadow: 0 10px 30px rgba(0,0,0,0.4); display: flex; flex-direction: column;">
-                <div class="store-card-header" style="background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.005) 100%); display: flex; flex-direction: column; align-items: center; padding: 20px 15px 15px 15px;">
+                <div class="store-card-header" onclick="toggleDisclaimer('lite')" style="background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.005) 100%); display: flex; flex-direction: column; align-items: center; padding: 20px 15px 15px 15px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%)'" onmouseout="this.style.background='linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.005) 100%)'">
                     <span class="store-card-badge" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.15);">LITE</span>
                     <img src="../assets/LITE.png" style="width: 70px; height: 70px; object-fit: contain; filter: drop-shadow(0 0 10px rgba(255,255,255,0.1)); margin: 12px 0; transition: transform 0.4s ease;" onmouseover="this.style.transform='rotate(5deg) scale(1.05)';" onmouseout="this.style.transform='none';">
                     <h3 style="color: #fff; font-size: 16px; font-weight: 900; margin: 0; letter-spacing: 0.5px;">TENTIX LITE</h3>
@@ -3333,6 +3333,19 @@
                             <option value="-1">Lifetime (29,99 €)</option>
                         </select>
                         <button id="btn-buy-lite" onclick="addRankToCart('LITE', document.getElementById('lite-duration-select').value)" class="store-buy-btn" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); color: #fff; font-weight: 800; border-radius: 6px; padding: 10px; font-size: 10px; letter-spacing: 0.5px; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">IN DEN EINKAUFSWAGEN</button>
+                    </div>
+                    
+                    <!-- Collapsible Disclaimer LITE -->
+                    <div style="margin-top: 12px; width: 100%;">
+                        <div onclick="toggleDisclaimer('lite')" style="font-size: 8px; color: #555; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; user-select: none;">
+                            <span>Disclaimer (Mehr anzeigen)</span>
+                            <span id="disclaimer-arrow-lite" style="transition: transform 0.2s; font-size: 7px;">▼</span>
+                        </div>
+                        <div id="disclaimer-content-lite" style="display: none; font-size: 8px; color: #777; margin-top: 6px; text-align: left; line-height: 1.4; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.02);">
+                            • <strong>Kein Abonnement:</strong> Einmalige Zahlung, keine automatische Verlängerung.<br>
+                            • <strong>Rückerstattung:</strong> Digitale Güter sind vom Rückgaberecht ausgeschlossen.<br>
+                            • <strong>Aktivierung:</strong> Der Rang wird sofort live freigeschaltet.
+                        </div>
                     </div>
                 </div>
             </div>
@@ -3369,7 +3382,7 @@
 
             <!-- TENTIX PLUS -->
             <div id="rank-card-plus" class="premium-store-card" style="border: 1px solid rgba(0, 212, 255, 0.22); box-shadow: 0 10px 30px rgba(0, 212, 255, 0.1); display: flex; flex-direction: column;">
-                <div class="store-card-header" style="background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(0, 212, 255, 0.005) 100%); display: flex; flex-direction: column; align-items: center; padding: 20px 15px 15px 15px;">
+                <div class="store-card-header" onclick="toggleDisclaimer('plus')" style="background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(0, 212, 255, 0.005) 100%); display: flex; flex-direction: column; align-items: center; padding: 20px 15px 15px 15px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='linear-gradient(135deg, rgba(0, 212, 255, 0.12) 0%, rgba(0, 212, 255, 0.01) 100%)'" onmouseout="this.style.background='linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(0, 212, 255, 0.005) 100%)'">
                     <span class="store-card-badge" style="background: var(--accent-blue); color: #000; box-shadow: 0 0 10px rgba(0,212,255,0.5); font-weight: 900;">TENTIX+</span>
                     <img src="../assets/PLUS.png" style="width: 75px; height: 75px; object-fit: contain; filter: drop-shadow(0 0 15px rgba(0, 212, 255, 0.35)); margin: 10px 0; transition: transform 0.4s ease;" onmouseover="this.style.transform='rotate(-5deg) scale(1.05)';" onmouseout="this.style.transform='none';">
                     <h3 style="color: #fff; font-size: 16px; font-weight: 900; margin: 0; letter-spacing: 0.5px;">TENTIX+</h3>
@@ -3396,6 +3409,19 @@
                             <option value="-1">Lifetime (74,99 €)</option>
                         </select>
                         <button id="btn-buy-plus" onclick="addRankToCart('PLUS', document.getElementById('plus-duration-select').value)" class="store-buy-btn" style="background: linear-gradient(135deg, var(--accent-blue) 0%, #0072ff 100%); border: none; color: #000; font-weight: 900; border-radius: 6px; padding: 10px; font-size: 10px; letter-spacing: 0.5px; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(0, 212, 255, 0.25);" onmouseover="this.style.boxShadow='0 6px 20px rgba(0, 212, 255, 0.45)'; this.style.transform='scale(1.02)';" onmouseout="this.style.boxShadow='0 4px 15px rgba(0, 212, 255, 0.25)'; this.style.transform='none';">IN DEN EINKAUFSWAGEN</button>
+                    </div>
+                    
+                    <!-- Collapsible Disclaimer PLUS -->
+                    <div style="margin-top: 12px; width: 100%;">
+                        <div onclick="toggleDisclaimer('plus')" style="font-size: 8px; color: #555; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; user-select: none;">
+                            <span>Disclaimer (Mehr anzeigen)</span>
+                            <span id="disclaimer-arrow-plus" style="transition: transform 0.2s; font-size: 7px;">▼</span>
+                        </div>
+                        <div id="disclaimer-content-plus" style="display: none; font-size: 8px; color: #777; margin-top: 6px; text-align: left; line-height: 1.4; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.02);">
+                            • <strong>Kein Abonnement:</strong> Einmalige Zahlung, keine automatische Verlängerung.<br>
+                            • <strong>Rückerstattung:</strong> Digitale Güter sind vom Rückgaberecht ausgeschlossen.<br>
+                            • <strong>Aktivierung:</strong> Der Rang wird sofort live freigeschaltet.
+                        </div>
                     </div>
                 </div>
             </div>
@@ -9410,8 +9436,8 @@
             });
 
             // Mini-Me scale shrink
-            storeViewer.playerObject.scale.set(0.65, 0.65, 0.65);
-            storeViewer.playerObject.head.scale.set(1.53846, 1.53846, 1.53846);
+            storeViewer.playerObject.scale.set(0.5, 0.5, 0.5);
+            storeViewer.playerObject.head.scale.set(2.0, 2.0, 2.0);
 
             storeViewer.controls.enableZoom = true;
             storeViewer.controls.minPolarAngle = 0.3;
@@ -9440,21 +9466,17 @@
             skinUrl = `https://minotar.net/skin/${savedName.trim()}`;
         }
         
-        isSkinSlim(skinUrl).then(isSlim => {
-            const detectedModel = isSlim ? 'slim' : 'default';
-            let modelToUse = detectedModel;
-            if (storeViewerModelManual) {
-                modelToUse = (storeViewerModelType === 'slim') ? 'slim' : 'default';
-            } else {
-                storeViewerModelType = detectedModel;
-            }
-            
-            storeViewer.model = modelToUse;
-            
-            storeViewer.loadSkin(skinUrl, { model: modelToUse }).then(() => {
-                // Apply proportional scaling: body/limbs to 0.65, head to 1.53846 (1 / 0.65)
-                storeViewer.playerObject.scale.set(0.65, 0.65, 0.65);
-                storeViewer.playerObject.head.scale.set(1.53846, 1.53846, 1.53846);
+        // Determine initial model to load immediately
+        let modelToUse = storeViewerModelType || 'default';
+        if (storeViewerModelManual) {
+            modelToUse = (storeViewerModelType === 'slim') ? 'slim' : 'default';
+        }
+        
+        const performLoad = (model) => {
+            return storeViewer.loadSkin(skinUrl, { model: model }).then(() => {
+                // Apply proportional baby scaling: body/limbs to 0.5, head to 2.0
+                storeViewer.playerObject.scale.set(0.5, 0.5, 0.5);
+                storeViewer.playerObject.head.scale.set(2.0, 2.0, 2.0);
 
                 // Load cape inside the then() block!
                 if (storeViewerCapeEnabled) {
@@ -9474,15 +9496,29 @@
                     storeViewerWalkingAnimationInstance = storeViewer.animations.add(skinview3d.WalkingAnimation);
                     storeViewerWalkingAnimationInstance.speed = 0.6;
                 }
+                
+                const btn = document.getElementById('store-model-toggle-btn');
+                if (btn) {
+                    btn.innerText = model === 'slim' ? 'ALEX' : 'STEVE';
+                }
             }).catch(err => {
                 console.error("storeViewer loadSkin error:", err);
             });
-
-            const btn = document.getElementById('store-model-toggle-btn');
-            if (btn) {
-                btn.innerText = modelToUse === 'slim' ? 'ALEX' : 'STEVE';
-            }
-        });
+        };
+        
+        // Load immediately
+        performLoad(modelToUse);
+        
+        // Background auto detection if not manual
+        if (!storeViewerModelManual) {
+            isSkinSlim(skinUrl).then(isSlim => {
+                const detectedModel = isSlim ? 'slim' : 'default';
+                if (detectedModel !== storeViewerModelType) {
+                    storeViewerModelType = detectedModel;
+                    performLoad(detectedModel);
+                }
+            });
+        }
     }
 
     function toggleStoreViewerCape() {
@@ -9515,6 +9551,20 @@
             }
         }
         updateStoreViewerSkin();
+    }
+
+    function toggleDisclaimer(type) {
+        const content = document.getElementById('disclaimer-content-' + type);
+        const arrow = document.getElementById('disclaimer-arrow-' + type);
+        if (content && arrow) {
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                content.style.display = 'none';
+                arrow.style.transform = 'none';
+            }
+        }
     }
 
     function toggleStoreViewerModel() {
@@ -9568,7 +9618,6 @@
         }
         isSkinSlim(skinUrl).then(isSlim => {
             const modelToUse = isSlim ? 'slim' : 'default';
-            shopViewer.model = modelToUse;
             shopViewer.loadSkin(skinUrl, { model: modelToUse });
         });
     }
@@ -9662,7 +9711,6 @@
         }
         isSkinSlim(skinUrl).then(isSlim => {
             const modelToUse = isSlim ? 'slim' : 'default';
-            cosmeticsViewer.model = modelToUse;
             cosmeticsViewer.loadSkin(skinUrl, { model: modelToUse });
         });
     }
