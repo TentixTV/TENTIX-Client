@@ -1,23 +1,23 @@
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com/?font=Fira+Code&size=32&pause=1000&color=00FFCC&center=true&vCenter=true&width=700&height=70&lines=TENTIX+CLIENT+;NEXT-GEN+PERFORMANCE+ENGINE;EVOLVING+ARCHITECTURE" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.demolab.com/?font=Fira+Code&size=32&pause=1000&color=0066FF&center=true&vCenter=true&width=700&height=70&lines=TENTIX+CLIENT+;NEXT-GEN+PERFORMANCE+ENGINE;EVOLVING+BLUE+ARCHITECTURE" alt="Typing SVG" />
 </p>
 
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=slice&color=gradient&customColorList=12,23,00FFCC&height=160&section=header&text=TENTIX%20CLIENT&fontSize=60&animation=twinkling&fontColor=00FFCC&v=4" width="100%" />
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0d1117,100:0066FF&height=150&section=header&text=TENTIX%20CLIENT&fontSize=60&animation=twinkling&fontColor=0066FF&v=5" width="100%" />
 </p>
 
 ---
 
-## 🪐 Core Engine Concept
+## 🛰️ Core Engine Specification
 
 <p align="center">
 Ein hochgradig optimiertes, proprietäres Client-Environment, konzipiert für maximale Frame-Stabilität, minimale Input-Latenz und eine lückenlose Symbiose aus High-Performance-Code und modernem UI/UX-Design. Maßgeschneidert für kompromisslose In-Game-Effizienz.
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/BUILD-IN__DEVELOPMENT-008080?style=flat-square&labelColor=0d1117" />&nbsp;
-  <img src="https://img.shields.io/badge/TARGET-PERFORMANCE__MAXIMUM-008080?style=flat-square&labelColor=0d1117" />&nbsp;
-  <img src="https://img.shields.io/badge/ACCESS-CLOSED__BETA-008080?style=flat-square&labelColor=0d1117" />
+  <img src="https://img.shields.io/badge/BUILD-IN__DEVELOPMENT-0066FF?style=flat-square&labelColor=0d1117" />&nbsp;
+  <img src="https://img.shields.io/badge/TARGET-PERFORMANCE__MAXIMUM-0066FF?style=flat-square&labelColor=0d1117" />&nbsp;
+  <img src="https://img.shields.io/badge/ACCESS-CLOSED__BETA-0066FF?style=flat-square&labelColor=0d1117" />
 </p>
 
 ---
