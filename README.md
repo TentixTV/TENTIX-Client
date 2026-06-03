@@ -1,14 +1,16 @@
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com/?font=Fira+Code&size=34&pause=1000&color=007BFF&center=true&vCenter=true&width=700&height=70&lines=RUNNING+TENTIX+CORE+ENGINE;HIGH-FRAME+STABILITY+ACTIVE;ZERO+LATENCY+INPUT+PIPELINE" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.demolab.com/?font=Fira+Code&size=32&pause=1000&color=007BFF&center=true&vCenter=true&width=700&height=70&lines=RUNNING+TENTIX+CORE+ENGINE;HIGH-FRAME+STABILITY+ACTIVE;ZERO+LATENCY+INPUT+PIPELINE" alt="Typing SVG" />
 </p>
 
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0d1117,100:0052CC&height=150&section=header&text=TENTIX%20CLIENT&fontSize=60&animation=twinkling&fontColor=007BFF&v=7" width="100%" />
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0d1117,100:0052CC&height=150&section=header&text=TENTIX%20CLIENT&fontSize=60&animation=twinkling&fontColor=007BFF&v=9" width="100%" />
 </p>
 
 ---
 
-## 🛰️ System Architecture Overview
+<p align="left">
+  <img src="https://readme-typing-svg.demolab.com/?font=Fira+Code&size=22&color=007BFF&vCenter=true&width=400&height=40&lines=%3E_SYSTEM_ARCHITECTURE" />
+</p>
 
 <p align="center">
 An advanced, standalone client modification framework engineered explicitly to bypass vanilla performance limitations. Built from the ground up to achieve perfect frame-pacing, hardware-accelerated memory virtualization, and a highly customizable modular design language.
@@ -20,9 +22,15 @@ An advanced, standalone client modification framework engineered explicitly to b
   <img src="https://img.shields.io/badge/RUNTIME-OPTIMIZED-0052CC?style=flat-square&labelColor=0d1117" />
 </p>
 
+<p align="center">
+  <img src="https://readme-typing-svg.demolab.com/?font=Fira+Code&size=14&color=0052CC&center=true&vCenter=true&width=500&height=30&lines=CORE_THREAD_POOL_INITIALIZED...;ALLOCATING_VIRTUAL_HEAP_MEMORY...;INJECTING_LOW_LEVEL_HOOKS..." />
+</p>
+
 ---
 
-## 🛠️ Powered By & Built With
+<p align="left">
+  <img src="https://readme-typing-svg.demolab.com/?font=Fira+Code&size=22&color=007BFF&vCenter=true&width=400&height=40&lines=%3E_POWERED_BY" />
+</p>
 
 <p align="center">
   <a href="https://skillicons.dev">
@@ -32,7 +40,9 @@ An advanced, standalone client modification framework engineered explicitly to b
 
 ---
 
-## 💻 Technical Engine Subsystems
+<p align="left">
+  <img src="https://readme-typing-svg.demolab.com/?font=Fira+Code&size=22&color=007BFF&vCenter=true&width=400&height=40&lines=%3E_ENGINE_SUBSYSTEMS" />
+</p>
 
 <table width="100%" style="border-collapse: collapse; border: none; margin: 0; padding: 0;">
   <tr style="border: none;">
@@ -53,17 +63,15 @@ An advanced, standalone client modification framework engineered explicitly to b
   </tr>
 </table>
 
----
-
-## 📊 Live Repository Framework Metrics
-
 <p align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=TentixTV&bg_color=0d1117&color=0066FF&line=0066FF&point=ffffff&area=true&hide_border=true&font_color=ffffff&area_color=0052CC" width="100%" />
+  <img src="https://readme-typing-svg.demolab.com/?font=Fira+Code&size=14&color=0052CC&center=true&vCenter=true&width=500&height=30&lines=HOOK_RENDER_PIPELINE_SUCCESS;REFRESHING_MATRIX_TRANSFORMS...;ASYNC_THREAD_SYNC_COMPLETE" />
 </p>
 
 ---
 
-## 🎨 Modular Interface & Features
+<p align="left">
+  <img src="https://readme-typing-svg.demolab.com/?font=Fira+Code&size=22&color=007BFF&vCenter=true&width=400&height=40&lines=%3E_FEATURES_AND_UX" />
+</p>
 
 <table width="100%" style="border-collapse: collapse; border: none; margin: 0; padding: 0;">
   <tr style="border: none;">
@@ -82,7 +90,9 @@ An advanced, standalone client modification framework engineered explicitly to b
 
 ---
 
-## 📈 Milestone Roadmap
+<p align="left">
+  <img src="https://readme-typing-svg.demolab.com/?font=Fira+Code&size=22&color=007BFF&vCenter=true&width=400&height=40&lines=%3E_MILESTONE_ROADMAP" />
+</p>
 
 <table width="100%" style="border-collapse: collapse; border: none; margin: 0; padding: 0;">
   <tr style="border: none;">
@@ -97,8 +107,14 @@ An advanced, standalone client modification framework engineered explicitly to b
   </tr>
 </table>
 
+<p align="center">
+  <img src="https://readme-typing-svg.demolab.com/?font=Fira+Code&size=14&color=0052CC&center=true&vCenter=true&width=500&height=30&lines=PARSING_COMPILATION_TREE...;COMPILING_MODULE_MANIFEST...;GRID_ALIGNMENT_STABLE" />
+</p>
+
 ---
 
-## 🔒 Distribution Status
+<p align="left">
+  <img src="https://readme-typing-svg.demolab.com/?font=Fira+Code&size=22&color=007BFF&vCenter=true&width=400&height=40&lines=%3E_DISTRIBUTION_STATUS" />
+</p>
 
-<samp><b>// BINARY COM COMPILATION TERMINAL</b></samp>
+<samp><b>// BINARY COMPILATION TERMINAL</b></samp>
