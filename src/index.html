@@ -2028,6 +2028,23 @@
         .pay-method-opt.active {
             box-shadow: 0 0 15px rgba(var(--accent-blue-rgb), 0.25);
         }
+
+        /* Redesigned virtual balance information card hover effect */
+        .balance-info-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 12px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+        }
+        .balance-info-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(var(--accent-blue-rgb), 0.15);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/skinview3d@3.0.0-alpha.1/bundles/skinview3d.bundle.js"></script>
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
@@ -14579,7 +14596,7 @@
                 
                 <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
                     <!-- Card 1: Onlinezeit -->
-                    <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 10px; padding: 12px; display: flex; gap: 12px; align-items: center; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.04)'" onmouseout="this.style.background='rgba(255,255,255,0.02)'">
+                    <div class="balance-info-card">
                         <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.25); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #00d4ff;">
                             <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: currentColor;"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
                         </div>
@@ -14594,7 +14611,7 @@
                     </div>
 
                     <!-- Card 2: Creator-Codes -->
-                    <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 10px; padding: 12px; display: flex; gap: 12px; align-items: center; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.04)'" onmouseout="this.style.background='rgba(255,255,255,0.02)'">
+                    <div class="balance-info-card">
                         <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(0, 114, 255, 0.1); border: 1px solid rgba(0, 114, 255, 0.25); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #0072ff;">
                             <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: currentColor;"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 12H9v-2h6v2zm0-4H9V8h6v4z"/></svg>
                         </div>
@@ -14608,7 +14625,7 @@
                     </div>
 
                     <!-- Card 3: Spenden -->
-                    <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 10px; padding: 12px; display: flex; gap: 12px; align-items: center; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.04)'" onmouseout="this.style.background='rgba(255,255,255,0.02)'">
+                    <div class="balance-info-card">
                         <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(255, 75, 75, 0.1); border: 1px solid rgba(255, 75, 75, 0.25); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #ff4b4b;">
                             <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: currentColor;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                         </div>
@@ -14640,7 +14657,7 @@
                 
                 <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
                     <!-- Card 1: Online time -->
-                    <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 10px; padding: 12px; display: flex; gap: 12px; align-items: center; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.04)'" onmouseout="this.style.background='rgba(255,255,255,0.02)'">
+                    <div class="balance-info-card">
                         <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.25); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #00d4ff;">
                             <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: currentColor;"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
                         </div>
@@ -14655,7 +14672,7 @@
                     </div>
 
                     <!-- Card 2: Creator Codes -->
-                    <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 10px; padding: 12px; display: flex; gap: 12px; align-items: center; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.04)'" onmouseout="this.style.background='rgba(255,255,255,0.02)'">
+                    <div class="balance-info-card">
                         <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(0, 114, 255, 0.1); border: 1px solid rgba(0, 114, 255, 0.25); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #0072ff;">
                             <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: currentColor;"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 12H9v-2h6v2zm0-4H9V8h6v4z"/></svg>
                         </div>
@@ -14669,7 +14686,7 @@
                     </div>
 
                     <!-- Card 3: Donation -->
-                    <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 10px; padding: 12px; display: flex; gap: 12px; align-items: center; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.04)'" onmouseout="this.style.background='rgba(255,255,255,0.02)'">
+                    <div class="balance-info-card">
                         <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(255, 75, 75, 0.1); border: 1px solid rgba(255, 75, 75, 0.25); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #ff4b4b;">
                             <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: currentColor;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                         </div>
