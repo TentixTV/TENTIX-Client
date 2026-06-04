@@ -192,6 +192,12 @@ async function initDiscord(targetClientId) {
             rpc = client;
             isConnecting = false;
             updateActivity();
+            if (client.user && mainWindow && !mainWindow.isDestroyed()) {
+                mainWindow.webContents.send('discord-user-info', {
+                    username: client.user.username,
+                    id: client.user.id
+                });
+            }
         });
 
         const handleFailure = (err) => {
@@ -531,3 +537,10 @@ ipcMain.on('install-update', () => {
     }
 });
 ipcMain.handle('get-app-version', () => app.getVersion());
+ipcMain.handle('get-platform', () => process.platform);
+ipcMain.handle('get-discord-user', () => {
+    if (rpc && rpc.user) {
+        return { username: rpc.user.username, id: rpc.user.id };
+    }
+    return null;
+});

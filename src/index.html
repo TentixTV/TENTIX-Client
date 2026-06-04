@@ -2834,26 +2834,40 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="setting-block" id="block-discord-client-id">
-                            <div style="margin-bottom: 12px;">
-                                <span style="font-size: 13px; font-weight: 800; color: #fff;">Custom Discord Client ID</span>
-                                <div style="font-size: 11px; color: var(--text-gray); margin-top: 4px;">Standard: 405441217766359051</div>
+                        <!-- Connected Discord Account User Info -->
+                        <div class="setting-block" id="block-discord-user-info" style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 20px; display: none;">
+                            <div class="setting-row" style="display: flex; align-items: center; gap: 12px;">
+                                <div style="width: 40px; height: 40px; border-radius: 50%; background: rgba(88, 101, 242, 0.1); border: 1px solid rgba(88, 101, 242, 0.3); display: flex; align-items: center; justify-content: center; color: #5865F2;">
+                                    <svg viewBox="0 0 127.14 96.36" style="width: 22px; height: 22px; fill: currentColor;"><path d="M107.7,8.07A105.15,105.15,0,0,0,77.26,0a77.19,77.19,0,0,0-3.3,6.83A96.67,96.67,0,0,0,53.22,6.83,77.19,77.19,0,0,0,49.88,0,105.15,105.15,0,0,0,19.44,8.07C3.66,31.58-1.86,54.65,1,77.53A105.73,105.73,0,0,0,32,96.36a77.7,77.7,0,0,0,6.63-10.85,68.43,68.43,0,0,1-10.5-5c.88-.65,1.72-1.34,2.53-2a75.58,75.58,0,0,0,73,0c.8.71,1.65,1.4,2.53,2a68.42,68.42,0,0,1-10.5,5A77.7,77.7,0,0,0,101.8,96.36a105.73,105.73,0,0,0,31-18.83C130,50.22,123.23,27.5,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53S36.18,40.36,42.45,40.36,53.83,46,53.83,53,48.72,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.24,60,73.24,53S78.41,40.36,84.69,40.36,96.07,46,96.07,53,91,65.69,84.69,65.69Z"/></svg>
+                                </div>
+                                <div class="setting-text-col" style="flex-grow: 1;">
+                                    <div class="setting-title" id="t-discord-user-title" style="font-size: 13px; font-weight: 800; color: #fff;">Verbundenes Discord-Konto</div>
+                                    <div class="setting-desc" id="discord-user-tag" style="margin-bottom:0; font-size: 13px; font-weight: 800; color: #5865F2; margin-top: 2px;">Offline</div>
+                                </div>
                             </div>
-                            <input type="text" id="discord-custom-client-id" class="dash-input" placeholder="405441217766359051" style="margin: 0; width: 100%; box-sizing: border-box;" oninput="saveCustomRPCSettings()">
                         </div>
-                        <div class="setting-block" id="block-discord-details-format">
-                            <div style="margin-bottom: 12px;">
-                                <span style="font-size: 13px; font-weight: 800; color: #fff;">Details-Format</span>
-                                <div style="font-size: 11px; color: var(--text-gray); margin-top: 4px;">Verwende {username} für deinen Namen. Leer lassen für Standard.</div>
+
+                        <!-- Customized Rich Presence Grid Group -->
+                        <div class="setting-block" id="block-discord-custom-presence" style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 20px;">
+                            <div id="t-disc-custom-title" style="font-size: 15px; font-weight: 800; color: #fff; margin-bottom: 18px; letter-spacing: -0.2px;">Eigene Rich Presence anpassen</div>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                                <div>
+                                    <span id="t-disc-custom-client-id" style="font-size: 12px; font-weight: 800; color: #aaa;">Eigene Client-ID</span>
+                                    <input type="text" id="discord-custom-client-id" class="dash-input" placeholder="405441217766359051" style="margin-top: 6px; width: 100%; box-sizing: border-box;" oninput="saveCustomRPCSettings()">
+                                    <div id="t-disc-custom-client-id-desc" style="font-size: 10px; color: var(--text-gray); margin-top: 4px;">Standard: 405441217766359051</div>
+                                </div>
+                                <div>
+                                    <span id="t-disc-details-format" style="font-size: 12px; font-weight: 800; color: #aaa;">Details-Format</span>
+                                    <input type="text" id="discord-custom-details-format" class="dash-input" placeholder="z.B. {username} | TENTIX" style="margin-top: 6px; width: 100%; box-sizing: border-box;" oninput="saveCustomRPCSettings()">
+                                    <div id="t-disc-details-format-desc" style="font-size: 10px; color: var(--text-gray); margin-top: 4px;">Verwende {username} für deinen Namen.</div>
+                                </div>
                             </div>
-                            <input type="text" id="discord-custom-details-format" class="dash-input" placeholder="z.B. {username} | TENTIX" style="margin: 0; width: 100%; box-sizing: border-box;" oninput="saveCustomRPCSettings()">
-                        </div>
-                        <div class="setting-block" id="block-discord-state-format">
-                            <div style="margin-bottom: 12px;">
-                                <span style="font-size: 13px; font-weight: 800; color: #fff;">State-Format</span>
-                                <div style="font-size: 11px; color: var(--text-gray); margin-top: 4px;">Verwende {username} für deinen Namen. Leer lassen für Standard.</div>
+                            <div>
+                                <span id="t-disc-state-format" style="font-size: 12px; font-weight: 800; color: #aaa;">State-Format</span>
+                                <input type="text" id="discord-custom-state-format" class="dash-input" placeholder="z.B. Im Menü" style="margin-top: 6px; width: 100%; box-sizing: border-box;" oninput="saveCustomRPCSettings()">
+                                <div id="t-disc-state-format-desc" style="font-size: 10px; color: var(--text-gray); margin-top: 4px;">Verwende {username} für deinen Namen.</div>
                             </div>
-                            <input type="text" id="discord-custom-state-format" class="dash-input" placeholder="z.B. Im Menü" style="margin: 0; width: 100%; box-sizing: border-box;" oninput="saveCustomRPCSettings()">
                         </div>
                         <div class="setting-block" id="block-discord-join" style="border:none; padding-bottom:0; margin-bottom:0;">
                             <a href="https://discord.gg/txhbXQGk97" target="_blank" class="fancy-banner" onclick="if(window.api) window.api.openExternalLink(this.href); return false;">
@@ -3885,9 +3899,13 @@
             discHide: "Hide Discord Rich Presence when away", discHideDesc: "Whether your game status should be hidden when you are away",
             discLang: "Discord Rich Presence Language", discLangDesc: "Select the language for Discord Rich Presence",
             discJoin: "Join the Official TENTIX Discord Server", discJoinDesc: "Get support, news & chat with the community!",
+            discCustomTitle: "Customize Rich Presence", discCustomClientId: "Custom Client ID", discCustomClientIdDesc: "Default: 405441217766359051",
+            discDetailsFormat: "Details Format", discDetailsFormatDesc: "Use {username} for your name. Leave blank for default.",
+            discStateFormat: "State Format", discStateFormatDesc: "Use {username} for your name. Leave blank for default.",
+            discordUserConnected: "Connected Discord Account", discordNotConnected: "Discord not connected",
             loginErrTitle: "LOGIN FAILED", loginErrDesc: "We couldn't log you in to Microsoft. The process was canceled or an error occurred.", btnOk: "UNDERSTOOD", errVerTitle: "VERSION ERROR", errVerDesc: "Fabric is not available for this version.",
             updTab: "Updater", updHeader: "Client Updater", updStatTitle: "Status", updStatDesc: "Version v0.1.0 BETA is installed", updBtn: "Check for updates",
-            updIdle: "Check for system updates", updCheck: "Checking for system updates...", updDl: "Downloading system update...", updReady: "System update ready. Click to install.", updLatest: "The launcher is up to date", updLatestToast: "You are already using the latest version! (v0.1.0)",
+            updIdle: "Check for system updates", updCheck: "Checking for system updates...", updDl: "Downloading system update...", updReady: "System update ready. Click to install.", updLatest: "The launcher is up to date", updLatestToast: "You are already using the latest version! (v0.1.0)", autostartTitle: "Autostart", autostartDesc: "Start TENTIX automatically with {os}",
             offTitle: "NO INTERNET CONNECTION", offDesc: "Please connect to the internet or LAN to continue.",
             setRedTitle: "Redeem Code", setRedDesc: "Redeem a TENTIX code for exclusive badges or cosmetics.", setRedBtn: "ENTER CODE",
             redTitle: "REDEEM CODE", redDesc: "Enter your TENTIX code here", redBtn: "REDEEM", redChecked: "CODE REDEEMED!", redFail: "INVALID CODE!", redShort: "CODE TOO SHORT!",
@@ -3937,7 +3955,7 @@
             setRes: "Spielauflösung", setResD: "Stelle die Auflösung der Spielinstanz ein", setVis: "Sichtbarkeit des Launchers beim Start", setVisD: "Wähle aus, welche Option der Launcher übernehmen soll",
             csTitle: "BALD VERFÜGBAR", csBack: "ZURÜCK", tGame: "Spiel", tDisc: "Discord", tPriv: "Privatsphäre", tPriv1: "Analytik", tPrivD1: "TENTIX sammelt Analyse- und Nutzungsdaten, um die Erfahrung zu verbessern",
             tPriv2: "Optimierte Werbeanzeigen", tPrivD2: "Ob Cookies verwendet werden sollen, um Werbeanzeigen to personalisieren.",
-            tDban1: "Tritt dem TENTIX Discord bei", tDban2: "Erhalte Support, Updates & chatte mit der Community!", tMoj: "Not affiliated with Mojang or Microsoft", search: "Suchen...", keep: "Geöffnet lassen", keepD: "Launcher bleibt im Hintergrund geöffnet", hide: "Ausblenden", hideD: "Der Launcher wird ausgeblendet, sobald die Spielinstanz erscheint", rec: "Empfohlen", high: "Hohe Auslastung!", over: "Überschrieben",
+            tDban1: "Tritt dem TENTIX Discord bei", tDban2: "Erhalte Support, Updates & chatte mit der Community!", tMoj: "Nicht mit Mojang oder Microsoft verbunden", search: "Suchen...", keep: "Geöffnet lassen", keepD: "Launcher bleibt im Hintergrund geöffnet", hide: "Ausblenden", hideD: "Der Launcher wird ausgeblendet, sobald die Spielinstanz erscheint", rec: "Empfohlen", high: "Hohe Auslastung!", over: "Überschrieben",
             da: "🇩🇪 Automatisch - Deutsch", de: "🇬🇧 English", free1: "Du hast ", free2: " GB frei zum Zuweisen.", newsHeader: "Neuigkeiten", newsEmpty: "Bleib dran für Updates...",
             settingsTitle: "Client Einstellungen", setAdsTt: "Deaktiviere das um keine Werbung zu erhalten.\nWir sind ein werbefreier Client und legen Wert darauf, dass jeder sein Spielerlebnis frei gestalten kann.",
             dcHideVisible: "Sichtbar", dcHideHidden: "Versteckt",
@@ -3945,9 +3963,13 @@
             discHide: "Discord Rich Presence bei Abwesenheit ausblenden", discHideDesc: "Ob dein Spielstatus ausgeblendet werden soll, wenn du abwesend bist",
             discLang: "Discord Rich Presence-Sprache", discLangDesc: "Wähle die Sprache für Discord Rich Presence aus",
             discJoin: "Tritt dem Offiziellen TENTIX Discord bei", discJoinDesc: "Erhalte Support, Updates & chatte mit der Community!",
+            discCustomTitle: "Eigene Rich Presence anpassen", discCustomClientId: "Eigene Client-ID", discCustomClientIdDesc: "Standard: 405441217766359051",
+            discDetailsFormat: "Details-Format", discDetailsFormatDesc: "Verwende {username} für deinen Namen. Leer lassen für Standard.",
+            discStateFormat: "State-Format", discStateFormatDesc: "Verwende {username} für deinen Namen. Leer lassen für Standard.",
+            discordUserConnected: "Verbundenes Discord-Konto", discordNotConnected: "Discord nicht verbunden",
             loginErrTitle: "LOGIN FEHLGESCHLAGEN", loginErrDesc: "Wir konnten dich nicht bei Microsoft einloggen. Der Vorgang wurde abgebrochen oder es trat ein Fehler auf.", btnOk: "VERSTANDEN", errVerTitle: "VERSION FEHLER", errVerDesc: "Fabric ist für diese Version nicht verfügbar.",
             updTab: "Updater", updHeader: "Client Updater", updStatTitle: "Status", updStatDesc: "Version v0.1.0 BETA installiert", updBtn: "Nach Updates suchen",
-            updIdle: "Nach System-Updates suchen", updCheck: "Suche nach System-Updates läuft...", updDl: "System-Update wird heruntergeladen...", updReady: "System-Update bereit. Klicken zum Installieren.", updLatest: "Der Launcher ist auf dem neuesten Stand", updLatestToast: "Du verwendest bereits die neueste Version! (v0.1.0)",
+            updIdle: "Nach System-Updates suchen", updCheck: "Suche nach System-Updates läuft...", updDl: "System-Update wird heruntergeladen...", updReady: "System-Update bereit. Klicken zum Installieren.", updLatest: "Der Launcher ist auf dem neuesten Stand", updLatestToast: "Du verwendest bereits die neueste Version! (v0.1.0)", autostartTitle: "Autostart", autostartDesc: "Starte TENTIX automatisch mit {os}",
             offTitle: "KEINE INTERNETVERBINDUNG", offDesc: "Bitte stelle eine Verbindung zum Internet oder LAN her, um fortzufahren.",
             setRedTitle: "Code Einlösen", setRedDesc: "Löse einen TENTIX Code für exklusive Badges oder Cosmetics ein.", setRedBtn: "CODE EINGEBEN",
             redTitle: "CODE EINLÖSEN", redDesc: "Gib deinen TENTIX Code hier ein", redBtn: "EINLÖSEN", redChecked: "CODE EINGELÖST!", redFail: "UNGÜLTIGER CODE!", redShort: "CODE ZU KURZ!",
@@ -7164,6 +7186,7 @@
     let updateState = 'idle';
     let appVersion = '0.1.0';
     const DISPLAY_VERSION = 'v0.1.0';
+    let detectedOS = 'Windows';
 
     let mockUpdateTimeout = null;
     let mockUpdateInterval = null;
@@ -7753,6 +7776,14 @@
         setElText('t-disc-lang-desc', t.discLangDesc);
         setElText('t-disc-join', t.discJoin);
         setElText('t-disc-join-desc', t.discJoinDesc);
+        setElText('t-disc-custom-title', t.discCustomTitle);
+        setElText('t-disc-custom-client-id', t.discCustomClientId);
+        setElText('t-disc-custom-client-id-desc', t.discCustomClientIdDesc);
+        setElText('t-disc-details-format', t.discDetailsFormat);
+        setElText('t-disc-details-format-desc', t.discDetailsFormatDesc);
+        setElText('t-disc-state-format', t.discStateFormat);
+        setElText('t-disc-state-format-desc', t.discStateFormatDesc);
+        setElText('t-discord-user-title', t.discordUserConnected);
 
         setElText('ui-err-title', t.loginErrTitle);
         setElText('ui-err-desc', t.loginErrDesc);
@@ -7763,6 +7794,9 @@
         setElText('t-upd-status-title', t.updStatTitle);
         setElText('t-upd-status-desc', t.updStatDesc);
         setElText('t-upd-btn-txt', t.updBtn);
+        setElText('t-footer-moj', t.tMoj);
+        setElText('t-upd-autostart-title', t.autostartTitle || "Autostart");
+        setElText('t-upd-autostart-desc', (t.autostartDesc || "Starte TENTIX automatisch mit {os}").replace("{os}", detectedOS));
 
         setElText('t-offline-title', t.offTitle);
         setElText('t-offline-desc', t.offDesc);
@@ -9291,6 +9325,28 @@
                 onUpdateStatusReceived(data);
             });
         }
+        function updateDiscordUserDisplay(user) {
+            const block = document.getElementById('block-discord-user-info');
+            const tag = document.getElementById('discord-user-tag');
+            if (block && tag) {
+                if (user && user.id) {
+                    block.style.display = 'block';
+                    tag.innerText = `${user.username} (ID: ${user.id})`;
+                } else {
+                    block.style.display = 'none';
+                }
+            }
+        }
+        if(window.api && window.api.onDiscordUser) {
+            window.api.onDiscordUser((user) => {
+                updateDiscordUserDisplay(user);
+            });
+        }
+        if(window.api && window.api.getDiscordUser) {
+            window.api.getDiscordUser().then((user) => {
+                updateDiscordUserDisplay(user);
+            });
+        }
         if(window.api && window.api.onUpdateProgress) {
             window.api.onUpdateProgress((percent) => {
                 onUpdateProgressReceived(percent);
@@ -9313,6 +9369,18 @@
                     el.textContent = DISPLAY_VERSION + ' BETA';
                 });
                 updateUpdateUI();
+            });
+        }
+        if (window.api && window.api.getPlatform) {
+            window.api.getPlatform().then(platform => {
+                if (platform === 'darwin') {
+                    detectedOS = 'macOS';
+                } else if (platform === 'linux') {
+                    detectedOS = 'Linux';
+                } else {
+                    detectedOS = 'Windows';
+                }
+                updateUI();
             });
         }
 

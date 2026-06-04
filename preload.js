@@ -11,6 +11,8 @@ contextBridge.exposeInMainWorld('api', {
     downloadUpdate: () => ipcRenderer.send('download-update'),
     installUpdate: () => ipcRenderer.send('install-update'),
     getAppVersion: () => ipcRenderer.invoke('get-app-version'),
+    getPlatform: () => ipcRenderer.invoke('get-platform'),
+    getDiscordUser: () => ipcRenderer.invoke('get-discord-user'),
     updateDiscordRP: (data) => ipcRenderer.send('update-discord-rp', data),
     updateDiscordRPStatus: (data) => ipcRenderer.send('update-drp-status', data),
     setAutostart: (isEnabled) => ipcRenderer.send('set-autostart', isEnabled),
@@ -23,5 +25,6 @@ contextBridge.exposeInMainWorld('api', {
     onUpdateStatus: (callback) => ipcRenderer.on('update-status', (e, data) => callback(data)),
     onUpdateProgress: (callback) => ipcRenderer.on('update-progress', (e, percent) => callback(percent)),
     onLaunchProgress: (callback) => ipcRenderer.on('launch-progress', (e, data) => callback(data)),
-    onMaximized: (callback) => ipcRenderer.on('window-maximized', (e, isMax) => callback(isMax))
+    onMaximized: (callback) => ipcRenderer.on('window-maximized', (e, isMax) => callback(isMax)),
+    onDiscordUser: (callback) => ipcRenderer.on('discord-user-info', (e, data) => callback(data))
 });
