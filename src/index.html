@@ -1860,6 +1860,22 @@
         .tooltip .tooltiptext {
             z-index: 99999 !important;
         }
+        .beta-ms-link {
+            font-size: 11px;
+            color: #777;
+            cursor: pointer;
+            text-decoration: underline;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        .beta-ms-link:hover {
+            background: linear-gradient(120deg, var(--accent-blue) 0%, var(--accent-gradient-sec) 50%, var(--accent-blue) 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textGradientShift 1.5s linear infinite;
+            font-weight: 800;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/skinview3d@3.0.0-alpha.1/bundles/skinview3d.bundle.js"></script>
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
@@ -1894,7 +1910,9 @@
         <div style="font-size: 24px; font-weight: 800; color: var(--accent-blue); letter-spacing: 3px; margin-bottom: 10px; text-shadow: 0 0 15px rgba(var(--accent-blue-rgb), 0.3);" id="beta-title">BETA ZUGANG</div>
         <div style="font-size: 12px; color: var(--text-gray); margin-bottom: 25px; line-height: 1.5;" id="beta-desc">Bitte gib deinen Beta-Key ein, um fortzufahren.</div>
         <input type="text" class="redeem-input" id="beta-input-field" placeholder="BETA-XXXX-XXXX" maxlength="20" autocomplete="off" spellcheck="false" style="border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); letter-spacing: 1px; font-family: 'Inter', monospace; width: 100%; box-sizing: border-box;">
-        <div class="redeem-btn" id="beta-submit-btn" onclick="submitBetaCode()" style="background: linear-gradient(135deg, var(--accent-blue), var(--accent-gradient-sec));">VERIFIZIEREN</div>
+        <div class="redeem-btn" id="beta-submit-btn" onclick="submitBetaCode()" style="background: linear-gradient(135deg, var(--accent-blue), var(--accent-gradient-sec)); margin-bottom: 15px;">VERIFIZIEREN</div>
+        <div class="beta-ms-link" id="beta-ms-login-link" onclick="loginBetaMicrosoft()">Du hast bereits Beta-Rechte? Mit Microsoft einloggen</div>
+        <div id="beta-error-msg" style="display: none; font-size: 11px; color: #ff4b4b; font-weight: 700; margin-top: 12px; text-shadow: 0 0 8px rgba(255, 75, 75, 0.3);"></div>
     </div>
 </div>
 
@@ -7845,6 +7863,33 @@
             const linkedCard = document.getElementById('discord-linked-container');
             if (linkCard) linkCard.style.display = 'none';
             if (linkedCard) linkedCard.style.display = 'none';
+
+            // Clear friends list data and disconnect sockets
+            if (tentixSocket) {
+                tentixSocket.disconnect();
+                tentixSocket = null;
+            }
+            unreadCounts = {};
+            activeChatFriendUuid = null;
+            activeChatFriendName = null;
+
+            const listEl = document.getElementById('friends-list-content');
+            if (listEl) listEl.innerHTML = '';
+
+            const chatEl = document.getElementById('friends-chat-messages');
+            if (chatEl) chatEl.innerHTML = '';
+
+            const friendsPopup = document.getElementById('friends-popup');
+            if (friendsPopup) friendsPopup.classList.remove('open');
+
+            const chatPopup = document.getElementById('friends-chat-popup');
+            if (chatPopup) chatPopup.style.display = 'none';
+
+            const badge = document.getElementById('friends-unread-badge');
+            if (badge) {
+                badge.innerText = '0';
+                badge.classList.remove('show');
+            }
         }
         loadBadges();
         loadInbox();
@@ -8685,18 +8730,34 @@
         const desc = document.getElementById('beta-desc');
         const btn = document.getElementById('beta-submit-btn');
         
+        const msLink = document.getElementById('beta-ms-login-link');
+        const errMsg = document.getElementById('beta-error-msg');
+
         if (lang === 'de') {
             if (title) title.innerText = "BETA ZUGANG";
             if (desc) desc.innerText = "Bitte gib deinen Beta-Key ein, um fortzufahren.";
             if (btn) btn.innerText = "VERIFIZIEREN";
+            if (msLink) msLink.innerText = "Du hast bereits Beta-Rechte? Mit Microsoft einloggen";
+            if (errMsg && errMsg.style.display === 'block') {
+                errMsg.innerText = "Du bist nicht Teil des Beta Programms.";
+            }
         } else {
             if (title) title.innerText = "BETA ACCESS";
             if (desc) desc.innerText = "Please enter your Beta Key to proceed.";
             if (btn) btn.innerText = "VERIFY";
+            if (msLink) msLink.innerText = "Already have Beta access? Sign in with Microsoft";
+            if (errMsg && errMsg.style.display === 'block') {
+                errMsg.innerText = "You are not part of the Beta program.";
+            }
         }
     }
 
     async function submitBetaCode() {
+        const errorEl = document.getElementById('beta-error-msg');
+        if (errorEl) {
+            errorEl.style.display = 'none';
+            errorEl.innerText = '';
+        }
         const inputField = document.getElementById('beta-input-field');
         if (!inputField) return;
         const key = inputField.value.trim().toUpperCase();
@@ -8769,6 +8830,99 @@
             if (btn) {
                 btn.innerText = originalText;
                 btn.disabled = false;
+            }
+        }
+    }
+
+    async function loginBetaMicrosoft() {
+        const errorEl = document.getElementById('beta-error-msg');
+        if (errorEl) {
+            errorEl.style.display = 'none';
+            errorEl.innerText = '';
+        }
+
+        const overlay = document.getElementById('action-overlay');
+        const text = document.getElementById('action-text');
+        if(text) text.innerText = currentLang === 'de' ? "VERBINDE..." : "CONNECTING...";
+        if(overlay) {
+            overlay.style.display = 'flex';
+            setTimeout(() => overlay.style.opacity = '1', 10);
+        }
+
+        try {
+            if(!window.api || !window.api.loginWithMicrosoft) {
+                throw new Error("API Missing");
+            }
+            const res = await window.api.loginWithMicrosoft();
+            if(res.success) {
+                // Temporary set login values to query init
+                localStorage.setItem('tentix_logged', 'true');
+                localStorage.setItem('tentix_user', res.name);
+                localStorage.setItem('tentix_uuid', res.uuid);
+                localStorage.setItem('tentix_mc_token', JSON.stringify(res.mclc_token));
+
+                if (isClientSimulated) {
+                    // In simulation mode, check if the username is in simulated users and has BETA or staff roles
+                    let simUsers = JSON.parse(localStorage.getItem('tentix_sim_users') || '[]');
+                    const user = simUsers.find(u => u.username.toUpperCase() === res.name.toUpperCase());
+                    const staffRoles = ['OWNER', 'DEV', 'ADMIN', 'MOD', 'SUPP'];
+                    const hasBeta = user && (user.roles.includes('BETA') || user.roles.some(r => staffRoles.includes(r)));
+                    if (hasBeta) {
+                        localStorage.setItem('tentix_beta_verified', 'true');
+                        showToast(currentLang === 'de' ? "ZUGANG GEWÄHRT! (Simulation)" : "ACCESS GRANTED! (Simulation)", "success");
+                        hideBetaOverlay();
+                        proceedToMainMenu();
+                    } else {
+                        // Not part of beta
+                        localStorage.removeItem('tentix_logged');
+                        localStorage.removeItem('tentix_user');
+                        localStorage.removeItem('tentix_uuid');
+                        localStorage.removeItem('tentix_mc_token');
+                        if (errorEl) {
+                            errorEl.innerText = currentLang === 'de' 
+                                ? "Du bist nicht Teil des Beta Programms." 
+                                : "You are not part of the Beta program.";
+                            errorEl.style.display = 'block';
+                        }
+                    }
+                    return;
+                }
+
+                // Call backend init
+                const initRes = await fetch(`${API_BASE_URL}/api/users/init`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: res.name, uuid: res.uuid })
+                });
+                const initData = await initRes.json();
+                if (initData.success && initData.has_beta_access) {
+                    localStorage.setItem('tentix_beta_verified', 'true');
+                    showToast(currentLang === 'de' ? "ZUGANG GEWÄHRT!" : "ACCESS GRANTED!", "success");
+                    hideBetaOverlay();
+                    proceedToMainMenu();
+                } else {
+                    // Cleanup login state
+                    localStorage.removeItem('tentix_logged');
+                    localStorage.removeItem('tentix_user');
+                    localStorage.removeItem('tentix_uuid');
+                    localStorage.removeItem('tentix_mc_token');
+                    if (errorEl) {
+                        errorEl.innerText = currentLang === 'de' 
+                            ? "Du bist nicht Teil des Beta Programms." 
+                            : "You are not part of the Beta program.";
+                        errorEl.style.display = 'block';
+                    }
+                }
+            } else {
+                showErrorModal();
+            }
+        } catch (err) {
+            console.error(err);
+            showErrorModal();
+        } finally {
+            if(overlay) {
+                overlay.style.opacity = '0';
+                setTimeout(() => overlay.style.display = 'none', 300);
             }
         }
     }
@@ -14083,6 +14237,17 @@
             });
             donationRange.addEventListener('input', () => {
                 donationInput.value = donationRange.value;
+            });
+        }
+
+        const betaInput = document.getElementById('beta-input-field');
+        if (betaInput) {
+            betaInput.addEventListener('input', () => {
+                const errorEl = document.getElementById('beta-error-msg');
+                if (errorEl) {
+                    errorEl.style.display = 'none';
+                    errorEl.innerText = '';
+                }
             });
         }
 
