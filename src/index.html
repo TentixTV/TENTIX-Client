@@ -152,7 +152,8 @@
         .tooltip-up .tooltiptext { bottom: 130%; left: 50%; transform: translateX(-50%); }
         .tooltip-right .tooltiptext { top: 50%; left: 110%; transform: translateY(-50%); }
         .tooltip-left .tooltiptext { top: 50%; right: 130%; transform: translateY(-50%); }
-        .tooltiptext.wide-tooltip { width: 220px; white-space: normal; line-height: 1.35; text-align: center; font-size: 10.5px !important; padding: 8px 12px !important; }
+        .tooltiptext.wide-tooltip { width: 220px; white-space: normal; line-height: 1.35; text-align: center; font-size: 10.5px !important; padding: 8px 12px !important; text-transform: none !important; letter-spacing: normal !important; }
+        #t-shop-creator-tooltip, #t-cart-creator-tooltip { width: 170px; font-size: 9px !important; padding: 5px 8px !important; }
         .tooltiptext.tooltip-red { border-color: #ff4b4b !important; color: #ff4b4b !important; background-color: rgba(20, 10, 10, 0.95) !important; box-shadow: 0 5px 20px rgba(255, 75, 75, 0.15) !important; }
         .tooltiptext.tooltip-blue { border-color: var(--accent-blue) !important; color: var(--accent-blue) !important; background-color: rgba(10, 15, 20, 0.95) !important; box-shadow: 0 5px 20px rgba(var(--accent-blue-rgb), 0.15) !important; }
         .tooltiptext.tooltip-orange { border-color: #ffb84d !important; color: #ffb84d !important; background-color: rgba(20, 15, 10, 0.95) !important; box-shadow: 0 5px 20px rgba(255, 184, 77, 0.15) !important; }
@@ -3146,7 +3147,7 @@
                             <!-- Gradient Setup UI -->
                             <div style="background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.03); border-radius: 12px; padding: 20px; margin-top: 15px;">
                                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                                    <span style="font-size: 11px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 1px;">Hintergrund-Farben</span>
+                                    <span id="t-design-colors-title" style="font-size: 11px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 1px;">Hintergrund-Farben</span>
                                     
                                     <div style="display: flex; gap: 8px;">
                                         <button class="dash-action-btn" id="gradient-add-btn" onclick="addGradientColor()" style="padding: 6px 12px; font-size: 10px; font-weight: 800; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.02); color: #fff; cursor: pointer; transition: 0.2s;">
@@ -3165,7 +3166,7 @@
                                 
                                 <!-- Live background preview mini-box -->
                                 <div style="margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px; display: flex; align-items: center; gap: 15px;">
-                                    <span style="font-size: 11px; font-weight: 700; color: var(--text-gray); text-transform: uppercase;">Vorschau:</span>
+                                    <span id="t-design-preview-label" style="font-size: 11px; font-weight: 700; color: var(--text-gray); text-transform: uppercase;">Vorschau:</span>
                                     <div id="design-bg-preview" style="flex: 1; height: 35px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.08); box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);"></div>
                                 </div>
                             </div>
@@ -4028,7 +4029,13 @@
             designEffectSpeed: "Effect Speed",
             speedWarningTitle: "High-Performance Warning",
             speedWarningDesc: "Are you sure you want to set the speed to maximum (5.0)? If you have a low-end PC, this could cause lag or lead to system crashes!",
-            speedWarningReset: "Reset"
+            speedWarningReset: "Reset",
+            designBgColorsTitle: "Background Colors",
+            designAddColor: "+ Add Color",
+            designColorNum: "Color",
+            designColorRemove: "Remove",
+            designColorMinWarning: "You need at least 1 background color",
+            designPreview: "Preview:"
         },
         de: {
             latest: "Neueste Version", ready: "BEREIT", welcome: "WILLKOMMEN, ", player: "SPIELER", play: "SPIELEN", loginReq: "BITTE EINLOGGEN!",
@@ -4094,7 +4101,13 @@
             designEffectSpeed: "Effekt-Geschwindigkeit",
             speedWarningTitle: "High-Performance Warnung",
             speedWarningDesc: "Bist du sicher, dass du die Geschwindigkeit auf Maximum (5.0) setzen möchtest? Wenn du einen Low-End PC hast, kann das zu Lags oder zum Absturz deines Systems führen!",
-            speedWarningReset: "Zurücksetzen"
+            speedWarningReset: "Zurücksetzen",
+            designBgColorsTitle: "Hintergrund-Farben",
+            designAddColor: "+ Farbe hinzufügen",
+            designColorNum: "Farbe",
+            designColorRemove: "Entfernen",
+            designColorMinWarning: "Du brauchst mind. 1 Hintergrundfarbe",
+            designPreview: "Vorschau:"
         }
     };
 
@@ -7879,6 +7892,9 @@
         setElText('speed-warning-title', t.speedWarningTitle);
         setElText('speed-warning-desc', t.speedWarningDesc);
         setElText('speed-warning-reset-btn', t.speedWarningReset);
+        setElText('t-design-colors-title', t.designBgColorsTitle);
+        setElText('t-design-preview-label', t.designPreview);
+        setElText('gradient-add-btn', t.designAddColor);
 
         if (typeof currentDesignSettings !== 'undefined' && currentDesignSettings.effect) {
             updateDesignEffectDropdownText(currentDesignSettings.effect);
@@ -7973,6 +7989,7 @@
         setElText('t-vis-keep-d', t.keepD);
         setElText('t-vis-hide', t.hide);
         setElText('t-vis-hide-d', t.hideD);
+        setElText('t-vis-rec', '✨ ' + t.rec);
         setElText('t-ram-free-pre', t.free1);
         setElText('t-ram-free-post', t.free2);
         setElText('dl-auto', t.da);
@@ -12396,7 +12413,10 @@
                         }
                         clearTimeout(indicator._timeout);
                         indicator._timeout = setTimeout(() => {
-                            if (indicator.parentNode) indicator.remove();
+                            if (indicator.parentNode) {
+                                indicator.remove();
+                                container.scrollTop = container.scrollHeight;
+                            }
                             if (data.sender_uuid) {
                                 typingUsers.delete(data.sender_uuid);
                                 renderFriendsList();
@@ -12414,6 +12434,10 @@
                     const indicator = document.getElementById('typing-indicator');
                     if (indicator) {
                         indicator.remove();
+                        const container = document.getElementById('friends-chat-messages');
+                        if (container) {
+                            container.scrollTop = container.scrollHeight;
+                        }
                     }
                 }
             });
@@ -13043,10 +13067,38 @@
                 }
 
                 let friendRankIcon = '';
-                if (f.active_rank === 'PLUS' || f.active_rank === 'PREMIUM') {
-                    friendRankIcon = `<span class="premium-rank-badge badge-plus" style="font-size: 8px; padding: 1px 3.5px; border-radius: 3px; height: 12px; line-height: 10px; margin-right: 2px;" title="TENTIX+">PLUS</span>`;
-                } else if (f.active_rank === 'LITE') {
-                    friendRankIcon = `<span class="premium-rank-badge badge-lite" style="font-size: 8px; padding: 1px 3.5px; border-radius: 3px; height: 12px; line-height: 10px; margin-right: 2px;" title="TENTIX LITE">LITE</span>`;
+                if (f.active_rank === 'PLUS' || f.active_rank === 'PREMIUM' || f.active_rank === 'LITE') {
+                    const rankExpiresAt = f.rank_expires_at || 0;
+                    let rankTooltipText = '';
+                    if (rankExpiresAt === -1) {
+                        rankTooltipText = currentLang === 'de' ? 'Dauerhaft' : 'Lifetime';
+                    } else if (rankExpiresAt > 0) {
+                        const date = new Date(rankExpiresAt).toLocaleDateString(currentLang === 'de' ? 'de-DE' : 'en-US');
+                        rankTooltipText = currentLang === 'de' ? `Gültig bis ${date}` : `Valid until ${date}`;
+                    } else {
+                        rankTooltipText = currentLang === 'de' ? 'Unbegrenzt' : 'Unlimited';
+                    }
+
+                    if (f.active_rank === 'PLUS' || f.active_rank === 'PREMIUM') {
+                        friendRankIcon = `<span class="premium-rank-badge badge-plus tooltip" style="font-size: 8px; padding: 1px 3.5px; border-radius: 3px; height: 12px; line-height: 10px; margin-right: 2px; position: relative; cursor: pointer;">PLUS<span class="tooltiptext" style="bottom: 125%; left: 50%; transform: translateX(-50%); font-size: 9px !important; padding: 4px 8px !important; border-radius: 4px; white-space: nowrap; width: auto; z-index: 10; font-weight: normal; letter-spacing: normal; text-transform: none;">${rankTooltipText}</span></span>`;
+                    } else if (f.active_rank === 'LITE') {
+                        friendRankIcon = `<span class="premium-rank-badge badge-lite tooltip" style="font-size: 8px; padding: 1px 3.5px; border-radius: 3px; height: 12px; line-height: 10px; margin-right: 2px; position: relative; cursor: pointer;">LITE<span class="tooltiptext" style="bottom: 125%; left: 50%; transform: translateX(-50%); font-size: 9px !important; padding: 4px 8px !important; border-radius: 4px; white-space: nowrap; width: auto; z-index: 10; font-weight: normal; letter-spacing: normal; text-transform: none;">${rankTooltipText}</span></span>`;
+                    }
+                }
+
+                let staffIcon = '';
+                const staffRoles = ['OWNER', 'DEV', 'ADMIN', 'MOD', 'SUPP'];
+                const highestStaffRole = (f.roles || []).find(r => staffRoles.includes(r));
+                if (highestStaffRole) {
+                    const roleInfo = ROLE_MAP[highestStaffRole];
+                    if (roleInfo) {
+                        staffIcon = `
+                            <span class="tooltip" style="position: relative; display: inline-flex; align-items: center; margin-left: 4px; cursor: pointer;">
+                                <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; fill: ${roleInfo.color}; display: inline-block;">${roleInfo.svg}</svg>
+                                <span class="tooltiptext" style="bottom: 125%; left: 50%; transform: translateX(-50%); font-size: 9px !important; padding: 4px 8px !important; border-radius: 4px; white-space: nowrap; width: auto; z-index: 10; font-weight: normal; letter-spacing: normal; text-transform: none;">${roleInfo.name}</span>
+                            </span>
+                        `;
+                    }
                 }
 
                 const unreadCount = unreadCounts[f.uuid] || 0;
@@ -13057,7 +13109,7 @@
                         <div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0;">
                             <img class="friend-avatar" src="https://mc-heads.net/avatar/${f.username}/24" onerror="this.src='https://mc-heads.net/avatar/MHF_Steve/24'" style="border-radius: 4px; width: 24px; height: 24px;">
                             <div style="min-width: 0; flex: 1;">
-                               <div style="font-size: 11.5px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 4px;">${friendRankIcon}${f.username}</div>
+                               <div style="font-size: 11.5px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 4px;">${friendRankIcon}${f.username}${staffIcon}</div>
                                <div style="display: flex; align-items: center; gap: 4px; font-size: 9px; color: #777; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                                    <div class="friend-status-dot" style="background: ${dotColor}; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;"></div>
                                    <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; ${typingUsers.has(f.uuid) ? 'font-style: italic; color: var(--accent-blue);' : ''}">${statusText}</span>
@@ -14855,8 +14907,9 @@
             row.style.padding = '8px 12px';
             row.style.borderRadius = '8px';
             
+            const t = translations[currentLang];
             row.innerHTML = `
-                <span style="font-size: 11px; font-weight: 700; color: var(--text-gray); min-width: 60px;">Farbe ${idx + 1}:</span>
+                <span style="font-size: 11px; font-weight: 700; color: var(--text-gray); min-width: 60px;">${t.designColorNum || "Farbe"} ${idx + 1}:</span>
                 <div style="position: relative; width: 28px; height: 28px; border-radius: 6px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);">
                     <input type="color" value="${col}" style="position: absolute; top: -5px; left: -5px; width: 38px; height: 38px; padding:0; margin:0; border:none; cursor:pointer; background:transparent;" oninput="onGradientColorDrag(${idx}, this.value)">
                 </div>
@@ -14868,14 +14921,14 @@
                 
                 ${colors.length <= 1 ? `
                 <div style="position: relative; margin-left: auto; display: inline-block;" onmouseenter="this.querySelector('.remove-tooltip').style.visibility='visible'" onmouseleave="this.querySelector('.remove-tooltip').style.visibility='hidden'">
-                    <span class="remove-tooltip" style="visibility: hidden; position: absolute; bottom: 130%; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.95); color: #ff4b4b; font-size: 9px; font-weight: 700; padding: 6px 10px; border-radius: 6px; white-space: nowrap; border: 1px solid rgba(255,75,75,0.3); box-shadow: 0 4px 15px rgba(0,0,0,0.5); pointer-events: none; z-index: 9999;">Du brauchst mind. 1 Hintergrundfarbe</span>
+                    <span class="remove-tooltip" style="visibility: hidden; position: absolute; bottom: 130%; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.95); color: #ff4b4b; font-size: 9px; font-weight: 700; padding: 6px 10px; border-radius: 6px; white-space: nowrap; border: 1px solid rgba(255,75,75,0.3); box-shadow: 0 4px 15px rgba(0,0,0,0.5); pointer-events: none; z-index: 9999;">${t.designColorMinWarning || "Du brauchst mind. 1 Hintergrundfarbe"}</span>
                     <button class="dash-action-btn red-hover" disabled style="padding: 4px 8px; font-size: 9px; font-weight: 800; border-radius: 4px; border: 1px solid rgba(255,75,75,0.2); background: rgba(255,75,75,0.05); color: #ff4b4b; cursor: not-allowed; transition: 0.2s; opacity: 0.4; pointer-events: auto;">
-                        Entfernen
+                        ${t.designColorRemove || "Entfernen"}
                     </button>
                 </div>
                 ` : `
                 <button class="dash-action-btn red-hover" onclick="removeGradientColorAt(${idx})" style="margin-left: auto; padding: 4px 8px; font-size: 9px; font-weight: 800; border-radius: 4px; border: 1px solid rgba(255,75,75,0.2); background: rgba(255,75,75,0.05); color: #ff4b4b; cursor: pointer; transition: 0.2s;">
-                    Entfernen
+                    ${t.designColorRemove || "Entfernen"}
                 </button>
                 `}
             `;
