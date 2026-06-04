@@ -1790,6 +1790,76 @@
         .checkout-pay-btn:active {
             transform: scale(0.97);
         }
+        .chat-verified-code {
+            display: inline-block;
+            background: linear-gradient(120deg, var(--accent-blue) 0%, var(--accent-gradient-sec) 50%, var(--accent-blue) 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+            font-family: 'Inter', monospace;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            filter: drop-shadow(0 0 3px rgba(var(--accent-blue-rgb), 0.4));
+            text-decoration: underline;
+            text-decoration-style: dashed;
+            margin: 0 4px;
+        }
+        .chat-verified-code:hover {
+            animation: textGradientShift 1.5s linear infinite;
+            filter: drop-shadow(0 0 7px rgba(var(--accent-blue-rgb), 0.7));
+            transform: scale(1.05);
+        }
+        .sent-message-container {
+            position: relative;
+            transition: transform 0.2s ease !important;
+        }
+        .sent-message-container:hover {
+            transform: translateX(-24px) !important;
+        }
+        .sent-message-actions {
+            position: absolute;
+            right: -24px;
+            bottom: 2px;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            background: rgba(255, 75, 75, 0.1);
+            border: 1px solid rgba(255, 75, 75, 0.25);
+            border-radius: 4px;
+            color: #ff4b4b;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 0.2s ease, transform 0.2s ease, background 0.2s, box-shadow 0.2s;
+            z-index: 5;
+        }
+        .sent-message-actions svg {
+            width: 12px;
+            height: 12px;
+            fill: currentColor;
+        }
+        .sent-message-actions:hover {
+            background: #ff4b4b;
+            color: #fff;
+            box-shadow: 0 0 8px rgba(255, 75, 75, 0.4);
+        }
+        .sent-message-container:hover .sent-message-actions {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .tooltip svg {
+            transition: filter 0.2s, opacity 0.2s;
+        }
+        .tooltip:hover svg {
+            filter: brightness(1.2) !important;
+            opacity: 1 !important;
+        }
+        .tooltip .tooltiptext {
+            z-index: 99999 !important;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/skinview3d@3.0.0-alpha.1/bundles/skinview3d.bundle.js"></script>
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
@@ -2903,20 +2973,28 @@
                             <button id="discord-link-btn" onclick="linkDiscordAccount()" class="dash-btn" style="margin: 0; min-width: 110px; background: #5865F2; color: #fff; font-weight: 700; font-size: 11px; padding: 8px 16px; border-radius: 6px; box-shadow: 0 4px 10px rgba(88, 101, 242, 0.2); transition: background 0.2s; border: none; cursor: pointer;" onmouseover="this.style.background='#4752c4'" onmouseout="this.style.background='#5865F2'">Verbinden</button>
                         </div>
 
-                        <div id="discord-linked-container" style="display: none; align-items: center; justify-content: space-between; padding: 16px 20px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(var(--accent-blue-rgb), 0.2); border-radius: 12px; margin: 20px 0; gap: 15px; box-shadow: 0 4px 20px rgba(var(--accent-blue-rgb), 0.08); transition: border-color 0.3s, box-shadow 0.3s;">
-                            <div style="display: flex; align-items: center; gap: 14px;">
-                                <div id="discord-linked-avatar-wrap" style="width: 44px; height: 44px; border-radius: 50%; overflow: hidden; border: 2px solid var(--accent-blue); box-shadow: 0 0 12px rgba(var(--accent-blue-rgb), 0.4); display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: rgba(0,0,0,0.3); transition: border-color 0.3s, box-shadow 0.3s;">
-                                    <img id="discord-linked-avatar" src="" style="width: 100%; height: 100%; object-fit: cover; display: none;">
-                                    <div id="discord-linked-avatar-fallback" style="color: var(--accent-blue); display: flex; align-items: center; justify-content: center; transition: color 0.3s;">
-                                        <svg viewBox="0 0 127.14 96.36" style="width: 20px; height: 20px; fill: currentColor;"><path d="M107.7,8.07A105.15,105.15,0,0,0,77.26,0a77.19,77.19,0,0,0-3.3,6.83A96.67,96.67,0,0,0,53.22,6.83,77.19,77.19,0,0,0,49.88,0,105.15,105.15,0,0,0,19.44,8.07C3.66,31.58-1.86,54.65,1,77.53A105.73,105.73,0,0,0,32,96.36a77.7,77.7,0,0,0,6.63-10.85,68.43,68.43,0,0,1-10.5-5c.88-.65,1.72-1.34,2.53-2a75.58,75.58,0,0,0,73,0c.8.71,1.65,1.4,2.53,2a68.42,68.42,0,0,1-10.5,5A77.7,77.7,0,0,0,101.8,96.36a105.73,105.73,0,0,0,31-18.83C130,50.22,123.23,27.5,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53S36.18,40.36,42.45,40.36,53.83,46,53.83,53,48.72,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.24,60,73.24,53S78.41,40.36,84.69,40.36,96.07,46,96.07,53,91,65.69,84.69,65.69Z"/></svg>
+                        <div id="discord-linked-container" style="display: none; flex-direction: column; width: 100%; background: #18191c; border: 1px solid rgba(88, 101, 242, 0.3); border-radius: 12px; overflow: hidden; margin: 20px 0; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4); position: relative;">
+                            <!-- Discord Card Banner -->
+                            <div id="discord-linked-banner" style="width: 100%; height: 60px; background: linear-gradient(135deg, #7289da 0%, #2c2f33 100%); background-size: cover; background-position: center; position: relative;"></div>
+                            
+                            <!-- Profile Body -->
+                            <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; position: relative; margin-top: -30px;">
+                                <div style="display: flex; align-items: center; gap: 14px;">
+                                    <!-- Avatar Wrap with Decoration -->
+                                    <div id="discord-linked-avatar-wrap" style="position: relative; width: 64px; height: 64px; border-radius: 50%; background: #18191c; padding: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">
+                                        <img id="discord-linked-avatar" src="" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: none; z-index: 1;">
+                                        <img id="discord-linked-deco" src="" style="position: absolute; top: -6px; left: -6px; width: 76px; height: 76px; pointer-events: none; z-index: 2; display: none;">
+                                        <div id="discord-linked-avatar-fallback" style="z-index: 1; color: var(--accent-blue); display: flex; align-items: center; justify-content: center;">
+                                            <svg viewBox="0 0 127.14 96.36" style="width: 28px; height: 28px; fill: currentColor;"><path d="M107.7,8.07A105.15,105.15,0,0,0,77.26,0a77.19,77.19,0,0,0-3.3,6.83A96.67,96.67,0,0,0,53.22,6.83,77.19,77.19,0,0,0,49.88,0,105.15,105.15,0,0,0,19.44,8.07C3.66,31.58-1.86,54.65,1,77.53A105.73,105.73,0,0,0,32,96.36a77.7,77.7,0,0,0,6.63-10.85,68.43,68.43,0,0,1-10.5-5c.88-.65,1.72-1.34,2.53-2a75.58,75.58,0,0,0,73,0c.8.71,1.65,1.4,2.53,2a68.42,68.42,0,0,1-10.5,5A77.7,77.7,0,0,0,101.8,96.36a105.73,105.73,0,0,0,31-18.83C130,50.22,123.23,27.5,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53S36.18,40.36,42.45,40.36,53.83,46,53.83,53,48.72,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.24,60,73.24,53S78.41,40.36,84.69,40.36,96.07,46,96.07,53,91,65.69,84.69,65.69Z"/></svg>
+                                        </div>
+                                    </div>
+                                    <div style="margin-top: 15px;">
+                                        <div id="t-discord-linked-title" style="font-size: 10px; font-weight: 800; color: #8e9297; text-transform: uppercase; letter-spacing: 0.5px;">Verbundenes Discord-Konto</div>
+                                        <div id="discord-linked-user" style="font-size: 14px; font-weight: 800; color: #ffffff; margin-top: 2px; transition: color 0.3s; display: flex; align-items: center; gap: 6px;">Username#0000</div>
                                     </div>
                                 </div>
-                                <div>
-                                    <div id="t-discord-linked-title" style="font-size: 13px; font-weight: 800; color: #fff;">Verbundenes Discord-Konto</div>
-                                    <div id="discord-linked-user" style="font-size: 13px; font-weight: 800; color: var(--accent-blue); margin-top: 3px; font-family: monospace; transition: color 0.3s;">Username#0000</div>
-                                </div>
+                                <button id="discord-unlink-btn" onclick="unlinkDiscordAccount()" class="dash-btn" style="margin: 0; margin-top: 18px; min-width: 100px; background: rgba(255, 75, 75, 0.1); border: 1px solid rgba(255, 75, 75, 0.3); color: #ff4b4b; font-weight: 700; font-size: 11px; padding: 8px 14px; border-radius: 6px; transition: all 0.2s ease; cursor: pointer;" onmouseover="this.style.background='#ff4b4b'; this.style.color='#fff'; this.style.boxShadow='0 0 15px rgba(255, 75, 75, 0.6)';" onmouseout="this.style.background='rgba(255, 75, 75, 0.1)'; this.style.color='#ff4b4b'; this.style.boxShadow='none';">Trennen</button>
                             </div>
-                            <button id="discord-unlink-btn" onclick="unlinkDiscordAccount()" class="dash-btn" style="margin: 0; min-width: 110px; background: rgba(255, 75, 75, 0.1); border: 1px solid rgba(255, 75, 75, 0.3); color: #ff4b4b; font-weight: 700; font-size: 11px; padding: 8px 16px; border-radius: 6px; transition: background 0.2s, color 0.2s; cursor: pointer;" onmouseover="this.style.background='#ff4b4b'; this.style.color='#fff';" onmouseout="this.style.background='rgba(255, 75, 75, 0.1)'; this.style.color='#ff4b4b'">Trennen</button>
                         </div>
 
                         <!-- Connected Discord Account User Info (RPC status) -->
@@ -3948,6 +4026,7 @@
     let typingUsers = new Set();
     let onlineToastQueue = [];
     let onlineToastShowing = false;
+    let validCodesSet = new Set();
 
     let currentDesignSettings = {
         accent: '#00d4ff',
@@ -7214,6 +7293,44 @@
         }
     }
 
+    function fetchValidCodesFromServer() {
+        if (isClientSimulated) {
+            const simCodes = JSON.parse(localStorage.getItem('tentix_sim_codes') || '[]');
+            validCodesSet.clear();
+            simCodes.forEach(c => {
+                if (c.code && (c.uses === undefined || c.uses > 0)) {
+                    validCodesSet.add(c.code.toUpperCase().replace(/[^A-Z0-9]/g, ''));
+                }
+            });
+            return;
+        }
+        Promise.all([
+            fetch(`${API_BASE_URL}/api/codes`).then(r => r.json()).catch(() => ({ codes: [] })),
+            fetch(`${API_BASE_URL}/api/creator-codes`).then(r => r.json()).catch(() => ({ codes: [] }))
+        ]).then(([normalRes, creatorRes]) => {
+            validCodesSet.clear();
+            if (normalRes.success && normalRes.codes) {
+                normalRes.codes.forEach(c => {
+                    if (c.code && (c.uses === undefined || c.uses > 0)) {
+                        validCodesSet.add(c.code.toUpperCase().replace(/[^A-Z0-9]/g, ''));
+                    }
+                });
+            }
+            if (creatorRes.success && creatorRes.codes) {
+                creatorRes.codes.forEach(c => {
+                    if (c.code) {
+                        validCodesSet.add(c.code.toUpperCase().replace(/[^A-Z0-9]/g, ''));
+                    }
+                });
+            }
+            if (activeChatFriendUuid) {
+                loadFriendChatHistory();
+            }
+        }).catch(err => {
+            console.error("fetchValidCodesFromServer error:", err);
+        });
+    }
+
     async function renderCodesTable() {
         const tbody = document.getElementById('dash-codes-tbody');
         if(!tbody) return;
@@ -7655,11 +7772,15 @@
                 let activeDiscId = data.discord_id || '';
                 let activeDiscUser = data.discord_username || '';
                 let activeDiscAv = data.discord_avatar || '';
+                let activeDiscBanner = data.discord_banner || '';
+                let activeDiscDeco = data.discord_avatar_decoration || '';
 
                 if (isClientSimulated) {
                     activeDiscId = localStorage.getItem('tentix_sim_discord_id') || '';
                     activeDiscUser = localStorage.getItem('tentix_sim_discord_username') || '';
                     activeDiscAv = localStorage.getItem('tentix_sim_discord_avatar') || '';
+                    activeDiscBanner = localStorage.getItem('tentix_sim_discord_banner') || '';
+                    activeDiscDeco = localStorage.getItem('tentix_sim_discord_avatar_decoration') || '';
                 }
 
                 if (linkCard && linkedCard && linkedUser) {
@@ -7670,6 +7791,9 @@
 
                         const avatarImg = document.getElementById('discord-linked-avatar');
                         const fallbackSvg = document.getElementById('discord-linked-avatar-fallback');
+                        const decoImg = document.getElementById('discord-linked-deco');
+                        const bannerDiv = document.getElementById('discord-linked-banner');
+
                         if (avatarImg && fallbackSvg) {
                             if (activeDiscAv) {
                                 avatarImg.src = activeDiscAv;
@@ -7680,6 +7804,23 @@
                                 fallbackSvg.style.display = 'flex';
                             }
                         }
+
+                        if (decoImg) {
+                            if (activeDiscDeco) {
+                                decoImg.src = activeDiscDeco;
+                                decoImg.style.display = 'block';
+                            } else {
+                                decoImg.style.display = 'none';
+                            }
+                        }
+
+                        if (bannerDiv) {
+                            if (activeDiscBanner) {
+                                bannerDiv.style.backgroundImage = `url('${activeDiscBanner}')`;
+                            } else {
+                                bannerDiv.style.backgroundImage = "linear-gradient(135deg, #7289da 0%, #2c2f33 100%)";
+                            }
+                        }
                     } else {
                         linkCard.style.display = 'flex';
                         linkedCard.style.display = 'none';
@@ -7688,6 +7829,7 @@
 
                 connectSocket();
                 syncLocalCodesWithServer();
+                fetchValidCodesFromServer();
             })
             .catch(e => {});
 
@@ -9784,30 +9926,65 @@
             .replace(/"/g, "&quot;")
             .replace(/'/g, "&#039;");
             
-        const codeRegex = /\b[A-Z0-9]{2,10}(-[A-Z0-9]{2,10})+\b|\b(?=[A-Z]*[0-9])[A-Z0-9]{6,20}\b/g;
+        // Match 12-character strings with optional dashes
+        const codeRegex = /\b([A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4})\b|\b([A-Za-z0-9]{12})\b/g;
         
         return escaped.replace(codeRegex, (match) => {
-            return `
-                <span class="chat-code-badge" onclick="copyAndNotifyCode('${match}', event)" style="display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, var(--accent-blue), var(--accent-gradient-sec)); color: #000; padding: 4px 8px; border-radius: 6px; font-weight: 800; font-family: 'Inter', monospace; font-size: 11px; cursor: pointer; box-shadow: 0 0 12px rgba(var(--accent-blue-rgb), 0.5); user-select: none; margin: 0 4px; transition: transform 0.15s, box-shadow 0.15s;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 0 18px rgba(var(--accent-blue-rgb), 0.8)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 0 12px rgba(var(--accent-blue-rgb), 0.5)';" title="Klicken zum Kopieren">
-                    <svg viewBox="0 0 24 24" style="width: 11px; height: 11px; fill: currentColor;"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
-                    ${match}
-                </span>
-            `;
+            const cleanCode = match.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+            if (validCodesSet.has(cleanCode)) {
+                const displayCode = cleanCode.slice(0, 4) + '-' + cleanCode.slice(4, 8) + '-' + cleanCode.slice(8, 12);
+                return `<span class="chat-verified-code" onclick="copyAndNotifyCode('${cleanCode}', event)" title="${currentLang === 'de' ? 'Klicken zum Kopieren' : 'Click to copy'}">${displayCode}</span>`;
+            }
+            return match;
         });
     }
 
-    function copyAndNotifyCode(code, e) {
+    function copyAndNotifyCode(cleanCode, e) {
         if (e) e.stopPropagation();
-        if (!code) return;
-        navigator.clipboard.writeText(code).then(() => {
+        if (!cleanCode) return;
+        navigator.clipboard.writeText(cleanCode).then(() => {
+            const formatted = cleanCode.slice(0, 4) + '-' + cleanCode.slice(4, 8) + '-' + cleanCode.slice(8, 12);
             showToast(currentLang === 'de' 
-                ? `Code "${code}" kopiert! Einlösen unter Einstellungen -> Code Einlösen.` 
-                : `Code "${code}" copied! Redeem it in Settings -> Redeem Code.`, 
+                ? `Code "${formatted}" ohne Bindestriche kopiert!` 
+                : `Code "${formatted}" copied without dashes!`, 
                 "success"
             );
         }).catch(() => {
             showToast("Fehler beim Kopieren des Codes", "error");
         });
+    }
+
+    function deleteChatMessage(msgId, e) {
+        if (e) e.stopPropagation();
+        if (!msgId) return;
+
+        showCustomConfirm(
+            currentLang === 'de' ? "Nachricht löschen?" : "Delete message?",
+            currentLang === 'de' ? "Möchtest du diese Nachricht wirklich für beide Teilnehmer löschen?" : "Do you really want to delete this message for both participants?",
+            () => {
+                if (isClientSimulated) {
+                    mockPrivateMessages = mockPrivateMessages.filter(m => m.id != msgId);
+                    loadFriendChatHistory();
+                    return;
+                }
+                fetch(`${API_BASE_URL}/api/chat/delete-message`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: msgId, recipient_uuid: activeChatFriendUuid })
+                })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        showToast(currentLang === 'de' ? "Nachricht gelöscht" : "Message deleted", "success");
+                    }
+                })
+                .catch(() => {
+                    showToast(currentLang === 'de' ? "Fehler beim Löschen" : "Failed to delete", "error");
+                });
+            },
+            () => {},
+            '#ff4b4b'
+        );
     }
 
     let lastTypingSent = 0;
@@ -9850,6 +10027,9 @@
                             if (!discId || !discId.trim()) return;
                             localStorage.setItem('tentix_sim_discord_id', discId.trim());
                             localStorage.setItem('tentix_sim_discord_username', username.trim());
+                            localStorage.setItem('tentix_sim_discord_avatar', 'https://cdn.discordapp.com/embed/avatars/' + (Math.floor(Math.random() * 6)) + '.png');
+                            localStorage.setItem('tentix_sim_discord_banner', 'https://cdn.discordapp.com/banners/405441217766359051/a_fade1234.gif');
+                            localStorage.setItem('tentix_sim_discord_avatar_decoration', 'https://cdn.discordapp.com/avatar-decoration-presets/a_0c0eeb351ae2cf48c6e1eee2cae49d40.png?size=160&passthrough=true');
                             showToast(currentLang === 'de' ? "Discord erfolgreich verknüpft! (Simuliert)" : "Discord successfully linked! (Simulated)", "success");
                             checkAuthState();
                         },
@@ -9895,6 +10075,9 @@
         if (isClientSimulated) {
             localStorage.removeItem('tentix_sim_discord_id');
             localStorage.removeItem('tentix_sim_discord_username');
+            localStorage.removeItem('tentix_sim_discord_avatar');
+            localStorage.removeItem('tentix_sim_discord_banner');
+            localStorage.removeItem('tentix_sim_discord_avatar_decoration');
             showToast(currentLang === 'de' ? "Discord-Verknüpfung aufgehoben!" : "Discord linkage removed!", "info");
             checkAuthState();
             return;
@@ -12403,6 +12586,7 @@
                 console.log('🎟️ Codes updated event received');
                 renderCodesTable();
                 renderCreatorCodesTable();
+                fetchValidCodesFromServer();
             });
             tentixSocket.on('typing', (data) => {
                 if (data.sender_uuid) {
@@ -12461,6 +12645,11 @@
             });
             tentixSocket.on('chat-read-receipt', (data) => {
                 if (activeChatFriendUuid && data.reader_uuid === activeChatFriendUuid) {
+                    loadFriendChatHistory();
+                }
+            });
+            tentixSocket.on('message-deleted', (data) => {
+                if (activeChatFriendUuid) {
                     loadFriendChatHistory();
                 }
             });
@@ -13422,7 +13611,10 @@
                     
                     if (isMe) {
                         html += `
-                            <div class="message-wrapper${animClass}" style="display: flex; gap: 8px; align-items: flex-end; align-self: flex-end; max-width: 80%;">
+                            <div class="message-wrapper${animClass} sent-message-container" data-msg-id="${msg.id}" style="display: flex; gap: 8px; align-items: flex-end; align-self: flex-end; max-width: 80%; position: relative; transition: transform 0.2s ease;">
+                                <div class="sent-message-actions" onclick="deleteChatMessage('${msg.id}', event)" title="${currentLang === 'de' ? 'Nachricht löschen' : 'Delete message'}">
+                                    <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                                </div>
                                 <div class="chat-bubble sent">
                                     <div>${formatChatMessageContent(decryptedContent)}</div>
                                     <div class="chat-time" style="display: flex; justify-content: flex-end; align-items: center; gap: 4px;">
