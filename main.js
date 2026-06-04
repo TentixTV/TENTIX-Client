@@ -499,7 +499,7 @@ ipcMain.on('download-update', () => {
 ipcMain.on('install-update', () => {
     if (app.isPackaged) {
         app.isQuitting = true;
-        autoUpdater.quitAndInstall(false, true);
+        autoUpdater.quitAndInstall(true, true);
     } else {
         if (mainWindow) {
             mainWindow.reload();
