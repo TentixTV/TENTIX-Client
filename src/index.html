@@ -151,7 +151,7 @@
         .bell-badge.show { transform: scale(1); }
         .bell-badge.empty { display: none; }
 
-        .inbox-popup { position: absolute; top: 60px; left: 70px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; width: 320px; max-height: 400px; display: none; flex-direction: column; box-shadow: 0 15px 40px rgba(0,0,0,0.8); z-index: 4000; overflow: hidden; backdrop-filter: blur(20px); }
+        .inbox-popup { position: absolute; top: 90px; left: 110px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; width: 320px; max-height: 400px; display: none; flex-direction: column; box-shadow: 0 15px 40px rgba(0,0,0,0.8); z-index: 4000; overflow: hidden; backdrop-filter: blur(20px); }
         .inbox-header { padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 14px; font-weight: 800; color: #fff; display: flex; justify-content: space-between; align-items: center;}
         #inbox-content { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 8px;}
         .inbox-item { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.03); padding: 12px; border-radius: 8px; display: flex; align-items: flex-start; gap: 12px; cursor: pointer; transition: 0.2s; position: relative;}
@@ -920,9 +920,42 @@
             100% { opacity: 0.7; box-shadow: 0 0 4px var(--accent-blue); }
         }
         @keyframes chatBtnPulse {
-            0% { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0.4); }
-            70% { box-shadow: 0 0 0 8px rgba(0, 212, 255, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(var(--accent-blue-rgb), 0.4); }
+            70% { box-shadow: 0 0 0 8px rgba(var(--accent-blue-rgb), 0); }
+            100% { box-shadow: 0 0 0 0 rgba(var(--accent-blue-rgb), 0); }
+        }
+        #chat-scroll-bottom-btn {
+            position: absolute;
+            bottom: 58px;
+            right: 18px;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: rgba(15, 15, 18, 0.95);
+            border: 1px solid rgba(var(--accent-blue-rgb), 0.35);
+            box-shadow: 0 0 10px rgba(var(--accent-blue-rgb), 0.2);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            z-index: 100;
+            -webkit-app-region: no-drag;
+            color: var(--accent-blue);
+        }
+        #chat-scroll-bottom-btn:hover {
+            background: var(--accent-blue) !important;
+            color: var(--accent-text-contrast, #000) !important;
+            transform: scale(1.1);
+        }
+        #chat-scroll-bottom-btn svg {
+            width: 13px;
+            height: 13px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 3.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
         #friends-list-content::-webkit-scrollbar,
         #friends-chat-messages::-webkit-scrollbar {
@@ -2765,9 +2798,10 @@
     <div class="bell-wrapper" id="friends-icon-wrapper" onclick="toggleFriendsPopup(event)" style="margin-left: -5px; position: relative;">
         <svg class="bell-icon" id="friends-icon-svg" viewBox="0 0 24 24" style="width: 22px; height: 22px;"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
         <span id="friends-requests-ping" style="position: absolute; top: -2px; left: -2px; width: 8px; height: 8px; background: #ff4b4b; border-radius: 50%; display: none; box-shadow: 0 0 8px #ff4b4b; animation: updatePingPulse 1.2s infinite ease-in-out; z-index: 10;"></span>
-        <span class="bell-badge" id="friends-badge" style="background: var(--accent-blue); box-shadow: 0 0 10px rgba(0, 212, 255, 0.5); transform: scale(0);">0</span>
+        <span class="bell-badge" id="friends-badge" style="background: var(--accent-blue); color: var(--accent-text-contrast, #fff); box-shadow: 0 0 10px rgba(var(--accent-blue-rgb), 0.5); transform: scale(0);">0</span>
         <span id="friends-unread-badge"></span>
     </div>
+</div>
 
     <div class="inbox-popup" id="inbox-popup">
         <div class="inbox-header"><span id="t-inbox">Posteingang</span> <span style="color: #666;">✓</span></div>
@@ -2775,7 +2809,7 @@
     </div>
     
     <!-- Premium Friends Popup Panel -->
-    <div class="inbox-popup" id="friends-popup" style="left: 135px; width: 340px; display: none;">
+    <div class="inbox-popup" id="friends-popup" style="left: 175px; width: 340px; display: none;">
         <div class="inbox-header" style="border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px; display: flex; align-items: center; justify-content: space-between;">
             <span id="friends-header-title" style="font-weight: 800; font-size: 12px; color: #fff; letter-spacing: 0.5px; text-transform: uppercase; cursor: pointer;" onclick="switchFriendsTab('friends')">FREUNDE</span>
             <div style="display: flex; gap: 12px; align-items: center; -webkit-app-region: no-drag;">
@@ -2836,8 +2870,8 @@
             <!-- Messages will be rendered here -->
         </div>
         <!-- Scroll back to bottom arrow button -->
-        <div id="chat-scroll-bottom-btn" style="position: absolute; bottom: 58px; right: 18px; width: 26px; height: 26px; border-radius: 50%; background: rgba(15, 15, 18, 0.95); border: 1px solid rgba(0, 212, 255, 0.35); box-shadow: 0 0 10px rgba(0, 212, 255, 0.2); display: none; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; z-index: 100; -webkit-app-region: no-drag;" onclick="scrollChatToBottom()" onmouseover="this.style.background='var(--accent-blue)'; this.style.color='#000'; this.style.transform='scale(1.1)';" onmouseout="this.style.background='rgba(15, 15, 18, 0.95)'; this.style.color='var(--accent-blue)'; this.style.transform='scale(1.0)';">
-            <svg viewBox="0 0 24 24" style="width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; color: var(--accent-blue);"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+        <div id="chat-scroll-bottom-btn" onclick="scrollChatToBottom()">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
         </div>
         <!-- Fancy message arrival notification line -->
         <div id="chat-new-msg-line" style="position: absolute; bottom: 44px; left: 0; width: 100%; height: 2px; background: var(--accent-blue); box-shadow: 0 0 8px var(--accent-blue); display: none; opacity: 0; pointer-events: none; z-index: 99; transition: opacity 0.3s;"></div>
@@ -2846,7 +2880,6 @@
             <button class="dash-btn" style="margin: 0; padding: 6px 12px; font-size: 10px; font-weight: 800; background: var(--accent-blue); color: #000; border: none; border-radius: 6px; cursor: pointer;" onclick="sendFriendChatMessage()">Senden</button>
         </div>
     </div>
-</div>
 
 <div id="settings-overlay">
     <div class="settings-close" onclick="closeAllPopups()"><svg viewBox="0 0 24 24" style="width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></div>
@@ -9750,6 +9783,7 @@
             document.documentElement.style.setProperty('--accent-blue', '#ff4b4b');
             document.documentElement.style.setProperty('--accent-blue-rgb', '255, 75, 75');
             document.documentElement.style.setProperty('--accent-gradient-sec', '#ff1a1a');
+            document.documentElement.style.setProperty('--accent-text-contrast', '#ffffff');
             document.documentElement.style.setProperty('--news-pane-width', '380px');
             
             document.documentElement.style.setProperty('--cart-color-1', '#ff4b4b');
@@ -9757,9 +9791,14 @@
             document.documentElement.style.setProperty('--cart-color-2', '#ff1a1a');
             document.documentElement.style.setProperty('--cart-color-2-rgb', '255, 26, 26');
         } else {
-            document.documentElement.style.setProperty('--accent-blue', typeof currentDesignSettings !== 'undefined' ? currentDesignSettings.accent : '#00d4ff');
+            const acc = typeof currentDesignSettings !== 'undefined' ? currentDesignSettings.accent : '#00d4ff';
+            document.documentElement.style.setProperty('--accent-blue', acc);
             document.documentElement.style.setProperty('--accent-blue-rgb', typeof currentDesignSettings !== 'undefined' ? currentDesignSettings.accentRgb : '0, 212, 255');
             document.documentElement.style.setProperty('--accent-gradient-sec', typeof currentDesignSettings !== 'undefined' ? currentDesignSettings.accentSec : '#0072ff');
+            
+            const isLight = isLightColor(acc);
+            document.documentElement.style.setProperty('--accent-text-contrast', isLight ? '#000000' : '#ffffff');
+            
             document.documentElement.style.setProperty('--news-pane-width', '320px');
             
             if (typeof currentDesignSettings !== 'undefined') {
@@ -14048,19 +14087,23 @@
                     msgBox.scrollTop = msgBox.scrollHeight;
                 } else {
                     if (!isChatInitialLoad) {
-                        const line = document.getElementById('chat-new-msg-line');
-                        if (line) {
-                            line.style.display = 'block';
-                            line.style.opacity = '0.85';
-                            line.style.animation = 'chatLinePing 1.5s ease-out';
-                            setTimeout(() => {
-                                line.style.animation = '';
-                            }, 1500);
-                        }
-                        const btn = document.getElementById('chat-scroll-bottom-btn');
-                        if (btn) {
-                            btn.style.display = 'flex';
-                            btn.style.animation = 'chatBtnPulse 1.5s infinite';
+                        const lastMsg = messages[messages.length - 1];
+                        const lastMsgIsFromFriend = lastMsg && lastMsg.sender !== senderUuid;
+                        if (lastMsgIsFromFriend) {
+                            const line = document.getElementById('chat-new-msg-line');
+                            if (line) {
+                                line.style.display = 'block';
+                                line.style.opacity = '0.85';
+                                line.style.animation = 'chatLinePing 1.5s ease-out';
+                                setTimeout(() => {
+                                    line.style.animation = '';
+                                }, 1500);
+                            }
+                            const btn = document.getElementById('chat-scroll-bottom-btn');
+                            if (btn) {
+                                btn.style.display = 'flex';
+                                btn.style.animation = 'chatBtnPulse 1.5s infinite';
+                            }
                         }
                     }
                 }
@@ -15337,6 +15380,24 @@
         return `${R}, ${G}, ${B}`;
     }
 
+    function isLightColor(hex) {
+        if (!hex) return false;
+        let c = hex.trim();
+        if (c.startsWith('#')) {
+            c = c.substring(1);
+        }
+        if (c.length === 3) {
+            c = c[0] + c[0] + c[1] + c[1] + c[2] + c[2];
+        }
+        if (c.length !== 6) return false;
+        const rgb = parseInt(c, 16);
+        const r = (rgb >> 16) & 0xff;
+        const g = (rgb >> 8) & 0xff;
+        const b = (rgb >> 0) & 0xff;
+        const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+        return luma > 155; // threshold of 155 is safer for white/light color readability
+    }
+
     function setClientAccentColor(accent, accentSec, element) {
         currentDesignSettings.accent = accent;
         currentDesignSettings.accentSec = accentSec;
@@ -15506,6 +15567,9 @@
             document.documentElement.style.setProperty('--accent-blue', currentDesignSettings.accent);
             document.documentElement.style.setProperty('--accent-blue-rgb', currentDesignSettings.accentRgb);
             document.documentElement.style.setProperty('--accent-gradient-sec', currentDesignSettings.accentSec);
+            
+            const isLight = isLightColor(currentDesignSettings.accent);
+            document.documentElement.style.setProperty('--accent-text-contrast', isLight ? '#000000' : '#ffffff');
             
             if (currentDesignSettings.accent === '#00d4ff') {
                 document.documentElement.style.setProperty('--cart-color-1', '#00d4ff');
