@@ -521,12 +521,12 @@
         .explore-main { flex: 1; display: flex; flex-direction: column; padding: 30px; }
         .explore-sidebar { width: 280px; flex-shrink: 0; background: #0f0f11; border-left: 1px solid rgba(255, 255, 255, 0.05); padding: 30px; overflow-y: auto; scrollbar-gutter: stable;}
         .explore-header { display: flex; align-items: center; margin-bottom: 20px; gap: 20px;}
-        .explore-search-wrap { display: flex; align-items: center; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 0 15px; flex: 3.5; transition: 0.3s;}
+        .explore-search-wrap { display: flex; align-items: center; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 0 15px; flex: 1; transition: 0.3s;}
         .explore-search-wrap:focus-within { border-color: var(--accent-blue); background: rgba(var(--accent-blue-rgb), 0.05);}
         .explore-search-wrap svg { width: 18px; height: 18px; fill: var(--accent-blue); margin-right: 10px;}
         .explore-search { background: transparent; border: none; color: #fff; padding: 15px 0; width: 100%; font-size: 14px; outline: none; font-family: 'Inter', sans-serif;}
-        .explore-sort { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; padding: 14px 15px; border-radius: 8px; font-size: 13px; font-weight: 600; outline: none; cursor: pointer; font-family: 'Inter', sans-serif; flex: 1.2; min-width: 0; max-width: 220px;}
-        .explore-sort.mod-version-select { flex: 0.8; max-width: 140px; }
+        .explore-sort { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; padding: 14px 15px; border-radius: 8px; font-size: 13px; font-weight: 600; outline: none; cursor: pointer; font-family: 'Inter', sans-serif; min-width: 0; }
+        .explore-header .fancy-dropdown { margin-top: 0 !important; flex-shrink: 0; }
         .filter-section { margin-bottom: 25px; }
         .filter-title { font-size: 14px; font-weight: 800; color: #fff; margin-bottom: 15px; }
         .filter-grid { display: flex; flex-direction: column; gap: 8px; }
@@ -862,7 +862,6 @@
 
         /* P2P Friends Chat Message Bubbles */
         .chat-bubble {
-            max-width: 75%;
             padding: 8px 12px;
             border-radius: 10px;
             font-size: 11px;
@@ -870,7 +869,6 @@
             word-break: break-word;
         }
         .chat-bubble.sent {
-            align-self: flex-end;
             background: rgba(0, 225, 255, 0.12);
             border: 1px solid rgba(0, 225, 255, 0.25);
             color: #fff;
@@ -878,7 +876,6 @@
             box-shadow: 0 2px 10px rgba(0, 225, 255, 0.05);
         }
         .chat-bubble.received {
-            align-self: flex-start;
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
             color: #e0e0e0;
@@ -2594,7 +2591,7 @@
                 <button class="dash-btn" style="margin: 0; padding: 6px 12px; font-size: 10px; font-weight: 800; background: var(--accent-blue); color: #000; border: none; border-radius: 6px;" onclick="searchPlayers()">SUCHEN</button>
             </div>
             <!-- Search Results Container -->
-            <div id="add-friend-search-results" style="max-height: 120px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; padding-top: 4px; scrollbar-width: thin; -webkit-app-region: no-drag;">
+            <div id="add-friend-search-results" style="max-height: 120px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; padding-top: 4px; -webkit-app-region: no-drag;">
                 <!-- Dynamically populated -->
             </div>
         </div>
@@ -2602,7 +2599,7 @@
         <div style="padding: 10px 15px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; gap: 8px;">
             <input type="text" id="friends-search-input" placeholder="Suche nach Name oder UUID..." style="flex: 1; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 6px 10px; font-size: 11px; color: #fff; outline: none;" oninput="filterFriendsList()">
         </div>
-        <div id="friends-list-content" style="flex: 1; overflow-y: auto; padding: 5px 0; min-height: 120px; scrollbar-width: thin;">
+        <div id="friends-list-content" style="flex: 1; overflow-y: auto; padding: 5px 0; min-height: 120px;">
             <!-- Friends list dynamically rendered -->
         </div>
     </div>
@@ -2619,7 +2616,7 @@
                 <div onclick="closeFriendChat()" style="cursor: pointer; color: #888; font-size: 11px; font-weight: 800;">✕</div>
             </div>
         </div>
-        <div id="friends-chat-messages" style="flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 10px; scrollbar-width: thin;">
+        <div id="friends-chat-messages" style="flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 10px;">
             <!-- Messages will be rendered here -->
         </div>
         <div style="padding: 10px 15px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 8px; background: rgba(0,0,0,0.15); flex-shrink: 0; -webkit-app-region: no-drag;">
@@ -3666,13 +3663,13 @@
                     <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
                     <input type="text" class="explore-search" id="mod-search-input" placeholder="Modrinth durchsuchen..." onkeypress="if(event.key === 'Enter') triggerModSearch(false)">
                 </div>
-                <select class="explore-sort" id="mod-sort-select" onchange="triggerModSearch(false)">
+                <select class="explore-sort" id="mod-sort-select" onchange="triggerModSearch(false)" style="width: 190px;">
                     <option value="relevance">Sortieren nach: Relevanz</option>
                     <option value="downloads">Sortieren nach: Downloads</option>
                     <option value="newest">Sortieren nach: Neueste</option>
                     <option value="updated">Sortieren nach: Zuletzt aktualisiert</option>
                 </select>
-                <select class="explore-sort mod-version-select" id="mod-ver-select" onchange="triggerModSearch(false)">
+                <select class="explore-sort mod-version-select" id="mod-ver-select" onchange="triggerModSearch(false)" style="width: 130px;">
                     <option value="">Alle Versionen</option>
                     <option value="1.21.1">1.21.1</option>
                     <option value="1.21">1.21</option>
@@ -11962,6 +11959,12 @@
             });
             tentixSocket.on('chat-message', (data) => {
                 if (activeChatFriendUuid && data.sender_uuid === activeChatFriendUuid) {
+                    // Mark as read immediately since the chat is open!
+                    const myUuid = localStorage.getItem('tentix_uuid') || '';
+                    fetch(`${API_BASE_URL}/api/chat/mark-read`, {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ recipient_uuid: myUuid, sender_uuid: activeChatFriendUuid })
+                    }).catch(() => {});
                     // Chat is open with this sender - render directly
                     loadFriendChatHistory();
                 } else {
@@ -12892,8 +12895,27 @@
                 const res = await fetch(`${API_BASE_URL}/api/chat/history?user1=${senderUuid}&user2=${friendUuid}`);
                 const data = await res.json();
                 if (data.success) {
-                    messages = data.messages;
+                    messages = data.messages || [];
                 }
+            }
+
+            // Auto mark read if there are unread messages from the friend
+            const hasUnreadFromFriend = messages.some(m => m.sender === friendUuid && !m.is_read);
+            if (hasUnreadFromFriend && !isClientSimulated) {
+                const myUuid = localStorage.getItem('tentix_uuid') || '';
+                fetch(`${API_BASE_URL}/api/chat/mark-read`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ recipient_uuid: myUuid, sender_uuid: friendUuid })
+                }).then(() => {
+                    delete unreadCounts[friendUuid];
+                    updateUnreadBadge();
+                }).catch(() => {});
+            }
+
+            const readBtn = document.getElementById('manual-mark-read-btn');
+            if (readBtn) {
+                readBtn.style.display = hasUnreadFromFriend ? 'inline-block' : 'none';
             }
             
             let html = '';
@@ -14698,7 +14720,7 @@
             </div>
             <div class="cart-close-btn" onclick="event.stopPropagation(); toggleCartDrawer()"><svg viewBox="0 0 24 24" style="width: 10px; height: 10px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; pointer-events: none;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></div>
         </div>
-        <div id="cart-items-list" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; scrollbar-width: thin;">
+        <div id="cart-items-list" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
             <!-- Cart items here -->
         </div>
 
