@@ -487,11 +487,119 @@ autoUpdater.on('error', (err) => {
     }
 });
 
+let macUpdateDmgUrl = null;
+let downloadedMacDmgPath = null;
+
+async function checkMacUpdates(silent) {
+    try {
+        if (!silent) {
+            mainWindow.webContents.send('update-status', { status: 'checking' });
+        }
+        
+        const https = require('https');
+        const options = {
+            hostname: 'api.github.com',
+            path: '/repos/TentixTV/TENTIX-Client/releases/latest',
+            headers: { 'User-Agent': 'TentixClient-MacUpdater' }
+        };
+
+        https.get(options, (res) => {
+            let data = '';
+            res.on('data', chunk => data += chunk);
+            res.on('end', () => {
+                try {
+                    const release = JSON.parse(data);
+                    if (!release.tag_name) {
+                        if (!silent) mainWindow.webContents.send('update-status', { status: 'latest' });
+                        return;
+                    }
+                    const latestVersion = release.tag_name.replace('v', '');
+                    const currentVersion = app.getVersion();
+                    
+                    if (latestVersion !== currentVersion) {
+                        const dmgAsset = release.assets.find(a => a.name.endsWith('.dmg'));
+                        if (dmgAsset) {
+                            macUpdateDmgUrl = dmgAsset.browser_download_url;
+                            mainWindow.webContents.send('update-status', { status: 'available' });
+                            return;
+                        }
+                    }
+                    
+                    if (!silent) {
+                        mainWindow.webContents.send('update-status', { status: 'latest' });
+                    } else {
+                        mainWindow.webContents.send('update-status', { status: 'idle' });
+                    }
+                } catch (e) {
+                    console.error("Failed to parse Mac release info:", e);
+                    if (!silent) mainWindow.webContents.send('update-status', { status: 'latest' });
+                }
+            });
+        }).on('error', (err) => {
+            console.error("Failed to fetch Mac updates:", err);
+            if (!silent) mainWindow.webContents.send('update-status', { status: 'latest' });
+        });
+    } catch (e) {
+        console.error("Error checking Mac updates:", e);
+    }
+}
+
+function downloadMacUpdate() {
+    if (!macUpdateDmgUrl) {
+        mainWindow.webContents.send('update-status', { status: 'error', error: "No download URL available" });
+        return;
+    }
+    
+    mainWindow.webContents.send('update-status', { status: 'downloading' });
+    
+    const https = require('https');
+    const tempDir = app.getPath('temp');
+    downloadedMacDmgPath = path.join(tempDir, `TENTIX_Client_Setup_${Date.now()}.dmg`);
+    
+    const fileStream = fs.createWriteStream(downloadedMacDmgPath);
+    
+    const request = (url) => {
+        https.get(url, { headers: { 'User-Agent': 'TentixClient-MacUpdater' } }, (res) => {
+            if (res.statusCode === 302 || res.statusCode === 301) {
+                request(res.headers.location);
+                return;
+            }
+            
+            const totalBytes = parseInt(res.headers['content-length'] || 0);
+            let downloadedBytes = 0;
+            
+            res.on('data', (chunk) => {
+                downloadedBytes += chunk.length;
+                if (totalBytes > 0) {
+                    const percent = Math.round((downloadedBytes / totalBytes) * 100);
+                    mainWindow.webContents.send('update-progress', percent);
+                }
+            });
+            
+            res.pipe(fileStream);
+            
+            fileStream.on('finish', () => {
+                fileStream.close();
+                mainWindow.webContents.send('update-status', { status: 'downloaded' });
+            });
+        }).on('error', (err) => {
+            console.error("Mac download request error:", err);
+            mainWindow.webContents.send('update-status', { status: 'error', error: err.message });
+        });
+    };
+    
+    request(macUpdateDmgUrl);
+}
+
 ipcMain.on('check-updates', (event, opts) => {
     const silent = opts && opts.silent;
     isManualCheck = !silent;
     if (app.isPackaged) {
-        autoUpdater.checkForUpdates();
+        if (process.platform === 'darwin') {
+            checkMacUpdates(silent);
+        } else {
+            autoUpdater.checkForUpdates();
+        }
     } else {
         if (!silent) {
             mainWindow.webContents.send('update-status', { status: 'checking' });
@@ -516,9 +624,14 @@ ipcMain.on('check-updates', (event, opts) => {
         });
     }
 });
+
 ipcMain.on('download-update', () => {
     if (app.isPackaged) {
-        autoUpdater.downloadUpdate();
+        if (process.platform === 'darwin') {
+            downloadMacUpdate();
+        } else {
+            autoUpdater.downloadUpdate();
+        }
     } else {
         mainWindow.webContents.send('update-status', { status: 'downloading' });
         setTimeout(() => {
@@ -526,10 +639,28 @@ ipcMain.on('download-update', () => {
         }, 1000);
     }
 });
+
 ipcMain.on('install-update', () => {
     if (app.isPackaged) {
-        app.isQuitting = true;
-        autoUpdater.quitAndInstall(true, true);
+        if (process.platform === 'darwin') {
+            if (downloadedMacDmgPath && fs.existsSync(downloadedMacDmgPath)) {
+                shell.openPath(downloadedMacDmgPath).then(() => {
+                    app.isQuitting = true;
+                    app.quit();
+                }).catch((err) => {
+                    console.error("Failed to open DMG:", err);
+                    shell.openExternal('file://' + downloadedMacDmgPath);
+                    app.isQuitting = true;
+                    app.quit();
+                });
+            } else {
+                app.isQuitting = true;
+                app.quit();
+            }
+        } else {
+            app.isQuitting = true;
+            autoUpdater.quitAndInstall(true, true);
+        }
     } else {
         if (mainWindow) {
             mainWindow.reload();

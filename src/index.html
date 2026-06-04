@@ -877,11 +877,13 @@
 
         /* P2P Friends Chat Message Bubbles */
         .chat-bubble {
-            padding: 8px 12px;
+            padding: 8px 12px 18px 12px;
             border-radius: 10px;
             font-size: 11px;
             line-height: 1.4;
             word-break: break-word;
+            position: relative;
+            min-width: 60px;
         }
         .chat-bubble.sent {
             background: rgba(0, 225, 255, 0.12);
@@ -900,11 +902,27 @@
         .chat-time {
             font-size: 8px;
             color: #666;
-            margin-top: 4px;
-            text-align: right;
+            margin: 0;
+            position: absolute;
+            bottom: 4px;
+            right: 10px;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            gap: 3px;
         }
         .chat-bubble.received .chat-time {
-            text-align: left;
+            right: 10px;
+        }
+        @keyframes chatLinePing {
+            0% { opacity: 0; box-shadow: 0 0 0px var(--accent-blue); }
+            30% { opacity: 1; box-shadow: 0 0 12px var(--accent-blue); }
+            100% { opacity: 0.7; box-shadow: 0 0 4px var(--accent-blue); }
+        }
+        @keyframes chatBtnPulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0.4); }
+            70% { box-shadow: 0 0 0 8px rgba(0, 212, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0); }
         }
         #friends-list-content::-webkit-scrollbar,
         #friends-chat-messages::-webkit-scrollbar {
@@ -2803,7 +2821,7 @@
     </div>
 
     <!-- Encrypted Friends Chat Panel -->
-    <div class="inbox-popup" id="friends-chat-popup" style="left: 485px; width: 340px; display: none; height: 380px; flex-direction: column; z-index: 4001;">
+    <div class="inbox-popup" id="friends-chat-popup" style="left: 485px; width: 340px; display: none; height: 380px; flex-direction: column; z-index: 4001; position: relative;">
         <div class="inbox-header" style="border-bottom: 1px solid rgba(255,255,255,0.05); padding: 12px 15px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;">
             <div style="display: flex; align-items: center; gap: 8px;">
                 <img id="chat-friend-avatar" src="https://mc-heads.net/avatar/MHF_Steve/18" style="width: 18px; height: 18px; border-radius: 3px;">
@@ -2817,6 +2835,12 @@
         <div id="friends-chat-messages" style="flex: 1; overflow-y: auto; overflow-x: hidden; padding: 15px; display: flex; flex-direction: column; gap: 10px;">
             <!-- Messages will be rendered here -->
         </div>
+        <!-- Scroll back to bottom arrow button -->
+        <div id="chat-scroll-bottom-btn" style="position: absolute; bottom: 58px; right: 18px; width: 26px; height: 26px; border-radius: 50%; background: rgba(15, 15, 18, 0.95); border: 1px solid rgba(0, 212, 255, 0.35); box-shadow: 0 0 10px rgba(0, 212, 255, 0.2); display: none; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; z-index: 100; -webkit-app-region: no-drag;" onclick="scrollChatToBottom()" onmouseover="this.style.background='var(--accent-blue)'; this.style.color='#000'; this.style.transform='scale(1.1)';" onmouseout="this.style.background='rgba(15, 15, 18, 0.95)'; this.style.color='var(--accent-blue)'; this.style.transform='scale(1.0)';">
+            <svg viewBox="0 0 24 24" style="width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; color: var(--accent-blue);"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+        </div>
+        <!-- Fancy message arrival notification line -->
+        <div id="chat-new-msg-line" style="position: absolute; bottom: 44px; left: 0; width: 100%; height: 2px; background: var(--accent-blue); box-shadow: 0 0 8px var(--accent-blue); display: none; opacity: 0; pointer-events: none; z-index: 99; transition: opacity 0.3s;"></div>
         <div style="padding: 10px 15px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 8px; background: rgba(0,0,0,0.15); flex-shrink: 0; -webkit-app-region: no-drag;">
             <input type="text" id="friends-chat-input" placeholder="Nachricht schreiben..." onkeydown="if(event.key === 'Enter') sendFriendChatMessage()" oninput="handleChatInputKeydown()" style="flex: 1; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 6px 10px; font-size: 11px; color: #fff; outline: none;">
             <button class="dash-btn" style="margin: 0; padding: 6px 12px; font-size: 10px; font-weight: 800; background: var(--accent-blue); color: #000; border: none; border-radius: 6px; cursor: pointer;" onclick="sendFriendChatMessage()">Senden</button>
@@ -10302,7 +10326,7 @@
             if (tentixSocket && activeChatFriendUuid) {
                 tentixSocket.emit('stop-typing', { recipient_uuid: activeChatFriendUuid });
             }
-        }, 1500);
+        }, 5000);
     }
 
     function linkDiscordAccount() {
@@ -12910,14 +12934,20 @@
                                     <span class="typing-dot"></span>
                                 </div>
                             `;
+                            const wasAtBottom = container.scrollHeight - container.clientHeight <= container.scrollTop + 40;
                             container.appendChild(indicator);
-                            container.scrollTop = container.scrollHeight;
+                            if (wasAtBottom) {
+                                container.scrollTop = container.scrollHeight;
+                            }
                         }
                         clearTimeout(indicator._timeout);
                         indicator._timeout = setTimeout(() => {
                             if (indicator.parentNode) {
+                                const wasAtBottom = container.scrollHeight - container.clientHeight <= container.scrollTop + 40;
                                 indicator.remove();
-                                container.scrollTop = container.scrollHeight;
+                                if (wasAtBottom) {
+                                    container.scrollTop = container.scrollHeight;
+                                }
                             }
                             if (data.sender_uuid) {
                                 typingUsers.delete(data.sender_uuid);
@@ -12935,9 +12965,10 @@
                 if (activeChatFriendUuid && data.sender_uuid === activeChatFriendUuid) {
                     const indicator = document.getElementById('typing-indicator');
                     if (indicator) {
-                        indicator.remove();
                         const container = document.getElementById('friends-chat-messages');
-                        if (container) {
+                        const wasAtBottom = container ? (container.scrollHeight - container.clientHeight <= container.scrollTop + 40) : false;
+                        indicator.remove();
+                        if (container && wasAtBottom) {
                             container.scrollTop = container.scrollHeight;
                         }
                     }
@@ -14015,6 +14046,23 @@
                 msgBox.innerHTML = html;
                 if (wasAtBottom) {
                     msgBox.scrollTop = msgBox.scrollHeight;
+                } else {
+                    if (!isChatInitialLoad) {
+                        const line = document.getElementById('chat-new-msg-line');
+                        if (line) {
+                            line.style.display = 'block';
+                            line.style.opacity = '0.85';
+                            line.style.animation = 'chatLinePing 1.5s ease-out';
+                            setTimeout(() => {
+                                line.style.animation = '';
+                            }, 1500);
+                        }
+                        const btn = document.getElementById('chat-scroll-bottom-btn');
+                        if (btn) {
+                            btn.style.display = 'flex';
+                            btn.style.animation = 'chatBtnPulse 1.5s infinite';
+                        }
+                    }
                 }
             }
             isChatInitialLoad = false;
@@ -14418,6 +14466,35 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+        // Friends Chat Scroll & Scroll-to-Bottom button listener
+        const msgContainer = document.getElementById('friends-chat-messages');
+        if (msgContainer) {
+            msgContainer.addEventListener('scroll', () => {
+                const btn = document.getElementById('chat-scroll-bottom-btn');
+                if (!btn) return;
+                const isNearBottom = msgContainer.scrollHeight - msgContainer.clientHeight <= msgContainer.scrollTop + 40;
+                if (isNearBottom) {
+                    btn.style.display = 'none';
+                    btn.style.animation = '';
+                    const line = document.getElementById('chat-new-msg-line');
+                    if (line) {
+                        line.style.opacity = '0';
+                        setTimeout(() => { if (line.style.opacity === '0') line.style.display = 'none'; }, 300);
+                    }
+                } else {
+                    btn.style.display = 'flex';
+                }
+            });
+        }
+        window.scrollChatToBottom = function() {
+            const msgBox = document.getElementById('friends-chat-messages');
+            if (msgBox) {
+                msgBox.scrollTo({ top: msgBox.scrollHeight, behavior: 'smooth' });
+            }
+            const btn = document.getElementById('chat-scroll-bottom-btn');
+            if (btn) btn.style.animation = '';
+        };
+
         // Custom IPC Window Dragging
         const titleBar = document.getElementById('titlebar');
         if (titleBar && window.api && window.api.drag) {
