@@ -2512,6 +2512,7 @@
                 <span>Einstellungen</span>
                 <div class="update-ping" id="settings-btn-update-ping" style="position: absolute; top: 12px; right: 12px; width: 8px; height: 8px; background: #ffcc00; border-radius: 50%; box-shadow: 0 0 8px #ffcc00; display: none; z-index: 3; animation: updatePingPulse 1.2s infinite ease-in-out;"></div>
             </div>
+            <div class="card-btn red-hover" id="ui-remove-upgrade-btn" onclick="removeActiveUpgrade()" style="display: none; color: #ff4b4b; border-color: rgba(255, 75, 75, 0.2); background: rgba(255, 75, 75, 0.03); margin-bottom: 8px;">Remove Upgrade</div>
             <div class="card-btn red-hover" id="ui-logout-btn" onclick="logout()" style="color: #ff4b4b; display: none;">Abmelden</div>
         </div>
     </div>
@@ -4542,12 +4543,25 @@
         let rankBadgeHtml = '';
         let showRankBadge = false;
 
+        let expiryText = '';
+        const expiresAtVal = parseInt(localStorage.getItem('tentix_rank_expires_at') || 0);
+        if (expiresAtVal === -1) {
+            expiryText = 'Lifetime';
+        } else if (expiresAtVal > 0) {
+            const date = new Date(expiresAtVal).toLocaleDateString(currentLang === 'de' ? 'de-DE' : 'en-US');
+            expiryText = currentLang === 'de' ? `Gültig bis ${date}` : `Valid until ${date}`;
+        }
+
+        const tooltipHtml = expiryText ? `<span class="tooltiptext tooltip-blue" style="z-index: 1100;">${expiryText}</span>` : '';
+        const tooltipClass = expiryText ? ' tooltip tooltip-down' : '';
+
         if (rolesToUse.includes('PLUS') || rolesToUse.includes('PREMIUM')) {
             showRankBadge = true;
-            rankBadgeHtml = `<span class="premium-rank-badge badge-plus" style="cursor: pointer;" onclick="navTo('tentixplus')" title="TENTIX+ Mitglied">PLUS</span>`;
+            rankBadgeHtml = `<span class="premium-rank-badge badge-plus${tooltipClass}" style="cursor: pointer;" onclick="navTo('tentixplus')">PLUS${tooltipHtml}</span>`;
         } else if (rolesToUse.includes('LITE')) {
             showRankBadge = true;
-            rankBadgeHtml = `<span class="premium-rank-badge badge-lite" style="cursor: pointer;" onclick="navTo('tentixplus')" title="TENTIX LITE Mitglied">LITE</span>`;
+            const liteTooltipHtml = expiryText ? `<span class="tooltiptext tooltip-gray" style="z-index: 1100;">${expiryText}</span>` : '';
+            rankBadgeHtml = `<span class="premium-rank-badge badge-lite${tooltipClass}" style="cursor: pointer;" onclick="navTo('tentixplus')">LITE${liteTooltipHtml}</span>`;
         }
 
         if (rankBadge) {
@@ -4567,6 +4581,12 @@
                 startRankBadge.style.display = 'none';
                 startRankBadge.innerHTML = '';
             }
+        }
+
+        const removeUpgradeBtn = document.getElementById('ui-remove-upgrade-btn');
+        if (removeUpgradeBtn) {
+            const hasUpgrade = rolesToUse.includes('LITE') || rolesToUse.includes('PLUS') || rolesToUse.includes('PREMIUM');
+            removeUpgradeBtn.style.display = hasUpgrade ? 'block' : 'none';
         }
 
         const rolesToDisplay = rolesToUse.filter(role => role !== 'PLAYER');
@@ -4840,6 +4860,20 @@
             const res = await fetch(`${API_BASE_URL}/api/store/ranks?uuid=${uuid}`);
             const data = await res.json();
             if (data.success) {
+                const activeRank = data.active_rank || 'PLAYER';
+                localStorage.setItem('tentix_rank_expires_at', data.rank_expires_at || 0);
+                localStorage.setItem('tentix_active_rank', activeRank);
+
+                const upgradeBtn = document.getElementById('shop-upgrade-btn');
+                const upgradePanel = upgradeBtn ? upgradeBtn.parentElement : null;
+                if (upgradePanel) {
+                    if (activeRank === 'LITE') {
+                        upgradePanel.style.display = 'block';
+                    } else {
+                        upgradePanel.style.display = 'none';
+                    }
+                }
+
                 const goldBtn = document.getElementById('gold-buy-btn');
                 const goldSelect = document.getElementById('gold-duration-select');
                 const platBtn = document.getElementById('platinum-buy-btn');
@@ -6538,6 +6572,7 @@
                     : `<div style="display:flex; gap:8px; justify-content:center;">
                          <div class="dash-action-btn" style="background:#ff9900; color:#000; padding:4px 8px; border-radius:4px; font-size:10px; cursor:pointer; font-weight:700;" onclick="resetTeamMember('${admin.username}', 'password')">New Password</div>
                          <div class="dash-action-btn" style="background:#ff4b4b; color:#fff; padding:4px 8px; border-radius:4px; font-size:10px; cursor:pointer; font-weight:700;" onclick="resetTeamMember('${admin.username}', 'login')">New Login</div>
+                         <div class="dash-action-btn" style="background:#cc0000; color:#fff; padding:4px 8px; border-radius:4px; font-size:10px; cursor:pointer; font-weight:700;" onclick="kickTeamMember('${admin.username}')">Remove</div>
                        </div>`;
 
                 html += `<tr>
@@ -6580,6 +6615,58 @@
             }
         } catch (e) {
             showToast("Fehler beim Zurücksetzen", "error");
+        }
+    }
+
+    async function kickTeamMember(username) {
+        const reason = prompt(currentLang === 'de' ? `Grund für den Ausschluss von '${username}' eingeben:` : `Enter reason for removing '${username}' from team:`);
+        if (reason === null) return; // Prompt cancelled
+        if (!reason.trim()) {
+            showToast(currentLang === 'de' ? "Ein Grund ist erforderlich!" : "A reason is required!", "error");
+            return;
+        }
+
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/admins/kick`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, reason })
+            });
+            const data = await res.json();
+            if (data.success) {
+                showToast(currentLang === 'de' ? "Teammitglied erfolgreich entfernt!" : "Team member removed successfully!", "success");
+                renderTeamTable();
+            } else {
+                showToast(data.error || "Fehler beim Kicken des Teammitglieds", "error");
+            }
+        } catch(err) {
+            showToast("Verbindungsfehler", "error");
+        }
+    }
+
+    function showFancyKickNotice(role, reason) {
+        const modal = document.getElementById('team-kick-notice-modal');
+        const roleEl = document.getElementById('kick-role-held');
+        const reasonEl = document.getElementById('kick-notice-reason');
+        if (modal && roleEl && reasonEl) {
+            roleEl.innerText = role.toUpperCase();
+            reasonEl.innerText = reason;
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.style.opacity = '1';
+                modal.firstElementChild.style.transform = 'scale(1)';
+            }, 10);
+        }
+    }
+
+    function closeKickNoticeModal() {
+        const modal = document.getElementById('team-kick-notice-modal');
+        if (modal) {
+            modal.style.opacity = '0';
+            modal.firstElementChild.style.transform = 'scale(0.85)';
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 400);
         }
     }
 
@@ -6787,28 +6874,7 @@
             const data = await res.json();
             if (data.success) {
                 const serverCodes = data.codes || [];
-                const localCodes = JSON.parse(localStorage.getItem('tentix_db_codes') || '[]');
-                const missingOnServer = localCodes.filter(lc => !serverCodes.some(sc => sc.code === lc.code));
-                if (missingOnServer.length > 0) {
-                    console.log("Syncing missing codes to database:", missingOnServer);
-                    for (const mc of missingOnServer) {
-                        try {
-                            await fetch(`${API_BASE_URL}/api/codes/generate`, {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({
-                                    code: mc.code,
-                                    reward: mc.reward,
-                                    uses: mc.uses,
-                                    max_uses: mc.max_uses || mc.uses,
-                                    expires_at: mc.expires_at
-                                })
-                            });
-                        } catch(err) {
-                            console.error("Sync code generate failed for", mc.code, err);
-                        }
-                    }
-                }
+                localStorage.setItem('tentix_db_codes', JSON.stringify(serverCodes));
             }
         } catch(e) {
             console.error("syncLocalCodesWithServer error:", e);
@@ -7233,6 +7299,15 @@
                 }
                 if (data.roles) {
                     currentUserRoles = data.roles;
+                }
+                if (data.active_rank) {
+                    localStorage.setItem('tentix_active_rank', data.active_rank);
+                }
+                if (data.rank_expires_at !== undefined) {
+                    localStorage.setItem('tentix_rank_expires_at', data.rank_expires_at);
+                }
+                if (data.kick_notice) {
+                    showFancyKickNotice(data.kick_notice.role, data.kick_notice.reason);
                 }
                 if (data.has_beta_access === false) {
                     localStorage.removeItem('tentix_beta_verified');
@@ -9366,6 +9441,37 @@
     }
 
 
+
+    async function removeActiveUpgrade() {
+        const uuid = localStorage.getItem('tentix_uuid') || '';
+        if (!uuid) return;
+
+        if (!confirm(currentLang === 'de' ? "Möchtest du deine TENTIX Mitgliedschaft wirklich entfernen?" : "Are you sure you want to remove your TENTIX upgrade?")) {
+            return;
+        }
+
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/ranks/remove`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ uuid })
+            });
+            const data = await res.json();
+            if (data.success) {
+                localStorage.setItem('tentix_active_rank', data.active_rank);
+                localStorage.setItem('tentix_rank_expires_at', data.rank_expires_at);
+                localStorage.setItem('tentix_roles', JSON.stringify(data.roles));
+                
+                checkActiveRankAndPanels();
+                loadBadges();
+                showToast(currentLang === 'de' ? "Upgrade erfolgreich entfernt!" : "Upgrade removed successfully!", "success");
+            } else {
+                showToast(data.error || "Fehler beim Entfernen des Upgrades", "error");
+            }
+        } catch(err) {
+            showToast("Netzwerkfehler", "error");
+        }
+    }
 
     function logout() {
         closeAllPopups();
@@ -14304,6 +14410,32 @@
                 onmouseout="this.style.transform='none'; this.style.boxShadow='0 8px 24px rgba(0, 114, 255, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.3)';">
             OK / NEUSTARTEN
         </button>
+    </div>
+</div>
+
+<!-- Team Kick Notice Modal -->
+<div id="team-kick-notice-modal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 5, 5, 0.95); backdrop-filter: blur(15px); z-index: 100000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.5s ease; -webkit-app-region: no-drag;">
+    <div style="background: #111; border: 2px solid #ff4b4b; border-radius: 16px; padding: 40px; width: 450px; text-align: center; box-shadow: 0 0 50px rgba(255, 75, 75, 0.25); transform: scale(0.85); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);">
+        <!-- Icon -->
+        <svg viewBox="0 0 24 24" style="width: 70px; height: 70px; fill: #ff4b4b; margin-bottom: 20px; filter: drop-shadow(0 0 15px rgba(255,75,75,0.5)); display: inline-block;">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+        </svg>
+        <h2 style="font-size: 22px; font-weight: 900; color: #ff4b4b; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px;">TEAM-INFO</h2>
+        
+        <div style="font-size: 13.5px; color: #eee; line-height: 1.6; margin-bottom: 25px; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 20px; border-radius: 12px;">
+            <p style="margin-bottom: 12px; font-weight: 500;">
+                Hallo, danke für deine bisherige Unterstützung als <strong id="kick-role-held" style="color: var(--accent-blue);">ADMIN</strong>.
+            </p>
+            <p style="color: #ccc; margin-bottom: 8px; font-size: 12.5px; font-weight: 600;">
+                Du bist ab sofort nicht mehr Teil des TENTIX-Teams.
+            </p>
+            <div style="margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px;">
+                <span style="font-size: 10px; color: #888; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Grund für den Ausschluss:</span>
+                <p id="kick-notice-reason" style="color: #ff8888; font-style: italic; font-weight: 600; font-size: 13px; line-height: 1.4; margin: 0;"></p>
+            </div>
+        </div>
+
+        <button class="banned-close-btn" onclick="closeKickNoticeModal()" style="width: 100%; border: none; font-size: 13px; font-weight: 800; letter-spacing: 1.5px; border-radius: 8px; cursor: pointer; transition: 0.2s;">Schließen</button>
     </div>
 </div>
 
