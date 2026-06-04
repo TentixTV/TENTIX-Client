@@ -1,6 +1,6 @@
 {
   "name": "TentixClient",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "TENTIX Client Launcher",
   "main": "main.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "appId": "com.tentix.client",
     "productName": "TENTIX Client",
     "directories": {
-      "output": "dist"
+      "output": "../../"
     },
     "publish": {
       "provider": "github",
