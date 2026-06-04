@@ -1,11 +1,12 @@
 {
   "name": "TentixClient",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "TENTIX Client Launcher",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder && node copy-to-desktop.js"
+    "build": "electron-builder",
+    "postbuild": "node copy-to-desktop.js"
   },
   "build": {
     "appId": "com.tentix.client",

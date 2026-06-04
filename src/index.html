@@ -2534,7 +2534,6 @@
                 <span>Einstellungen</span>
                 <div class="update-ping" id="settings-btn-update-ping" style="position: absolute; top: 12px; right: 12px; width: 8px; height: 8px; background: #ffcc00; border-radius: 50%; box-shadow: 0 0 8px #ffcc00; display: none; z-index: 3; animation: updatePingPulse 1.2s infinite ease-in-out;"></div>
             </div>
-            <div class="card-btn red-hover" id="ui-remove-upgrade-btn" onclick="removeActiveUpgrade()" style="display: none; color: #ff4b4b; border-color: rgba(255, 75, 75, 0.2); background: rgba(255, 75, 75, 0.03); margin-bottom: 8px;">Remove Upgrade</div>
             <div class="card-btn red-hover" id="ui-logout-btn" onclick="logout()" style="color: #ff4b4b; display: none;">Abmelden</div>
         </div>
     </div>
@@ -4479,7 +4478,7 @@
                     return dbUuid === clientUuid || (dbUser && cleanName && dbUser === cleanName);
                 });
                 
-                // Real-time Database Ban Enforcement
+                // Real-time Database Ban & Rank Expiration Sync
                 if(userObj) {
                     if (userObj.is_banned) {
                         localStorage.setItem('tentix_ban_status', 'true');
@@ -4488,6 +4487,12 @@
                     } else {
                         localStorage.removeItem('tentix_ban_status');
                         localStorage.removeItem('tentix_ban_reason');
+                    }
+                    if (userObj.active_rank !== undefined) {
+                        localStorage.setItem('tentix_active_rank', userObj.active_rank);
+                    }
+                    if (userObj.rank_expires_at !== undefined) {
+                        localStorage.setItem('tentix_rank_expires_at', userObj.rank_expires_at);
                     }
                 }
 
@@ -4605,11 +4610,7 @@
             }
         }
 
-        const removeUpgradeBtn = document.getElementById('ui-remove-upgrade-btn');
-        if (removeUpgradeBtn) {
-            const hasUpgrade = rolesToUse.includes('LITE') || rolesToUse.includes('PLUS') || rolesToUse.includes('PREMIUM');
-            removeUpgradeBtn.style.display = hasUpgrade ? 'block' : 'none';
-        }
+
 
         const rolesToDisplay = rolesToUse.filter(role => role !== 'PLAYER');
 
