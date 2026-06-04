@@ -4394,19 +4394,25 @@
         }
     }
 
+    let currentToastTimeout = null;
+    let currentToastColorTimeout = null;
     function showToast(msg, type = 'success') {
         if(!isAppReady && type !== 'error') return;
         const toast = document.getElementById('toast');
         if(!toast) return;
+        
+        if (currentToastTimeout) clearTimeout(currentToastTimeout);
+        if (currentToastColorTimeout) clearTimeout(currentToastColorTimeout);
+        
         toast.innerText = msg;
         toast.className = 'show';
         let color = type === 'success' ? '#00ff80' : type === 'error' ? '#ff4b4b' : '#ffb84d';
         toast.style.color = color;
         toast.style.borderColor = color;
         toast.style.boxShadow = `0 0 20px ${color}40`;
-        setTimeout(() => {
+        currentToastTimeout = setTimeout(() => {
             toast.classList.remove('show');
-            setTimeout(() => {
+            currentToastColorTimeout = setTimeout(() => {
                 toast.style.color = "var(--accent-blue)";
                 toast.style.borderColor = "var(--accent-blue)";
                 toast.style.boxShadow = "0 0 20px rgba(var(--accent-blue-rgb), 0.2)";
@@ -8394,6 +8400,7 @@
         }
 
         updateSimulationButtonText();
+        renderDesignSettingsTab();
     }
 
     let paymentMethodsExpanded = false;
@@ -13690,8 +13697,8 @@
                             </div>
                         </div>
                         <div class="friend-request-actions" style="display: flex; align-items: center; gap: 6px;">
-                            <button onclick="acceptFriendRequest('${r.uuid}', '${r.username.replace(/'/g, "\\'")}', event)" style="cursor: pointer; background: rgba(0, 255, 128, 0.12); border: 1px solid rgba(0, 255, 128, 0.3); border-radius: 4px; padding: 4px 8px; font-size: 9px; font-weight: 800; color: #00ff80; text-transform: uppercase; transition: 0.2s;" onmouseover="this.style.background='#00ff80'; this.style.color='#000';" onmouseout="this.style.background='rgba(0, 255, 128, 0.12)'; this.style.color='#00ff80';">Annehmen</button>
-                            <button onclick="declineFriendRequest('${r.uuid}', false, event)" style="cursor: pointer; background: rgba(255, 75, 75, 0.12); border: 1px solid rgba(255, 75, 75, 0.3); border-radius: 4px; padding: 4px 8px; font-size: 9px; font-weight: 800; color: #ff4b4b; text-transform: uppercase; transition: 0.2s;" onmouseover="this.style.background='#ff4b4b'; this.style.color='#000';" onmouseout="this.style.background='rgba(255, 75, 75, 0.12)'; this.style.color='#ff4b4b';">Ablehnen</button>
+                            <button onclick="acceptFriendRequest('${r.uuid}', '${r.username.replace(/'/g, "\\'")}', event)" style="cursor: pointer; background: rgba(0, 255, 128, 0.12); border: 1px solid rgba(0, 255, 128, 0.3); border-radius: 4px; padding: 4px 8px; font-size: 9px; font-weight: 800; color: #00ff80; text-transform: uppercase; transition: 0.2s;" onmouseover="this.style.background='#00ff80'; this.style.color='#000';" onmouseout="this.style.background='rgba(0, 255, 128, 0.12)'; this.style.color='#00ff80';">${currentLang === 'de' ? 'Annehmen' : 'Accept'}</button>
+                            <button onclick="declineFriendRequest('${r.uuid}', false, event)" style="cursor: pointer; background: rgba(255, 75, 75, 0.12); border: 1px solid rgba(255, 75, 75, 0.3); border-radius: 4px; padding: 4px 8px; font-size: 9px; font-weight: 800; color: #ff4b4b; text-transform: uppercase; transition: 0.2s;" onmouseover="this.style.background='#ff4b4b'; this.style.color='#000';" onmouseout="this.style.background='rgba(255, 75, 75, 0.12)'; this.style.color='#ff4b4b';">${currentLang === 'de' ? 'Ablehnen' : 'Decline'}</button>
                         </div>
                     </div>
                 `;
@@ -13720,7 +13727,7 @@
                             </div>
                         </div>
                         <div style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 8px; font-weight: 800; color: #ffbb00; background: rgba(255, 187, 0, 0.1); border: 1px solid rgba(255, 187, 0, 0.2); border-radius: 4px; padding: 2px 5px; text-transform: uppercase; letter-spacing: 0.5px;">Ausstehend</span>
+                            <span style="font-size: 8px; font-weight: 800; color: #ffbb00; background: rgba(255, 187, 0, 0.1); border: 1px solid rgba(255, 187, 0, 0.2); border-radius: 4px; padding: 2px 5px; text-transform: uppercase; letter-spacing: 0.5px;">${currentLang === 'de' ? "Ausstehend" : "Pending"}</span>
                             <div class="friends-remove-btn" onclick="declineFriendRequest('${r.uuid}', true, event)" style="cursor: pointer; color: #555; padding: 4px 6px; font-size: 10px; transition: 0.2s;" onmouseover="this.style.color='#ff4b4b';" onmouseout="this.style.color='#555';">✕</div>
                         </div>
                     </div>
@@ -13925,11 +13932,50 @@
                 const myUsername = localStorage.getItem('tentix_user') || 'Steve';
                 const friendUsername = activeChatFriendName || 'Steve';
 
+                let lastDateStr = null;
                 messages.forEach((msg, idx) => {
                     const isMe = msg.sender === senderUuid;
                     const decryptedContent = xorDecrypt(msg.content, encryptionKey);
                     const bubbleClass = isMe ? 'sent' : 'received';
-                    const timeStr = new Date(msg.created_at || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    const msgDate = new Date(msg.created_at || Date.now());
+                    const timeStr = msgDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    
+                    const year = msgDate.getFullYear();
+                    const month = String(msgDate.getMonth() + 1).padStart(2, '0');
+                    const day = String(msgDate.getDate()).padStart(2, '0');
+                    const dateCompareStr = `${year}-${month}-${day}`;
+                    
+                    if (dateCompareStr !== lastDateStr) {
+                        let dateDisplay = '';
+                        const today = new Date();
+                        const yesterday = new Date();
+                        yesterday.setDate(today.getDate() - 1);
+
+                        const isToday = msgDate.getDate() === today.getDate() &&
+                                        msgDate.getMonth() === today.getMonth() &&
+                                        msgDate.getFullYear() === today.getFullYear();
+
+                        const isYesterday = msgDate.getDate() === yesterday.getDate() &&
+                                            msgDate.getMonth() === yesterday.getMonth() &&
+                                            msgDate.getFullYear() === yesterday.getFullYear();
+
+                        if (isToday) {
+                            dateDisplay = currentLang === 'de' ? 'Heute' : 'Today';
+                        } else if (isYesterday) {
+                            dateDisplay = currentLang === 'de' ? 'Gestern' : 'Yesterday';
+                        } else {
+                            dateDisplay = `${day}.${month}.${year}`;
+                        }
+                        
+                        html += `
+                            <div class="chat-date-separator" style="display: flex; align-items: center; justify-content: center; margin: 15px 0 10px 0; width: 100%; pointer-events: none; -webkit-app-region: no-drag;">
+                                <div style="flex: 1; height: 1px; background: rgba(255,255,255,0.03);"></div>
+                                <span style="font-size: 9px; font-weight: 800; color: #666; text-transform: uppercase; letter-spacing: 1px; padding: 0 15px;">${dateDisplay}</span>
+                                <div style="flex: 1; height: 1px; background: rgba(255,255,255,0.03);"></div>
+                            </div>
+                        `;
+                        lastDateStr = dateCompareStr;
+                    }
                     
                     const shouldAnimate = !isChatInitialLoad && idx >= lastMessageCount;
                     const animClass = shouldAnimate ? ' chat-message-animate' : '';
