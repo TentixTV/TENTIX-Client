@@ -455,31 +455,55 @@ launcher.on('close', (e) => mainWindow.webContents.send('launch-progress', { typ
 
 autoUpdater.autoDownload = false;
 
-autoUpdater.on('checking-for-update', () => mainWindow.webContents.send('update-status', { status: 'checking' }));
+let isManualCheck = false;
+
+autoUpdater.on('checking-for-update', () => {
+    if (isManualCheck) {
+        mainWindow.webContents.send('update-status', { status: 'checking' });
+    }
+});
 autoUpdater.on('update-available', () => mainWindow.webContents.send('update-status', { status: 'available' }));
-autoUpdater.on('update-not-available', () => mainWindow.webContents.send('update-status', { status: 'latest' }));
+autoUpdater.on('update-not-available', () => {
+    if (isManualCheck) {
+        mainWindow.webContents.send('update-status', { status: 'latest' });
+    } else {
+        mainWindow.webContents.send('update-status', { status: 'idle' });
+    }
+});
 autoUpdater.on('download-progress', (progressObj) => mainWindow.webContents.send('update-progress', progressObj.percent));
 autoUpdater.on('update-downloaded', () => mainWindow.webContents.send('update-status', { status: 'downloaded' }));
 autoUpdater.on('error', (err) => {
     console.error("AutoUpdater error:", err);
-    mainWindow.webContents.send('update-status', { status: 'error', error: err ? err.message : "Unknown error" });
+    if (isManualCheck) {
+        mainWindow.webContents.send('update-status', { status: 'error', error: err ? err.message : "Unknown error" });
+    } else {
+        mainWindow.webContents.send('update-status', { status: 'idle' });
+    }
 });
 
-ipcMain.on('check-updates', () => {
+ipcMain.on('check-updates', (event, opts) => {
+    const silent = opts && opts.silent;
+    isManualCheck = !silent;
     if (app.isPackaged) {
         autoUpdater.checkForUpdatesAndNotify();
     } else {
-        mainWindow.webContents.send('update-status', { status: 'checking' });
+        if (!silent) {
+            mainWindow.webContents.send('update-status', { status: 'checking' });
+        }
         const { exec } = require('child_process');
         exec('git pull', (err, stdout, stderr) => {
             if (err) {
                 console.error("Git pull error:", err);
-                mainWindow.webContents.send('update-status', { status: 'latest' });
+                if (!silent) {
+                    mainWindow.webContents.send('update-status', { status: 'latest' });
+                }
                 return;
             }
             console.log("Git pull output:", stdout);
             if (stdout.includes('Already up to date.') || stdout.includes('Bereits auf dem neuesten Stand.')) {
-                mainWindow.webContents.send('update-status', { status: 'latest' });
+                if (!silent) {
+                    mainWindow.webContents.send('update-status', { status: 'latest' });
+                }
             } else {
                 mainWindow.webContents.send('update-status', { status: 'downloaded' });
             }

@@ -7,7 +7,7 @@ contextBridge.exposeInMainWorld('api', {
     minimize: () => ipcRenderer.send('window-minimize'),
     drag: (data) => ipcRenderer.send('window-drag', data),
     openExternalLink: (url) => ipcRenderer.send('open-external', url),
-    checkUpdates: () => ipcRenderer.send('check-updates'),
+    checkUpdates: (opts) => ipcRenderer.send('check-updates', opts),
     downloadUpdate: () => ipcRenderer.send('download-update'),
     installUpdate: () => ipcRenderer.send('install-update'),
     getAppVersion: () => ipcRenderer.invoke('get-app-version'),

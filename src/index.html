@@ -3887,7 +3887,7 @@
             discJoin: "Join the Official TENTIX Discord Server", discJoinDesc: "Get support, news & chat with the community!",
             loginErrTitle: "LOGIN FAILED", loginErrDesc: "We couldn't log you in to Microsoft. The process was canceled or an error occurred.", btnOk: "UNDERSTOOD", errVerTitle: "VERSION ERROR", errVerDesc: "Fabric is not available for this version.",
             updTab: "Updater", updHeader: "Client Updater", updStatTitle: "Status", updStatDesc: "Version v0.1.0 BETA is installed", updBtn: "Check for updates",
-            updIdle: "Update the Launcher", updCheck: "Checking for updates...", updDl: "Downloading update...", updReady: "Update ready! Click to install.", updLatest: "You are up to date!", updLatestToast: "You are on the latest version! (v0.1.0)",
+            updIdle: "Check for system updates", updCheck: "Checking for system updates...", updDl: "Downloading system update...", updReady: "System update ready. Click to install.", updLatest: "The launcher is up to date", updLatestToast: "You are already using the latest version! (v0.1.0)",
             offTitle: "NO INTERNET CONNECTION", offDesc: "Please connect to the internet or LAN to continue.",
             setRedTitle: "Redeem Code", setRedDesc: "Redeem a TENTIX code for exclusive badges or cosmetics.", setRedBtn: "ENTER CODE",
             redTitle: "REDEEM CODE", redDesc: "Enter your TENTIX code here", redBtn: "REDEEM", redChecked: "CODE REDEEMED!", redFail: "INVALID CODE!", redShort: "CODE TOO SHORT!",
@@ -3947,7 +3947,7 @@
             discJoin: "Tritt dem Offiziellen TENTIX Discord bei", discJoinDesc: "Erhalte Support, Updates & chatte mit der Community!",
             loginErrTitle: "LOGIN FEHLGESCHLAGEN", loginErrDesc: "Wir konnten dich nicht bei Microsoft einloggen. Der Vorgang wurde abgebrochen oder es trat ein Fehler auf.", btnOk: "VERSTANDEN", errVerTitle: "VERSION FEHLER", errVerDesc: "Fabric ist für diese Version nicht verfügbar.",
             updTab: "Updater", updHeader: "Client Updater", updStatTitle: "Status", updStatDesc: "Version v0.1.0 BETA installiert", updBtn: "Nach Updates suchen",
-            updIdle: "Update den Launcher", updCheck: "Suche nach Updates...", updDl: "Update wird heruntergeladen...", updReady: "Update bereit! Klicken zum Installieren.", updLatest: "Du bist auf der neuesten Version!", updLatestToast: "Du bist auf der aktuellsten Version! (v0.1.0)",
+            updIdle: "Nach System-Updates suchen", updCheck: "Suche nach System-Updates läuft...", updDl: "System-Update wird heruntergeladen...", updReady: "System-Update bereit. Klicken zum Installieren.", updLatest: "Der Launcher ist auf dem neuesten Stand", updLatestToast: "Du verwendest bereits die neueste Version! (v0.1.0)",
             offTitle: "KEINE INTERNETVERBINDUNG", offDesc: "Bitte stelle eine Verbindung zum Internet oder LAN her, um fortzufahren.",
             setRedTitle: "Code Einlösen", setRedDesc: "Löse einen TENTIX Code für exklusive Badges oder Cosmetics ein.", setRedBtn: "CODE EINGEBEN",
             redTitle: "CODE EINLÖSEN", redDesc: "Gib deinen TENTIX Code hier ein", redBtn: "EINLÖSEN", redChecked: "CODE EINGELÖST!", redFail: "UNGÜLTIGER CODE!", redShort: "CODE ZU KURZ!",
@@ -9296,6 +9296,15 @@
                 onUpdateProgressReceived(percent);
             });
         }
+
+        // Auto-check for updates every 30 seconds silently in the background
+        setInterval(() => {
+            if (updateState === 'idle' || updateState === 'latest') {
+                if (window.api && window.api.checkUpdates) {
+                    window.api.checkUpdates({ silent: true });
+                }
+            }
+        }, 30000);
 
         if (window.api && window.api.getAppVersion) {
             window.api.getAppVersion().then(v => {
