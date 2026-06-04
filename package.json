@@ -1,12 +1,13 @@
 {
   "name": "TentixClient",
-  "version": "1.1.22",
+  "version": "1.1.23",
   "description": "TENTIX Client Launcher",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "build": "electron-builder",
-    "postbuild": "node copy-to-desktop.js"
+    "postbuild": "node copy-to-desktop.js",
+    "postinstall": "patch-package"
   },
   "build": {
     "appId": "com.tentix.client",
@@ -25,6 +26,27 @@
       "target": [
         "dmg",
         "zip"
+      ]
+    },
+    "dmg": {
+      "title": "TENTIX Client Installer",
+      "background": "build/background.png",
+      "iconSize": 100,
+      "window": {
+        "width": 600,
+        "height": 600
+      },
+      "contents": [
+        {
+          "x": 144,
+          "y": 295
+        },
+        {
+          "x": 459,
+          "y": 295,
+          "type": "link",
+          "path": "/Applications"
+        }
       ]
     },
     "win": {
@@ -49,7 +71,8 @@
   "devDependencies": {
     "electron": "^30.5.1",
     "electron-builder": "^26.8.1",
-    "javascript-obfuscator": "^5.4.3"
+    "javascript-obfuscator": "^5.4.3",
+    "patch-package": "^8.0.1"
   },
   "dependencies": {
     "discord-rpc": "^4.0.1",

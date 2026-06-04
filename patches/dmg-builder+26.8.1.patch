@@ -1,0 +1,38 @@
+diff --git a/node_modules/dmg-builder/out/dmgUtil.js b/node_modules/dmg-builder/out/dmgUtil.js
+index f6f3e95..7e7e97f 100644
+--- a/node_modules/dmg-builder/out/dmgUtil.js
++++ b/node_modules/dmg-builder/out/dmgUtil.js
+@@ -123,6 +123,7 @@ async function customizeDmg({ appPath, artifactPath, volumeName, specification,
+         format: specification.format,
+         size: specification.size,
+         shrink: specification.shrink,
++        hide: [".background.png", ".background.tiff", ".VolumeIcon.icns", ".background", ".DS_Store", ".Trashes", ".fseventsd"],
+         contents: ((_a = specification.contents) === null || _a === void 0 ? void 0 : _a.map(c => ({
+             path: c.path || appPath, // path is required, when ommitted, appPath is used (backward compatibility
+             x: c.x,
+@@ -165,6 +166,25 @@ async function customizeDmg({ appPath, artifactPath, volumeName, specification,
+         const size = await getImageSizeUsingSips(settings.background);
+         settings.window = { position: { x: 400, y: Math.round((1440 - size.height) / 2) }, size, ...settings.window };
+     }
++    if (settings.background) {
++        const bgExt = path.extname(settings.background);
++        settings.contents.push({
++            path: settings.background,
++            x: 2000,
++            y: 2000,
++            name: `.background${bgExt}`,
++            type: "file"
++        });
++    }
++    if (settings.icon) {
++        settings.contents.push({
++            path: settings.icon,
++            x: 2100,
++            y: 2000,
++            name: ".VolumeIcon.icns",
++            type: "file"
++        });
++    }
+     const settingsFile = await packager.getTempFile(".json");
+     await (0, fs_extra_1.writeFile)(settingsFile, JSON.stringify(settings, null, 2));
+     const dmgbuild = await getDmgVendorPath();
