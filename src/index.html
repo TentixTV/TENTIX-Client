@@ -890,6 +890,23 @@
         .chat-bubble.received .chat-time {
             text-align: left;
         }
+        #friends-list-content::-webkit-scrollbar,
+        #friends-chat-messages::-webkit-scrollbar {
+            width: 5px;
+        }
+        #friends-list-content::-webkit-scrollbar-track,
+        #friends-chat-messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        #friends-list-content::-webkit-scrollbar-thumb,
+        #friends-chat-messages::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 3px;
+        }
+        #friends-list-content::-webkit-scrollbar-thumb:hover,
+        #friends-chat-messages::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 225, 255, 0.4);
+        }
 
         @keyframes messageSlideUp {
             from {
@@ -903,6 +920,29 @@
         }
         .chat-message-animate {
             animation: messageSlideUp 0.3s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+        .typing-dot {
+            width: 5px;
+            height: 5px;
+            background: var(--accent-blue);
+            border-radius: 50%;
+            display: inline-block;
+            animation: typingBounce 1.4s infinite ease-in-out both;
+            opacity: 0.8;
+            margin: 0 1px;
+        }
+        .typing-dot:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+        .typing-dot:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+        @keyframes typingBounce {
+            0%, 80%, 100% { 
+                transform: translateY(0);
+            } 40% { 
+                transform: translateY(-4px);
+            }
         }
 
         /* Installed Mod Action Button Hover States */
@@ -1267,11 +1307,25 @@
              border-radius: 4px;
              border: 1px solid rgba(255,255,255,0.15);
          }
-         .friend-status-dot {
-             width: 6px;
-             height: 6px;
-             border-radius: 50%;
-         }
+          .friend-status-dot {
+              width: 6px;
+              height: 6px;
+              border-radius: 50%;
+          }
+          .typing-dot {
+              width: 5px;
+              height: 5px;
+              background-color: #aaa;
+              border-radius: 50%;
+              display: inline-block;
+              animation: typingBounce 1.4s infinite ease-in-out both;
+          }
+          .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+          .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+          @keyframes typingBounce {
+              0%, 80%, 100% { transform: scale(0.3); opacity: 0.4; }
+              40% { transform: scale(1.1); opacity: 1; }
+          }
          .friends-remove-btn {
              opacity: 0;
              transition: opacity 0.2s;
@@ -2634,7 +2688,7 @@
             <!-- Messages will be rendered here -->
         </div>
         <div style="padding: 10px 15px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 8px; background: rgba(0,0,0,0.15); flex-shrink: 0; -webkit-app-region: no-drag;">
-            <input type="text" id="friends-chat-input" placeholder="Nachricht schreiben..." onkeydown="if(event.key === 'Enter') sendFriendChatMessage()" style="flex: 1; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 6px 10px; font-size: 11px; color: #fff; outline: none;">
+            <input type="text" id="friends-chat-input" placeholder="Nachricht schreiben..." onkeydown="if(event.key === 'Enter') sendFriendChatMessage()" oninput="handleChatInputKeydown()" style="flex: 1; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 6px 10px; font-size: 11px; color: #fff; outline: none;">
             <button class="dash-btn" style="margin: 0; padding: 6px 12px; font-size: 10px; font-weight: 800; background: var(--accent-blue); color: #000; border: none; border-radius: 6px; cursor: pointer;" onclick="sendFriendChatMessage()">Senden</button>
         </div>
     </div>
@@ -2834,16 +2888,41 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Connected Discord Account User Info -->
-                        <div class="setting-block" id="block-discord-user-info" style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 20px; display: none;">
-                            <div class="setting-row" style="display: flex; align-items: center; gap: 12px;">
-                                <div style="width: 40px; height: 40px; border-radius: 50%; background: rgba(88, 101, 242, 0.1); border: 1px solid rgba(88, 101, 242, 0.3); display: flex; align-items: center; justify-content: center; color: #5865F2;">
-                                    <svg viewBox="0 0 127.14 96.36" style="width: 22px; height: 22px; fill: currentColor;"><path d="M107.7,8.07A105.15,105.15,0,0,0,77.26,0a77.19,77.19,0,0,0-3.3,6.83A96.67,96.67,0,0,0,53.22,6.83,77.19,77.19,0,0,0,49.88,0,105.15,105.15,0,0,0,19.44,8.07C3.66,31.58-1.86,54.65,1,77.53A105.73,105.73,0,0,0,32,96.36a77.7,77.7,0,0,0,6.63-10.85,68.43,68.43,0,0,1-10.5-5c.88-.65,1.72-1.34,2.53-2a75.58,75.58,0,0,0,73,0c.8.71,1.65,1.4,2.53,2a68.42,68.42,0,0,1-10.5,5A77.7,77.7,0,0,0,101.8,96.36a105.73,105.73,0,0,0,31-18.83C130,50.22,123.23,27.5,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53S36.18,40.36,42.45,40.36,53.83,46,53.83,53,48.72,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.24,60,73.24,53S78.41,40.36,84.69,40.36,96.07,46,96.07,53,91,65.69,84.69,65.69Z"/></svg>
+                        <!-- Discord Linking Account (Staging/Mock API Link) -->
+                        <div id="discord-link-container" style="display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; background: rgba(88, 101, 242, 0.05); border: 1px solid rgba(88, 101, 242, 0.15); border-radius: 12px; margin: 20px 0; gap: 15px;">
+                            <div style="display: flex; align-items: center; gap: 14px;">
+                                <div style="width: 42px; height: 42px; border-radius: 50%; background: rgba(88, 101, 242, 0.1); border: 1px solid rgba(88, 101, 242, 0.25); display: flex; align-items: center; justify-content: center; color: #5865F2; flex-shrink: 0;">
+                                    <svg viewBox="0 0 127.14 96.36" style="width: 20px; height: 20px; fill: currentColor;"><path d="M107.7,8.07A105.15,105.15,0,0,0,77.26,0a77.19,77.19,0,0,0-3.3,6.83A96.67,96.67,0,0,0,53.22,6.83,77.19,77.19,0,0,0,49.88,0,105.15,105.15,0,0,0,19.44,8.07C3.66,31.58-1.86,54.65,1,77.53A105.73,105.73,0,0,0,32,96.36a77.7,77.7,0,0,0,6.63-10.85,68.43,68.43,0,0,1-10.5-5c.88-.65,1.72-1.34,2.53-2a75.58,75.58,0,0,0,73,0c.8.71,1.65,1.4,2.53,2a68.42,68.42,0,0,1-10.5,5A77.7,77.7,0,0,0,101.8,96.36a105.73,105.73,0,0,0,31-18.83C130,50.22,123.23,27.5,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53S36.18,40.36,42.45,40.36,53.83,46,53.83,53,48.72,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.24,60,73.24,53S78.41,40.36,84.69,40.36,96.07,46,96.07,53,91,65.69,84.69,65.69Z"/></svg>
                                 </div>
-                                <div class="setting-text-col" style="flex-grow: 1;">
-                                    <div class="setting-title" id="t-discord-user-title" style="font-size: 13px; font-weight: 800; color: #fff;">Verbundenes Discord-Konto</div>
-                                    <div class="setting-desc" id="discord-user-tag" style="margin-bottom:0; font-size: 13px; font-weight: 800; color: #5865F2; margin-top: 2px;">Offline</div>
+                                <div>
+                                    <div id="t-discord-link-title" style="font-size: 13px; font-weight: 800; color: #fff;">Discord verknüpfen</div>
+                                    <div id="t-discord-link-desc" style="font-size: 11px; color: var(--text-gray); margin-top: 3px; line-height: 1.4;">Verknüpfe deinen Discord-Account für exklusive Rollen und Synchronisation.</div>
                                 </div>
+                            </div>
+                            <button id="discord-link-btn" onclick="linkDiscordAccount()" class="dash-btn" style="margin: 0; min-width: 110px; background: #5865F2; color: #fff; font-weight: 700; font-size: 11px; padding: 8px 16px; border-radius: 6px; box-shadow: 0 4px 10px rgba(88, 101, 242, 0.2); transition: background 0.2s; border: none; cursor: pointer;" onmouseover="this.style.background='#4752c4'" onmouseout="this.style.background='#5865F2'">Verbinden</button>
+                        </div>
+
+                        <div id="discord-linked-container" style="display: none; align-items: center; justify-content: space-between; padding: 18px 22px; background: rgba(0, 255, 128, 0.03); border: 1px solid rgba(0, 255, 128, 0.15); border-radius: 12px; margin: 20px 0; gap: 15px;">
+                            <div style="display: flex; align-items: center; gap: 14px;">
+                                <div style="width: 42px; height: 42px; border-radius: 50%; background: rgba(0, 255, 128, 0.1); border: 1px solid rgba(0, 255, 128, 0.25); display: flex; align-items: center; justify-content: center; color: #00ff80; flex-shrink: 0;">
+                                    <svg viewBox="0 0 127.14 96.36" style="width: 20px; height: 20px; fill: currentColor;"><path d="M107.7,8.07A105.15,105.15,0,0,0,77.26,0a77.19,77.19,0,0,0-3.3,6.83A96.67,96.67,0,0,0,53.22,6.83,77.19,77.19,0,0,0,49.88,0,105.15,105.15,0,0,0,19.44,8.07C3.66,31.58-1.86,54.65,1,77.53A105.73,105.73,0,0,0,32,96.36a77.7,77.7,0,0,0,6.63-10.85,68.43,68.43,0,0,1-10.5-5c.88-.65,1.72-1.34,2.53-2a75.58,75.58,0,0,0,73,0c.8.71,1.65,1.4,2.53,2a68.42,68.42,0,0,1-10.5,5A77.7,77.7,0,0,0,101.8,96.36a105.73,105.73,0,0,0,31-18.83C130,50.22,123.23,27.5,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53S36.18,40.36,42.45,40.36,53.83,46,53.83,53,48.72,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.24,60,73.24,53S78.41,40.36,84.69,40.36,96.07,46,96.07,53,91,65.69,84.69,65.69Z"/></svg>
+                                </div>
+                                <div>
+                                    <div id="t-discord-linked-title" style="font-size: 13px; font-weight: 800; color: #fff;">Verbundenes Discord-Konto</div>
+                                    <div id="discord-linked-user" style="font-size: 13px; font-weight: 800; color: #00ff80; margin-top: 3px; font-family: monospace;">Username#0000</div>
+                                </div>
+                            </div>
+                            <button id="discord-unlink-btn" onclick="unlinkDiscordAccount()" class="dash-btn" style="margin: 0; min-width: 110px; background: rgba(255, 75, 75, 0.1); border: 1px solid rgba(255, 75, 75, 0.3); color: #ff4b4b; font-weight: 700; font-size: 11px; padding: 8px 16px; border-radius: 6px; transition: background 0.2s, color 0.2s; cursor: pointer;" onmouseover="this.style.background='#ff4b4b'; this.style.color='#fff';" onmouseout="this.style.background='rgba(255, 75, 75, 0.1)'; this.style.color='#ff4b4b'">Trennen</button>
+                        </div>
+
+                        <!-- Connected Discord Account User Info (RPC status) -->
+                        <div id="block-discord-user-info" style="display: none; align-items: center; gap: 14px; padding: 14px 20px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 12px; margin: 15px 0;">
+                            <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(88, 101, 242, 0.08); border: 1px solid rgba(88, 101, 242, 0.2); display: flex; align-items: center; justify-content: center; color: #5865F2; flex-shrink: 0;">
+                                <svg viewBox="0 0 127.14 96.36" style="width: 18px; height: 18px; fill: currentColor;"><path d="M107.7,8.07A105.15,105.15,0,0,0,77.26,0a77.19,77.19,0,0,0-3.3,6.83A96.67,96.67,0,0,0,53.22,6.83,77.19,77.19,0,0,0,49.88,0,105.15,105.15,0,0,0,19.44,8.07C3.66,31.58-1.86,54.65,1,77.53A105.73,105.73,0,0,0,32,96.36a77.7,77.7,0,0,0,6.63-10.85,68.43,68.43,0,0,1-10.5-5c.88-.65,1.72-1.34,2.53-2a75.58,75.58,0,0,0,73,0c.8.71,1.65,1.4,2.53,2a68.42,68.42,0,0,1-10.5,5A77.7,77.7,0,0,0,101.8,96.36a105.73,105.73,0,0,0,31-18.83C130,50.22,123.23,27.5,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53S36.18,40.36,42.45,40.36,53.83,46,53.83,53,48.72,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.24,60,73.24,53S78.41,40.36,84.69,40.36,96.07,46,96.07,53,91,65.69,84.69,65.69Z"/></svg>
+                            </div>
+                            <div class="setting-text-col" style="flex-grow: 1;">
+                                <div class="setting-title" id="t-discord-user-title" style="font-size: 11px; font-weight: 800; color: #aaa;">Lokaler Discord-Status (RPC)</div>
+                                <div class="setting-desc" id="discord-user-tag" style="margin-bottom:0; font-size: 12px; font-weight: 800; color: #5865F2; margin-top: 2px;">Offline</div>
                             </div>
                         </div>
 
@@ -3862,6 +3941,7 @@
     let skinChangerModelManual = false;
     let tentixSocket = null;
     let unreadCounts = {};
+    let typingUsers = new Set();
     let onlineToastQueue = [];
     let onlineToastShowing = false;
 
@@ -3903,6 +3983,8 @@
             discDetailsFormat: "Details Format", discDetailsFormatDesc: "Use {username} for your name. Leave blank for default.",
             discStateFormat: "State Format", discStateFormatDesc: "Use {username} for your name. Leave blank for default.",
             discordUserConnected: "Connected Discord Account", discordNotConnected: "Discord not connected",
+            discLinkTitle: "Link Discord Account", discLinkDesc: "Link your Discord account for exclusive roles and sync.",
+            discLinkedTitle: "Linked Discord Account", discUnlinkBtn: "Disconnect", discLinkBtn: "Connect",
             loginErrTitle: "LOGIN FAILED", loginErrDesc: "We couldn't log you in to Microsoft. The process was canceled or an error occurred.", btnOk: "UNDERSTOOD", errVerTitle: "VERSION ERROR", errVerDesc: "Fabric is not available for this version.",
             updTab: "Updater", updHeader: "Client Updater", updStatTitle: "Status", updStatDesc: "Version v0.1.0 BETA is installed", updBtn: "Check for updates",
             updIdle: "Check for system updates", updCheck: "Checking for system updates...", updDl: "Downloading system update...", updReady: "System update ready. Click to install.", updLatest: "The launcher is up to date", updLatestToast: "You are already using the latest version! (v0.1.0)", autostartTitle: "Autostart", autostartDesc: "Start TENTIX automatically with {os}",
@@ -3967,6 +4049,8 @@
             discDetailsFormat: "Details-Format", discDetailsFormatDesc: "Verwende {username} für deinen Namen. Leer lassen für Standard.",
             discStateFormat: "State-Format", discStateFormatDesc: "Verwende {username} für deinen Namen. Leer lassen für Standard.",
             discordUserConnected: "Verbundenes Discord-Konto", discordNotConnected: "Discord nicht verbunden",
+            discLinkTitle: "Discord verknüpfen", discLinkDesc: "Verknüpfe deinen Discord-Account für exklusive Rollen und Synchronisation.",
+            discLinkedTitle: "Verbundenes Discord-Konto", discUnlinkBtn: "Trennen", discLinkBtn: "Verbinden",
             loginErrTitle: "LOGIN FEHLGESCHLAGEN", loginErrDesc: "Wir konnten dich nicht bei Microsoft einloggen. Der Vorgang wurde abgebrochen oder es trat ein Fehler auf.", btnOk: "VERSTANDEN", errVerTitle: "VERSION FEHLER", errVerDesc: "Fabric ist für diese Version nicht verfügbar.",
             updTab: "Updater", updHeader: "Client Updater", updStatTitle: "Status", updStatDesc: "Version v0.1.0 BETA installiert", updBtn: "Nach Updates suchen",
             updIdle: "Nach System-Updates suchen", updCheck: "Suche nach System-Updates läuft...", updDl: "System-Update wird heruntergeladen...", updReady: "System-Update bereit. Klicken zum Installieren.", updLatest: "Der Launcher ist auf dem neuesten Stand", updLatestToast: "Du verwendest bereits die neueste Version! (v0.1.0)", autostartTitle: "Autostart", autostartDesc: "Starte TENTIX automatisch mit {os}",
@@ -4014,7 +4098,11 @@
         }
     };
 
-    let currentLang = localStorage.getItem('tentix_lang') || 'en';
+    let detectedSystemLang = 'en';
+    if (navigator.language && navigator.language.startsWith('de')) {
+        detectedSystemLang = 'de';
+    }
+    let currentLang = localStorage.getItem('tentix_lang') || detectedSystemLang;
     let isLoggedIn = false;
     let savedName = 'GUEST';
     let uuidValue = 'NOT LOGGED IN';
@@ -7542,6 +7630,31 @@
                 if (data.has_beta_access === false) {
                     localStorage.removeItem('tentix_beta_verified');
                 }
+
+                // Update Discord Linkage Card
+                const linkCard = document.getElementById('discord-link-container');
+                const linkedCard = document.getElementById('discord-linked-container');
+                const linkedUser = document.getElementById('discord-linked-user');
+                
+                let activeDiscId = data.discord_id || '';
+                let activeDiscUser = data.discord_username || '';
+
+                if (isClientSimulated) {
+                    activeDiscId = localStorage.getItem('tentix_sim_discord_id') || '';
+                    activeDiscUser = localStorage.getItem('tentix_sim_discord_username') || '';
+                }
+
+                if (linkCard && linkedCard && linkedUser) {
+                    if (activeDiscId && activeDiscUser) {
+                        linkCard.style.display = 'none';
+                        linkedCard.style.display = 'flex';
+                        linkedUser.innerText = `${activeDiscUser} (ID: ${activeDiscId})`;
+                    } else {
+                        linkCard.style.display = 'flex';
+                        linkedCard.style.display = 'none';
+                    }
+                }
+
                 connectSocket();
                 syncLocalCodesWithServer();
             })
@@ -7555,6 +7668,10 @@
             }
             regDate = '--';
             if(document.getElementById('ui-card-reg')) document.getElementById('ui-card-reg').innerText = (currentLang === 'de' ? "REGISTRIERT: " : "REGISTERED: ") + regDate;
+            const linkCard = document.getElementById('discord-link-container');
+            const linkedCard = document.getElementById('discord-linked-container');
+            if (linkCard) linkCard.style.display = 'none';
+            if (linkedCard) linkedCard.style.display = 'none';
         }
         loadBadges();
         loadInbox();
@@ -7783,6 +7900,11 @@
         setElText('t-disc-details-format-desc', t.discDetailsFormatDesc);
         setElText('t-disc-state-format', t.discStateFormat);
         setElText('t-disc-state-format-desc', t.discStateFormatDesc);
+        setElText('t-discord-link-title', t.discLinkTitle || "Discord verknüpfen");
+        setElText('t-discord-link-desc', t.discLinkDesc || "Verknüpfe deinen Discord-Account für exklusive Rollen und Synchronisation.");
+        setElText('t-discord-linked-title', t.discLinkedTitle || "Verbundenes Discord-Konto");
+        setElText('discord-unlink-btn', t.discUnlinkBtn || "Trennen");
+        setElText('discord-link-btn', t.discLinkBtn || "Verbinden");
         setElText('t-discord-user-title', t.discordUserConnected);
 
         setElText('ui-err-title', t.loginErrTitle);
@@ -9616,6 +9738,149 @@
         localStorage.setItem('tentix_drp_state_format', stateFormat);
 
         updateDiscordRP();
+    }
+
+    function formatChatMessageContent(text) {
+        if (!text) return '';
+        let escaped = text
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+            
+        const codeRegex = /\b[A-Z0-9]{2,10}(-[A-Z0-9]{2,10})+\b|\b(?=[A-Z]*[0-9])[A-Z0-9]{6,20}\b/g;
+        
+        return escaped.replace(codeRegex, (match) => {
+            return `
+                <span class="chat-code-badge" onclick="copyAndNotifyCode('${match}', event)" style="display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, var(--accent-blue), var(--accent-gradient-sec)); color: #000; padding: 4px 8px; border-radius: 6px; font-weight: 800; font-family: 'Inter', monospace; font-size: 11px; cursor: pointer; box-shadow: 0 0 12px rgba(var(--accent-blue-rgb), 0.5); user-select: none; margin: 0 4px; transition: transform 0.15s, box-shadow 0.15s;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 0 18px rgba(var(--accent-blue-rgb), 0.8)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 0 12px rgba(var(--accent-blue-rgb), 0.5)';" title="Klicken zum Kopieren">
+                    <svg viewBox="0 0 24 24" style="width: 11px; height: 11px; fill: currentColor;"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                    ${match}
+                </span>
+            `;
+        });
+    }
+
+    function copyAndNotifyCode(code, e) {
+        if (e) e.stopPropagation();
+        if (!code) return;
+        navigator.clipboard.writeText(code).then(() => {
+            showToast(currentLang === 'de' 
+                ? `Code "${code}" kopiert! Einlösen unter Einstellungen -> Code Einlösen.` 
+                : `Code "${code}" copied! Redeem it in Settings -> Redeem Code.`, 
+                "success"
+            );
+        }).catch(() => {
+            showToast("Fehler beim Kopieren des Codes", "error");
+        });
+    }
+
+    let lastTypingSent = 0;
+    let stopTypingTimeout = null;
+
+    function handleChatInputKeydown() {
+        if (!tentixSocket || !activeChatFriendUuid) return;
+        const now = Date.now();
+        if (now - lastTypingSent > 2000) {
+            tentixSocket.emit('typing', { recipient_uuid: activeChatFriendUuid });
+            lastTypingSent = now;
+        }
+        
+        clearTimeout(stopTypingTimeout);
+        stopTypingTimeout = setTimeout(() => {
+            if (tentixSocket && activeChatFriendUuid) {
+                tentixSocket.emit('stop-typing', { recipient_uuid: activeChatFriendUuid });
+            }
+        }, 1500);
+    }
+
+    function linkDiscordAccount() {
+        const uuid = uuidValue || localStorage.getItem('tentix_uuid') || '';
+        if (!uuid) return;
+        
+        if (isClientSimulated) {
+            showCustomConfirm(
+                currentLang === 'de' ? "Discord-Verknüpfung (Simuliert)" : "Discord Link (Simulated)",
+                currentLang === 'de' ? "Gib deinen gewünschten Discord-Nutzernamen ein:" : "Enter your desired Discord username:",
+                '',
+                '#5865F2',
+                (username) => {
+                    if (!username || !username.trim()) return;
+                    showCustomConfirm(
+                        currentLang === 'de' ? "Discord-Verknüpfung (Simuliert)" : "Discord Link (Simulated)",
+                        currentLang === 'de' ? "Gib deine gewünschte Discord-ID ein:" : "Enter your desired Discord User ID:",
+                        '',
+                        '#5865F2',
+                        (discId) => {
+                            if (!discId || !discId.trim()) return;
+                            localStorage.setItem('tentix_sim_discord_id', discId.trim());
+                            localStorage.setItem('tentix_sim_discord_username', username.trim());
+                            showToast(currentLang === 'de' ? "Discord erfolgreich verknüpft! (Simuliert)" : "Discord successfully linked! (Simulated)", "success");
+                            checkAuthState();
+                        },
+                        true,
+                        "1234567890"
+                    );
+                },
+                true,
+                "Username"
+            );
+            return;
+        }
+
+        const linkUrl = `${API_BASE_URL}/api/auth/discord/link?uuid=${uuid}`;
+        if (window.api && window.api.openExternalLink) {
+            window.api.openExternalLink(linkUrl);
+        } else {
+            window.open(linkUrl, '_blank');
+        }
+
+        let linksCheckInterval = setInterval(async () => {
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/users/init`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: savedName, uuid: uuidValue })
+                });
+                const data = await res.json();
+                if (data.success && data.discord_id) {
+                    clearInterval(linksCheckInterval);
+                    checkAuthState();
+                }
+            } catch (e) {}
+        }, 3000);
+        
+        setTimeout(() => clearInterval(linksCheckInterval), 60000);
+    }
+
+    async function unlinkDiscordAccount() {
+        const uuid = uuidValue || localStorage.getItem('tentix_uuid') || '';
+        if (!uuid) return;
+
+        if (isClientSimulated) {
+            localStorage.removeItem('tentix_sim_discord_id');
+            localStorage.removeItem('tentix_sim_discord_username');
+            showToast(currentLang === 'de' ? "Discord-Verknüpfung aufgehoben!" : "Discord linkage removed!", "info");
+            checkAuthState();
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/users/unlink-discord`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ uuid: uuid })
+            });
+            const data = await response.json();
+            if (data.success) {
+                showToast(currentLang === 'de' ? "Discord-Verknüpfung aufgehoben!" : "Discord linkage removed!", "info");
+                checkAuthState();
+            } else {
+                showToast(data.error || "Fehler beim Aufheben der Verknüpfung", "error");
+            }
+        } catch (e) {
+            showToast("Server nicht erreichbar", "error");
+        }
     }
 
     function toggleSwitch(element) {
@@ -12049,6 +12314,13 @@
                 loadUnreadCounts();
             });
             tentixSocket.on('chat-message', (data) => {
+                if (data.sender_uuid) {
+                    typingUsers.delete(data.sender_uuid);
+                    renderFriendsList();
+                }
+                const indicator = document.getElementById('typing-indicator');
+                if (indicator) indicator.remove();
+
                 if (activeChatFriendUuid && data.sender_uuid === activeChatFriendUuid) {
                     // Mark as read immediately since the chat is open!
                     const myUuid = localStorage.getItem('tentix_uuid') || '';
@@ -12098,6 +12370,10 @@
                 renderCreatorCodesTable();
             });
             tentixSocket.on('typing', (data) => {
+                if (data.sender_uuid) {
+                    typingUsers.add(data.sender_uuid);
+                    renderFriendsList();
+                }
                 if (activeChatFriendUuid && data.sender_uuid === activeChatFriendUuid) {
                     const container = document.getElementById('friends-chat-messages');
                     if (container) {
@@ -12105,12 +12381,39 @@
                         if (!indicator) {
                             indicator = document.createElement('div');
                             indicator.id = 'typing-indicator';
-                            indicator.style.cssText = 'color: #666; font-size: 11px; font-style: italic; padding: 4px 8px;';
+                            indicator.className = 'message-wrapper chat-message-animate';
+                            indicator.style.cssText = 'display: flex; gap: 8px; align-items: flex-end; align-self: flex-start; max-width: 80%; margin-bottom: 8px;';
+                            indicator.innerHTML = `
+                                <img src="https://mc-heads.net/avatar/${activeChatFriendName || 'Steve'}/18" style="width: 18px; height: 18px; border-radius: 2px;">
+                                <div class="chat-bubble received" style="display: flex; align-items: center; gap: 4px; padding: 10px 14px; width: fit-content; border-radius: 12px 12px 12px 2px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);">
+                                    <span class="typing-dot"></span>
+                                    <span class="typing-dot"></span>
+                                    <span class="typing-dot"></span>
+                                </div>
+                            `;
                             container.appendChild(indicator);
+                            container.scrollTop = container.scrollHeight;
                         }
-                        indicator.textContent = `${data.sender} tippt...`;
                         clearTimeout(indicator._timeout);
-                        indicator._timeout = setTimeout(() => { if (indicator.parentNode) indicator.remove(); }, 3000);
+                        indicator._timeout = setTimeout(() => {
+                            if (indicator.parentNode) indicator.remove();
+                            if (data.sender_uuid) {
+                                typingUsers.delete(data.sender_uuid);
+                                renderFriendsList();
+                            }
+                        }, 4000);
+                    }
+                }
+            });
+            tentixSocket.on('stop-typing', (data) => {
+                if (data.sender_uuid) {
+                    typingUsers.delete(data.sender_uuid);
+                    renderFriendsList();
+                }
+                if (activeChatFriendUuid && data.sender_uuid === activeChatFriendUuid) {
+                    const indicator = document.getElementById('typing-indicator');
+                    if (indicator) {
+                        indicator.remove();
                     }
                 }
             });
@@ -12720,6 +13023,9 @@
             filteredFriends.forEach(f => {
                 const dotColor = f.online ? '#00ff80' : '#555';
                 let statusText = f.online ? 'Online' : 'Offline';
+                if (typingUsers.has(f.uuid)) {
+                    statusText = currentLang === 'de' ? 'schreibt...' : 'typing...';
+                }
                 let serverJoinIcon = '';
 
                 if (f.online) {
@@ -12754,7 +13060,7 @@
                                <div style="font-size: 11.5px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 4px;">${friendRankIcon}${f.username}</div>
                                <div style="display: flex; align-items: center; gap: 4px; font-size: 9px; color: #777; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                                    <div class="friend-status-dot" style="background: ${dotColor}; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;"></div>
-                                   <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${statusText}</span>
+                                   <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; ${typingUsers.has(f.uuid) ? 'font-style: italic; color: var(--accent-blue);' : ''}">${statusText}</span>
                                </div>
                             </div>
                         </div>
@@ -12875,6 +13181,7 @@
     // --- Encrypted Friends Chat System ---
     let activeChatFriendUuid = null;
     let activeChatFriendName = null;
+    let typingUsers = new Set();
     let chatPollInterval = null;
     let lastMessageCount = 0;
     let isChatInitialLoad = true;
@@ -13048,7 +13355,7 @@
                         html += `
                             <div class="message-wrapper${animClass}" style="display: flex; gap: 8px; align-items: flex-end; align-self: flex-end; max-width: 80%;">
                                 <div class="chat-bubble sent">
-                                    <div>${decryptedContent}</div>
+                                    <div>${formatChatMessageContent(decryptedContent)}</div>
                                     <div class="chat-time" style="display: flex; justify-content: flex-end; align-items: center; gap: 4px;">
                                         <span>${timeStr}</span>
                                         <span class="read-receipt" style="font-size: 8px; font-weight: 800; color: ${msg.is_read ? 'var(--accent-blue)' : '#555'}; transition: color 0.3s;">✓✓</span>
@@ -13062,7 +13369,7 @@
                             <div class="message-wrapper${animClass}" style="display: flex; gap: 8px; align-items: flex-end; align-self: flex-start; max-width: 80%;">
                                 <img src="https://mc-heads.net/avatar/${friendUsername}/18" onerror="this.src='https://mc-heads.net/avatar/MHF_Steve/18'" style="width: 18px; height: 18px; border-radius: 4px; margin-bottom: 2px;" title="${friendUsername}">
                                 <div class="chat-bubble received">
-                                    <div>${decryptedContent}</div>
+                                    <div>${formatChatMessageContent(decryptedContent)}</div>
                                     <div class="chat-time">${timeStr}</div>
                                 </div>
                             </div>
@@ -13090,6 +13397,11 @@
         if (!input) return;
         const text = input.value.trim();
         if (!text) return;
+        
+        clearTimeout(stopTypingTimeout);
+        if (tentixSocket && activeChatFriendUuid) {
+            tentixSocket.emit('stop-typing', { recipient_uuid: activeChatFriendUuid });
+        }
         
         const senderUuid = uuidValue || 'guest-uuid';
         const friendUuid = activeChatFriendUuid;
