@@ -491,7 +491,7 @@ ipcMain.on('check-updates', (event, opts) => {
     const silent = opts && opts.silent;
     isManualCheck = !silent;
     if (app.isPackaged) {
-        autoUpdater.checkForUpdatesAndNotify();
+        autoUpdater.checkForUpdates();
     } else {
         if (!silent) {
             mainWindow.webContents.send('update-status', { status: 'checking' });

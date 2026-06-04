@@ -41,12 +41,15 @@
         #titlebar { position: fixed; top: 0; left: 0; width: 100%; height: 80px; -webkit-app-region: no-drag; z-index: 2900; pointer-events: auto; background: rgba(0, 0, 0, 0.01); }
         #friends-unread-badge { position: absolute; bottom: 7px; right: 7px; background: #ff4b4b; width: 8px; height: 8px; border-radius: 50%; display: none; z-index: 10; box-shadow: 0 0 8px #ff4b4b; animation: updatePingPulse 1.2s infinite ease-in-out; }
         #friends-unread-badge.show { display: block; }
-        #friend-online-toast { position: fixed; bottom: 80px; left: 20px; background: rgba(15, 15, 18, 0.92); backdrop-filter: blur(20px); border: 1px solid rgba(0, 255, 128, 0.25); border-radius: 12px; padding: 12px 16px; display: flex; align-items: center; gap: 10px; z-index: 5000; transform: translateY(20px); opacity: 0; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); pointer-events: none; box-shadow: 0 0 20px rgba(0, 255, 128, 0.15); -webkit-app-region: no-drag; }
+        #friend-online-toast { position: fixed; bottom: 80px; right: 20px; background: rgba(15, 15, 18, 0.92); backdrop-filter: blur(20px); border: 1px solid rgba(0, 255, 128, 0.25); border-radius: 12px; padding: 12px 16px; display: flex; align-items: center; gap: 10px; z-index: 5000; transform: translateY(20px); opacity: 0; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); pointer-events: none; box-shadow: 0 0 20px rgba(0, 255, 128, 0.15); -webkit-app-region: no-drag; }
         #friend-online-toast.show { transform: translateY(0); opacity: 1; }
         #friend-online-toast .toast-avatar { width: 32px; height: 32px; border-radius: 6px; border: 1px solid rgba(0, 255, 128, 0.3); }
+        #friend-online-toast.offline { border-color: rgba(255, 75, 75, 0.25); box-shadow: 0 0 20px rgba(255, 75, 75, 0.15); }
+        #friend-online-toast.offline .toast-avatar { border-color: rgba(255, 75, 75, 0.3); }
         #friend-online-toast .toast-info { display: flex; flex-direction: column; gap: 2px; }
         #friend-online-toast .toast-name { color: #fff; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; }
         #friend-online-toast .toast-status { color: #00ff80; font-size: 10px; font-weight: 600; }
+        #friend-online-toast.offline .toast-status { color: #ff4b4b; }
 
         #app-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: var(--bg-dark); z-index: -2; opacity: 0; transition: opacity 0.8s ease; pointer-events: none; }
         #app-bg.metric-grid::after {
@@ -64,19 +67,21 @@
         #bg-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; opacity: 0; transition: opacity 1s ease, filter 0.6s cubic-bezier(0.23, 1, 0.32, 1); pointer-events: none; }
         #click-backdrop { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 2400; display: none; -webkit-app-region: no-drag; }
 
-        ::-webkit-scrollbar {
+        ::-webkit-scrollbar, html::-webkit-scrollbar, body::-webkit-scrollbar {
             width: 6px;
             height: 6px;
         }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.12);
+        ::-webkit-scrollbar-track, html::-webkit-scrollbar-track, body::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
             border-radius: 3px;
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 225, 255, 0.4);
+        ::-webkit-scrollbar-thumb, html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 3px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        ::-webkit-scrollbar-thumb:hover, html::-webkit-scrollbar-thumb:hover, body::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 212, 255, 0.4);
         }
 
         .top-right-controls { position: absolute; top: 30px; right: 40px; display: flex; align-items: flex-start; gap: 15px; z-index: 3000; -webkit-app-region: no-drag; visibility: hidden; opacity: 0; transition: 0.5s ease; }
@@ -4911,7 +4916,7 @@
                     container.innerHTML += `
                         <div class="tooltip tooltip-up" style="display:flex; align-items:center; justify-content:center; width: 18px; height: 18px; border-radius: 4px; background: ${rData.bg}; border: 1px solid ${rData.border}; color: ${rData.color}; cursor: pointer;" ${onclickEvent}>
                             <svg viewBox="0 0 24 24" style="width: 10px; height: 10px; fill: currentColor;">${rData.svg}</svg>
-                            <span class="tooltiptext">${rData.name}</span>
+                            <span class="tooltiptext" style="border-color: ${rData.color} !important; color: ${rData.color} !important; background-color: rgba(15, 15, 18, 0.96) !important; box-shadow: 0 5px 20px ${rData.color}26 !important; font-weight: 800; z-index: 1100;">${rData.name}</span>
                         </div>
                     `;
                 }
@@ -5088,10 +5093,10 @@
         if (balance === undefined || balance === null) {
             balance = parseFloat(localStorage.getItem('tentix_balance') || '0.0000');
         } else {
-            localStorage.setItem('tentix_balance', parseFloat(balance).toFixed(4));
+            localStorage.setItem('tentix_balance', parseFloat(balance).toFixed(2));
         }
         
-        const formatted = parseFloat(balance).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 4 }) + ' €';
+        const formatted = parseFloat(balance).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
         
         const shopHeader = document.getElementById('shop-balance-display-header');
         if (shopHeader) shopHeader.innerText = formatted;
@@ -10062,6 +10067,8 @@
     function closeAllPopups() {
         const ids = ['account-card', 'inbox-popup', 'version-overlay', 'settings-overlay', 'click-backdrop', 'friends-popup', 'friends-chat-popup'];
         ids.forEach(id => { if(document.getElementById(id)) document.getElementById(id).style.display = 'none'; });
+        const addFriendSec = document.getElementById('add-friend-section');
+        if (addFriendSec) addFriendSec.style.display = 'none';
         const dLogin = document.getElementById('dash-login-modal');
         if(dLogin && dLogin.style.display !== 'none') {
             dLogin.style.opacity = '0'; dLogin.classList.remove('show'); setTimeout(()=>dLogin.style.display='none',300);
@@ -10213,6 +10220,8 @@
         showCustomConfirm(
             currentLang === 'de' ? "Nachricht löschen?" : "Delete message?",
             currentLang === 'de' ? "Möchtest du diese Nachricht wirklich für beide Teilnehmer löschen?" : "Do you really want to delete this message for both participants?",
+            "",
+            '#ff4b4b',
             () => {
                 if (isClientSimulated) {
                     mockPrivateMessages = mockPrivateMessages.filter(m => m.id != msgId);
@@ -10234,9 +10243,7 @@
                 .catch(() => {
                     showToast(currentLang === 'de' ? "Fehler beim Löschen" : "Failed to delete", "error");
                 });
-            },
-            () => {},
-            '#ff4b4b'
+            }
         );
     }
 
@@ -12810,11 +12817,12 @@
             });
             tentixSocket.on('friend-online', (data) => {
                 updateFriendOnlineStatus(data.uuid, true, data.activity || 'im Client');
-                showFriendOnlineToast(data.username, data.activity || 'im Client');
+                showFriendOnlineToast(data.username, data.activity || 'im Client', 'online');
                 updateFriendsBadge();
             });
             tentixSocket.on('friend-offline', (data) => {
                 updateFriendOnlineStatus(data.uuid, false, null);
+                showFriendOnlineToast(data.username, null, 'offline');
                 updateFriendsBadge();
             });
             tentixSocket.on('friend-activity', (data) => {
@@ -12980,27 +12988,39 @@
         }
     }
     
-    function showFriendOnlineToast(username, activity) {
-        onlineToastQueue.push({ username, activity });
+    function showFriendOnlineToast(username, activity, statusType = 'online') {
+        onlineToastQueue.push({ username, activity, statusType });
         if (!onlineToastShowing) processOnlineToastQueue();
     }
     
     function processOnlineToastQueue() {
         if (onlineToastQueue.length === 0) { onlineToastShowing = false; return; }
         onlineToastShowing = true;
-        const { username, activity } = onlineToastQueue.shift();
+        const { username, activity, statusType } = onlineToastQueue.shift();
         const toast = document.getElementById('friend-online-toast');
         const avatar = document.getElementById('online-toast-avatar');
         const name = document.getElementById('online-toast-name');
         const status = document.getElementById('online-toast-status');
         if (!toast) return;
+        
         avatar.src = `https://mc-heads.net/avatar/${username}/32`;
         name.textContent = username;
-        status.textContent = activity || 'ist jetzt online';
+        
+        if (statusType === 'offline') {
+            toast.classList.add('offline');
+            status.textContent = currentLang === 'de' ? 'ist jetzt offline' : 'is now offline';
+        } else {
+            toast.classList.remove('offline');
+            status.textContent = activity || (currentLang === 'de' ? 'ist jetzt online' : 'is now online');
+        }
+        
         toast.classList.add('show');
         setTimeout(() => {
             toast.classList.remove('show');
-            setTimeout(() => processOnlineToastQueue(), 500);
+            setTimeout(() => {
+                toast.classList.remove('offline');
+                processOnlineToastQueue();
+            }, 500);
         }, 4000);
     }
 
@@ -13425,6 +13445,24 @@
         }
         
         users.forEach(u => {
+            const isFriend = (friendsList || []).some(f => f.uuid === u.uuid || f.username.toUpperCase() === u.username.toUpperCase());
+            const hasRequested = (outgoingRequests || []).some(r => r.uuid === u.uuid || r.username.toUpperCase() === u.username.toUpperCase());
+            const hasReceived = (incomingRequests || []).some(r => r.uuid === u.uuid || r.username.toUpperCase() === u.username.toUpperCase());
+            
+            let actionHtml = '';
+            if (isFriend) {
+                actionHtml = `<span style="font-size: 10px; color: #00ff80; font-weight: 800; text-transform: uppercase; padding: 3px 6px;">${currentLang === 'de' ? 'Freunde' : 'Friends'}</span>`;
+            } else if (hasRequested) {
+                actionHtml = `<span style="font-size: 10px; color: #ffcc00; font-weight: 800; text-transform: uppercase; padding: 3px 6px;">${currentLang === 'de' ? 'Angefragt' : 'Requested'}</span>`;
+            } else if (hasReceived) {
+                actionHtml = `<button onclick="acceptFriendRequest('${u.uuid}', '${u.username.replace(/'/g, "\\'")}', event)" style="cursor: pointer; background: rgba(0, 255, 128, 0.12); border: 1px solid rgba(0, 255, 128, 0.3); border-radius: 4px; padding: 3px 6px; font-size: 9px; font-weight: 800; color: #00ff80; text-transform: uppercase; transition: 0.2s;" onmouseover="this.style.background='#00ff80'; this.style.color='#000';" onmouseout="this.style.background='rgba(0, 255, 128, 0.12)'; this.style.color='#00ff80';">${currentLang === 'de' ? 'Annehmen' : 'Accept'}</button>`;
+            } else {
+                actionHtml = `
+                    <button onclick="sendFriendRequestFromSearch('${u.uuid}', '${u.username.replace(/'/g, "\\'")}')" style="cursor: pointer; background: rgba(0, 212, 255, 0.12); border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 4px; padding: 3px 6px; font-size: 9px; font-weight: 800; color: #00d4ff; text-transform: uppercase; transition: 0.2s;" onmouseover="this.style.background='#00d4ff'; this.style.color='#000';" onmouseout="this.style.background='rgba(0, 212, 255, 0.12)'; this.style.color='#00d4ff';">+ Anfrage</button>
+                    <button onclick="blockUser('${u.uuid}', '${u.username.replace(/'/g, "\\'")}')" style="cursor: pointer; background: rgba(255, 75, 75, 0.12); border: 1px solid rgba(255, 75, 75, 0.3); border-radius: 4px; padding: 3px 6px; font-size: 9px; font-weight: 800; color: #ff4b4b; text-transform: uppercase; transition: 0.2s;" onmouseover="this.style.background='#ff4b4b'; this.style.color='#000';" onmouseout="this.style.background='rgba(255, 75, 75, 0.12)'; this.style.color='#ff4b4b';">Block</button>
+                `;
+            }
+
             resultsContainer.innerHTML += `
                 <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.02); padding: 6px 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.04);">
                     <div style="display: flex; align-items: center; gap: 8px; min-width: 0; flex: 1;">
@@ -13432,8 +13470,7 @@
                         <span style="font-size: 11px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${u.username}</span>
                     </div>
                     <div style="display: flex; gap: 6px; align-items: center;">
-                        <button onclick="sendFriendRequestFromSearch('${u.uuid}', '${u.username.replace(/'/g, "\\'")}')" style="cursor: pointer; background: rgba(0, 212, 255, 0.12); border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 4px; padding: 3px 6px; font-size: 9px; font-weight: 800; color: #00d4ff; text-transform: uppercase; transition: 0.2s;" onmouseover="this.style.background='#00d4ff'; this.style.color='#000';" onmouseout="this.style.background='rgba(0, 212, 255, 0.12)'; this.style.color='#00d4ff';">+ Anfrage</button>
-                        <button onclick="blockUser('${u.uuid}', '${u.username.replace(/'/g, "\\'")}')" style="cursor: pointer; background: rgba(255, 75, 75, 0.12); border: 1px solid rgba(255, 75, 75, 0.3); border-radius: 4px; padding: 3px 6px; font-size: 9px; font-weight: 800; color: #ff4b4b; text-transform: uppercase; transition: 0.2s;" onmouseover="this.style.background='#ff4b4b'; this.style.color='#000';" onmouseout="this.style.background='rgba(255, 75, 75, 0.12)'; this.style.color='#ff4b4b';">Block</button>
+                        ${actionHtml}
                     </div>
                 </div>
             `;
@@ -13457,7 +13494,8 @@
             outgoingRequests.push({ username, uuid, created_at: new Date().toISOString() });
             localStorage.setItem('tentix_sim_outgoing_requests', JSON.stringify(outgoingRequests));
             renderFriendsList();
-            showToast(currentLang === 'de' ? `Freundschaftsanfrage an ${username} gesendet!` : `Friend request sent to ${username}!`, 'success');
+            showToast(currentLang === 'de' ? `Freundschafts-Anfrage gesendet an ${username}` : `Friend request sent to ${username}`, 'success');
+            closeAllPopups();
             return;
         }
         
@@ -13474,11 +13512,12 @@
             const addData = await addRes.json();
             if (addData.success) {
                 if (addData.accepted) {
-                    showToast(`${username} wurde als Freund hinzugefügt!`, 'success');
+                    showToast(currentLang === 'de' ? `${username} wurde als Freund hinzugefügt!` : `${username} added as a friend!`, 'success');
                 } else {
-                    showToast(currentLang === 'de' ? `Freundschaftsanfrage an ${username} gesendet!` : `Friend request sent to ${username}!`, 'success');
+                    showToast(currentLang === 'de' ? `Freundschafts-Anfrage gesendet an ${username}` : `Friend request sent to ${username}`, 'success');
                 }
                 loadFriendsFromServer();
+                closeAllPopups();
             } else { showToast(addData.error || 'Fehler', 'error'); }
         } catch(e) { showToast('Verbindungsfehler!', 'error'); }
     }
@@ -13556,7 +13595,7 @@
                         staffIcon = `
                             <span class="compact-tooltip" style="margin-left: 4px; cursor: pointer;">
                                 <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; fill: ${roleInfo.color}; display: inline-block;">${roleInfo.svg}</svg>
-                                <span class="tooltiptext">${roleInfo.name}</span>
+                                <span class="tooltiptext" style="border-color: ${roleInfo.color} !important; color: ${roleInfo.color} !important; background-color: rgba(15, 15, 18, 0.96) !important; box-shadow: 0 5px 20px ${roleInfo.color}26 !important; font-weight: 800; z-index: 1100;">${roleInfo.name}</span>
                             </span>
                         `;
                     }
