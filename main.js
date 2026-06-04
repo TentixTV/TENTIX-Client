@@ -470,16 +470,39 @@ ipcMain.on('check-updates', () => {
         autoUpdater.checkForUpdatesAndNotify();
     } else {
         mainWindow.webContents.send('update-status', { status: 'checking' });
-        setTimeout(() => mainWindow.webContents.send('update-status', { status: 'latest' }), 2000);
+        const { exec } = require('child_process');
+        exec('git pull', (err, stdout, stderr) => {
+            if (err) {
+                console.error("Git pull error:", err);
+                mainWindow.webContents.send('update-status', { status: 'latest' });
+                return;
+            }
+            console.log("Git pull output:", stdout);
+            if (stdout.includes('Already up to date.') || stdout.includes('Bereits auf dem neuesten Stand.')) {
+                mainWindow.webContents.send('update-status', { status: 'latest' });
+            } else {
+                mainWindow.webContents.send('update-status', { status: 'downloaded' });
+            }
+        });
     }
 });
 ipcMain.on('download-update', () => {
     if (app.isPackaged) {
         autoUpdater.downloadUpdate();
     } else {
-        // Mock progress for development if requested
         mainWindow.webContents.send('update-status', { status: 'downloading' });
+        setTimeout(() => {
+            mainWindow.webContents.send('update-status', { status: 'downloaded' });
+        }, 1000);
     }
 });
-ipcMain.on('install-update', () => autoUpdater.quitAndInstall());
+ipcMain.on('install-update', () => {
+    if (app.isPackaged) {
+        autoUpdater.quitAndInstall();
+    } else {
+        if (mainWindow) {
+            mainWindow.reload();
+        }
+    }
+});
 ipcMain.handle('get-app-version', () => app.getVersion());

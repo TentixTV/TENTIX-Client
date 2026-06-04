@@ -2489,7 +2489,7 @@
 
 <div id="top-left-container">
     <div class="profile-wrapper">
-        <img src="https://minotar.net/avatar/MHF_Steve/40" class="skin-head" id="user-avatar" onclick="handleAccountClick()" alt="Avatar">
+        <img src="https://mc-heads.net/avatar/MHF_Steve/40" class="skin-head" id="user-avatar" onclick="handleAccountClick()" alt="Avatar">
         <div class="account-card" id="account-card">
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 2px;">
                 <div id="ui-profile-rank-badge" style="display: none; align-items: center; cursor: pointer;" onclick="navTo('tentixplus')"></div>
@@ -2521,9 +2521,10 @@
     </div>
     
     <!-- Premium Friends Toggle Icon -->
-    <div class="bell-wrapper" id="friends-icon-wrapper" onclick="toggleFriendsPopup(event)" style="margin-left: -5px;">
+    <div class="bell-wrapper" id="friends-icon-wrapper" onclick="toggleFriendsPopup(event)" style="margin-left: -5px; position: relative;">
         <svg class="bell-icon" id="friends-icon-svg" viewBox="0 0 24 24" style="width: 22px; height: 22px;"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
-        <span class="bell-badge" id="friends-badge" style="background: var(--accent-blue); box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);">0</span>
+        <span id="friends-requests-ping" style="position: absolute; top: -2px; left: -2px; width: 8px; height: 8px; background: #ff4b4b; border-radius: 50%; display: none; box-shadow: 0 0 8px #ff4b4b; animation: updatePingPulse 1.2s infinite ease-in-out; z-index: 10;"></span>
+        <span class="bell-badge" id="friends-badge" style="background: var(--accent-blue); box-shadow: 0 0 10px rgba(0, 212, 255, 0.5); transform: scale(0);">0</span>
         <span id="friends-unread-badge"></span>
     </div>
 
@@ -2538,8 +2539,9 @@
             <span id="friends-header-title" style="font-weight: 800; font-size: 12px; color: #fff; letter-spacing: 0.5px; text-transform: uppercase; cursor: pointer;" onclick="switchFriendsTab('friends')">FREUNDE</span>
             <div style="display: flex; gap: 12px; align-items: center; -webkit-app-region: no-drag;">
                 <!-- Icon 1: Erhaltene Freundschaftsanfragen -->
-                <div class="tooltip tooltip-down" id="friends-tab-incoming" onclick="switchFriendsTab('incoming')" style="cursor: pointer; color: #888; display: flex; align-items: center; transition: 0.2s;" onmouseover="if(currentFriendsTab!=='incoming')this.style.color='#00d4ff'" onmouseout="if(currentFriendsTab!=='incoming')this.style.color='#888'">
+                <div class="tooltip tooltip-down" id="friends-tab-incoming" onclick="switchFriendsTab('incoming')" style="cursor: pointer; color: #888; display: flex; align-items: center; transition: 0.2s; position: relative;" onmouseover="if(currentFriendsTab!=='incoming')this.style.color='#00d4ff'" onmouseout="if(currentFriendsTab!=='incoming')this.style.color='#888'">
                     <svg viewBox="0 0 24 24" style="width: 15px; height: 15px; fill: currentColor;"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    <span id="friends-incoming-ping" style="position: absolute; top: -2px; right: -2px; width: 6px; height: 6px; background: #ff4b4b; border-radius: 50%; display: none; box-shadow: 0 0 6px #ff4b4b; animation: updatePingPulse 1.2s infinite ease-in-out; z-index: 10;"></span>
                     <span class="tooltiptext" id="t-tt-incoming" style="z-index:9999;">Erhaltene Freundschaftsanfragen</span>
                 </div>
                 <!-- Icon 2: Ausstehende Freundschaftsanfragen -->
@@ -2581,7 +2583,7 @@
     <div class="inbox-popup" id="friends-chat-popup" style="left: 485px; width: 340px; display: none; height: 380px; flex-direction: column; z-index: 4001;">
         <div class="inbox-header" style="border-bottom: 1px solid rgba(255,255,255,0.05); padding: 12px 15px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;">
             <div style="display: flex; align-items: center; gap: 8px;">
-                <img id="chat-friend-avatar" src="https://minotar.net/avatar/MHF_Steve/18" style="width: 18px; height: 18px; border-radius: 3px;">
+                <img id="chat-friend-avatar" src="https://mc-heads.net/avatar/MHF_Steve/18" style="width: 18px; height: 18px; border-radius: 3px;">
                 <span id="chat-friend-name" style="font-weight: 800; font-size: 11px; color: #fff; letter-spacing: 0.5px; text-transform: uppercase;">CHAT</span>
             </div>
             <div style="display: flex; align-items: center; gap: 12px;">
@@ -3283,7 +3285,7 @@
 </div>
 
 <div id="tentixplus-view" style="display: none; visibility: hidden; opacity: 0; transition: opacity 0.5s cubic-bezier(0.23, 1, 0.32, 1), visibility 0.5s; -webkit-app-region: no-drag; width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 50; padding: 95px 25px 50px 25px; box-sizing: border-box; overflow-y: auto; background: radial-gradient(circle at center, rgba(15, 17, 28, 0.98) 0%, rgba(8, 8, 12, 0.99) 100%); backdrop-filter: blur(35px); display: flex; flex-direction: column; justify-content: flex-start; align-items: center;">
-    <div style="width: 100%; max-width: 960px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 20px;">
+    <div style="width: 100%; max-width: 960px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 20px; margin: auto 0;">
         <!-- Header info centered -->
         <div style="text-align: center; margin-bottom: 5px; position: relative; width: 100%;">
             <div style="position: absolute; left: 0; top: 50%; transform: translateY(-50%);">
@@ -3304,13 +3306,16 @@
         </div>
 
         <!-- 3 Columns Layout (Lite Card | 3D Skin Viewer | Plus Card) -->
-        <div style="display: grid; grid-template-columns: 290px 300px 290px; gap: 20px; width: 100%; justify-content: center; align-items: start; margin-top: 5px;">
+        <div style="display: grid; grid-template-columns: 290px 300px 290px; gap: 20px; width: 100%; justify-content: center; align-items: stretch; margin-top: 5px;">
             <!-- TENTIX LITE -->
             <div id="rank-card-lite" class="premium-store-card" style="border: 1px solid rgba(255, 255, 255, 0.06); box-shadow: 0 10px 30px rgba(0,0,0,0.4); display: flex; flex-direction: column;">
                 <div class="store-card-header" onclick="toggleDisclaimer('lite')" style="background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.005) 100%); display: flex; flex-direction: column; align-items: center; padding: 20px 15px 15px 15px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%)'" onmouseout="this.style.background='linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.005) 100%)'">
                     <span class="store-card-badge" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.15);">LITE</span>
                     <img src="../assets/LITE.png" style="width: 70px; height: 70px; object-fit: contain; filter: drop-shadow(0 0 10px rgba(255,255,255,0.1)); margin: 12px 0; transition: transform 0.4s ease;" onmouseover="this.style.transform='rotate(5deg) scale(1.05)';" onmouseout="this.style.transform='none';">
-                    <h3 style="color: #fff; font-size: 16px; font-weight: 900; margin: 0; letter-spacing: 0.5px;">TENTIX LITE</h3>
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin: 0;">
+                        <h3 style="color: #fff; font-size: 16px; font-weight: 900; margin: 0; letter-spacing: 0.5px;">TENTIX LITE</h3>
+                        <div onclick="openFeaturesPopup('lite', event)" class="features-plus-btn" title="Alle Features anzeigen" style="width: 18px; height: 18px; border-radius: 50%; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; color: #fff; cursor: pointer; transition: all 0.2s; user-select: none;">+</div>
+                    </div>
                     <div style="font-size: 9px; color: #666; margin-top: 3px;">Der Einstieg in TENTIX</div>
                 </div>
                 <div class="store-card-body" style="padding: 15px; display: flex; flex-direction: column; flex: 1;">
@@ -3342,7 +3347,7 @@
                             <span>Disclaimer (Mehr anzeigen)</span>
                             <span id="disclaimer-arrow-lite" style="transition: transform 0.2s; font-size: 7px;">▼</span>
                         </div>
-                        <div id="disclaimer-content-lite" style="display: none; font-size: 8px; color: #777; margin-top: 6px; text-align: left; line-height: 1.4; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.02);">
+                        <div id="disclaimer-content-lite" style="display: none; position: absolute; bottom: 35px; left: 15px; right: 15px; font-size: 8px; color: #ccc; text-align: left; line-height: 1.4; background: rgba(15,15,20,0.98); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 100; box-sizing: border-box;">
                             <div style="margin-bottom: 4px; display: flex; gap: 4px; align-items: flex-start;">
                                 <span style="color: #888;">•</span>
                                 <span><strong>Kein Abonnement:</strong> Einmalige Zahlung, keine automatische Verlängerung.</span>
@@ -3395,7 +3400,10 @@
                 <div class="store-card-header" onclick="toggleDisclaimer('plus')" style="background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(0, 212, 255, 0.005) 100%); display: flex; flex-direction: column; align-items: center; padding: 20px 15px 15px 15px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='linear-gradient(135deg, rgba(0, 212, 255, 0.12) 0%, rgba(0, 212, 255, 0.01) 100%)'" onmouseout="this.style.background='linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(0, 212, 255, 0.005) 100%)'">
                     <span class="store-card-badge" style="background: var(--accent-blue); color: #000; box-shadow: 0 0 10px rgba(0,212,255,0.5); font-weight: 900;">TENTIX+</span>
                     <img src="../assets/PLUS.png" style="width: 75px; height: 75px; object-fit: contain; filter: drop-shadow(0 0 15px rgba(0, 212, 255, 0.35)); margin: 10px 0; transition: transform 0.4s ease;" onmouseover="this.style.transform='rotate(-5deg) scale(1.05)';" onmouseout="this.style.transform='none';">
-                    <h3 style="color: #fff; font-size: 16px; font-weight: 900; margin: 0; letter-spacing: 0.5px;">TENTIX+</h3>
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin: 0;">
+                        <h3 style="color: #fff; font-size: 16px; font-weight: 900; margin: 0; letter-spacing: 0.5px;">TENTIX+</h3>
+                        <div onclick="openFeaturesPopup('plus', event)" class="features-plus-btn" title="Alle Features anzeigen" style="width: 18px; height: 18px; border-radius: 50%; background: rgba(0, 212, 255, 0.2); border: 1px solid rgba(0, 212, 255, 0.4); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; color: #00d4ff; cursor: pointer; transition: all 0.2s; user-select: none; box-shadow: 0 0 8px rgba(0, 212, 255, 0.2);">+</div>
+                    </div>
                     <div style="font-size: 9px; color: #666; margin-top: 3px;">Das ultimative Client-Erlebnis</div>
                 </div>
                 <div class="store-card-body" style="padding: 15px; display: flex; flex-direction: column; flex: 1;">
@@ -3428,7 +3436,7 @@
                             <span>Disclaimer (Mehr anzeigen)</span>
                             <span id="disclaimer-arrow-plus" style="transition: transform 0.2s; font-size: 7px;">▼</span>
                         </div>
-                        <div id="disclaimer-content-plus" style="display: none; font-size: 8px; color: #777; margin-top: 6px; text-align: left; line-height: 1.4; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.02);">
+                        <div id="disclaimer-content-plus" style="display: none; position: absolute; bottom: 35px; left: 15px; right: 15px; font-size: 8px; color: #ccc; text-align: left; line-height: 1.4; background: rgba(15,15,20,0.98); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 100; box-sizing: border-box;">
                             <div style="margin-bottom: 4px; display: flex; gap: 4px; align-items: flex-start;">
                                 <span style="color: var(--accent-blue);">•</span>
                                 <span><strong>Kein Abonnement:</strong> Einmalige Zahlung, keine automatische Verlängerung.</span>
@@ -3448,6 +3456,71 @@
         </div>
     </div>
 </div>
+
+<!-- Giant Features Popup Modal -->
+<div id="features-popup-modal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5, 5, 8, 0.85); backdrop-filter: blur(25px); display: none; justify-content: center; align-items: center; z-index: 6000; opacity: 0; transition: opacity 0.3s ease; -webkit-app-region: no-drag;">
+    <div style="background: rgba(15, 17, 26, 0.85); border: 1px solid rgba(0, 212, 255, 0.25); box-shadow: 0 20px 60px rgba(0, 212, 255, 0.15); border-radius: 18px; padding: 30px; width: 850px; height: 580px; box-sizing: border-box; display: flex; flex-direction: column; transform: scale(0.85); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); position: relative; overflow: hidden;">
+        
+        <!-- Header -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 15px; flex-shrink: 0;">
+            <div>
+                <h2 id="features-popup-title" style="font-size: 20px; font-weight: 900; color: #fff; margin: 0; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 8px;">
+                    TENTIX LITE <span style="font-size: 11px; padding: 2px 8px; border-radius: 4px; background: rgba(255,255,255,0.1); color: #fff; font-weight: 700;">ALL FEATURES</span>
+                </h2>
+                <div style="font-size: 10px; color: #666; margin-top: 4px; font-weight: 500;" id="features-popup-subtitle">Liste aller exklusiven Client-Module und Perks</div>
+            </div>
+            <button onclick="closeFeaturesPopup()" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); color: #888; font-size: 12px; font-weight: 800; padding: 8px 16px; border-radius: 6px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,75,75,0.1)'; this.style.color='#ff4b4b'; this.style.borderColor='rgba(255,75,75,0.2)';" onmouseout="this.style.background='rgba(255,255,255,0.03)'; this.style.color='#888'; this.style.borderColor='rgba(255,255,255,0.08)';">SCHLIESSEN</button>
+        </div>
+
+        <!-- Filter tabs for quick navigation -->
+        <div id="features-filter-bar" style="display: flex; gap: 8px; margin-bottom: 15px; flex-shrink: 0; padding-bottom: 5px;">
+            <!-- Buttons injected by JS dynamically -->
+        </div>
+
+        <!-- Content (Scrollable list of features) -->
+        <div id="features-popup-content-list" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; padding-right: 8px; scrollbar-gutter: stable;">
+            <!-- Features injected here -->
+        </div>
+    </div>
+</div>
+
+<style>
+.features-plus-btn:hover {
+    transform: scale(1.15);
+    background: var(--accent-blue) !important;
+    color: #000 !important;
+    border-color: var(--accent-blue) !important;
+    box-shadow: 0 0 12px var(--accent-blue) !important;
+}
+.features-filter-btn {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    color: #888;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+}
+.features-filter-btn.active {
+    background: rgba(0, 212, 255, 0.1);
+    border-color: rgba(0, 212, 255, 0.3);
+    color: var(--accent-blue);
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.1);
+}
+.features-filter-btn.active.lite-active {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.25);
+    color: #fff;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+}
+.features-filter-btn:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+</style>
 
 <!-- Rank Checkout Modal -->
 <div id="checkout-modal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); backdrop-filter: blur(20px); display: none; justify-content: center; align-items: center; z-index: 5000; opacity: 0; transition: opacity 0.3s ease; -webkit-app-region: no-drag;">
@@ -3505,6 +3578,10 @@
             </div>
             <div style="font-size: 11px; color: #555; margin-top: 15px; text-align: center; font-weight: 600;">
                 Drag zum Drehen | Mausrad zum Zoomen
+            </div>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 15px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 10px; padding: 10px 18px; width: 100%; max-width: 320px;">
+                <span id="t-cosmetics-autorotate-label" style="font-size: 12px; font-weight: 700; color: #ccc; letter-spacing: 0.5px;">Skin automatisch drehen</span>
+                <div class="toggle-switch active" id="ts-cosmetics-rotate" onclick="toggleSwitch(this)"></div>
             </div>
         </div>
         <div style="flex: 1.6; display: flex; flex-direction: row; align-items: stretch; background: rgba(0, 0, 0, 0.25); -webkit-app-region: no-drag; max-height: 100%; box-sizing: border-box; overflow: hidden;">
@@ -3781,6 +3858,7 @@
             noEvent: "No current events",
             modSearch: "Search Modrinth...", modSortRel: "Sort by: Relevance", modSortDl: "Sort by: Downloads", modSortNew: "Sort by: Newest", modSortUpd: "Sort by: Recently Updated", modCatTitle: "Categories", modEnvTitle: "Environment", modBtnView: "View", modBtnInstall: "Install", modStandard: "Standard in Client", modLoading: "Loading Mods...", modNoFound: "No Mods found.", modError: "Error loading Modrinth.",
             ramReset: "Restore default value",
+            cosAutoRotate: "Auto Rotate Skin",
             cosTitle: "No cosmetics available yet",
             cosDesc: "In the current beta version, no cosmetics are available. Check back soon!",
             tPlusTitle: "TENTIX <span style=\"background: linear-gradient(135deg, var(--accent-blue) 0%, #0072ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;\">PLUS</span>",
@@ -3840,6 +3918,7 @@
             noEvent: "Derzeit keine Aktionen",
             modSearch: "Modrinth durchsuchen...", modSortRel: "Sortieren nach: Relevanz", modSortDl: "Sortieren nach: Downloads", modSortNew: "Sortieren nach: Neueste", modSortUpd: "Sortieren nach: Zuletzt aktualisiert", modCatTitle: "Kategorien", modEnvTitle: "Umgebung", modBtnView: "Ansehen", modBtnInstall: "Installieren", modStandard: "Standard im Client", modLoading: "Lade Mods...", modNoFound: "Keine Mods gefunden.", modError: "Fehler beim Laden von Modrinth.",
             ramReset: "Standard-Wert wiederherstellen",
+            cosAutoRotate: "Skin automatisch drehen",
             cosTitle: "Es gibt noch keine Cosmetics",
             cosDesc: "In der aktuellen Beta-Version stehen noch keine Cosmetics zur Verfügung. Schau bald wieder vorbei!",
             tPlusTitle: "TENTIX <span style=\"background: linear-gradient(135deg, var(--accent-blue) 0%, #0072ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;\">PLUS</span>",
@@ -4625,7 +4704,7 @@
 
                     html += `
                         <div class="search-result-item" style="display:flex; align-items:center; gap:10px;" onclick="selectUser('@${u.username}')">
-                            <img src="https://minotar.net/avatar/${u.username}/20" style="border-radius:4px; width: 20px; height: 20px;">
+                            <img src="https://mc-heads.net/avatar/${u.username}/20" style="border-radius:4px; width: 20px; height: 20px;">
                             <span style="font-weight: 700; color: #fff;">@${u.username}</span>
                             <div style="display: flex;">${badgesHtml}</div>
                         </div>
@@ -6679,19 +6758,24 @@
             return;
         }
 
-        let codes = JSON.parse(localStorage.getItem('tentix_db_codes') || '[]');
-        codes = codes.filter(c => c.code !== codeId);
-        localStorage.setItem('tentix_db_codes', JSON.stringify(codes));
-
         try {
-            await fetch(`${API_BASE_URL}/api/codes/delete`, {
+            const res = await fetch(`${API_BASE_URL}/api/codes/delete`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ code: codeId })
             });
-        } catch(e) {}
-
-        showToast("CODE GELÖSCHT", "warning");
+            const data = await res.json();
+            if (data.success) {
+                let codes = JSON.parse(localStorage.getItem('tentix_db_codes') || '[]');
+                codes = codes.filter(c => c.code !== codeId);
+                localStorage.setItem('tentix_db_codes', JSON.stringify(codes));
+                showToast(currentLang === 'de' ? "CODE GELÖSCHT" : "CODE DELETED", "warning");
+            } else {
+                showToast(currentLang === 'de' ? `FEHLER: ${data.error}` : `ERROR: ${data.error}`, "error");
+            }
+        } catch(e) {
+            showToast(currentLang === 'de' ? "VERBINDUNGSFEHLER!" : "CONNECTION ERROR!", "error");
+        }
         renderCodesTable();
     }
 
@@ -7234,7 +7318,7 @@
             if(document.getElementById('ui-logout-btn')) document.getElementById('ui-logout-btn').style.display = 'block';
             if(document.getElementById('ui-skin-btn-wrap')) document.getElementById('ui-skin-btn-wrap').style.display = 'block';
             if(document.getElementById('ui-tentixplus-btn')) document.getElementById('ui-tentixplus-btn').style.display = 'block';
-            if(document.getElementById('user-avatar')) document.getElementById('user-avatar').src = `https://minotar.net/avatar/${savedName}/40`;
+            if(document.getElementById('user-avatar')) document.getElementById('user-avatar').src = `https://mc-heads.net/avatar/${savedName}/40`;
             if(topContainer) topContainer.classList.add('logged-in');
 
             if(document.getElementById('ui-card-reg')) document.getElementById('ui-card-reg').style.display = 'block';
@@ -7250,7 +7334,7 @@
             if(document.getElementById('ui-logout-btn')) document.getElementById('ui-logout-btn').style.display = 'none';
             if(document.getElementById('ui-skin-btn-wrap')) document.getElementById('ui-skin-btn-wrap').style.display = 'none';
             if(document.getElementById('ui-tentixplus-btn')) document.getElementById('ui-tentixplus-btn').style.display = 'none';
-            if(document.getElementById('user-avatar')) document.getElementById('user-avatar').src = `https://minotar.net/avatar/MHF_Steve/40`;
+            if(document.getElementById('user-avatar')) document.getElementById('user-avatar').src = `https://mc-heads.net/avatar/MHF_Steve/40`;
             if(topContainer) topContainer.classList.remove('logged-in');
 
             if(document.getElementById('ui-card-reg')) document.getElementById('ui-card-reg').style.display = 'none';
@@ -7318,6 +7402,7 @@
         if(useridEl) { if(isLoggedIn) { useridEl.style.display = 'inline-block'; useridEl.innerText = t.userId + deterministicId; } else { useridEl.style.display = 'none'; } }
         setElText('ui-card-reg', (currentLang === 'de' ? "REGISTRIERT: " : "REGISTERED: ") + regDate);
         setElText('t-ram-reset-tooltip', t.ramReset);
+        setElText('t-cosmetics-autorotate-label', t.cosAutoRotate || (currentLang === 'de' ? "Skin automatisch drehen" : "Auto Rotate Skin"));
         setElText('t-cosmetics-title', t.cosTitle);
         setElText('t-cosmetics-desc', t.cosDesc);
         setElText('t-cosmetics-back', t.csBack || "ZURÜCK");
@@ -9187,6 +9272,13 @@
                 localStorage.setItem('tentix_drp', element.classList.contains('active'));
                 updateDiscordRP();
             }
+            if(element.id === 'ts-cosmetics-rotate') {
+                const isRotate = element.classList.contains('active');
+                localStorage.setItem('tentix_cosmetics_rotate', isRotate ? 'true' : 'false');
+                if (cosmeticsViewer) {
+                    cosmeticsViewer.autoRotate = isRotate;
+                }
+            }
             if(element.id === 'ts-ads') {
                 localStorage.setItem('tentix_ads_enabled', element.classList.contains('active'));
             }
@@ -9349,38 +9441,46 @@
 
     function isSkinSlim(imageUrl) {
         return new Promise((resolve) => {
+            const processLoadedImage = (img) => {
+                try {
+                    if (img.width !== 64 || img.height !== 64) {
+                        return false;
+                    }
+                    const canvas = document.createElement('canvas');
+                    canvas.width = 64;
+                    canvas.height = 64;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+                    const imgData = ctx.getImageData(0, 0, 64, 64);
+                    const getAlpha = (x, y) => {
+                        const idx = (y * 64 + x) * 4 + 3;
+                        return imgData.data[idx];
+                    };
+                    let rightArmBorderTransparent = true;
+                    for (let y = 16; y < 32; y++) {
+                        if (getAlpha(54, y) > 0) {
+                            rightArmBorderTransparent = false;
+                            break;
+                        }
+                    }
+                    let leftArmBorderTransparent = true;
+                    for (let y = 48; y < 64; y++) {
+                        if (getAlpha(46, y) > 0) {
+                            leftArmBorderTransparent = false;
+                            break;
+                        }
+                    }
+                    return rightArmBorderTransparent && leftArmBorderTransparent;
+                } catch (e) {
+                    console.error("Error in isSkinSlim image check:", e);
+                    return false;
+                }
+            };
+
             if (imageUrl.startsWith('data:')) {
                 const img = new Image();
-                img.onload = function() {
-                    try {
-                        const canvas = document.createElement('canvas');
-                        canvas.width = img.width;
-                        canvas.height = img.height;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0);
-                        
-                        if (img.width !== 64 || img.height !== 64) {
-                            resolve(false);
-                            return;
-                        }
-                        
-                        const imgData = ctx.getImageData(43, 20, 1, 10).data;
-                        let isTransparent = true;
-                        for (let i = 3; i < imgData.length; i += 4) {
-                            if (imgData[i] !== 0) {
-                                isTransparent = false;
-                                break;
-                            }
-                        }
-                        resolve(isTransparent);
-                    } catch (e) {
-                        console.error("isSkinSlim detection error (dataUrl):", e);
-                        resolve(false);
-                    }
-                };
-                img.onerror = function() {
-                    resolve(false);
-                };
+                img.onload = () => resolve(processLoadedImage(img));
+                img.onerror = () => resolve(false);
                 img.src = imageUrl;
                 return;
             }
@@ -9392,36 +9492,8 @@
                     reader.onloadend = function() {
                         const dataUrl = reader.result;
                         const img = new Image();
-                        img.onload = function() {
-                            try {
-                                const canvas = document.createElement('canvas');
-                                canvas.width = img.width;
-                                canvas.height = img.height;
-                                const ctx = canvas.getContext('2d');
-                                ctx.drawImage(img, 0, 0);
-                                
-                                if (img.width !== 64 || img.height !== 64) {
-                                    resolve(false);
-                                    return;
-                                }
-                                
-                                const imgData = ctx.getImageData(43, 20, 1, 10).data;
-                                let isTransparent = true;
-                                for (let i = 3; i < imgData.length; i += 4) {
-                                    if (imgData[i] !== 0) {
-                                        isTransparent = false;
-                                        break;
-                                    }
-                                }
-                                resolve(isTransparent);
-                            } catch (e) {
-                                console.error("isSkinSlim detection error (fetch):", e);
-                                resolve(false);
-                            }
-                        };
-                        img.onerror = function() {
-                            resolve(false);
-                        };
+                        img.onload = () => resolve(processLoadedImage(img));
+                        img.onerror = () => resolve(false);
                         img.src = dataUrl;
                     };
                     reader.readAsDataURL(blob);
@@ -9431,6 +9503,23 @@
                     resolve(false);
                 });
         });
+    }
+
+    function fetchAsDataUrl(url) {
+        if (!url) return Promise.resolve(null);
+        if (url.startsWith('data:')) return Promise.resolve(url);
+        return fetch(url)
+            .then(r => r.blob())
+            .then(blob => new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(blob);
+            }))
+            .catch(e => {
+                console.error("fetchAsDataUrl error:", e);
+                return null;
+            });
     }
 
     let storeViewer = null;
@@ -9455,9 +9544,9 @@
                 height: 215
             });
 
-            // Mini-Me scale shrink
-            storeViewer.playerObject.scale.set(0.5, 0.5, 0.5);
-            storeViewer.playerObject.head.scale.set(2.0, 2.0, 2.0);
+            // Mini-Me scale shrink (0.65 body, 1.5385 head)
+            storeViewer.playerObject.scale.set(0.65, 0.65, 0.65);
+            storeViewer.playerObject.head.scale.set(1.5385, 1.5385, 1.5385);
 
             storeViewer.controls.enableZoom = true;
             storeViewer.controls.minPolarAngle = 0.3;
@@ -9492,11 +9581,11 @@
             modelToUse = (storeViewerModelType === 'slim') ? 'slim' : 'default';
         }
         
-        const performLoad = (model) => {
-            return storeViewer.loadSkin(skinUrl, { model: model }).then(() => {
-                // Apply proportional baby scaling: body/limbs to 0.5, head to 2.0
-                storeViewer.playerObject.scale.set(0.5, 0.5, 0.5);
-                storeViewer.playerObject.head.scale.set(2.0, 2.0, 2.0);
+        const performLoad = (model, loadUrl) => {
+            return storeViewer.loadSkin(loadUrl, { model: model }).then(() => {
+                // Apply proportional baby scaling: body/limbs to 0.65, head to 1.5385
+                storeViewer.playerObject.scale.set(0.65, 0.65, 0.65);
+                storeViewer.playerObject.head.scale.set(1.5385, 1.5385, 1.5385);
 
                 // Load cape inside the then() block!
                 if (storeViewerCapeEnabled) {
@@ -9526,19 +9615,24 @@
             });
         };
         
-        // Load immediately
-        performLoad(modelToUse);
-        
-        // Background auto detection if not manual
-        if (!storeViewerModelManual) {
-            isSkinSlim(skinUrl).then(isSlim => {
-                const detectedModel = isSlim ? 'slim' : 'default';
-                if (detectedModel !== storeViewerModelType) {
-                    storeViewerModelType = detectedModel;
-                    performLoad(detectedModel);
-                }
-            });
-        }
+        // Fetch as Data URL to bypass CORS/tainting
+        fetchAsDataUrl(skinUrl).then(dataUrl => {
+            const loadUrl = dataUrl || skinUrl;
+            
+            // Load immediately
+            performLoad(modelToUse, loadUrl);
+            
+            // Background auto detection if not manual
+            if (!storeViewerModelManual) {
+                isSkinSlim(loadUrl).then(isSlim => {
+                    const detectedModel = isSlim ? 'slim' : 'default';
+                    if (detectedModel !== storeViewerModelType) {
+                        storeViewerModelType = detectedModel;
+                        performLoad(detectedModel, loadUrl);
+                    }
+                });
+            }
+        });
     }
 
     function toggleStoreViewerCape() {
@@ -9571,6 +9665,235 @@
             }
         }
         updateStoreViewerSkin();
+    }
+
+    const TENTIX_FEATURES = {
+        lite: [
+            { category: "Core & Netzwerk", name: "0,02 € / Std. Guthaben verdienen", desc: "Play-to-Earn System direkt über die Client-Session integriert." },
+            { category: "Core & Netzwerk", name: "LITE Badge im Profil & Chat", desc: "Exklusive Kennzeichnung für alle Lite-Nutzer im TENTIX-Netzwerk." },
+            { category: "Core & Netzwerk", name: "Wöchentliche Kosmetik-Gifts", desc: "Automatisches Drops-System für kosmetische Items direkt im Hauptmenü." },
+            { category: "Core & Netzwerk", name: "Freischaltung des LITE-Capes", desc: "Zugriff auf das offizielle, serverunabhängige Lite-Cape-Design." },
+            { category: "Core & Netzwerk", name: "Asynchronous Light Engine Override", desc: "Entkoppelt die gesamte Lichtberechnung von Minecraft vom Haupt-Render-Thread (verhindert FPS-Drops bei Massen-Explosionen oder schnellem Chunk-Laden)." },
+            { category: "Core & Netzwerk", name: "Sub-Tick Physics Interpolation", desc: "Berechnet Bewegungen von Spielern und Projektilen mathematisch zwischen den Standard-20-Ticks von Minecraft. Sorgt für ein ultra-flüssiges Movement, selbst wenn der Server laggt." },
+            { category: "Core & Netzwerk", name: "Adaptive Network Packet Queue", desc: "Analysiert Ping-Schwankungen (Jitter) und taktet deine ausgehenden Bewegungspakete so, dass sie für den Server \"sauberer\" aussehen (reduziert Ghost-Hits massiv)." },
+            { category: "Core & Netzwerk", name: "Entity Culling 2.0 (Ray-Traced)", desc: "Berechnet über die GPU, ob Kisten, Mobs oder Spieler hinter Wänden stehen, und nimmt sie komplett aus dem Render-Speicher (bringt bis zu 150 % mehr FPS auf vollen Servern)." },
+            { category: "Core & Netzwerk", name: "Memory-Leak Auto-Purge", desc: "Isoliert Datenmüll von schlecht optimierten Server-Plugins in einer Sandbox und bereinigt den RAM im Hintergrund, statt das Spiel abstürzen zu lassen." },
+            { category: "Core & Netzwerk", name: "Asynchronous Texture Loading", desc: "Verhindert jegliche Ruckler, wenn du im laufenden Spiel dynamisch dein Texture Pack wechselst." },
+            { category: "Core & Netzwerk", name: "Crash Protection Shield", desc: "Fängt fatale Mod- oder Chunk-Fehler ab und wirft dich zurück in die Serverliste, anstatt dich komplett auf den Desktop zu crashen." },
+            { category: "Core & Netzwerk", name: "Direct-Connect Clipboard Reader", desc: "Erkennt Minecraft-Server-IPs in deiner Zwischenablage und bietet dir im Multiplayer-Menü sofort einen \"Direkt beitreten\"-Button an." },
+            { category: "KI & Daten-Overlays", name: "Smart-Ray Block Scanner", desc: "Scannt den Block, den du anschaust, und zeigt als Overlay an, welche Items sich in einer Kiste, einem Trichter oder einem Fass befinden, ohne dass du das Inventar öffnen musst." },
+            { category: "KI & Daten-Overlays", name: "Real-Time Hurt-Box Visualizer", desc: "Zeichnet die exakte, modifizierte Hitbox deines eigenen Spielers und der Gegner inklusive der Latenz-Verzögerung (Interpolations-Box) an, um zu sehen, wo der Server die Hits registriert." },
+            { category: "KI & Daten-Overlays", name: "Audio Visualizer Radar", desc: "Ein dezenter Frequenz-Ring um das Fadenkreuz, der Geräusche wie Schritte, essen oder fallende Blöcke als visuelle Wellen anzeigt (Ortung ohne Ton möglich)." },
+            { category: "KI & Daten-Overlays", name: "Dynamic Velocity Vector HUD", desc: "Zeigt deine genaue Beschleunigung und den Bewegungsvektor als 3D-Pfeil im Raum an (ein Gamechanger für Movement-Combos und Parkour)." },
+            { category: "KI & Daten-Overlays", name: "Dynamic Crosshair Physics", desc: "Das Fadenkreuz reagiert visuell auf den echten Rückstoß der Waffe oder die Ungenauigkeit beim Laufen und Springen." },
+            { category: "KI & Daten-Overlays", name: "Smart Armor Alert", desc: "Eine animierte Warnung direkt in der Bildschirmmitte, kurz bevor ein wichtiges Rüstungsteil bricht." },
+            { category: "KI & Daten-Overlays", name: "Projectile Path Prediction", desc: "Berechnet und zeichnet eine präzise 3D-Flugbahn für geworfene Enderperlen, Schneebälle oder Angelhaken." },
+            { category: "KI & Daten-Overlays", name: "Hotbar Item-Cooldown Progress Grid", desc: "Dunkelt genutzte Hotbar-Slots (z.B. Enderperle) mit einem flüssigen, radialen Shader-Effekt ab, bis der Cooldown abgelaufen ist." },
+            { category: "KI & Daten-Overlays", name: "Chunk Border 3D Grid", desc: "Projiziert ein stylisches, neonfarbenes 3D-Gitter an die Chunk-Grenzen anstelle des standardmäßigen, hässlichen F3-Rasters." },
+            { category: "KI & Daten-Overlays", name: "Enemy Status Tracker", desc: "Zeigt im Blickfeld visuell an, welche Rüstungsteile deines Gegners verzaubert sind, ohne ihn manuell inspizieren zu müssen." },
+            { category: "KI & Daten-Overlays", name: "DPS Tracker", desc: "Berechnet deinen echten \"Schaden pro Sekunde\" im Kampf, statt nur stumpf die Schlag-Kombos zu zählen." },
+            { category: "KI & Daten-Overlays", name: "Inventory Fullness Indicator", desc: "Ein eleganter Ladebalken am Rand deiner Hotbar, der anzeigt, wie voll dein Inventar prozentual gerade ist." },
+            { category: "KI & Daten-Overlays", name: "Break Speed Calculator", desc: "Zeigt bei harten Blöcken einen kleinen visuellen Live-Timer an, wie viele Millisekunden das Abbauen noch dauert." },
+            { category: "KI & Daten-Overlays", name: "Light Level Heatmap", desc: "Projiziert ein dezentes, farbiges Raster auf den Boden, das sofort anzeigt, wo Mobs spawnen können (kein F3-Spam nötig)." },
+            { category: "KI & Daten-Overlays", name: "Tickrate (MSPT) Monitor", desc: "Zeigt die echten Millisekunden pro Tick des aktuellen Servers an, um serverseitige Lags sofort zu entlarven." },
+            { category: "KI & Daten-Overlays", name: "Arrow & Projectile Counter", desc: "Zählt alle passenden Projektile im Inventar und blendet die Zahl direkt am Fadenkreuz ein, sobald du einen Bogen oder eine Armbrust ziehst." },
+            { category: "KI & Daten-Overlays", name: "Scoreboard Decoupler", desc: "Erlaubt das komplette Verschieben, Skalieren oder transparente Ausblenden von Server-Scoreboards über den Editor." },
+            { category: "Visuelle Mods & Utilities", name: "In-Game Skin Layer Toggler", desc: "Aktiviere oder deaktiviere einzelne Skin-Layer (Ärmel, Hosenbeine, Hüte) blitzschnell über ein komfortables Radial-Menü." },
+            { category: "Visuelle Mods & Utilities", name: "3D Item Physics Engine", desc: "Items liegen nicht flach auf dem Boden, sondern fallen physikalisch korrekt auf Treppen, Stufen oder Abhänge." },
+            { category: "Visuelle Mods & Utilities", name: "Custom Hit Sound Engine", desc: "Erlaubt es dir, eigene *.wav oder *.mp3 Sounds hochzuladen, die abgespielt werden, wenn du einen Gegner triffst." },
+            { category: "Visuelle Mods & Utilities", name: "Blurred Menu Backgrounds", desc: "Nutzt einen modernen, hardwarebeschleunigten iOS-artigen Unschärfe-Effekt über der Live-Spielwelt in allen Inventaren und Menüs." },
+            { category: "Visuelle Mods & Utilities", name: "Smooth Perspective Camera", desc: "Eine butterweiche 360-Grad-Freikamera um den eigenen Spieler, ohne die aktuelle Laufrichtung zu blockieren." },
+            { category: "Visuelle Mods & Utilities", name: "Native Interpolated Third-Person Camera", desc: "Die F5-Kamera nutzt eine echte physikalische Federung (Spring-Mass-System) bei Erschütterungen oder Sprints." },
+            { category: "Visuelle Mods & Utilities", name: "Linear Color Space Rendering", desc: "Schaltet das Spiel auf einen modernen Linear-Gamma-Farbraum um (Schatten wirken realistischer, Farben deutlich satter)." },
+            { category: "Visuelle Mods & Utilities", name: "Advanced Item Physics Core", desc: "Items rutschen auf Eis weiter, schwimmen realistisch auf Wasserströmungen und brennen visuell langsam in Lava ab." },
+            { category: "Visuelle Mods & Utilities", name: "Infinite Chat History & Search", desc: "Durchsuche deinen gesamten Chat-Verlauf der letzten Tage nach Begriffen, Koordinaten oder Spielernamen." },
+            { category: "Visuelle Mods & Utilities", name: "Automatic Screenshot Compressor", desc: "Komprimiert Screenshots direkt beim Speichern verlustfrei von PNG zu WebP, um massig Speicherplatz zu sparen." },
+            { category: "Visuelle Mods & Utilities", name: "Sound Equalizer", desc: "Erlaubt das gezielte Leisedrehen nerviger Frequenzen (wie Kriecher-Zischen oder Kolben), während Schritte laut bleiben." },
+            { category: "Visuelle Mods & Utilities", name: "Dark Mode Inventory UI", desc: "Erzwingt ein perfekt abgestimmtes, augenschonendes dunkles Interface für alle Kisten, Trichter und Standard-Inventare." },
+            { category: "Visuelle Mods & Utilities", name: "Border-Radius UI Customizer", desc: "Erlaubt es, allen Elementen deines HUDs abgerundete Ecken und weiche Drop-Shadows zu verpassen." },
+            { category: "Visuelle Mods & Utilities", name: "Smooth Scroll Core", desc: "Ersetzt das abgehackte Standard-Scrollen in Minecraft-Menüs durch eine mathematisch geglättete Scroll-Animation." },
+            { category: "Visuelle Mods & Utilities", name: "Particle Scaler", desc: "Ermöglicht die stufenlose Skalierung der physikalischen Größe von Schlag- und Zauberpartikeln." },
+            { category: "Visuelle Mods & Utilities", name: "Multi-Instance Connection", desc: "Synchronisiert im Hintergrund gestartete Zweit-Accounts für extrem schnellen Fokuswechsel per Hotkey." },
+            { category: "Visuelle Mods & Utilities", name: "Dynamic Hand Physics", desc: "Verhindert das unnatürliche, abgehackte Wackeln des Items in deiner Hand, wenn du im Sprint schlägst." },
+            { category: "Visuelle Mods & Utilities", name: "Low Fire Shader", desc: "Legt das visuelle Feuer bei Verbrennung flach auf den unteren Bildschirmrand und macht es transparent für freie Kampfsicht." },
+            { category: "Visuelle Mods & Utilities", name: "Tablist Compact Mode", desc: "Komprimiert die Server-Spielerliste und sortiert sie auf Knopfdruck nach Ping, Rängen oder Alphabet." },
+            { category: "Visuelle Mods & Utilities", name: "Anti-Blindness Filter", desc: "Dämpft oder deaktiviert die visuelle Blockade durch Tintenfisch-Tinte oder den Blindheits-Effekt von Tränken." },
+            { category: "Visuelle Mods & Utilities", name: "Quick Play Server Shortcuts", desc: "Belege Hotkeys, um blitzschnell zwischen deinen Lieblingsservern hin- und herzuwechseln, ohne den Umweg über das Hauptmenü." }
+        ],
+        plus: [
+            { category: "High-End Killer-Features", name: "0,12 € / Std. Guthaben verdienen", desc: "Freischaltung des maximalen Premium-Stundensatzes beim Spielen." },
+            { category: "High-End Killer-Features", name: "Animiertes TENTIX+ Badge", desc: "Dynamisch glühendes und animiertes Abzeichen im Profil und im In-Game-Chat." },
+            { category: "High-End Killer-Features", name: "Kosmetika & Capes unbegrenzt", desc: "Voller, kostenloser Zugriff auf sämtliche Shop-Kosmetika, Flügel, Haustiere und animierte Capes." },
+            { category: "High-End Killer-Features", name: "Priority Queue & Beta-Features", desc: "Bevorzugter Server-Connect bei Überlastung des Netzwerks sowie Zugriff auf experimentelle Alpha-Module des Clients." },
+            { category: "High-End Killer-Features", name: "Customizable Name-Tags", desc: "Erlaubt es dir, deinen eigenen Namen über deinem Kopf farblich frei zu gestalten – inklusive RGB-Chroma-Verläufen und Animationen." },
+            { category: "High-End Killer-Features", name: "Embedded Chromium Core Browser", desc: "Ein vollwertiger, hardwarebeschleunigter Webbrowser direkt als transparentes, frei platzierbares In-Game-Widget im HUD oder an Blöcken fixiert." },
+            { category: "High-End Killer-Features", name: "In-Game Spotify Integration", desc: "API-Widget im HUD mit Anzeige von Album-Cover, Fortschrittsbalken und vollständiger Hotkey-Steuerung zum Skippen von Songs." },
+            { category: "High-End Killer-Features", name: "In-Game Discord & TeamSpeak Overlay", desc: "Zeigt als schwebendes Widget live an, wer in deinem aktuellen Sprachkanal spricht, inklusive In-Game-Mute und Deafen." },
+            { category: "High-End Killer-Features", name: "Cross-Server Global Proxy & Chat", desc: "Ein verschlüsseltes Peer-to-Peer-Netzwerk innerhalb des Clients. Schreibe mit allen TENTIX+ Usern serverübergreifend und teile Live-Standorte." },
+            { category: "High-End Killer-Features", name: "Cinematic Replay & Render Engine", desc: "Zeichnet die Welt im Umkreis als reine Vektordaten auf. Erlaubt freie Kamerafahrten nach dem Match und direkten MP4-Export in 4K/60FPS aus dem Client heraus." },
+            { category: "High-End Killer-Features", name: "In-Game Clip Recorder (ShadowPlay Mod)", desc: "Nimmt permanent im RAM auf. Ein Hotkey speichert die letzten 30 Sekunden Gameplay absolut ressourcenschonend als fertige Videodatei auf die Festplatte." },
+            { category: "High-End Killer-Features", name: "3D Schematic Ghost-Renderer", desc: "Lädt .schem-Dateien direkt als transparente Hologramme in die Welt und zeigt via Shader an, welchen Block du als Nächstes platzieren musst." },
+            { category: "High-End Killer-Features", name: "Real-Time Translated Chat", desc: "Übersetzt fremdsprachige Chatnachrichten (z.B. Englisch, Spanisch, Russisch) auf internationalen Servern in Echtzeit direkt in deinem Chatfenster ins Deutsche." },
+            { category: "High-End Killer-Features", name: "Hardware-Level Streamer Mode (OBS Bypass)", desc: "Filtert alle Overlays, Client-Menüs, Koordinaten oder Whitelist-Chats auf Treiberebene aus der Aufnahme heraus. Du siehst alles – dein Stream sieht nur das pure Spiel." },
+            { category: "High-End Killer-Features", name: "Zero-Delay Macro State Machine", desc: "Eine echte Skript-Engine im Client, die komplexe Abläufe (z.B. Kit wechseln, Slot springen, Item droppen, zurückwechseln) in einem einzigen Client-Tick ausführt." },
+            { category: "High-End Killer-Features", name: "AI-Driven Inventory Auto-Trash", desc: "Lernt, welche Items für dich \"Müll\" (z.B. Erde/Bruchstein) sind, und wirft diese beim Aufheben im exakt selben Tick automatisch wieder aus dem Inventar, wenn es voll ist." },
+            { category: "High-End Killer-Features", name: "In-Game Sound-Isolator & Audio-Filter", desc: "Filtert die Frequenzen von Minecraft in Echtzeit. Erlaubt das komplette Stummschalten von z.B. Lava, während Spieler-Schritte um 200 % verstärkt werden." },
+            { category: "High-End Killer-Features", name: "Voice Chat Proximity Engine", desc: "Integrierte Unterstützung für räumliches Hören und 3D-Audio-Übertragung für Server, die native Voice-Verbindungen unterstützen." },
+            { category: "High-End Shading & Visuals", name: "Chroma-Glow Mesh Deformer", desc: "Rüstungen und Schwerter leuchten nicht nur in RGB, sondern die Textur-Meshes selbst fangen an, sich im Takt zu animieren (wie animierte CS:GO-Skins)." },
+            { category: "High-End Shading & Visuals", name: "Screen-Space Ambient Occlusion (SSAO Light)", desc: "Fügt weiche, realistische Kontaktschatten in Ecken und Kanten von Blöcken hinzu, komplett ohne den FPS-Verlust eines normalen Shaders." },
+            { category: "High-End Shading & Visuals", name: "GPU-Accelerated Motion Blur", desc: "Nutzen von echtem Motion Blur basierend auf der Pixel-Geschwindigkeit (Velocity Buffer) deiner Grafikkarte für absolute AAA-Kino-Optik." },
+            { category: "High-End Shading & Visuals", name: "RGB Enchantment Glint", desc: "Das Leuchten verzauberter Items kann als flüssiger, reaktiver Regenbogen-Farbverlauf animiert und in der Geschwindigkeit angepasst werden." },
+            { category: "High-End Shading & Visuals", name: "Custom Skybox Video Engine", desc: "Erlaubt es, animierte MP4-Dateien oder GIFs als Himmel zu laden (z.B. rotierende schwarze Löcher oder ziehende Nebelwände)." },
+            { category: "High-End Shading & Visuals", name: "TNT Explosion Predictor", desc: "Zeigt den exakten Explosionsradius von gezündetem TNT als rote, semitransparente 3D-Sphäre in der Welt an, um Schaden perfekt zu vermeiden." },
+            { category: "High-End Shading & Visuals", name: "Armor Chroma Paint", desc: "Verpasse deiner getragenen Rüstung einen animierten RGB-Effekt, der exklusiv für dich und andere TENTIX-User sichtbar ist." },
+            { category: "High-End Shading & Visuals", name: "Physics-Based Particle Engine", desc: "Schlag- und Blockpartikel prallen physikalisch korrekt an Wänden ab, rutschen Abhänge hinunter und erzeugen Wellenringe auf dem Wasser." },
+            { category: "High-End Shading & Visuals", name: "Custom Hit-Flash Shader", desc: "Gegner leuchten bei Treffern nicht stumpf rot auf, sondern erzeugen konfigurierbare Effekte wie \"Neon-Glühen\", \"Elektro-Blitze\" oder Textur-Splits." },
+            { category: "High-End Shading & Visuals", name: "Dynamic Environment Audio Depth", desc: "Verändert den Hall und die Dämpfung des Sounds dynamisch basierend auf der Umgebung (tiefe, enge Höhle vs. weiter, hoher Berg)." },
+            { category: "High-End Shading & Visuals", name: "Dynamic Crosshair Scaling", desc: "Das Fadenkreuz verändert dynamisch seine Form, Indikatoren und Größe, je nachdem, welches Item oder welche Waffe du gerade in der Hand hältst." },
+            { category: "High-End Shading & Visuals", name: "Fake Name/Skin Spoofer", desc: "Erlaubt das vollständige lokale Faken deines Namens und Skins auf allen Servern, um gezieltes Stream-Sniping komplett zu unterbinden." },
+            { category: "Automation & Cloud Tools", name: "Cloud Config Core", desc: "Speichert jede einzelne Option, jedes Makro und jede HUD-Position in Echtzeit in der TENTIX-Cloud. Beim PC-Wechsel ist nach dem Login sofort alles synchron." },
+            { category: "Automation & Cloud Tools", name: "Packet Sniffer & Debugger Dashboard", desc: "Ein In-Game-Fenster für Power-User, das alle eingehenden und ausgehenden Server-Pakete zur präzisen Langanalyse live aufschlüsselt." },
+            { category: "Automation & Cloud Tools", name: "Smart Inventory Layout Presets", desc: "Erkennt deinen aktuellen Zustand (Kampf/Bau-Modus) und ordnet dein Inventar per Knopfdruck augenblicklich nach deinen perfekt vordefinierten Slots an." },
+            { category: "Automation & Cloud Tools", name: "Auto-Reconnect & Queue Skipper", desc: "Versucht bei einem Timeout automatisch die Verbindung wiederherzustellen und optimiert das Paket-Timing, um Server-Warteschlangen zu umgehen." },
+            { category: "Automation & Cloud Tools", name: "Stat-Webhook to Discord", desc: "Sendet deine Rundenstatistiken (Kills, Wins, gesammelter Loot) nach jedem Match vollautomatisch über einen Webhook an deinen privaten Discord-Server." },
+            { category: "Automation & Cloud Tools", name: "Texture Pack Live-Compiler", desc: "Bearbeite eine Textur in einem externen Programm (wie Photoshop); beim Speichern aktualisiert der Client den Block im Spiel sofort ohne Ladebildschirm." },
+            { category: "Automation & Cloud Tools", name: "Custom Font Engine", desc: "Ersetze die verpixelte Standard-Schriftart von Minecraft durch jede beliebige TrueType-Schriftart (.ttf) von deinem Betriebssystem." },
+            { category: "Automation & Cloud Tools", name: "Discord Rich Presence 2.0", desc: "Zeigt deinen Discord-Freunden deine echten Live-Stats (z.B. \"Spielmodus | Kills: 15 | HP: 20/20\") inklusive einer Live-Vorschau deiner Position." },
+            { category: "Automation & Cloud Tools", name: "Cape Wave Physics Configurator", desc: "Millimetergenaue Justierung der Schwingung, des Winkels, der Schwere und der Wind-Physik deines Capes für perfekte Bewegungs-Animationen." },
+            { category: "Automation & Cloud Tools", name: "90.-130. Premium Module-Tweaker & Gradients", desc: "Schaltet für alle 90 zuvor genannten Module im In-Game-Editor zusätzliche Schieberegler frei. Damit lassen sich komplexe Farbverläufe, Neon-Glow-Effekte, Deckkraft-Gradienten und reaktive Keyframe-Animationen für jedes einzelne HUD-Element millimetergenau einstellen." }
+        ]
+    };
+
+    let activeFeaturesPopupRank = 'lite';
+    let activeFeaturesPopupCategory = 'all';
+
+    function openFeaturesPopup(rank, e) {
+        if (e) {
+            e.stopPropagation(); // Stop propagation to avoid toggling the disclaimer
+            createClickExplosion(e);
+        }
+        
+        activeFeaturesPopupRank = rank;
+        activeFeaturesPopupCategory = 'all';
+        
+        const modal = document.getElementById('features-popup-modal');
+        const card = modal ? modal.querySelector('div') : null;
+        if (!modal || !card) return;
+        
+        // Populate Title and Subtitle
+        const titleEl = document.getElementById('features-popup-title');
+        const subtitleEl = document.getElementById('features-popup-subtitle');
+        if (titleEl) {
+            titleEl.innerHTML = rank === 'lite' 
+                ? `TENTIX LITE <span style="font-size: 11px; padding: 2px 8px; border-radius: 4px; background: rgba(255,255,255,0.08); color: #fff; font-weight: 800; border: 1px solid rgba(255,255,255,0.15); margin-left: 10px; letter-spacing: 0.5px;">50 FEATURES</span>`
+                : `TENTIX+ <span style="font-size: 11px; padding: 2px 8px; border-radius: 4px; background: rgba(0,212,255,0.15); color: var(--accent-blue); font-weight: 800; border: 1px solid rgba(0,212,255,0.25); margin-left: 10px; letter-spacing: 0.5px;">130 FEATURES</span>`;
+        }
+        if (subtitleEl) {
+            subtitleEl.innerText = rank === 'lite'
+                ? "Detaillierte Liste aller Features des TENTIX LITE Rangs (Features 1 - 50)"
+                : "Detaillierte Liste aller High-End Features des TENTIX+ Rangs (Features 51 - 130 + alle LITE Features)";
+        }
+        
+        // Generate category tabs
+        const filterBar = document.getElementById('features-filter-bar');
+        if (filterBar) {
+            let categories = ['all'];
+            const features = TENTIX_FEATURES[rank];
+            features.forEach(f => {
+                if (!categories.includes(f.category)) {
+                    categories.push(f.category);
+                }
+            });
+            
+            filterBar.innerHTML = categories.map(cat => {
+                const label = cat === 'all' ? 'Alle anzeigen' : cat;
+                const activeClass = cat === 'all' ? `active ${rank === 'lite' ? 'lite-active' : ''}` : '';
+                return `<button class="features-filter-btn ${activeClass}" data-category="${cat}" onclick="filterFeaturesPopup('${cat}')">${label}</button>`;
+            }).join('');
+        }
+        
+        // Render features
+        renderFeaturesList();
+        
+        // Show Modal
+        modal.style.display = 'flex';
+        setTimeout(() => {
+            modal.style.opacity = '1';
+            card.style.transform = 'scale(1)';
+        }, 30);
+    }
+    
+    function closeFeaturesPopup() {
+        const modal = document.getElementById('features-popup-modal');
+        const card = modal ? modal.querySelector('div') : null;
+        if (modal && card) {
+            modal.style.opacity = '0';
+            card.style.transform = 'scale(0.85)';
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+    }
+    
+    function filterFeaturesPopup(category) {
+        activeFeaturesPopupCategory = category;
+        
+        // Update active class on buttons
+        const buttons = document.querySelectorAll('.features-filter-btn');
+        buttons.forEach(btn => {
+            btn.classList.remove('active', 'lite-active');
+            if (btn.getAttribute('data-category') === category) {
+                btn.classList.add('active');
+                if (activeFeaturesPopupRank === 'lite') {
+                    btn.classList.add('lite-active');
+                }
+            }
+        });
+        
+        renderFeaturesList();
+    }
+    
+    function renderFeaturesList() {
+        const listContainer = document.getElementById('features-popup-content-list');
+        if (!listContainer) return;
+        
+        const rank = activeFeaturesPopupRank;
+        const category = activeFeaturesPopupCategory;
+        let features = TENTIX_FEATURES[rank] || [];
+        
+        if (category !== 'all') {
+            features = features.filter(f => f.category === category);
+        }
+        
+        let html = '';
+        
+        // If rank is plus, add a special notice at the top
+        if (rank === 'plus' && category === 'all') {
+            html += `
+            <div style="background: rgba(0, 212, 255, 0.04); border: 1px dashed rgba(0, 212, 255, 0.25); border-radius: 8px; padding: 12px; font-size: 11px; color: var(--accent-blue); line-height: 1.5; font-weight: 500; margin-bottom: 5px;">
+                ℹ️ <strong>TENTIX+ Basis:</strong> TENTIX+ enthält automatisch alle 50 Features der LITE-Version als integrierte Grundlage, plus die folgenden 80 exklusiven High-End Killer-Features.
+            </div>
+            `;
+        }
+        
+        html += features.map((f, i) => {
+            const indexNum = rank === 'lite' ? (i + 1) : (50 + i + 1);
+            return `
+            <div style="background: rgba(255,255,255,0.015); border: 1px solid rgba(255,255,255,0.03); border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 4px; transition: border-color 0.2s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.08)';" onmouseout="this.style.borderColor='rgba(255,255,255,0.03)';">
+                <div style="font-weight: 800; font-size: 11.5px; color: #fff; display: flex; align-items: center; justify-content: space-between;">
+                    <span style="display: flex; align-items: center; gap: 8px;">
+                        <span style="color: #666; font-size: 10px; font-family: monospace;">#${indexNum}</span>
+                        <span>${f.name}</span>
+                    </span>
+                    <span style="font-size: 8px; font-weight: 800; color: ${rank === 'lite' ? '#fff' : 'var(--accent-blue)'}; background: ${rank === 'lite' ? 'rgba(255,255,255,0.06)' : 'rgba(0,212,255,0.08)'}; padding: 2px 6px; border-radius: 4px; border: 1px solid ${rank === 'lite' ? 'rgba(255,255,255,0.1)' : 'rgba(0,212,255,0.15)'}; letter-spacing: 0.5px; text-transform: uppercase;">${f.category}</span>
+                </div>
+                <div style="font-size: 10.5px; color: #888; line-height: 1.5; font-weight: 500; padding-left: 20px;">${f.desc}</div>
+            </div>
+            `;
+        }).join('');
+        
+        listContainer.innerHTML = html;
+        listContainer.scrollTop = 0; // reset scroll position
     }
 
     function toggleDisclaimer(type) {
@@ -9675,7 +9998,21 @@
     let cosmeticsViewer = null;
 
     function initCosmeticsViewer() {
-        if (cosmeticsViewer) return;
+        const rotateToggle = document.getElementById('ts-cosmetics-rotate');
+        const rotatePref = localStorage.getItem('tentix_cosmetics_rotate');
+        const shouldRotate = rotatePref !== 'false';
+
+        if (rotateToggle) {
+            if (shouldRotate) {
+                rotateToggle.classList.add('active');
+            } else {
+                rotateToggle.classList.remove('active');
+            }
+        }
+        if (cosmeticsViewer) {
+            cosmeticsViewer.autoRotate = shouldRotate;
+            return;
+        }
         try {
             const canvas = document.getElementById('cosmetics-skin-canvas');
             if (!canvas) return;
@@ -9690,7 +10027,7 @@
             cosmeticsViewer.controls.minPolarAngle = 0.3; // Limit overhead angle
             cosmeticsViewer.controls.maxPolarAngle = 1.9; // Stop before looking under feet/flipping upside down
             
-            cosmeticsViewer.autoRotate = true;
+            cosmeticsViewer.autoRotate = shouldRotate;
             cosmeticsViewer.autoRotateSpeed = 0.5;
             
             // Add slow-motion walking animation
@@ -11462,7 +11799,7 @@
         const name = document.getElementById('online-toast-name');
         const status = document.getElementById('online-toast-status');
         if (!toast) return;
-        avatar.src = `https://minotar.net/helm/${username}/32`;
+        avatar.src = `https://mc-heads.net/avatar/${username}/32`;
         name.textContent = username;
         status.textContent = activity || 'ist jetzt online';
         toast.classList.add('show');
@@ -11511,6 +11848,7 @@
         }
 
         updateFriendsBadge();
+        updateRequestsPing();
         loadFriendsFromServer();
     }
 
@@ -11533,7 +11871,7 @@
                 outgoingRequests = reqData.outgoing || [];
             }
 
-            const blockRes = await fetch(`${API_BASE_URL}/api/friends/blocked/list?uuid=${encodeURIComponent(uuid)}`);
+            const blockRes = await fetch(`${API_BASE_URL}/api/friends/block/list?uuid=${encodeURIComponent(uuid)}`);
             const blockData = await blockRes.json();
             if (blockData.success) {
                 blockedUsers = blockData.blocked || [];
@@ -11541,7 +11879,21 @@
 
             renderFriendsList();
             updateFriendsBadge();
+            updateRequestsPing();
         } catch(e) { console.log('Friends load error:', e); }
+    }
+
+    function updateRequestsPing() {
+        const mainPing = document.getElementById('friends-requests-ping');
+        const tabPing = document.getElementById('friends-incoming-ping');
+        const hasIncoming = (incomingRequests || []).length > 0;
+        
+        if (mainPing) {
+            mainPing.style.display = hasIncoming ? 'block' : 'none';
+        }
+        if (tabPing) {
+            tabPing.style.display = hasIncoming ? 'block' : 'none';
+        }
     }
 
     function updateFriendsBadge() {
@@ -11880,7 +12232,7 @@
             resultsContainer.innerHTML += `
                 <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.02); padding: 6px 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.04);">
                     <div style="display: flex; align-items: center; gap: 8px; min-width: 0; flex: 1;">
-                        <img src="https://minotar.net/avatar/${u.username}/16" onerror="this.src='https://minotar.net/avatar/MHF_Steve/16'" style="border-radius: 3px; width: 16px; height: 16px;">
+                        <img src="https://mc-heads.net/avatar/${u.username}/16" onerror="this.src='https://mc-heads.net/avatar/MHF_Steve/16'" style="border-radius: 3px; width: 16px; height: 16px;">
                         <span style="font-size: 11px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${u.username}</span>
                     </div>
                     <div style="display: flex; gap: 6px; align-items: center;">
@@ -11986,7 +12338,7 @@
                 container.innerHTML += `
                     <div class="friend-item" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.02);">
                         <div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0;">
-                            <img class="friend-avatar" src="https://minotar.net/avatar/${f.username}/24" onerror="this.src='https://minotar.net/avatar/MHF_Steve/24'" style="border-radius: 4px; width: 24px; height: 24px;">
+                            <img class="friend-avatar" src="https://mc-heads.net/avatar/${f.username}/24" onerror="this.src='https://mc-heads.net/avatar/MHF_Steve/24'" style="border-radius: 4px; width: 24px; height: 24px;">
                             <div style="min-width: 0; flex: 1;">
                                <div style="font-size: 11.5px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 4px;">${friendRankIcon}${f.username}</div>
                                <div style="display: flex; align-items: center; gap: 4px; font-size: 9px; color: #777; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
@@ -12030,7 +12382,7 @@
                 container.innerHTML += `
                     <div class="friend-item" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.02);">
                         <div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0;">
-                            <img class="friend-avatar" src="https://minotar.net/avatar/${r.username}/24" onerror="this.src='https://minotar.net/avatar/MHF_Steve/24'" style="border-radius: 4px; width: 24px; height: 24px;">
+                            <img class="friend-avatar" src="https://mc-heads.net/avatar/${r.username}/24" onerror="this.src='https://mc-heads.net/avatar/MHF_Steve/24'" style="border-radius: 4px; width: 24px; height: 24px;">
                             <div style="min-width: 0; flex: 1;">
                                <div style="font-size: 11.5px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 4px;">${reqRankIcon}${r.username}</div>
                             </div>
@@ -12060,7 +12412,7 @@
                 container.innerHTML += `
                     <div class="friend-item" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.02);">
                         <div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0;">
-                            <img class="friend-avatar" src="https://minotar.net/avatar/${r.username}/24" onerror="this.src='https://minotar.net/avatar/MHF_Steve/24'" style="border-radius: 4px; width: 24px; height: 24px; opacity: 0.6;">
+                            <img class="friend-avatar" src="https://mc-heads.net/avatar/${r.username}/24" onerror="this.src='https://mc-heads.net/avatar/MHF_Steve/24'" style="border-radius: 4px; width: 24px; height: 24px; opacity: 0.6;">
                             <div style="min-width: 0; flex: 1;">
                                <div style="font-size: 11.5px; font-weight: 700; color: #aaa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${r.username}</div>
                             </div>
@@ -12090,7 +12442,7 @@
                 container.innerHTML += `
                     <div class="friend-item" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.02);">
                         <div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0;">
-                            <img class="friend-avatar" src="https://minotar.net/avatar/${b.username}/24" onerror="this.src='https://minotar.net/avatar/MHF_Steve/24'" style="border-radius: 4px; width: 24px; height: 24px; opacity: 0.6;">
+                            <img class="friend-avatar" src="https://mc-heads.net/avatar/${b.username}/24" onerror="this.src='https://mc-heads.net/avatar/MHF_Steve/24'" style="border-radius: 4px; width: 24px; height: 24px; opacity: 0.6;">
                             <div style="min-width: 0; flex: 1;">
                                <div style="font-size: 11.5px; font-weight: 700; color: #ff4b4b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${b.username}</div>
                             </div>
@@ -12156,7 +12508,7 @@
         const chatTitle = document.getElementById('chat-friend-name');
         const chatAvatar = document.getElementById('chat-friend-avatar');
         if (chatTitle) chatTitle.innerText = friendUsername.toUpperCase();
-        if (chatAvatar) chatAvatar.src = `https://minotar.net/avatar/${friendUsername}/18`;
+        if (chatAvatar) chatAvatar.src = `https://mc-heads.net/avatar/${friendUsername}/18`;
         
         const chatPopup = document.getElementById('friends-chat-popup');
         if (chatPopup) {
@@ -12687,7 +13039,137 @@
             });
             resizeObserver.observe(friendsPopup);
         }
+        
+        // Initialize Custom Styled Dropdowns
+        try {
+            convertSelectToCustomDropdown('lite-duration-select');
+            convertSelectToCustomDropdown('plus-duration-select');
+            convertSelectToCustomDropdown('mod-sort-select');
+            convertSelectToCustomDropdown('mod-ver-select');
+            
+            window.addEventListener('click', () => {
+                document.querySelectorAll('.fancy-dropdown').forEach(el => el.classList.remove('open'));
+            });
+        } catch(e) {
+            console.error("Failed to initialize custom dropdowns:", e);
+        }
     });
+
+    function convertSelectToCustomDropdown(selectId) {
+        const select = document.getElementById(selectId);
+        if (!select) return;
+        
+        if (select.nextElementSibling && select.nextElementSibling.classList.contains('fancy-dropdown')) {
+            return;
+        }
+        
+        const wrapper = document.createElement('div');
+        wrapper.className = 'fancy-dropdown';
+        const width = select.getAttribute('style') && select.getAttribute('style').includes('width') ? select.style.width : '';
+        if (width) wrapper.style.width = width;
+        else wrapper.style.width = '100%';
+        wrapper.style.marginTop = '4px';
+        
+        const selectedDiv = document.createElement('div');
+        selectedDiv.className = 'fancy-dropdown-selected';
+        selectedDiv.style.padding = '8px 12px';
+        selectedDiv.style.fontSize = '11px';
+        selectedDiv.style.borderRadius = '6px';
+        selectedDiv.style.background = '#111';
+        selectedDiv.style.border = selectId.includes('plus') ? '1px solid rgba(0, 212, 255, 0.15)' : '1px solid rgba(255,255,255,0.08)';
+        
+        const selectedText = document.createElement('span');
+        selectedText.innerText = select.options[select.selectedIndex] ? select.options[select.selectedIndex].text : '';
+        selectedDiv.appendChild(selectedText);
+        
+        const arrowSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        arrowSvg.setAttribute('viewBox', '0 0 24 24');
+        arrowSvg.setAttribute('class', 'dropdown-arrow');
+        arrowSvg.style.width = '12px';
+        arrowSvg.style.height = '12px';
+        arrowSvg.innerHTML = '<path d="M7 10l5 5 5-5z"/>';
+        selectedDiv.appendChild(arrowSvg);
+        
+        const optionsDiv = document.createElement('div');
+        optionsDiv.className = 'fancy-dropdown-options';
+        optionsDiv.style.background = '#111';
+        optionsDiv.style.border = '1px solid var(--accent-blue)';
+        
+        Array.from(select.options).forEach((opt) => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'fancy-dropdown-item';
+            itemDiv.style.padding = '8px 12px';
+            itemDiv.style.fontSize = '11px';
+            itemDiv.innerText = opt.text;
+            itemDiv.onclick = (e) => {
+                e.stopPropagation();
+                select.value = opt.value;
+                selectedText.innerText = opt.text;
+                wrapper.classList.remove('open');
+                
+                const event = new Event('change');
+                select.dispatchEvent(event);
+            };
+            optionsDiv.appendChild(itemDiv);
+        });
+        
+        selectedDiv.onclick = (e) => {
+            e.stopPropagation();
+            document.querySelectorAll('.fancy-dropdown').forEach(el => {
+                if (el !== wrapper) el.classList.remove('open');
+            });
+            wrapper.classList.toggle('open');
+        };
+        
+        wrapper.appendChild(selectedDiv);
+        wrapper.appendChild(optionsDiv);
+        
+        select.style.display = 'none';
+        select.parentNode.insertBefore(wrapper, select.nextSibling);
+    }
+
+    function addRankToCart(rank, duration) {
+        const durInt = parseInt(duration);
+        let price = 0.00;
+        let title = '';
+        
+        if (rank === 'LITE') {
+            if (durInt === 1) { price = 2.99; title = 'TENTIX LITE (1 Monat)'; }
+            else if (durInt === 3) { price = 8.49; title = 'TENTIX LITE (3 Monate)'; }
+            else if (durInt === 6) { price = 15.99; title = 'TENTIX LITE (6 Monate)'; }
+            else if (durInt === 12) { price = 27.99; title = 'TENTIX LITE (12 Monate)'; }
+            else if (durInt === -1) { price = 29.99; title = 'TENTIX LITE (Lifetime)'; }
+        } else if (rank === 'PLUS') {
+            if (durInt === 1) { price = 7.99; title = 'TENTIX+ (1 Monat)'; }
+            else if (durInt === 3) { price = 21.99; title = 'TENTIX+ (3 Monate)'; }
+            else if (durInt === 6) { price = 39.99; title = 'TENTIX+ (6 Monate)'; }
+            else if (durInt === 12) { price = 69.99; title = 'TENTIX+ (12 Monate)'; }
+            else if (durInt === -1) { price = 74.99; title = 'TENTIX+ (Lifetime)'; }
+        }
+        
+        const rankItem = {
+            id: `rank_${rank}_${duration}`,
+            rank: rank,
+            duration_months: durInt,
+            title: title,
+            price: price,
+            icon: rank === 'PLUS' ? '<span class="premium-rank-badge badge-plus">PLUS</span>' : '<span class="premium-rank-badge badge-lite">LITE</span>',
+            isRank: true
+        };
+        
+        shoppingCart = shoppingCart.filter(item => !item.isRank);
+        shoppingCart.push(rankItem);
+        updateCartUI();
+        
+        showToast(currentLang === 'de' ? `${title} im Warenkorb!` : `${title} added to cart!`, "success");
+        navTo('shop');
+        
+        const drawer = document.getElementById('cart-drawer');
+        if (drawer && !drawer.classList.contains('open')) {
+            drawer.classList.add('open');
+            updateShopViewOpacity();
+        }
+    }
 
     function checkoutCart() {
         if (shoppingCart.length === 0) return;
@@ -12705,32 +13187,163 @@
             total = subtotal - discountVal;
         }
         
-        const formattedTotal = total.toFixed(2);
-        const itemNames = shoppingCart.map(item => item.title).join(', ');
-        const paypalUrl = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=liesesandro4@gmail.com&currency_code=EUR&amount=${formattedTotal}&item_name=${encodeURIComponent('TENTIX: ' + itemNames)}`;
-        
-        if (window.api && window.api.openExternalLink) {
-            window.api.openExternalLink(paypalUrl);
-        }
-        
-        showToast(currentLang === 'de' ? `Zahlung von ${formatPrice(total)} wird verarbeitet...` : `Processing payment of ${formatPrice(total)}...`, "info");
-        
-        setTimeout(() => {
-            shoppingCart.forEach(item => {
-                localStorage.setItem(`tentix_unlocked_${item.id}`, 'true');
-            });
+        const rankItem = shoppingCart.find(item => item.isRank);
+        if (rankItem) {
+            const modal = document.getElementById('checkout-modal');
+            const prodName = document.getElementById('checkout-product-name');
+            const prodDur = document.getElementById('checkout-product-duration');
+            const prodPrice = document.getElementById('checkout-product-price');
             
-            shoppingCart = [];
-            updateCartUI();
+            if (prodName) prodName.innerText = rankItem.rank === 'LITE' ? 'TENTIX LITE' : 'TENTIX+';
+            if (prodDur) {
+                let durationText = '1 Monat';
+                if (rankItem.duration_months === 3) durationText = '3 Monate';
+                else if (rankItem.duration_months === 6) durationText = '6 Monate';
+                else if (rankItem.duration_months === 12) durationText = '12 Monate';
+                else if (rankItem.duration_months === -1) durationText = 'Lifetime';
+                prodDur.innerText = durationText;
+            }
+            if (prodPrice) prodPrice.innerText = formatPrice(total);
             
-            const drawer = document.getElementById('cart-drawer');
-            if (drawer && drawer.classList.contains('open')) {
-                toggleCartDrawer();
+            updateUserBalanceDisplay();
+            
+            if (modal) {
+                modal.style.display = 'flex';
+                setTimeout(() => {
+                    modal.style.opacity = '1';
+                    modal.firstElementChild.style.transform = 'scale(1)';
+                }, 30);
+            }
+        } else {
+            const formattedTotal = total.toFixed(2);
+            const itemNames = shoppingCart.map(item => item.title).join(', ');
+            const paypalUrl = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=liesesandro4@gmail.com&currency_code=EUR&amount=${formattedTotal}&item_name=${encodeURIComponent('TENTIX: ' + itemNames)}`;
+            
+            if (window.api && window.api.openExternalLink) {
+                window.api.openExternalLink(paypalUrl);
             }
             
-            showToast(currentLang === 'de' ? "Kauf erfolgreich abgeschlossen!" : "Purchase completed successfully!", "success");
-            updateCosmeticsLocks();
-        }, 1500);
+            showToast(currentLang === 'de' ? `Zahlung von ${formatPrice(total)} wird verarbeitet...` : `Processing payment of ${formatPrice(total)}...`, "info");
+            
+            setTimeout(() => {
+                shoppingCart.forEach(item => {
+                    localStorage.setItem(`tentix_unlocked_${item.id}`, 'true');
+                });
+                
+                shoppingCart = [];
+                updateCartUI();
+                
+                const drawer = document.getElementById('cart-drawer');
+                if (drawer && drawer.classList.contains('open')) {
+                    toggleCartDrawer();
+                }
+                
+                showToast(currentLang === 'de' ? "Kauf erfolgreich abgeschlossen!" : "Purchase completed successfully!", "success");
+                updateCosmeticsLocks();
+            }, 1500);
+        }
+    }
+
+    function closeCheckout() {
+        const modal = document.getElementById('checkout-modal');
+        if (modal) {
+            modal.style.opacity = '0';
+            modal.firstElementChild.style.transform = 'scale(0.8)';
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+    }
+
+    async function submitRankPurchase(paymentMethod) {
+        const rankItem = shoppingCart.find(item => item.isRank);
+        if (!rankItem) return;
+        
+        let subtotal = 0;
+        shoppingCart.forEach(item => subtotal += item.price);
+        
+        const activeCodeStr = localStorage.getItem('applied_creator_code');
+        const codes = JSON.parse(localStorage.getItem('tentix_creator_codes') || '[]');
+        const activeCode = codes.find(c => c.code.toUpperCase() === (activeCodeStr || '').toUpperCase());
+        
+        let total = subtotal;
+        if (activeCode) {
+            const discountVal = subtotal * (activeCode.discount / 100);
+            total = subtotal - discountVal;
+        }
+
+        if (paymentMethod === 'balance') {
+            const balance = parseFloat(localStorage.getItem('tentix_balance') || '0.0000');
+            if (balance < total) {
+                showToast(currentLang === 'de' ? "Nicht genügend Guthaben!" : "Insufficient balance!", "error");
+                closeCheckout();
+                openStoreCheckout(1500);
+                return;
+            }
+        }
+        
+        const uuid = localStorage.getItem('tentix_uuid') || '';
+        const username = localStorage.getItem('tentix_user') || '';
+        
+        const body = {
+            uuid: uuid,
+            username: username,
+            rank: rankItem.rank,
+            duration_months: rankItem.duration_months,
+            payment_method: paymentMethod
+        };
+        
+        const actionOverlay = document.getElementById('action-overlay');
+        if (actionOverlay) {
+            actionOverlay.style.display = 'flex';
+            setTimeout(() => actionOverlay.style.opacity = '1', 10);
+        }
+        
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/ranks/purchase`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            const data = await res.json();
+            
+            if (actionOverlay) {
+                actionOverlay.style.opacity = '0';
+                setTimeout(() => actionOverlay.style.display = 'none', 300);
+            }
+            
+            if (data.success) {
+                closeCheckout();
+                shoppingCart = [];
+                updateCartUI();
+                
+                localStorage.setItem('tentix_balance', parseFloat(data.balance).toFixed(4));
+                updateUserBalanceDisplay(data.balance);
+                
+                localStorage.setItem('tentix_active_rank', data.active_rank);
+                localStorage.setItem('tentix_roles', JSON.stringify(data.roles));
+                
+                checkActiveRankAndPanels();
+                loadBadges();
+                
+                showToast(currentLang === 'de' ? "Rang erfolgreich freigeschaltet!" : "Rank unlocked successfully!", "success");
+                
+                const drawer = document.getElementById('cart-drawer');
+                if (drawer && drawer.classList.contains('open')) {
+                    drawer.classList.remove('open');
+                    updateShopViewOpacity();
+                }
+            } else {
+                showToast(data.error || "Kauf fehlgeschlagen", "error");
+            }
+        } catch (err) {
+            if (actionOverlay) {
+                actionOverlay.style.opacity = '0';
+                setTimeout(() => actionOverlay.style.display = 'none', 300);
+            }
+            console.error("Rank purchase error:", err);
+            showToast("Netzwerkfehler beim Rangkauf", "error");
+        }
     }
 
     // --- Admin Creator Codes Manager ---
