@@ -1911,7 +1911,7 @@
         <div style="font-size: 12px; color: var(--text-gray); margin-bottom: 25px; line-height: 1.5;" id="beta-desc">Bitte gib deinen Beta-Key ein, um fortzufahren.</div>
         <input type="text" class="redeem-input" id="beta-input-field" placeholder="BETA-XXXX-XXXX" maxlength="20" autocomplete="off" spellcheck="false" style="border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); letter-spacing: 1px; font-family: 'Inter', monospace; width: 100%; box-sizing: border-box;">
         <div class="redeem-btn" id="beta-submit-btn" onclick="submitBetaCode()" style="background: linear-gradient(135deg, var(--accent-blue), var(--accent-gradient-sec)); margin-bottom: 15px;">VERIFIZIEREN</div>
-        <div class="beta-ms-link" id="beta-ms-login-link" onclick="loginBetaMicrosoft()">Du hast bereits Beta-Rechte? Mit Microsoft einloggen</div>
+        <div class="beta-ms-link" id="beta-ms-login-link" onclick="loginBetaMicrosoft()">Du hast schon ein Account?</div>
         <div id="beta-error-msg" style="display: none; font-size: 11px; color: #ff4b4b; font-weight: 700; margin-top: 12px; text-shadow: 0 0 8px rgba(255, 75, 75, 0.3);"></div>
     </div>
 </div>
@@ -8737,7 +8737,7 @@
             if (title) title.innerText = "BETA ZUGANG";
             if (desc) desc.innerText = "Bitte gib deinen Beta-Key ein, um fortzufahren.";
             if (btn) btn.innerText = "VERIFIZIEREN";
-            if (msLink) msLink.innerText = "Du hast bereits Beta-Rechte? Mit Microsoft einloggen";
+            if (msLink) msLink.innerText = "Du hast schon ein Account?";
             if (errMsg && errMsg.style.display === 'block') {
                 errMsg.innerText = "Du bist nicht Teil des Beta Programms.";
             }
@@ -8745,7 +8745,7 @@
             if (title) title.innerText = "BETA ACCESS";
             if (desc) desc.innerText = "Please enter your Beta Key to proceed.";
             if (btn) btn.innerText = "VERIFY";
-            if (msLink) msLink.innerText = "Already have Beta access? Sign in with Microsoft";
+            if (msLink) msLink.innerText = "Already have an account?";
             if (errMsg && errMsg.style.display === 'block') {
                 errMsg.innerText = "You are not part of the Beta program.";
             }
