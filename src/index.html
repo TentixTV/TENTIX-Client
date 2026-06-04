@@ -30,6 +30,11 @@
             box-shadow: 0 0 8px rgba(255,255,255,0.3);
             border: 1px solid rgba(255,255,255,0.2);
         }
+        .premium-rank-badge.tooltip .tooltiptext {
+            font-size: 9px !important;
+            padding: 4px 8px !important;
+            border-radius: 4px;
+        }
         :root { --accent-blue: #00d4ff; --accent-blue-rgb: 0, 212, 255; --accent-gradient-sec: #0072ff; --bg-dark: #0c0c0c; --card-bg: #141416; --sidebar-bg: #0f0f11; --settings-bg: #111113; --border-color: rgba(255,255,255,0.06); --text-gray: #8b8b93; --news-pane-width: 320px; --cart-color-1: #00d4ff; --cart-color-1-rgb: 0, 212, 255; --cart-color-2: #ff4b4b; --cart-color-2-rgb: 255, 75, 75; }
         * { user-select: none; -webkit-user-select: none; box-sizing: border-box; outline: none; margin: 0; padding: 0; }
         body { background-color: transparent; color: white; font-family: 'Inter', sans-serif; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; width: 100vw; -webkit-app-region: no-drag; }
@@ -516,11 +521,12 @@
         .explore-main { flex: 1; display: flex; flex-direction: column; padding: 30px; }
         .explore-sidebar { width: 280px; flex-shrink: 0; background: #0f0f11; border-left: 1px solid rgba(255, 255, 255, 0.05); padding: 30px; overflow-y: auto; scrollbar-gutter: stable;}
         .explore-header { display: flex; align-items: center; margin-bottom: 20px; gap: 20px;}
-        .explore-search-wrap { display: flex; align-items: center; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 0 15px; flex: 1; transition: 0.3s;}
+        .explore-search-wrap { display: flex; align-items: center; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 0 15px; flex: 3.5; transition: 0.3s;}
         .explore-search-wrap:focus-within { border-color: var(--accent-blue); background: rgba(var(--accent-blue-rgb), 0.05);}
         .explore-search-wrap svg { width: 18px; height: 18px; fill: var(--accent-blue); margin-right: 10px;}
         .explore-search { background: transparent; border: none; color: #fff; padding: 15px 0; width: 100%; font-size: 14px; outline: none; font-family: 'Inter', sans-serif;}
-        .explore-sort { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; padding: 14px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; outline: none; cursor: pointer; font-family: 'Inter', sans-serif;}
+        .explore-sort { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; padding: 14px 15px; border-radius: 8px; font-size: 13px; font-weight: 600; outline: none; cursor: pointer; font-family: 'Inter', sans-serif; flex: 1.2; min-width: 0; max-width: 220px;}
+        .explore-sort.mod-version-select { flex: 0.8; max-width: 140px; }
         .filter-section { margin-bottom: 25px; }
         .filter-title { font-size: 14px; font-weight: 800; color: #fff; margin-bottom: 15px; }
         .filter-grid { display: flex; flex-direction: column; gap: 8px; }
@@ -4890,7 +4896,7 @@
                 const upgradeBtn = document.getElementById('shop-upgrade-btn');
                 const upgradePanel = upgradeBtn ? upgradeBtn.parentElement : null;
                 if (upgradePanel) {
-                    if (activeRank === 'LITE') {
+                    if (activeRank === 'LITE' || activeRank === 'PLAYER') {
                         upgradePanel.style.display = 'block';
                     } else {
                         upgradePanel.style.display = 'none';
@@ -5995,6 +6001,35 @@
             }
         }
 
+        // Sort users: 1. Current user first. 2. Team members (OWNER, DEV, ADMIN, MOD, SUPP) A-Z. 3. Non-team members A-Z.
+        const myUsername = (localStorage.getItem('tentix_user') || '').toLowerCase();
+        const teamRoles = ['OWNER', 'DEV', 'ADMIN', 'MOD', 'SUPP'];
+        
+        function isTeamUser(u) {
+            let roles = u.roles || ['PLAYER'];
+            if (typeof roles === 'string') {
+                try { roles = JSON.parse(roles); } catch(e) { roles = ['PLAYER']; }
+            }
+            return roles.some(r => teamRoles.includes(r.toUpperCase()));
+        }
+
+        users.sort((a, b) => {
+            const aName = (a.username || '').toLowerCase();
+            const bName = (b.username || '').toLowerCase();
+
+            const isMeA = aName === myUsername;
+            const isMeB = bName === myUsername;
+            if (isMeA && !isMeB) return -1;
+            if (!isMeA && isMeB) return 1;
+
+            const isTeamA = isTeamUser(a);
+            const isTeamB = isTeamUser(b);
+            if (isTeamA && !isTeamB) return -1;
+            if (!isTeamA && isTeamB) return 1;
+
+            return aName.localeCompare(bName);
+        });
+
         if(users.length === 0) {
             tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; font-style:italic; padding:20px;">Keine Benutzer gefunden.</td></tr>`;
             return;
@@ -6300,9 +6335,24 @@
 
         const okBtn = document.getElementById('custom-confirm-ok-btn');
         if (okBtn) {
-            okBtn.style.background = okBgColor || 'var(--accent-blue)';
-            okBtn.style.color = (okBgColor === '#ff4b4b' || okBgColor === 'red' || okBgColor === '#cc0000') ? '#fff' : '#000';
+            const bg = okBgColor || 'var(--accent-blue)';
+            okBtn.style.background = bg;
+            okBtn.style.color = (bg === '#ff4b4b' || bg === 'red' || bg === '#cc0000') ? '#fff' : '#000';
             okBtn.innerText = currentLang === 'de' ? 'Bestätigen' : 'Confirm';
+            
+            let hoverGlow = 'rgba(var(--accent-blue-rgb), 0.4)';
+            if (bg === '#ff4b4b' || bg === 'red' || bg === '#cc0000') {
+                hoverGlow = 'rgba(255, 75, 75, 0.4)';
+            } else if (bg === '#00ff80' || bg === 'green') {
+                hoverGlow = 'rgba(0, 255, 128, 0.4)';
+            }
+            
+            okBtn.onmouseover = function() {
+                this.style.boxShadow = `0 0 15px ${hoverGlow}`;
+            };
+            okBtn.onmouseout = function() {
+                this.style.boxShadow = 'none';
+            };
         }
         
         const cancelBtn = document.getElementById('custom-confirm-cancel-btn');
@@ -11970,6 +12020,11 @@
                     }
                 }
             });
+            tentixSocket.on('chat-read-receipt', (data) => {
+                if (activeChatFriendUuid && data.reader_uuid === activeChatFriendUuid) {
+                    loadFriendChatHistory();
+                }
+            });
             tentixSocket.on('maintenance-update', (data) => {
                 console.log('🔧 Maintenance update received:', data);
                 if (data && typeof data.active !== 'undefined') {
@@ -12038,6 +12093,8 @@
             } catch (e) {}
             delete unreadCounts[activeChatFriendUuid];
             updateUnreadBadge();
+            const readBtn = document.getElementById('manual-mark-read-btn');
+            if (readBtn) readBtn.style.display = 'none';
             showToast(currentLang === 'de' ? 'Nachrichten als gelesen markiert' : 'Messages marked as read', 'success');
         }
     }
@@ -12774,6 +12831,12 @@
         
         // Mark messages as read
         if (!isClientSimulated && activeChatFriendUuid) {
+            const hasUnread = (unreadCounts[activeChatFriendUuid] && unreadCounts[activeChatFriendUuid] > 0);
+            const readBtn = document.getElementById('manual-mark-read-btn');
+            if (readBtn) {
+                readBtn.style.display = hasUnread ? 'inline-block' : 'none';
+            }
+
             const myUuid = localStorage.getItem('tentix_uuid') || '';
             fetch(`${API_BASE_URL}/api/chat/mark-read`, {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -12837,18 +12900,39 @@
             if (messages.length === 0) {
                 html = `<div style="text-align: center; color: #444; font-size: 11px; padding: 20px; font-style: italic;">Keine Nachrichten vorhanden. Schreibe eine Nachricht...</div>`;
             } else {
+                const myUsername = localStorage.getItem('tentix_user') || 'Steve';
+                const friendUsername = activeChatFriendName || 'Steve';
+
                 messages.forEach(msg => {
                     const isMe = msg.sender === senderUuid;
                     const decryptedContent = xorDecrypt(msg.content, encryptionKey);
                     const bubbleClass = isMe ? 'sent' : 'received';
                     const timeStr = new Date(msg.created_at || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                     
-                    html += `
-                        <div class="chat-bubble ${bubbleClass}">
-                            <div>${decryptedContent}</div>
-                            <div class="chat-time">${timeStr}</div>
-                        </div>
-                    `;
+                    if (isMe) {
+                        html += `
+                            <div style="display: flex; gap: 8px; align-items: flex-end; align-self: flex-end; max-width: 80%;">
+                                <div class="chat-bubble sent">
+                                    <div>${decryptedContent}</div>
+                                    <div class="chat-time" style="display: flex; justify-content: flex-end; align-items: center; gap: 4px;">
+                                        <span>${timeStr}</span>
+                                        <span class="read-receipt" style="font-size: 8px; font-weight: 800; color: ${msg.is_read ? 'var(--accent-blue)' : '#555'}; transition: color 0.3s;">✓✓</span>
+                                    </div>
+                                </div>
+                                <img src="https://mc-heads.net/avatar/${myUsername}/18" onerror="this.src='https://mc-heads.net/avatar/MHF_Steve/18'" style="width: 18px; height: 18px; border-radius: 4px; margin-bottom: 2px;" title="${myUsername}">
+                            </div>
+                        `;
+                    } else {
+                        html += `
+                            <div style="display: flex; gap: 8px; align-items: flex-end; align-self: flex-start; max-width: 80%;">
+                                <img src="https://mc-heads.net/avatar/${friendUsername}/18" onerror="this.src='https://mc-heads.net/avatar/MHF_Steve/18'" style="width: 18px; height: 18px; border-radius: 4px; margin-bottom: 2px;" title="${friendUsername}">
+                                <div class="chat-bubble received">
+                                    <div>${decryptedContent}</div>
+                                    <div class="chat-time">${timeStr}</div>
+                                </div>
+                            </div>
+                        `;
+                    }
                 });
             }
             
@@ -12893,15 +12977,30 @@
         try {
             if (isClientSimulated) {
                 const allSimMsgs = JSON.parse(localStorage.getItem('tentix_sim_private_messages') || '[]');
-                allSimMsgs.push({
+                const newMsg = {
                     ...payload,
+                    is_read: false,
                     created_at: new Date().toISOString()
-                });
+                };
+                allSimMsgs.push(newMsg);
                 localStorage.setItem('tentix_sim_private_messages', JSON.stringify(allSimMsgs));
                 input.value = '';
                 await loadFriendChatHistory();
                 const msgBox = document.getElementById('friends-chat-messages');
                 if (msgBox) msgBox.scrollTop = msgBox.scrollHeight;
+
+                setTimeout(async () => {
+                    if (activeChatFriendUuid === friendUuid) {
+                        const simMsgs = JSON.parse(localStorage.getItem('tentix_sim_private_messages') || '[]');
+                        const match = simMsgs.find(m => m.created_at === newMsg.created_at && m.sender === senderUuid);
+                        if (match) {
+                            match.is_read = true;
+                            localStorage.setItem('tentix_sim_private_messages', JSON.stringify(simMsgs));
+                            await loadFriendChatHistory();
+                        }
+                    }
+                }, 1500);
+            }
             } else {
                 const res = await fetch(`${API_BASE_URL}/api/chat/send`, {
                     method: 'POST',
