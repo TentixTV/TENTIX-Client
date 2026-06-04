@@ -1,17 +1,17 @@
 {
   "name": "TentixClient",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "TENTIX Client Launcher",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder"
+    "build": "electron-builder && node copy-to-desktop.js"
   },
   "build": {
     "appId": "com.tentix.client",
     "productName": "TENTIX Client",
     "directories": {
-      "output": "../../"
+      "output": "dist"
     },
     "publish": {
       "provider": "github",
