@@ -30,7 +30,8 @@
             box-shadow: 0 0 8px rgba(255,255,255,0.3);
             border: 1px solid rgba(255,255,255,0.2);
         }
-        .premium-rank-badge.tooltip .tooltiptext {
+        .premium-rank-badge.tooltip .tooltiptext,
+        .account-card .tooltip .tooltiptext {
             font-size: 9px !important;
             padding: 4px 8px !important;
             border-radius: 4px;
@@ -164,7 +165,7 @@
         .mask-icon { -webkit-mask-size: 100% 100%; -webkit-mask-repeat: no-repeat; -webkit-mask-position: center; background-color: #888; transition: 0.3s;}
 
         .tooltip { position: relative; }
-        .tooltiptext { visibility: hidden; background-color: var(--card-bg); color: #fff; text-align: center; border-radius: 6px; padding: 6px 12px; position: absolute; z-index: 1000; opacity: 0; transition: opacity 0.3s; font-size: 11px; font-weight: 600; border: 1px solid var(--border-color); white-space: nowrap; pointer-events: none; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        .tooltiptext { visibility: hidden; background-color: var(--card-bg); color: #fff; -webkit-text-fill-color: currentColor !important; text-align: center; border-radius: 6px; padding: 6px 12px; position: absolute; z-index: 1000; opacity: 0; transition: opacity 0.3s; font-size: 11px; font-weight: 600; border: 1px solid var(--border-color); white-space: nowrap; pointer-events: none; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
         .tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }
         .tooltip-down .tooltiptext { top: 130%; left: 50%; transform: translateX(-50%); }
         .tooltip-up .tooltiptext { bottom: 130%; left: 50%; transform: translateX(-50%); }
@@ -500,6 +501,10 @@
         @keyframes pulse { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(var(--accent-blue-rgb), 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(var(--accent-blue-rgb), 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(var(--accent-blue-rgb), 0); } }
         .online-text { font-size: 10px; color: #555; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; }
         .online-text span { color: #fff; font-weight: 800; }
+
+        .accent-bg-text-contrast {
+            color: var(--accent-text-contrast, #ffffff) !important;
+        }
 
         .play-btn { background: linear-gradient(135deg, #ffffff 0%, var(--accent-blue) 100%); border: none; color: #000; padding: 22px 110px; font-size: 22px; font-weight: 800; letter-spacing: 8px; cursor: pointer; border-radius: 8px; transition: 0.3s; -webkit-app-region: no-drag; box-shadow: 0 0 30px rgba(var(--accent-blue-rgb), 0.2); text-transform: uppercase; margin-top: 30px;}
         .play-btn:hover:not(:disabled) { box-shadow: 0 0 55px rgba(var(--accent-blue-rgb), 0.5); transform: translateY(-3px); }
@@ -1872,12 +1877,9 @@
         .sent-message-container {
             position: relative;
         }
-        .sent-message-container:hover .chat-bubble.sent {
-            transform: translateX(-28px);
-        }
         .sent-message-actions {
             position: absolute;
-            right: 26px;
+            left: -28px;
             bottom: 2px;
             width: 20px;
             height: 20px;
@@ -1928,6 +1930,7 @@
             visibility: hidden;
             background-color: rgba(20, 20, 22, 0.96) !important;
             color: #fff !important;
+            -webkit-text-fill-color: currentColor !important;
             text-align: center;
             border-radius: 4px !important;
             padding: 4px 8px !important;
@@ -1967,6 +1970,63 @@
             -webkit-text-fill-color: transparent;
             animation: textGradientShift 1.5s linear infinite;
             font-weight: 800;
+        }
+
+        /* Typing Indicator animations */
+        @keyframes typingIndicatorSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        @keyframes typingIndicatorFadeOut {
+            from {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(12px) scale(0.95);
+            }
+        }
+        .typing-indicator-slideup {
+            animation: typingIndicatorSlideUp 0.3s cubic-bezier(0.23, 1, 0.32, 1) forwards !important;
+        }
+        .typing-indicator-fadeout {
+            animation: typingIndicatorFadeOut 0.3s cubic-bezier(0.23, 1, 0.32, 1) forwards !important;
+        }
+
+        /* Donation Submit Button Gradient animation */
+        .donation-submit-btn {
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-gradient-sec) 50%, var(--accent-blue) 100%);
+            background-size: 200% auto;
+            color: #000 !important;
+            box-shadow: 0 5px 20px rgba(var(--accent-blue-rgb), 0.35);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none !important;
+        }
+        .donation-submit-btn:hover {
+            background-position: right center;
+            box-shadow: 0 5px 25px rgba(var(--accent-blue-rgb), 0.5), 0 0 15px rgba(var(--accent-blue-rgb), 0.2);
+            transform: translateY(-1px);
+        }
+
+        /* Payment method card hover glow */
+        .pay-method-opt {
+            transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+        }
+        .pay-method-opt:hover {
+            border-color: rgba(var(--accent-blue-rgb), 0.4) !important;
+            background: rgba(var(--accent-blue-rgb), 0.05) !important;
+            box-shadow: 0 0 10px rgba(var(--accent-blue-rgb), 0.15);
+        }
+        .pay-method-opt.active {
+            box-shadow: 0 0 15px rgba(var(--accent-blue-rgb), 0.25);
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/skinview3d@3.0.0-alpha.1/bundles/skinview3d.bundle.js"></script>
@@ -3399,7 +3459,7 @@
                     TENTIX <span style="color: var(--accent-blue);" id="ui-shop-title-accent">SHOP</span>
                 </div>
                 <div style="display: flex; gap: 10px; align-items: center;">
-                    <div class="cart-toggle-btn balance-btn" style="background: rgba(0, 255, 128, 0.04); border: 1px solid rgba(0, 255, 128, 0.2); cursor: default; gap: 6px;">
+                    <div onclick="showBalanceExplanation()" class="cart-toggle-btn balance-btn" style="background: rgba(0, 255, 128, 0.04); border: 1px solid rgba(0, 255, 128, 0.2); cursor: pointer; gap: 6px; transition: transform 0.2s, background 0.2s;" onmouseover="this.style.background='rgba(0, 255, 128, 0.1)'; this.style.transform='scale(1.02)';" onmouseout="this.style.background='rgba(0, 255, 128, 0.04)'; this.style.transform='scale(1.0)';">
                         <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: #00ff80;"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
                         <span style="color: #bbb; font-weight: 500; font-size: 10px;">Dein Guthaben:</span>
                         <span id="shop-balance-display-header" style="color: #00ff80; font-weight: 800; font-size: 10px;">0,00 €</span>
@@ -3610,7 +3670,7 @@
         <!-- Buttons -->
         <div style="display: flex; gap: 12px; justify-content: flex-end;">
             <button class="dash-btn" style="margin: 0; padding: 10px 20px; font-size: 10.5px; font-weight: 800; background: rgba(255,255,255,0.03); color: #ccc; border: 1px solid rgba(255,255,255,0.1);" onclick="closeDonationModal()">Abbrechen</button>
-            <button class="dash-btn" style="margin: 0; padding: 10px 24px; font-size: 10.5px; font-weight: 800; background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-gradient-sec) 100%); color: #000; border: none; box-shadow: 0 5px 20px rgba(var(--accent-blue-rgb), 0.35);" onclick="executeDonation()">Jetzt spenden</button>
+            <button class="dash-btn donation-submit-btn" onclick="executeDonation()">Jetzt spenden</button>
         </div>
     </div>
 </div>
@@ -4141,6 +4201,7 @@
     let tentixSocket = null;
     let unreadCounts = {};
     let typingUsers = new Set();
+    let typingStopTimeouts = {};
     let onlineToastQueue = [];
     let onlineToastShowing = false;
     let validCodesSet = new Set();
@@ -4938,6 +4999,7 @@
         const rankBadge = document.getElementById('ui-profile-rank-badge');
         const startRankBadge = document.getElementById('start-profile-rank-badge');
         let rankBadgeHtml = '';
+        let startRankBadgeHtml = '';
         let showRankBadge = false;
 
         let expiryText = '';
@@ -4950,15 +5012,17 @@
         }
 
         const tooltipHtml = expiryText ? `<span class="tooltiptext tooltip-blue" style="z-index: 1100;">${expiryText}</span>` : '';
-        const tooltipClass = expiryText ? ' tooltip tooltip-down' : '';
+        const tooltipClass = expiryText ? ' tooltip tooltip-up' : '';
 
         if (rolesToUse.includes('PLUS') || rolesToUse.includes('PREMIUM')) {
             showRankBadge = true;
             rankBadgeHtml = `<span class="premium-rank-badge badge-plus${tooltipClass}" style="cursor: pointer;" onclick="navTo('tentixplus')">PLUS${tooltipHtml}</span>`;
+            startRankBadgeHtml = `<span class="premium-rank-badge badge-plus" style="cursor: pointer;" onclick="navTo('tentixplus')">PLUS</span>`;
         } else if (rolesToUse.includes('LITE')) {
             showRankBadge = true;
             const liteTooltipHtml = expiryText ? `<span class="tooltiptext tooltip-gray" style="z-index: 1100;">${expiryText}</span>` : '';
             rankBadgeHtml = `<span class="premium-rank-badge badge-lite${tooltipClass}" style="cursor: pointer;" onclick="navTo('tentixplus')">LITE${liteTooltipHtml}</span>`;
+            startRankBadgeHtml = `<span class="premium-rank-badge badge-lite" style="cursor: pointer;" onclick="navTo('tentixplus')">LITE</span>`;
         }
 
         if (rankBadge) {
@@ -4973,7 +5037,7 @@
         if (startRankBadge) {
             if (showRankBadge) {
                 startRankBadge.style.display = 'inline-flex';
-                startRankBadge.innerHTML = rankBadgeHtml;
+                startRankBadge.innerHTML = startRankBadgeHtml;
             } else {
                 startRankBadge.style.display = 'none';
                 startRankBadge.innerHTML = '';
@@ -5187,6 +5251,13 @@
         
         const checkoutUserBalanceLbl = document.getElementById('checkout-user-balance-lbl');
         if (checkoutUserBalanceLbl) checkoutUserBalanceLbl.innerText = formatted;
+
+        const cartUseBalanceLbl = document.getElementById('cart-use-balance-label');
+        if (cartUseBalanceLbl) {
+            cartUseBalanceLbl.innerText = currentLang === 'de'
+                ? `Guthaben verwenden (${formatted})`
+                : `Use Balance (${formatted})`;
+        }
 
         const activeRank = localStorage.getItem('tentix_active_rank') || 'PLAYER';
         let rateHtml = '';
@@ -6684,7 +6755,7 @@
 
     let customConfirmCallback = null;
     let customConfirmHasInput = false;
-    function showCustomConfirm(title, message, details, okBgColor, callback, showInput = false, inputPlaceholder = '') {
+    function showCustomConfirm(title, message, details, okBgColor, callback, showInput = false, inputPlaceholder = '', showCancelBtn = true) {
         customConfirmCallback = callback;
         customConfirmHasInput = showInput;
         if(document.getElementById('custom-confirm-title')) document.getElementById('custom-confirm-title').innerText = title;
@@ -6717,7 +6788,9 @@
             const bg = okBgColor || 'var(--accent-blue)';
             okBtn.style.background = bg;
             okBtn.style.color = (bg === '#ff4b4b' || bg === 'red' || bg === '#cc0000') ? '#fff' : '#000';
-            okBtn.innerText = currentLang === 'de' ? 'Bestätigen' : 'Confirm';
+            okBtn.innerText = showCancelBtn
+                ? (currentLang === 'de' ? 'Bestätigen' : 'Confirm')
+                : (currentLang === 'de' ? 'Schließen' : 'Close');
             
             let hoverGlow = 'rgba(var(--accent-blue-rgb), 0.4)';
             if (bg === '#ff4b4b' || bg === 'red' || bg === '#cc0000') {
@@ -6737,6 +6810,7 @@
         const cancelBtn = document.getElementById('custom-confirm-cancel-btn');
         if (cancelBtn) {
             cancelBtn.innerText = currentLang === 'de' ? 'Abbrechen' : 'Cancel';
+            cancelBtn.style.display = showCancelBtn ? 'block' : 'none';
         }
 
         const modal = document.getElementById('custom-confirm-modal');
@@ -12952,10 +13026,17 @@
                 fetchValidCodesFromServer();
             });
             tentixSocket.on('typing', (data) => {
-                if (data.sender_uuid) {
-                    typingUsers.add(data.sender_uuid);
-                    renderFriendsList();
+                if (!data.sender_uuid) return;
+
+                // Clear any pending stop typing timeout for this sender
+                if (typingStopTimeouts[data.sender_uuid]) {
+                    clearTimeout(typingStopTimeouts[data.sender_uuid]);
+                    delete typingStopTimeouts[data.sender_uuid];
                 }
+
+                typingUsers.add(data.sender_uuid);
+                renderFriendsList();
+
                 if (activeChatFriendUuid && data.sender_uuid === activeChatFriendUuid) {
                     const container = document.getElementById('friends-chat-messages');
                     if (container) {
@@ -12963,7 +13044,7 @@
                         if (!indicator) {
                             indicator = document.createElement('div');
                             indicator.id = 'typing-indicator';
-                            indicator.className = 'message-wrapper chat-message-animate';
+                            indicator.className = 'message-wrapper typing-indicator-slideup';
                             indicator.style.cssText = 'display: flex; gap: 8px; align-items: flex-end; align-self: flex-start; max-width: 80%; margin-bottom: 8px;';
                             indicator.innerHTML = `
                                 <img src="https://mc-heads.net/avatar/${activeChatFriendName || 'Steve'}/18" style="width: 18px; height: 18px; border-radius: 2px;">
@@ -12978,40 +13059,48 @@
                             if (wasAtBottom) {
                                 container.scrollTop = container.scrollHeight;
                             }
+                        } else {
+                            // If it exists, clear the fade-out class if any
+                            indicator.classList.remove('typing-indicator-fadeout');
+                            indicator.classList.add('typing-indicator-slideup');
                         }
-                        clearTimeout(indicator._timeout);
-                        indicator._timeout = setTimeout(() => {
-                            if (indicator.parentNode) {
-                                const wasAtBottom = container.scrollHeight - container.clientHeight <= container.scrollTop + 40;
-                                indicator.remove();
-                                if (wasAtBottom) {
-                                    container.scrollTop = container.scrollHeight;
-                                }
-                            }
-                            if (data.sender_uuid) {
-                                typingUsers.delete(data.sender_uuid);
-                                renderFriendsList();
-                            }
-                        }, 4000);
                     }
                 }
             });
             tentixSocket.on('stop-typing', (data) => {
-                if (data.sender_uuid) {
+                if (!data.sender_uuid) return;
+
+                // Clear any existing stop timeout first
+                if (typingStopTimeouts[data.sender_uuid]) {
+                    clearTimeout(typingStopTimeouts[data.sender_uuid]);
+                }
+
+                // Set 5 seconds delay to remove the indicator
+                typingStopTimeouts[data.sender_uuid] = setTimeout(() => {
                     typingUsers.delete(data.sender_uuid);
                     renderFriendsList();
-                }
-                if (activeChatFriendUuid && data.sender_uuid === activeChatFriendUuid) {
-                    const indicator = document.getElementById('typing-indicator');
-                    if (indicator) {
-                        const container = document.getElementById('friends-chat-messages');
-                        const wasAtBottom = container ? (container.scrollHeight - container.clientHeight <= container.scrollTop + 40) : false;
-                        indicator.remove();
-                        if (container && wasAtBottom) {
-                            container.scrollTop = container.scrollHeight;
+
+                    if (activeChatFriendUuid && data.sender_uuid === activeChatFriendUuid) {
+                        const indicator = document.getElementById('typing-indicator');
+                        if (indicator) {
+                            const container = document.getElementById('friends-chat-messages');
+                            const wasAtBottom = container ? (container.scrollHeight - container.clientHeight <= container.scrollTop + 40) : false;
+
+                            indicator.classList.remove('typing-indicator-slideup');
+                            indicator.classList.add('typing-indicator-fadeout');
+
+                            setTimeout(() => {
+                                if (indicator.parentNode) {
+                                    indicator.remove();
+                                    if (container && wasAtBottom) {
+                                        container.scrollTop = container.scrollHeight;
+                                    }
+                                }
+                            }, 300);
                         }
                     }
-                }
+                    delete typingStopTimeouts[data.sender_uuid];
+                }, 5000);
             });
             tentixSocket.on('chat-read-receipt', (data) => {
                 if (activeChatFriendUuid && data.reader_uuid === activeChatFriendUuid) {
@@ -14274,6 +14363,9 @@
             document.getElementById('cart-total').innerText = '0,00 €';
             document.getElementById('cart-vat-value').innerText = '0,00 €';
             document.getElementById('cart-discount-row').style.display = 'none';
+            document.getElementById('cart-balance-row').style.display = 'none';
+            const chk = document.getElementById('cart-use-balance-chk');
+            if (chk) chk.checked = false;
             return;
         }
         
@@ -14312,11 +14404,33 @@
         } else {
             document.getElementById('cart-discount-row').style.display = 'none';
         }
+
+        // Deduct virtual balance if checked
+        const balance = parseFloat(localStorage.getItem('tentix_balance') || '0.00');
+        const useBalanceChk = document.getElementById('cart-use-balance-chk');
+        let balanceUsed = 0;
+        if (useBalanceChk && useBalanceChk.checked && balance > 0) {
+            balanceUsed = Math.min(total, balance);
+            total -= balanceUsed;
+            document.getElementById('cart-balance-value').innerText = `-${formatPrice(balanceUsed)}`;
+            document.getElementById('cart-balance-row').style.display = 'flex';
+        } else {
+            document.getElementById('cart-balance-row').style.display = 'none';
+        }
         
         document.getElementById('cart-total').innerText = formatPrice(total);
         
         const vatVal = total - (total / 1.19);
         document.getElementById('cart-vat-value').innerText = formatPrice(vatVal);
+
+        // Sync the checkbox label balance string
+        const formattedBalance = balance.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+        const balanceLabel = document.getElementById('cart-use-balance-label');
+        if (balanceLabel) {
+            balanceLabel.innerText = currentLang === 'de' 
+                ? `Guthaben verwenden (${formattedBalance})` 
+                : `Use Balance (${formattedBalance})`;
+        }
     }
     
     function syncCreatorCodeInputs(e, targetId) {
@@ -14328,6 +14442,14 @@
         const cartStatus = document.getElementById('cart-creator-status');
         if (status) status.style.display = 'none';
         if (cartStatus) cartStatus.style.display = 'none';
+    }
+
+    function toggleCartUseBalance() {
+        const chk = document.getElementById('cart-use-balance-chk');
+        if (chk) {
+            chk.checked = !chk.checked;
+            updateCartUI();
+        }
     }
 
     let selectedCartPaymentMethod = 'paypal';
@@ -14435,6 +14557,14 @@
     }
     
     let selectedDonationMethod = 'paypal';
+
+    function showBalanceExplanation() {
+        const title = currentLang === 'de' ? 'Virtuelles Guthaben' : 'Virtual Balance';
+        const msg = currentLang === 'de'
+            ? 'Dein Guthaben ist eine rein virtuelle Währung, mit der du Ränge oder Cosmetics im TENTIX Shop erwerben kannst.\n\nDu erhältst Guthaben durch:\n• Onlinezeit im Launcher (PLUS: 0,12 €/Std. | LITE: 0,02 €/Std.)\n• Creator-Codes (100% Cashback für dich als Käufer!)\n• Direktes Spenden über den Button (1:1 Gutschrift)'
+            : 'Your balance is a purely virtual currency used to purchase ranks or cosmetics in the TENTIX Shop.\n\nYou earn balance via:\n• Online time in launcher (PLUS: 0.12 €/hr | LITE: 0.02 €/hr)\n• Creator codes (100% cashback to you as buyer!)\n• Direct donations via the button (1:1 credit)';
+        showCustomConfirm(title, msg, '', 'var(--accent-blue)', () => {}, false, '', false);
+    }
 
     function openDonationModal() {
         const modal = document.getElementById('donation-modal');
@@ -14739,6 +14869,63 @@
         }
     }
 
+    async function purchaseCartCosmetics(balanceUsed, amountPaid) {
+        const uuid = localStorage.getItem('tentix_uuid') || '';
+        const activeCodeStr = localStorage.getItem('applied_creator_code');
+        
+        const actionOverlay = document.getElementById('action-overlay');
+        if (actionOverlay) {
+            actionOverlay.style.display = 'flex';
+            setTimeout(() => actionOverlay.style.opacity = '1', 10);
+        }
+        
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/users/checkout`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    uuid: uuid,
+                    amount_paid: amountPaid,
+                    balance_used: balanceUsed,
+                    creator_code: activeCodeStr
+                })
+            });
+            const data = await res.json();
+            
+            if (actionOverlay) {
+                actionOverlay.style.opacity = '0';
+                setTimeout(() => actionOverlay.style.display = 'none', 300);
+            }
+            
+            if (data.success) {
+                shoppingCart.forEach(item => {
+                    localStorage.setItem(`tentix_unlocked_${item.id}`, 'true');
+                });
+                shoppingCart = [];
+                updateCartUI();
+                
+                localStorage.setItem('tentix_balance', parseFloat(data.balance).toFixed(4));
+                updateUserBalanceDisplay(data.balance);
+                
+                const drawer = document.getElementById('cart-drawer');
+                if (drawer && drawer.classList.contains('open')) {
+                    toggleCartDrawer();
+                }
+                
+                showToast(currentLang === 'de' ? "Kauf erfolgreich abgeschlossen!" : "Purchase completed successfully!", "success");
+                updateCosmeticsLocks();
+            } else {
+                showToast(data.error || (currentLang === 'de' ? "Fehler beim Kauf" : "Purchase error"), "error");
+            }
+        } catch (e) {
+            if (actionOverlay) {
+                actionOverlay.style.opacity = '0';
+                setTimeout(() => actionOverlay.style.display = 'none', 300);
+            }
+            showToast(currentLang === 'de' ? "Netzwerkfehler beim Kauf" : "Network error during purchase", "error");
+        }
+    }
+
     function checkoutCart() {
         if (shoppingCart.length === 0) return;
         
@@ -14754,9 +14941,23 @@
             const discountVal = subtotal * (activeCode.discount / 100);
             total = subtotal - discountVal;
         }
+
+        const balance = parseFloat(localStorage.getItem('tentix_balance') || '0.00');
+        const useBalanceChk = document.getElementById('cart-use-balance-chk');
+        let balanceUsed = 0;
+        let amountPaid = total;
+        if (useBalanceChk && useBalanceChk.checked && balance > 0) {
+            balanceUsed = Math.min(total, balance);
+            amountPaid = total - balanceUsed;
+        }
         
         const rankItem = shoppingCart.find(item => item.isRank);
         if (rankItem) {
+            if (amountPaid === 0) {
+                submitRankPurchase('balance');
+                return;
+            }
+
             const modal = document.getElementById('checkout-modal');
             const prodName = document.getElementById('checkout-product-name');
             const prodDur = document.getElementById('checkout-product-duration');
@@ -14771,7 +14972,7 @@
                 else if (rankItem.duration_months === -1) durationText = 'Lifetime';
                 prodDur.innerText = durationText;
             }
-            if (prodPrice) prodPrice.innerText = formatPrice(total);
+            if (prodPrice) prodPrice.innerText = formatPrice(amountPaid);
             
             updateUserBalanceDisplay();
             
@@ -14783,32 +14984,23 @@
                 }, 30);
             }
         } else {
-            const formattedTotal = total.toFixed(2);
-            const itemNames = shoppingCart.map(item => item.title).join(', ');
-            const paypalUrl = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=liesesandro4@gmail.com&currency_code=EUR&amount=${formattedTotal}&item_name=${encodeURIComponent('TENTIX: ' + itemNames)}`;
-            
-            if (window.api && window.api.openExternalLink) {
-                window.api.openExternalLink(paypalUrl);
-            }
-            
-            showToast(currentLang === 'de' ? `Zahlung von ${formatPrice(total)} wird verarbeitet...` : `Processing payment of ${formatPrice(total)}...`, "info");
-            
-            setTimeout(() => {
-                shoppingCart.forEach(item => {
-                    localStorage.setItem(`tentix_unlocked_${item.id}`, 'true');
-                });
+            if (amountPaid === 0) {
+                purchaseCartCosmetics(balanceUsed, 0);
+            } else {
+                const formattedTotal = amountPaid.toFixed(2);
+                const itemNames = shoppingCart.map(item => item.title).join(', ');
+                const paypalUrl = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=liesesandro4@gmail.com&currency_code=EUR&amount=${formattedTotal}&item_name=${encodeURIComponent('TENTIX: ' + itemNames)}`;
                 
-                shoppingCart = [];
-                updateCartUI();
-                
-                const drawer = document.getElementById('cart-drawer');
-                if (drawer && drawer.classList.contains('open')) {
-                    toggleCartDrawer();
+                if (window.api && window.api.openExternalLink) {
+                    window.api.openExternalLink(paypalUrl);
                 }
                 
-                showToast(currentLang === 'de' ? "Kauf erfolgreich abgeschlossen!" : "Purchase completed successfully!", "success");
-                updateCosmeticsLocks();
-            }, 1500);
+                showToast(currentLang === 'de' ? `Zahlung von ${formatPrice(amountPaid)} wird verarbeitet...` : `Processing payment of ${formatPrice(amountPaid)}...`, "info");
+                
+                setTimeout(() => {
+                    purchaseCartCosmetics(balanceUsed, amountPaid);
+                }, 1500);
+            }
         }
     }
 
@@ -14840,14 +15032,24 @@
             total = subtotal - discountVal;
         }
 
+        const balance = parseFloat(localStorage.getItem('tentix_balance') || '0.00');
+        const useBalanceChk = document.getElementById('cart-use-balance-chk');
+        let balanceUsed = 0;
+        let amountPaid = total;
+        if (useBalanceChk && useBalanceChk.checked && balance > 0) {
+            balanceUsed = Math.min(total, balance);
+            amountPaid = total - balanceUsed;
+        }
+
         if (paymentMethod === 'balance') {
-            const balance = parseFloat(localStorage.getItem('tentix_balance') || '0.0000');
             if (balance < total) {
                 showToast(currentLang === 'de' ? "Nicht genügend Guthaben!" : "Insufficient balance!", "error");
                 closeCheckout();
                 openStoreCheckout(1500);
                 return;
             }
+            balanceUsed = total;
+            amountPaid = 0;
         }
         
         const uuid = localStorage.getItem('tentix_uuid') || '';
@@ -14858,7 +15060,10 @@
             username: username,
             rank: rankItem.rank,
             duration_months: rankItem.duration_months,
-            payment_method: paymentMethod
+            payment_method: paymentMethod,
+            balance_used: balanceUsed,
+            amount_paid: amountPaid,
+            creator_code: activeCodeStr
         };
         
         const actionOverlay = document.getElementById('action-overlay');
@@ -15955,6 +16160,14 @@
             <div id="cart-creator-status" style="font-size: 9px; color: #ff8800; margin-top: 4px; font-weight: 600; display: none;"></div>
         </div>
 
+        <!-- Sync Use Balance toggle inside Cart -->
+        <div style="background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.03); border-radius: 8px; padding: 10px; margin-bottom: 12px; -webkit-app-region: no-drag; display: flex; align-items: center; justify-content: space-between; cursor: pointer;" onclick="toggleCartUseBalance()">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" id="cart-use-balance-chk" style="cursor: pointer; accent-color: var(--accent-blue);" onclick="event.stopPropagation(); updateCart()">
+                <span id="cart-use-balance-label" style="font-weight: 800; font-size: 9px; color: #aaa; text-transform: uppercase; letter-spacing: 0.5px;">Guthaben verwenden (0,00 €)</span>
+            </div>
+        </div>
+
         <!-- Sync Payment Method Selector inside Cart -->
         <div style="background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.03); border-radius: 8px; padding: 10px; margin-bottom: 12px; -webkit-app-region: no-drag;">
             <div style="font-weight: 800; font-size: 9px; color: #aaa; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px;">Zahlungsmethode / Payment Method</div>
@@ -15987,6 +16200,10 @@
             <div class="cart-summary-row">
                 <span>Zwischensumme</span>
                 <span id="cart-subtotal">0,00 €</span>
+            </div>
+            <div class="cart-summary-row" id="cart-balance-row" style="display: none; color: #00ff80;">
+                <span>Guthaben Abzug</span>
+                <span id="cart-balance-value">-0,00 €</span>
             </div>
             <div class="cart-summary-row" id="cart-discount-row" style="display: none; color: #ff8800;">
                 <span>Rabatt (<span id="cart-discount-percent">0</span>%)</span>
