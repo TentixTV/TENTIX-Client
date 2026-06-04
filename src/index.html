@@ -313,6 +313,12 @@
         td { color: #ccc; }
         .dash-action-btn { padding: 6px 12px; background: #222; border-radius: 4px; color: #fff; cursor: pointer; font-size: 10px; font-weight: 700; transition: 0.2s; display: inline-block;}
         .dash-action-btn:hover { background: var(--accent-blue); color: #000; }
+        .btn-password { background: #ff9900 !important; color: #000 !important; }
+        .btn-password:hover { background: #ffb84d !important; transform: scale(1.05); box-shadow: 0 0 10px rgba(255, 153, 0, 0.4); }
+        .btn-login { background: #ff4b4b !important; color: #fff !important; }
+        .btn-login:hover { background: #ff7373 !important; transform: scale(1.05); box-shadow: 0 0 10px rgba(255, 75, 75, 0.4); }
+        .btn-kick { background: #cc0000 !important; color: #fff !important; }
+        .btn-kick:hover { background: #ff1a1a !important; transform: scale(1.05); box-shadow: 0 0 10px rgba(204, 0, 0, 0.5); }
         .copy-hover { transition: 0.2s; cursor: pointer; }
         .copy-hover:hover { color: #fff !important; text-shadow: 0 0 8px rgba(255, 255, 255, 0.6); }
 
@@ -2441,6 +2447,22 @@
                         <input type="text" class="dash-input" placeholder="Grund..." style="margin:0; flex:2;" id="t-dash-banreason">
                     </div>
                     <div class="dash-btn" style="background: #ff4b4b; color: #fff; text-align: center;" id="t-dash-banbtn" onclick="mockBanUser()">SPIELER BANNEN</div>
+                </div>
+                <div id="edit-upgrade-section" style="margin-top: 20px; border-top: 1px solid #222; padding-top: 15px; position: relative; min-height: 90px; margin-bottom: 20px;">
+                    <div style="font-size:12px; color:#888; font-weight:800; text-transform:uppercase; margin-bottom:10px;">Upgrade verwalten</div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 8px;">
+                        <div>
+                            <div style="font-size: 13px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px;">
+                                Rang: <span id="edit-upgrade-rank-name" style="color: var(--accent-blue); font-weight: 800;">LITE</span>
+                            </div>
+                            <div id="edit-upgrade-rank-expiry" style="font-size: 11px; color: #888; margin-top: 4px;">Gültig bis: --</div>
+                        </div>
+                        <div class="dash-action-btn btn-kick" id="edit-remove-upgrade-btn" style="padding: 6px 12px; border-radius: 6px; font-size: 11px; cursor: pointer; font-weight: 700;" onclick="removeUpgradeFromEditModal()">Upgrade entfernen</div>
+                    </div>
+                    <!-- Overlay if user has no upgrade -->
+                    <div id="edit-upgrade-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(3px); display: flex; align-items: center; justify-content: center; z-index: 10; border-radius: 8px;">
+                        <span style="color: #666; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; text-align: center; border: 1px dashed rgba(255,255,255,0.08); padding: 15px; border-radius: 6px; width: 90%; box-sizing: border-box; background: rgba(0,0,0,0.2);">Dieser Nutzer hat kein TENTIX Client Upgrade</span>
+                    </div>
                 </div>
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                     <div class="dash-btn" style="background:#ff4b4b; color:#fff; margin:0;" onclick="deleteUserFromDashboard()">Spieler löschen</div>
@@ -5586,7 +5608,6 @@
             setTimeout(() => {
                 dash.style.opacity = '1';
                 switchDashTab('dash-tab-home', document.getElementById('t-dash-home'));
-                fetchDashboardStats();
                 renderDashboardChart();
                 renderCodesTable();
                 renderUsersTable();
@@ -5810,7 +5831,7 @@
         });
     }
 
-    async function fetchDashboardStats() {
+    async function fetchDashboardStats(animate = false) {
         if (isClientSimulated) {
             const totEl = document.getElementById('db-total-users');
             const actEl = document.getElementById('db-active-codes');
@@ -5830,7 +5851,14 @@
             if(banEl) banEl.setAttribute('data-target', bannedUsers);
             if(revEl) revEl.setAttribute('data-target', cosmeticRev);
 
-            animateCounters();
+            if (animate) {
+                animateCounters();
+            } else {
+                if(totEl) totEl.innerText = totalUsers;
+                if(actEl) actEl.innerText = activeCodes;
+                if(banEl) banEl.innerText = bannedUsers;
+                if(revEl) revEl.innerText = '$' + cosmeticRev.toFixed(2);
+            }
 
             const onlineCountEl = document.getElementById('online-count');
             const simulatedOnlinePlayers = Math.floor(Math.random() * 251) + 1400; // 1400-1650
@@ -5852,7 +5880,17 @@
                 if(banEl) banEl.setAttribute('data-target', data.bannedUsers);
                 if(revEl) revEl.setAttribute('data-target', data.cosmeticRev || 0);
 
-                animateCounters();
+                if (animate) {
+                    animateCounters();
+                } else {
+                    if(totEl) totEl.innerText = data.totalUsers;
+                    if(actEl) actEl.innerText = data.activeCodes;
+                    if(banEl) banEl.innerText = data.bannedUsers;
+                    if(revEl) {
+                        const revVal = parseFloat(data.cosmeticRev || 0);
+                        revEl.innerText = '$' + revVal.toFixed(2);
+                    }
+                }
 
                 const onlineCountEl = document.getElementById('online-count');
                 if(onlineCountEl) onlineCountEl.innerText = data.onlinePlayers;
@@ -5910,7 +5948,7 @@
         document.querySelectorAll('.dash-nav-item').forEach(i => i.classList.remove('active'));
         if(document.getElementById(tabId)) document.getElementById(tabId).classList.add('active');
         if(el) el.classList.add('active');
-        if(tabId === 'dash-tab-home') { fetchDashboardStats(); renderDashboardChart(); }
+        if(tabId === 'dash-tab-home') { fetchDashboardStats(true); renderDashboardChart(); }
         else if(tabId === 'dash-tab-codes') { renderCodesTable(); renderCreatorCodesTable(); }
         else if(tabId === 'dash-tab-users') { renderUsersTable(); }
         else if(tabId === 'dash-tab-admins') { renderInvitesTable(); renderTeamTable(); }
@@ -6010,21 +6048,21 @@
             setTimeout(() => { modal.style.opacity = '1'; modal.classList.add('show'); }, 10);
         }
 
-        let userObj = {roles: [], is_banned: false, ban_reason: ''};
+        let userObj = {roles: [], is_banned: false, ban_reason: '', active_rank: 'PLAYER', rank_expires_at: 0};
         if (isClientSimulated) {
             let simUsers = JSON.parse(localStorage.getItem('tentix_sim_users') || '[]');
-            userObj = simUsers.find(u => u.uuid === uuid) || {roles:[], is_banned: false, ban_reason: ''};
+            userObj = simUsers.find(u => u.uuid === uuid) || {roles:[], is_banned: false, ban_reason: '', active_rank: 'PLAYER', rank_expires_at: 0};
         } else {
             try {
                 const res = await fetch(`${API_BASE_URL}/api/users`);
                 if(!res.ok) throw new Error();
                 const data = await res.json();
                 if(data.success) {
-                    userObj = data.users.find(u => u.uuid === uuid) || {roles:[], is_banned: false, ban_reason: ''};
+                    userObj = data.users.find(u => u.uuid === uuid) || {roles:[], is_banned: false, ban_reason: '', active_rank: 'PLAYER', rank_expires_at: 0};
                 }
             } catch(e) {
                 let users = JSON.parse(localStorage.getItem('tentix_db_users') || '[]');
-                userObj = users.find(u => u.uuid === uuid) || {roles:[], is_banned: false, ban_reason: ''};
+                userObj = users.find(u => u.uuid === uuid) || {roles:[], is_banned: false, ban_reason: '', active_rank: 'PLAYER', rank_expires_at: 0};
             }
         }
 
@@ -6043,6 +6081,37 @@
                 this.classList.toggle('active');
             };
         });
+
+        // Upgrade verwalten section binding
+        const activeRank = userObj.active_rank || 'PLAYER';
+        const rankExpiresAt = parseInt(userObj.rank_expires_at || 0);
+        const hasUpgrade = (activeRank === 'LITE' || activeRank === 'PLUS' || activeRank === 'PREMIUM');
+        
+        const upgradeSection = document.getElementById('edit-upgrade-section');
+        const upgradeOverlay = document.getElementById('edit-upgrade-overlay');
+        const rankNameEl = document.getElementById('edit-upgrade-rank-name');
+        const rankExpiryEl = document.getElementById('edit-upgrade-rank-expiry');
+        
+        if (upgradeSection) {
+            if (hasUpgrade) {
+                if (upgradeOverlay) upgradeOverlay.style.display = 'none';
+                if (rankNameEl) rankNameEl.innerText = activeRank;
+                if (rankExpiryEl) {
+                    if (rankExpiresAt === -1) {
+                        rankExpiryEl.innerText = 'Lifetime';
+                    } else if (rankExpiresAt > 0) {
+                        const date = new Date(rankExpiresAt).toLocaleDateString(currentLang === 'de' ? 'de-DE' : 'en-US');
+                        rankExpiryEl.innerText = currentLang === 'de' ? `Gültig bis ${date}` : `Valid until ${date}`;
+                    } else {
+                        rankExpiryEl.innerText = '--';
+                    }
+                }
+            } else {
+                if (upgradeOverlay) upgradeOverlay.style.display = 'flex';
+                if (rankNameEl) rankNameEl.innerText = '--';
+                if (rankExpiryEl) rankExpiryEl.innerText = '--';
+            }
+        }
 
         // Set Ban Input & Button dynamically
         if(document.getElementById('t-dash-banreason')) {
@@ -6157,9 +6226,52 @@
         renderUsersTable();
     }
 
+    async function removeUpgradeFromEditModal() {
+        if (!editUserUuid || !editUserTarget) return;
+
+        showCustomConfirm(
+            currentLang === 'de' ? 'Upgrade entfernen' : 'Remove Upgrade',
+            currentLang === 'de' 
+                ? `Möchtest du das Upgrade für '${editUserTarget}' wirklich entfernen?` 
+                : `Are you sure you want to remove the upgrade for '${editUserTarget}'?`,
+            '',
+            '#ff4b4b',
+            async (approved) => {
+                if (!approved) return;
+                try {
+                    const res = await fetch(`${API_BASE_URL}/api/ranks/remove`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ uuid: editUserUuid })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        showToast(currentLang === 'de' ? "Upgrade erfolgreich entfernt!" : "Upgrade removed successfully!", "success");
+                        closeUserEditModal();
+                        renderUsersTable();
+                        
+                        if (editUserUuid === uuidValue) {
+                            localStorage.setItem('tentix_active_rank', data.active_rank);
+                            localStorage.setItem('tentix_rank_expires_at', data.rank_expires_at);
+                            localStorage.setItem('tentix_roles', JSON.stringify(data.roles));
+                            checkActiveRankAndPanels();
+                            loadBadges();
+                        }
+                    } else {
+                        showToast(data.error || "Fehler beim Entfernen des Upgrades", "error");
+                    }
+                } catch (e) {
+                    showToast("Verbindungsfehler", "error");
+                }
+            }
+        );
+    }
+
     let customConfirmCallback = null;
-    function showCustomConfirm(title, message, details, okBgColor, callback) {
+    let customConfirmHasInput = false;
+    function showCustomConfirm(title, message, details, okBgColor, callback, showInput = false, inputPlaceholder = '') {
         customConfirmCallback = callback;
+        customConfirmHasInput = showInput;
         if(document.getElementById('custom-confirm-title')) document.getElementById('custom-confirm-title').innerText = title;
         if(document.getElementById('custom-confirm-msg')) document.getElementById('custom-confirm-msg').innerText = message;
         
@@ -6173,10 +6285,22 @@
             }
         }
 
+        const inputEl = document.getElementById('custom-confirm-input');
+        if (inputEl) {
+            if (showInput) {
+                inputEl.value = '';
+                inputEl.placeholder = inputPlaceholder || (currentLang === 'de' ? 'Grund eingeben...' : 'Enter reason...');
+                inputEl.style.display = 'block';
+                setTimeout(() => inputEl.focus(), 50);
+            } else {
+                inputEl.style.display = 'none';
+            }
+        }
+
         const okBtn = document.getElementById('custom-confirm-ok-btn');
         if (okBtn) {
             okBtn.style.background = okBgColor || 'var(--accent-blue)';
-            okBtn.style.color = (okBgColor === '#ff4b4b' || okBgColor === 'red') ? '#fff' : '#000';
+            okBtn.style.color = (okBgColor === '#ff4b4b' || okBgColor === 'red' || okBgColor === '#cc0000') ? '#fff' : '#000';
             okBtn.innerText = currentLang === 'de' ? 'Bestätigen' : 'Confirm';
         }
         
@@ -6194,6 +6318,11 @@
 
     function closeCustomConfirm(approved) {
         const modal = document.getElementById('custom-confirm-modal');
+        let returnValue = approved;
+        if (approved && customConfirmHasInput) {
+            const inputEl = document.getElementById('custom-confirm-input');
+            returnValue = inputEl ? inputEl.value : '';
+        }
         if (modal) {
             modal.style.opacity = '0';
             modal.classList.remove('show');
@@ -6202,7 +6331,7 @@
         if (customConfirmCallback) {
             const cb = customConfirmCallback;
             customConfirmCallback = null;
-            cb(approved);
+            cb(returnValue);
         }
     }
 
@@ -6570,9 +6699,9 @@
                 const actionsHtml = isTN3X
                     ? `<span style="color:#888; font-style:italic;">Hauptinhaber</span>`
                     : `<div style="display:flex; gap:8px; justify-content:center;">
-                         <div class="dash-action-btn" style="background:#ff9900; color:#000; padding:4px 8px; border-radius:4px; font-size:10px; cursor:pointer; font-weight:700;" onclick="resetTeamMember('${admin.username}', 'password')">New Password</div>
-                         <div class="dash-action-btn" style="background:#ff4b4b; color:#fff; padding:4px 8px; border-radius:4px; font-size:10px; cursor:pointer; font-weight:700;" onclick="resetTeamMember('${admin.username}', 'login')">New Login</div>
-                         <div class="dash-action-btn" style="background:#cc0000; color:#fff; padding:4px 8px; border-radius:4px; font-size:10px; cursor:pointer; font-weight:700;" onclick="kickTeamMember('${admin.username}')">Remove</div>
+                         <div class="dash-action-btn btn-password" style="padding:4px 8px; border-radius:4px; font-size:10px; cursor:pointer; font-weight:700;" onclick="resetTeamMember('${admin.username}', 'password')">New Password</div>
+                         <div class="dash-action-btn btn-login" style="padding:4px 8px; border-radius:4px; font-size:10px; cursor:pointer; font-weight:700;" onclick="resetTeamMember('${admin.username}', 'login')">New Login</div>
+                         <div class="dash-action-btn btn-kick" style="padding:4px 8px; border-radius:4px; font-size:10px; cursor:pointer; font-weight:700;" onclick="kickTeamMember('${admin.username}')">Remove</div>
                        </div>`;
 
                 html += `<tr>
@@ -6597,51 +6726,67 @@
             msg = currentLang === 'de' ? `Bist du sicher, dass du das Passwort für '${username}' zurücksetzen willst?` : `Are you sure you want to reset the password for '${username}'?`;
         }
         
-        if (!confirm(msg)) return;
-
-        try {
-            const res = await fetch(`${API_BASE_URL}/api/admins/reset`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, type })
-            });
-            const data = await res.json();
-            if (data.success) {
-                showToast(data.message || "Reset erfolgreich!", "success");
-                renderTeamTable();
-                renderInvitesTable();
-            } else {
-                showToast(data.error || "Fehler beim Zurücksetzen", "error");
+        showCustomConfirm(
+            currentLang === 'de' ? 'Aktion bestätigen' : 'Confirm Action',
+            msg,
+            '',
+            type === 'login' ? '#ff4b4b' : '#ff9900',
+            async (approved) => {
+                if (!approved) return;
+                try {
+                    const res = await fetch(`${API_BASE_URL}/api/admins/reset`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username, type })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        showToast(data.message || "Reset erfolgreich!", "success");
+                        renderTeamTable();
+                        renderInvitesTable();
+                    } else {
+                        showToast(data.error || "Fehler beim Zurücksetzen", "error");
+                    }
+                } catch (e) {
+                    showToast("Fehler beim Zurücksetzen", "error");
+                }
             }
-        } catch (e) {
-            showToast("Fehler beim Zurücksetzen", "error");
-        }
+        );
     }
 
     async function kickTeamMember(username) {
-        const reason = prompt(currentLang === 'de' ? `Grund für den Ausschluss von '${username}' eingeben:` : `Enter reason for removing '${username}' from team:`);
-        if (reason === null) return; // Prompt cancelled
-        if (!reason.trim()) {
-            showToast(currentLang === 'de' ? "Ein Grund ist erforderlich!" : "A reason is required!", "error");
-            return;
-        }
+        showCustomConfirm(
+            currentLang === 'de' ? 'Mitglied entfernen' : 'Remove Member',
+            currentLang === 'de' ? `Grund für den Ausschluss von '${username}' eingeben:` : `Enter reason for removing '${username}' from team:`,
+            '',
+            '#cc0000',
+            async (reason) => {
+                if (reason === false || reason === null) return;
+                if (typeof reason === 'string' && !reason.trim()) {
+                    showToast(currentLang === 'de' ? "Ein Grund ist erforderlich!" : "A reason is required!", "error");
+                    return;
+                }
 
-        try {
-            const res = await fetch(`${API_BASE_URL}/api/admins/kick`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, reason })
-            });
-            const data = await res.json();
-            if (data.success) {
-                showToast(currentLang === 'de' ? "Teammitglied erfolgreich entfernt!" : "Team member removed successfully!", "success");
-                renderTeamTable();
-            } else {
-                showToast(data.error || "Fehler beim Kicken des Teammitglieds", "error");
-            }
-        } catch(err) {
-            showToast("Verbindungsfehler", "error");
-        }
+                try {
+                    const res = await fetch(`${API_BASE_URL}/api/admins/kick`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username, reason })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        showToast(currentLang === 'de' ? "Teammitglied erfolgreich entfernt!" : "Team member removed successfully!", "success");
+                        renderTeamTable();
+                    } else {
+                        showToast(data.error || "Fehler beim Kicken des Teammitglieds", "error");
+                    }
+                } catch(err) {
+                    showToast("Verbindungsfehler", "error");
+                }
+            },
+            true,
+            currentLang === 'de' ? 'Ausschlussgrund...' : 'Reason for exclusion...'
+        );
     }
 
     function showFancyKickNotice(role, reason) {
@@ -9446,31 +9591,36 @@
         const uuid = localStorage.getItem('tentix_uuid') || '';
         if (!uuid) return;
 
-        if (!confirm(currentLang === 'de' ? "Möchtest du deine TENTIX Mitgliedschaft wirklich entfernen?" : "Are you sure you want to remove your TENTIX upgrade?")) {
-            return;
-        }
-
-        try {
-            const res = await fetch(`${API_BASE_URL}/api/ranks/remove`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ uuid })
-            });
-            const data = await res.json();
-            if (data.success) {
-                localStorage.setItem('tentix_active_rank', data.active_rank);
-                localStorage.setItem('tentix_rank_expires_at', data.rank_expires_at);
-                localStorage.setItem('tentix_roles', JSON.stringify(data.roles));
-                
-                checkActiveRankAndPanels();
-                loadBadges();
-                showToast(currentLang === 'de' ? "Upgrade erfolgreich entfernt!" : "Upgrade removed successfully!", "success");
-            } else {
-                showToast(data.error || "Fehler beim Entfernen des Upgrades", "error");
+        showCustomConfirm(
+            currentLang === 'de' ? 'Upgrade entfernen' : 'Remove Upgrade',
+            currentLang === 'de' ? "Möchtest du deine TENTIX Mitgliedschaft wirklich entfernen?" : "Are you sure you want to remove your TENTIX upgrade?",
+            '',
+            '#ff4b4b',
+            async (approved) => {
+                if (!approved) return;
+                try {
+                    const res = await fetch(`${API_BASE_URL}/api/ranks/remove`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ uuid })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        localStorage.setItem('tentix_active_rank', data.active_rank);
+                        localStorage.setItem('tentix_rank_expires_at', data.rank_expires_at);
+                        localStorage.setItem('tentix_roles', JSON.stringify(data.roles));
+                        
+                        checkActiveRankAndPanels();
+                        loadBadges();
+                        showToast(currentLang === 'de' ? "Upgrade erfolgreich entfernt!" : "Upgrade removed successfully!", "success");
+                    } else {
+                        showToast(data.error || "Fehler beim Entfernen des Upgrades", "error");
+                    }
+                } catch (e) {
+                    showToast("Verbindungsfehler", "error");
+                }
             }
-        } catch(err) {
-            showToast("Netzwerkfehler", "error");
-        }
+        );
     }
 
     function logout() {
@@ -14369,6 +14519,7 @@
     <div class="dash-edit-content" style="max-width: 420px; text-align: center; border: 1px solid var(--accent-blue); box-shadow: 0 0 25px rgba(var(--accent-blue-rgb), 0.15);">
         <div class="dash-title" style="font-size: 20px; margin-bottom: 15px;" id="custom-confirm-title">Bestätigung</div>
         <p style="font-size: 14px; color: #fff; margin-bottom: 12px; line-height: 1.5;" id="custom-confirm-msg">Möchtest du diese Aktion wirklich ausführen?</p>
+        <input type="text" id="custom-confirm-input" style="width: 100%; padding: 10px 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; font-size: 14px; margin-top: 10px; margin-bottom: 20px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; box-sizing: border-box; display: none;" onkeydown="if(event.key === 'Enter') closeCustomConfirm(true); else if(event.key === 'Escape') closeCustomConfirm(false);">
         <div style="font-size: 11px; color: #888; font-family: monospace; word-break: break-all; margin-bottom: 25px; background: rgba(255, 255, 255, 0.03); padding: 8px; border-radius: 4px; display: none;" id="custom-confirm-details">Details</div>
         <div style="display: flex; gap: 15px; justify-content: center;">
             <div class="dash-btn" style="background: #222; color: #fff; margin: 0; min-width: 100px;" id="custom-confirm-cancel-btn" onclick="closeCustomConfirm(false)">Abbrechen</div>
