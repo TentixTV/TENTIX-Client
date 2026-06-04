@@ -7780,6 +7780,27 @@
                 }
                 if (data.has_beta_access === false) {
                     localStorage.removeItem('tentix_beta_verified');
+                    localStorage.removeItem('tentix_logged');
+                    localStorage.removeItem('tentix_user');
+                    localStorage.removeItem('tentix_uuid');
+                    localStorage.removeItem('tentix_mc_token');
+
+                    // Show error in beta overlay
+                    const errorEl = document.getElementById('beta-error-msg');
+                    if (errorEl) {
+                        errorEl.innerText = currentLang === 'de' 
+                            ? "Du bist nicht Teil des Beta Programms." 
+                            : "You are not part of the Beta program.";
+                        errorEl.style.display = 'block';
+                    }
+                    
+                    checkAuthState();
+                    updateUI();
+                    applyLoginState();
+                    showBetaOverlay();
+                    return;
+                } else if (data.success && data.has_beta_access === true) {
+                    localStorage.setItem('tentix_beta_verified', 'true');
                 }
 
                 // Update Discord Linkage Card
@@ -7960,6 +7981,7 @@
             if(document.getElementById('ui-tentixplus-btn')) document.getElementById('ui-tentixplus-btn').style.display = 'block';
             if(document.getElementById('user-avatar')) document.getElementById('user-avatar').src = `https://mc-heads.net/avatar/${savedName}/40`;
             if(topContainer) topContainer.classList.add('logged-in');
+            if(document.getElementById('friends-icon-wrapper')) document.getElementById('friends-icon-wrapper').style.display = 'flex';
 
             if(document.getElementById('ui-card-reg')) document.getElementById('ui-card-reg').style.display = 'block';
             if(redBtn) { redBtn.classList.remove('disabled'); redBtn.onclick = openRedeemModal; }
@@ -7976,6 +7998,7 @@
             if(document.getElementById('ui-tentixplus-btn')) document.getElementById('ui-tentixplus-btn').style.display = 'none';
             if(document.getElementById('user-avatar')) document.getElementById('user-avatar').src = `https://mc-heads.net/avatar/MHF_Steve/40`;
             if(topContainer) topContainer.classList.remove('logged-in');
+            if(document.getElementById('friends-icon-wrapper')) document.getElementById('friends-icon-wrapper').style.display = 'none';
 
             if(document.getElementById('ui-card-reg')) document.getElementById('ui-card-reg').style.display = 'none';
             if(redBtn) { redBtn.classList.add('disabled'); redBtn.onclick = null; }
@@ -8869,6 +8892,9 @@
                     const hasBeta = user && (user.roles.includes('BETA') || user.roles.some(r => staffRoles.includes(r)));
                     if (hasBeta) {
                         localStorage.setItem('tentix_beta_verified', 'true');
+                        checkAuthState();
+                        updateUI();
+                        applyLoginState();
                         showToast(currentLang === 'de' ? "ZUGANG GEWÄHRT! (Simulation)" : "ACCESS GRANTED! (Simulation)", "success");
                         hideBetaOverlay();
                         proceedToMainMenu();
@@ -8897,6 +8923,9 @@
                 const initData = await initRes.json();
                 if (initData.success && initData.has_beta_access) {
                     localStorage.setItem('tentix_beta_verified', 'true');
+                    checkAuthState();
+                    updateUI();
+                    applyLoginState();
                     showToast(currentLang === 'de' ? "ZUGANG GEWÄHRT!" : "ACCESS GRANTED!", "success");
                     hideBetaOverlay();
                     proceedToMainMenu();
@@ -9206,6 +9235,9 @@
 
                             localStorage.removeItem('tentix_pending_beta_code');
                             localStorage.setItem('tentix_beta_verified', 'true');
+                            checkAuthState();
+                            updateUI();
+                            applyLoginState();
                             showToast(currentLang === 'de' ? "ZUGANG GEWÄHRT! (Simulation)" : "ACCESS GRANTED! (Simulation)", "success");
                             hideBetaOverlay();
                             proceedToMainMenu();
@@ -9231,6 +9263,9 @@
                         if (redeemData.success) {
                             localStorage.removeItem('tentix_pending_beta_code');
                             localStorage.setItem('tentix_beta_verified', 'true');
+                            checkAuthState();
+                            updateUI();
+                            applyLoginState();
                             showToast(currentLang === 'de' ? "ZUGANG GEWÄHRT!" : "ACCESS GRANTED!", "success");
                             hideBetaOverlay();
                             proceedToMainMenu();
@@ -13005,6 +13040,7 @@
     }
 
     function toggleFriendsPopup(e) {
+        if (!isLoggedIn) return;
         if (e) e.stopPropagation();
         const popup = document.getElementById('friends-popup');
         if (!popup) return;
