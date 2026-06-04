@@ -2777,16 +2777,16 @@
                     <svg viewBox="0 0 24 24" style="width: 15px; height: 15px; fill: currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.53c-.26-.81-1-1.4-1.9-1.4h-1v-3c0-.55-.45-1-1-1h-6v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.4z"/></svg>
                     <span class="tooltiptext" id="t-tt-blocked" style="z-index:9999;">Blockierte Konten</span>
                 </div>
-                <span style="font-size: 10px; color: var(--accent-blue); cursor: pointer; font-weight: 800; margin-left: 4px;" onclick="toggleAddFriendSection()">+ HINZUFÜGEN</span>
+                <span id="friends-add-btn-span" style="font-size: 10px; color: var(--accent-blue); cursor: pointer; font-weight: 800; margin-left: 4px;" onclick="toggleAddFriendSection()">+ HINZUFÜGEN</span>
             </div>
         </div>
         
         <!-- Toggleable Add Friend Area -->
         <div id="add-friend-section" style="display: none; padding: 12px 15px; background: rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.05); flex-direction: column; gap: 8px;">
-            <div style="font-size: 9px; font-weight: 800; color: #aaa; text-transform: uppercase; letter-spacing: 0.5px;">Spieler suchen / blockieren</div>
+            <div id="add-friend-section-title" style="font-size: 9px; font-weight: 800; color: #aaa; text-transform: uppercase; letter-spacing: 0.5px;">Spieler suchen / blockieren</div>
             <div style="display: flex; gap: 8px; -webkit-app-region: no-drag;">
                 <input type="text" id="add-friend-name" placeholder="Name suchen..." style="flex: 1; background: #000; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 6px 10px; font-size: 11px; color: #fff; outline: none;" onkeydown="if(event.key === 'Enter') searchPlayers()">
-                <button class="dash-btn" style="margin: 0; padding: 6px 12px; font-size: 10px; font-weight: 800; background: var(--accent-blue); color: #000; border: none; border-radius: 6px;" onclick="searchPlayers()">SUCHEN</button>
+                <button id="friends-search-btn" class="dash-btn" style="margin: 0; padding: 6px 12px; font-size: 10px; font-weight: 800; background: var(--accent-blue); color: #000; border: none; border-radius: 6px;" onclick="searchPlayers()">SUCHEN</button>
             </div>
             <!-- Search Results Container -->
             <div id="add-friend-search-results" style="max-height: 120px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; padding-top: 4px; -webkit-app-region: no-drag;">
@@ -4177,7 +4177,16 @@
             designColorNum: "Color",
             designColorRemove: "Remove",
             designColorMinWarning: "You need at least 1 background color",
-            designPreview: "Preview:"
+            designPreview: "Preview:",
+            friendsHeader: "FRIENDS",
+            friendsAddBtn: "+ ADD",
+            friendsSearchPlaceholder: "Search by name or UUID...",
+            friendsSearchBlockTitle: "Search / Block Player",
+            friendsSearchInputPlaceholder: "Search name...",
+            friendsSearchBtn: "SEARCH",
+            friendsIncomingTooltip: "Incoming friend requests",
+            friendsOutgoingTooltip: "Pending friend requests",
+            friendsBlockedTooltip: "Blocked accounts"
         },
         de: {
             latest: "Neueste Version", ready: "BEREIT", welcome: "WILLKOMMEN, ", player: "SPIELER", play: "SPIELEN", loginReq: "BITTE EINLOGGEN!",
@@ -4249,7 +4258,16 @@
             designColorNum: "Farbe",
             designColorRemove: "Entfernen",
             designColorMinWarning: "Du brauchst mind. 1 Hintergrundfarbe",
-            designPreview: "Vorschau:"
+            designPreview: "Vorschau:",
+            friendsHeader: "FREUNDE",
+            friendsAddBtn: "+ HINZUFÜGEN",
+            friendsSearchPlaceholder: "Suche nach Name oder UUID...",
+            friendsSearchBlockTitle: "Spieler suchen / blockieren",
+            friendsSearchInputPlaceholder: "Name suchen...",
+            friendsSearchBtn: "SUCHEN",
+            friendsIncomingTooltip: "Erhaltene Freundschaftsanfragen",
+            friendsOutgoingTooltip: "Ausstehende Freundschaftsanfragen",
+            friendsBlockedTooltip: "Blockierte Konten"
         }
     };
 
@@ -8214,6 +8232,20 @@
         setElText('discord-unlink-btn', t.discUnlinkBtn || "Trennen");
         setElText('discord-link-btn', t.discLinkBtn || "Verbinden");
         setElText('t-discord-user-title', t.discordUserConnected);
+        
+        setElText('friends-header-title', t.friendsHeader);
+        setElText('friends-add-btn-span', t.friendsAddBtn);
+        setElText('t-tt-incoming', t.friendsIncomingTooltip);
+        setElText('t-tt-outgoing', t.friendsOutgoingTooltip);
+        setElText('t-tt-blocked', t.friendsBlockedTooltip);
+        setElText('add-friend-section-title', t.friendsSearchBlockTitle);
+        setElText('friends-search-btn', t.friendsSearchBtn);
+        if(document.getElementById('friends-search-input')) {
+            document.getElementById('friends-search-input').placeholder = t.friendsSearchPlaceholder;
+        }
+        if(document.getElementById('add-friend-name')) {
+            document.getElementById('add-friend-name').placeholder = t.friendsSearchInputPlaceholder;
+        }
 
         setElText('ui-err-title', t.loginErrTitle);
         setElText('ui-err-desc', t.loginErrDesc);
