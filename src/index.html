@@ -39,7 +39,7 @@
         * { user-select: none; -webkit-user-select: none; box-sizing: border-box; outline: none; margin: 0; padding: 0; }
         body { background-color: transparent; color: white; font-family: 'Inter', sans-serif; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; width: 100vw; -webkit-app-region: no-drag; }
         #titlebar { position: fixed; top: 0; left: 0; width: 100%; height: 80px; -webkit-app-region: no-drag; z-index: 2900; pointer-events: auto; background: rgba(0, 0, 0, 0.01); }
-        #friends-unread-badge { position: absolute; top: -4px; right: -4px; background: #ff4b4b; color: #fff; font-size: 9px; font-weight: 800; min-width: 16px; height: 16px; border-radius: 8px; display: flex; align-items: center; justify-content: center; padding: 0 4px; transform: scale(0); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); z-index: 10; box-shadow: 0 0 8px rgba(255, 75, 75, 0.5); }
+        #friends-unread-badge { position: absolute; bottom: -2px; right: -2px; background: #ff4b4b; width: 8px; height: 8px; border-radius: 50%; transform: scale(0); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); z-index: 10; box-shadow: 0 0 8px #ff4b4b; animation: updatePingPulse 1.2s infinite ease-in-out; }
         #friends-unread-badge.show { transform: scale(1); }
         #friend-online-toast { position: fixed; bottom: 80px; left: 20px; background: rgba(15, 15, 18, 0.92); backdrop-filter: blur(20px); border: 1px solid rgba(0, 255, 128, 0.25); border-radius: 12px; padding: 12px 16px; display: flex; align-items: center; gap: 10px; z-index: 5000; transform: translateY(20px); opacity: 0; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); pointer-events: none; box-shadow: 0 0 20px rgba(0, 255, 128, 0.15); -webkit-app-region: no-drag; }
         #friend-online-toast.show { transform: translateY(0); opacity: 1; }
@@ -889,6 +889,20 @@
         }
         .chat-bubble.received .chat-time {
             text-align: left;
+        }
+
+        @keyframes messageSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .chat-message-animate {
+            animation: messageSlideUp 0.3s cubic-bezier(0.23, 1, 0.32, 1) forwards;
         }
 
         /* Installed Mod Action Button Hover States */
@@ -12057,11 +12071,11 @@
         if (!badge) return;
         const total = Object.values(unreadCounts).reduce((s, c) => s + c, 0);
         if (total > 0) {
-            badge.textContent = total > 99 ? '99+' : total;
             badge.classList.add('show');
         } else {
             badge.classList.remove('show');
         }
+        renderFriendsList();
     }
 
     async function loadUnreadCounts() {
@@ -12652,6 +12666,9 @@
                     friendRankIcon = `<span class="premium-rank-badge badge-lite" style="font-size: 8px; padding: 1px 3.5px; border-radius: 3px; height: 12px; line-height: 10px; margin-right: 2px;" title="TENTIX LITE">LITE</span>`;
                 }
 
+                const unreadCount = unreadCounts[f.uuid] || 0;
+                const badgeHtml = unreadCount > 0 ? `<span style="position: absolute; top: -6px; right: -6px; background: #ff4b4b; color: #fff; font-size: 8px; font-weight: 800; min-width: 12px; height: 12px; border-radius: 6px; display: flex; align-items: center; justify-content: center; padding: 0 3px; box-shadow: 0 0 6px rgba(255, 75, 75, 0.6); line-height: 10px; z-index: 5;">${unreadCount}</span>` : '';
+
                 container.innerHTML += `
                     <div class="friend-item" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.02);">
                         <div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0;">
@@ -12666,8 +12683,9 @@
                         </div>
                         <div style="display: flex; align-items: center;">
                             ${serverJoinIcon}
-                            <div class="friend-chat-btn" onclick="openFriendChat('${f.uuid}', '${f.username.replace(/'/g, "\\'")}', event)" style="cursor: pointer; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 4px; padding: 3px 6px; display: inline-flex; align-items: center; margin-right: 6px; transition: 0.2s;" onmouseover="this.style.background='rgba(0, 225, 255, 0.1)'; this.style.borderColor='rgba(0, 225, 255, 0.3)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.borderColor='rgba(255, 255, 255, 0.1)';">
+                            <div class="friend-chat-btn" onclick="openFriendChat('${f.uuid}', '${f.username.replace(/'/g, "\\'")}', event)" style="cursor: pointer; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 4px; padding: 3px 6px; display: inline-flex; align-items: center; margin-right: 6px; transition: 0.2s; position: relative;" onmouseover="this.style.background='rgba(0, 225, 255, 0.1)'; this.style.borderColor='rgba(0, 225, 255, 0.3)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.borderColor='rgba(255, 255, 255, 0.1)';">
                                 <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; fill: currentColor; color: #aaa;"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+                                ${badgeHtml}
                             </div>
                             <div class="friends-remove-btn" onclick="removeFriend('${f.uuid}')" style="cursor: pointer; color: #555; padding: 4px 6px; font-size: 10px; transition: 0.2s;" onmouseover="this.style.color='#ff4b4b';" onmouseout="this.style.color='#555';">✕</div>
                         </div>
@@ -12781,6 +12799,8 @@
     let activeChatFriendUuid = null;
     let activeChatFriendName = null;
     let chatPollInterval = null;
+    let lastMessageCount = 0;
+    let isChatInitialLoad = true;
 
     // Symmetric E2E XOR Cipher with base64 serialization (UTF-8 safe)
     function xorEncrypt(text, key) {
@@ -12811,6 +12831,16 @@
         }
     }
 
+    function alignFriendsChatPopup() {
+        const friendsPopup = document.getElementById('friends-popup');
+        const chatPopup = document.getElementById('friends-chat-popup');
+        if (friendsPopup && chatPopup && chatPopup.style.display !== 'none') {
+            const rect = friendsPopup.getBoundingClientRect();
+            chatPopup.style.left = (rect.right + 10) + 'px';
+            chatPopup.style.top = rect.top + 'px';
+        }
+    }
+
     async function openFriendChat(friendUuid, friendUsername, e) {
         if (e) e.stopPropagation();
         
@@ -12821,6 +12851,8 @@
         
         activeChatFriendUuid = friendUuid;
         activeChatFriendName = friendUsername;
+        lastMessageCount = 0;
+        isChatInitialLoad = true;
         
         const chatTitle = document.getElementById('chat-friend-name');
         const chatAvatar = document.getElementById('chat-friend-avatar');
@@ -12830,6 +12862,7 @@
         const chatPopup = document.getElementById('friends-chat-popup');
         if (chatPopup) {
             chatPopup.style.display = 'flex';
+            alignFriendsChatPopup();
         }
         
         // Mark messages as read
@@ -12925,15 +12958,18 @@
                 const myUsername = localStorage.getItem('tentix_user') || 'Steve';
                 const friendUsername = activeChatFriendName || 'Steve';
 
-                messages.forEach(msg => {
+                messages.forEach((msg, idx) => {
                     const isMe = msg.sender === senderUuid;
                     const decryptedContent = xorDecrypt(msg.content, encryptionKey);
                     const bubbleClass = isMe ? 'sent' : 'received';
                     const timeStr = new Date(msg.created_at || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                     
+                    const shouldAnimate = !isChatInitialLoad && idx >= lastMessageCount;
+                    const animClass = shouldAnimate ? ' chat-message-animate' : '';
+                    
                     if (isMe) {
                         html += `
-                            <div style="display: flex; gap: 8px; align-items: flex-end; align-self: flex-end; max-width: 80%;">
+                            <div class="message-wrapper${animClass}" style="display: flex; gap: 8px; align-items: flex-end; align-self: flex-end; max-width: 80%;">
                                 <div class="chat-bubble sent">
                                     <div>${decryptedContent}</div>
                                     <div class="chat-time" style="display: flex; justify-content: flex-end; align-items: center; gap: 4px;">
@@ -12946,7 +12982,7 @@
                         `;
                     } else {
                         html += `
-                            <div style="display: flex; gap: 8px; align-items: flex-end; align-self: flex-start; max-width: 80%;">
+                            <div class="message-wrapper${animClass}" style="display: flex; gap: 8px; align-items: flex-end; align-self: flex-start; max-width: 80%;">
                                 <img src="https://mc-heads.net/avatar/${friendUsername}/18" onerror="this.src='https://mc-heads.net/avatar/MHF_Steve/18'" style="width: 18px; height: 18px; border-radius: 4px; margin-bottom: 2px;" title="${friendUsername}">
                                 <div class="chat-bubble received">
                                     <div>${decryptedContent}</div>
@@ -12965,6 +13001,8 @@
                     msgBox.scrollTop = msgBox.scrollHeight;
                 }
             }
+            isChatInitialLoad = false;
+            lastMessageCount = messages.length;
         } catch (err) {
             console.error("Failed to load chat history:", err);
         }
@@ -13410,6 +13448,7 @@
                             const currentUser = localStorage.getItem('tentix_user') || 'guest';
                             localStorage.setItem(`friends_popup_width_${currentUser}`, width);
                             localStorage.setItem(`friends_popup_height_${currentUser}`, height);
+                            alignFriendsChatPopup();
                         }
                     }
                 }
