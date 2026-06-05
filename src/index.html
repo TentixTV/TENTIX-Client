@@ -677,8 +677,32 @@
         .coming-soon-popup { position: absolute; display: flex; flex-direction: column; align-items: center; background: rgba(10,10,10,0.85); padding: 70px 140px; border-radius: 24px; border: 1px solid var(--accent-blue); box-shadow: 0 0 100px rgba(var(--accent-blue-rgb),0.15); backdrop-filter: blur(30px); -webkit-app-region: no-drag; }
         .cs-title { font-size: 36px; font-weight: 800; letter-spacing: 12px; color: var(--accent-blue); margin-bottom: 35px; text-transform: uppercase; text-shadow: 0 0 25px rgba(var(--accent-blue-rgb),0.5);}
 
-        .dl-hover-percent { position: absolute; top: -25px; right: 0; background: var(--card-bg); border: 1px solid var(--accent-blue); padding: 4px 8px; border-radius: 4px; font-size: 10px; color: #fff; font-weight: 800; opacity: 0; transition: 0.2s; pointer-events: none; }
-        .update-box.downloading:hover .dl-hover-percent { opacity: 1; }
+        .dl-hover-percent {
+            position: absolute;
+            bottom: 130%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(10, 10, 12, 0.95);
+            border: 1px solid var(--accent-blue);
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 10.5px;
+            color: #fff;
+            font-weight: 800;
+            opacity: 0;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+            white-space: nowrap;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6), 0 0 15px rgba(var(--accent-blue-rgb), 0.25);
+            z-index: 10000;
+        }
+        .update-box.downloading:hover .dl-hover-percent {
+            opacity: 1;
+        }
+        .update-box.downloading:hover .tooltiptext {
+            visibility: hidden !important;
+            opacity: 0 !important;
+        }
 
         #announcement-bar { position: absolute; top: 100px; left: 50%; transform: translateX(-50%) translateY(-20px); background: rgba(10, 10, 12, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(var(--accent-blue-rgb), 0.25); padding: 10px 25px; border-radius: 20px; font-size: 12px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 10px; opacity: 0; visibility: hidden; transition: 0.5s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(var(--accent-blue-rgb),0.15); z-index: 2000; -webkit-app-region: no-drag;}
         #announcement-bar.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
@@ -2085,6 +2109,9 @@
             border-left: 5px solid rgba(var(--block-color-rgb, 255, 255, 255), 0.25);
             position: relative;
             overflow: hidden;
+            transform: translate3d(0, 0, 0);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
         }
         .legal-section-block::before {
             content: '';
@@ -2099,19 +2126,25 @@
             transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             opacity: 0.7;
             z-index: 0;
+            transform: translate3d(0, 0, 0);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
         }
         .legal-section-block:hover::before {
             width: 400px;
             height: 400px;
-            background: radial-gradient(circle, rgba(var(--block-color-rgb, 255, 255, 255), 0.12) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(var(--block-color-rgb, 255, 255, 255), 0.14) 0%, transparent 70%);
             opacity: 1;
         }
         .legal-section-block:hover {
             border-left-color: var(--block-color, var(--accent-blue));
             background: rgba(255, 255, 255, 0.02);
-            border-color: rgba(var(--block-color-rgb, 0, 114, 255), 0.12) rgba(var(--block-color-rgb, 0, 114, 255), 0.12) rgba(var(--block-color-rgb, 0, 114, 255), 0.12) var(--block-color, var(--accent-blue));
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5), 0 0 35px rgba(var(--block-color-rgb, 0, 114, 255), 0.05);
-            transform: translateX(6px) scale(1.002);
+            border-color: rgba(var(--block-color-rgb, 0, 114, 255), 0.18) rgba(var(--block-color-rgb, 0, 114, 255), 0.18) rgba(var(--block-color-rgb, 0, 114, 255), 0.18) var(--block-color, var(--accent-blue));
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5), 0 0 35px rgba(var(--block-color-rgb, 0, 114, 255), 0.06);
+            transform: translate3d(6px, 0, 0);
+            filter: brightness(1.03);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
         }
         .legal-section-title,
         .legal-badge-inline,
