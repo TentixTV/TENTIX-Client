@@ -2073,25 +2073,54 @@
             font-weight: 500;
         }
         .legal-section-block {
-            background: rgba(255, 255, 255, 0.01);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.015) 0%, rgba(255, 255, 255, 0.005) 100%);
             border: 1px solid rgba(255, 255, 255, 0.03);
-            border-radius: 16px;
+            border-radius: 20px;
             padding: 35px;
             margin-bottom: 30px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            border-left: 5px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            border-left: 5px solid rgba(var(--block-color-rgb, 255, 255, 255), 0.25);
             position: relative;
             overflow: hidden;
         }
+        .legal-section-block::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -30%;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(var(--block-color-rgb, 255, 255, 255), 0.06) 0%, transparent 70%);
+            filter: blur(20px);
+            pointer-events: none;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 0.7;
+            z-index: 0;
+        }
+        .legal-section-block:hover::before {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(var(--block-color-rgb, 255, 255, 255), 0.12) 0%, transparent 70%);
+            opacity: 1;
+        }
         .legal-section-block:hover {
-            border-left-color: var(--accent-blue);
-            background: rgba(255, 255, 255, 0.015);
-            border-color: rgba(var(--accent-blue-rgb), 0.15) rgba(var(--accent-blue-rgb), 0.15) rgba(var(--accent-blue-rgb), 0.15) var(--accent-blue);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 25px rgba(var(--accent-blue-rgb), 0.03);
-            transform: translateX(4px);
+            border-left-color: var(--block-color, var(--accent-blue));
+            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(var(--block-color-rgb, 0, 114, 255), 0.12) rgba(var(--block-color-rgb, 0, 114, 255), 0.12) rgba(var(--block-color-rgb, 0, 114, 255), 0.12) var(--block-color, var(--accent-blue));
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5), 0 0 35px rgba(var(--block-color-rgb, 0, 114, 255), 0.05);
+            transform: translateX(6px) scale(1.002);
+        }
+        .legal-section-title,
+        .legal-badge-inline,
+        .legal-subsection-title,
+        .legal-text-p,
+        .legal-bullet-list,
+        .legal-section-block span[onclick] {
+            position: relative;
+            z-index: 2;
         }
         .legal-section-title {
             font-size: 20px;
@@ -16367,7 +16396,7 @@
             <p class="legal-header-desc">Hier findest du alle gesetzlichen Angaben, Nutzungsbedingungen und Datenschutzhinweise für den TENTIX Client.</p>
 
             <!-- Block 1: Impressum -->
-            <div class="legal-section-block">
+            <div class="legal-section-block" style="--block-color: #0072ff; --block-color-rgb: 0, 114, 255;">
                 <div class="legal-section-title">
                     <div class="legal-section-icon-wrap" style="background: rgba(0, 114, 255, 0.1); border: 1px solid rgba(0, 114, 255, 0.25); color: var(--accent-blue);">
                         <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
@@ -16390,7 +16419,7 @@
             </div>
 
             <!-- Block 2: Datenschutzerklärung -->
-            <div class="legal-section-block">
+            <div class="legal-section-block" style="--block-color: #00ff80; --block-color-rgb: 0, 255, 128;">
                 <div class="legal-section-title">
                     <div class="legal-section-icon-wrap" style="background: rgba(0, 255, 128, 0.1); border: 1px solid rgba(0, 255, 128, 0.25); color: #00ff80;">
                         <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
@@ -16436,7 +16465,7 @@
             </div>
 
             <!-- Block 3: Cookies & Tracking -->
-            <div class="legal-section-block">
+            <div class="legal-section-block" style="--block-color: #ffcc00; --block-color-rgb: 255, 204, 0;">
                 <div class="legal-section-title">
                     <div class="legal-section-icon-wrap" style="background: rgba(255, 204, 0, 0.1); border: 1px solid rgba(255, 204, 0, 0.25); color: #ffcc00;">
                         <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm1-8.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3.5 5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
@@ -16454,7 +16483,7 @@
             </div>
 
             <!-- Block 4: Nutzungsbedingungen & Haftung -->
-            <div class="legal-section-block">
+            <div class="legal-section-block" style="--block-color: #ff4b4b; --block-color-rgb: 255, 75, 75;">
                 <div class="legal-section-title">
                     <div class="legal-section-icon-wrap" style="background: rgba(255, 75, 75, 0.1); border: 1px solid rgba(255, 75, 75, 0.25); color: #ff4b4b;">
                         <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
@@ -16490,7 +16519,7 @@
             </div>
 
             <!-- Block 5: Verbraucherschlichtung -->
-            <div class="legal-section-block">
+            <div class="legal-section-block" style="--block-color: #ff9900; --block-color-rgb: 255, 153, 0;">
                 <div class="legal-section-title">
                     <div class="legal-section-icon-wrap" style="background: rgba(255, 153, 0, 0.1); border: 1px solid rgba(255, 153, 0, 0.25); color: #ff9900;">
                         <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm0-4h-2V7h2v7z"/></svg>
@@ -16519,7 +16548,7 @@
             <p class="legal-header-desc">Here you can find all statutory disclosures, terms of use, and privacy notices for the TENTIX Client.</p>
 
             <!-- Block 1: Legal Notice -->
-            <div class="legal-section-block">
+            <div class="legal-section-block" style="--block-color: #0072ff; --block-color-rgb: 0, 114, 255;">
                 <div class="legal-section-title">
                     <div class="legal-section-icon-wrap" style="background: rgba(0, 114, 255, 0.1); border: 1px solid rgba(0, 114, 255, 0.25); color: var(--accent-blue);">
                         <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
@@ -16542,7 +16571,7 @@
             </div>
 
             <!-- Block 2: Privacy Policy -->
-            <div class="legal-section-block">
+            <div class="legal-section-block" style="--block-color: #00ff80; --block-color-rgb: 0, 255, 128;">
                 <div class="legal-section-title">
                     <div class="legal-section-icon-wrap" style="background: rgba(0, 255, 128, 0.1); border: 1px solid rgba(0, 255, 128, 0.25); color: #00ff80;">
                         <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
@@ -16588,7 +16617,7 @@
             </div>
 
             <!-- Block 3: Cookies & Tracking -->
-            <div class="legal-section-block">
+            <div class="legal-section-block" style="--block-color: #ffcc00; --block-color-rgb: 255, 204, 0;">
                 <div class="legal-section-title">
                     <div class="legal-section-icon-wrap" style="background: rgba(255, 204, 0, 0.1); border: 1px solid rgba(255, 204, 0, 0.25); color: #ffcc00;">
                         <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm1-8.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3.5 5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
@@ -16606,7 +16635,7 @@
             </div>
 
             <!-- Block 4: Terms of Use & Liability -->
-            <div class="legal-section-block">
+            <div class="legal-section-block" style="--block-color: #ff4b4b; --block-color-rgb: 255, 75, 75;">
                 <div class="legal-section-title">
                     <div class="legal-section-icon-wrap" style="background: rgba(255, 75, 75, 0.1); border: 1px solid rgba(255, 75, 75, 0.25); color: #ff4b4b;">
                         <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
@@ -16642,7 +16671,7 @@
             </div>
 
             <!-- Block 5: Consumer Arbitration -->
-            <div class="legal-section-block">
+            <div class="legal-section-block" style="--block-color: #ff9900; --block-color-rgb: 255, 153, 0;">
                 <div class="legal-section-title">
                     <div class="legal-section-icon-wrap" style="background: rgba(255, 153, 0, 0.1); border: 1px solid rgba(255, 153, 0, 0.25); color: #ff9900;">
                         <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm0-4h-2V7h2v7z"/></svg>
