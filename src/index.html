@@ -2053,94 +2053,107 @@
             font-family: 'Inter', sans-serif;
             color: #b1b6c0;
             line-height: 1.6;
+            max-width: 920px;
+            margin: 0 auto;
         }
         .legal-header-title {
-            font-size: 26px;
+            font-size: 28px;
             font-weight: 850;
             color: #fff;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             letter-spacing: -0.8px;
             background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .legal-header-desc {
-            font-size: 13.5px;
+            font-size: 14px;
             color: #64748b;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
             font-weight: 500;
         }
-        .legal-cards-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-        }
-        @media (max-width: 1000px) {
-            .legal-cards-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        .legal-card {
-            background: rgba(255, 255, 255, 0.012);
+        .legal-section-block {
+            background: rgba(255, 255, 255, 0.01);
             border: 1px solid rgba(255, 255, 255, 0.03);
             border-radius: 16px;
-            padding: 26px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border-left: 5px solid rgba(255, 255, 255, 0.05);
             position: relative;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
         }
-        .legal-card:hover {
-            border-color: rgba(var(--accent-blue-rgb), 0.25);
-            background: rgba(255, 255, 255, 0.025);
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(var(--accent-blue-rgb), 0.05);
+        .legal-section-block:hover {
+            border-left-color: var(--accent-blue);
+            background: rgba(255, 255, 255, 0.015);
+            border-color: rgba(var(--accent-blue-rgb), 0.15) rgba(var(--accent-blue-rgb), 0.15) rgba(var(--accent-blue-rgb), 0.15) var(--accent-blue);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 25px rgba(var(--accent-blue-rgb), 0.03);
+            transform: translateX(4px);
         }
-        .legal-card-header {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            margin-bottom: 18px;
+        .legal-section-title {
+            font-size: 20px;
+            font-weight: 800;
             color: #fff;
-            position: relative;
-            z-index: 2;
+            margin-top: 0;
+            margin-bottom: 22px;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
-        .legal-card-icon-wrap {
-            width: 38px;
-            height: 38px;
-            border-radius: 10px;
+        .legal-section-icon-wrap {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
         }
-        .legal-card-title {
-            font-size: 17px;
+        .legal-subsection-title {
+            font-size: 15px;
             font-weight: 750;
-            margin: 0;
-            letter-spacing: -0.3px;
+            color: #fff;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            letter-spacing: -0.2px;
         }
-        .legal-card-body {
-            font-size: 13px;
-            line-height: 1.7;
+        .legal-text-p {
+            font-size: 13.5px;
             color: #94a3b8;
-            position: relative;
-            z-index: 2;
+            line-height: 1.8;
+            margin-bottom: 16px;
+            text-align: justify;
         }
-        .legal-card-body strong {
+        .legal-text-p strong {
             color: #f1f5f9;
         }
-        .legal-card-list {
+        .legal-bullet-list {
             padding-left: 20px;
-            margin: 12px 0 0 0;
+            margin-bottom: 20px;
+            margin-top: 10px;
         }
-        .legal-card-list li {
-            margin-bottom: 8px;
+        .legal-bullet-list li {
+            font-size: 13.5px;
+            color: #94a3b8;
+            line-height: 1.8;
+            margin-bottom: 10px;
         }
-        .legal-card-list li::marker {
-            color: var(--accent-blue);
+        .legal-bullet-list li strong {
+            color: #f1f5f9;
+        }
+        .legal-badge-inline {
+            font-size: 10px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-block;
+            margin-bottom: 12px;
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/skinview3d@3.0.0-alpha.1/bundles/skinview3d.bundle.js"></script>
@@ -16347,83 +16360,149 @@
             </div>
         </div>
     </div>
-    
+
     <div id="legal-template-de">
         <div class="legal-container">
             <h2 class="legal-header-title">Rechtliche Informationen</h2>
             <p class="legal-header-desc">Hier findest du alle gesetzlichen Angaben, Nutzungsbedingungen und Datenschutzhinweise für den TENTIX Client.</p>
 
-            <div class="legal-cards-grid">
-                <!-- Card 1: Impressum -->
-                <div class="legal-card">
-                    <div class="legal-card-header">
-                        <div class="legal-card-icon-wrap" style="background: rgba(0, 114, 255, 0.1); border: 1px solid rgba(0, 114, 255, 0.25); color: var(--accent-blue);">
-                            <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                        </div>
-                        <h3 class="legal-card-title">Impressum</h3>
+            <!-- Block 1: Impressum -->
+            <div class="legal-section-block">
+                <div class="legal-section-title">
+                    <div class="legal-section-icon-wrap" style="background: rgba(0, 114, 255, 0.1); border: 1px solid rgba(0, 114, 255, 0.25); color: var(--accent-blue);">
+                        <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
                     </div>
-                    <div class="legal-card-body">
-                        <p style="margin-top: 0;">Angaben gemäß <strong>§ 5 TMG</strong> (Telemediengesetz) für den TENTIX Client und zugehörige Telemedien-Dienste:</p>
-                        <strong style="color: #fff; font-size: 14px;">TENTIX LLC</strong><br>
-                        Delaware File Number: 4839201<br>
-                        Vertreten durch die Geschäftsführung<br>
-                        E-Mail: <span style="color: var(--accent-blue);">legal@tentix.net</span><br>
-                        Website: <span style="color: var(--accent-blue); cursor: pointer;" onclick="window.ipcRenderer.send('open-external', 'https://www.tentix.net')">www.tentix.net</span><br><br>
-                        <span style="color: #666; font-size: 11px; display: block; line-height: 1.4;">Die TENTIX LLC ist eine eingetragene Gesellschaft nach dem Recht des Staates Delaware (USA).</span>
-                    </div>
+                    <span>Impressum</span>
                 </div>
+                <div class="legal-badge-inline" style="background: rgba(0, 114, 255, 0.08); border: 1px solid rgba(0, 114, 255, 0.2); color: var(--accent-blue);">Angaben gemäß § 5 TMG</div>
+                <p class="legal-text-p">
+                    Verantwortlicher Dienstanbieter für den TENTIX Client und die dazugehörigen Teledienste:<br><br>
+                    <strong style="font-size: 15px; color: #fff;">Sandro [Nachname]</strong><br>
+                    [Straße und Hausnummer]<br>
+                    [PLZ und Ort]<br>
+                    Deutschland<br><br>
+                    E-Mail: <span style="color: var(--accent-blue); text-decoration: underline; cursor: pointer;" onclick="window.ipcRenderer.send('open-external', 'mailto:legal@tentixclient.net')">legal@tentixclient.net</span><br>
+                    Website: <span style="color: var(--accent-blue); text-decoration: underline; cursor: pointer;" onclick="window.ipcRenderer.send('open-external', 'https://www.tentix.space/tentixclient')">www.tentix.space/tentixclient</span>
+                </p>
+                <p class="legal-text-p" style="font-size: 11px; color: #666; margin-top: 20px;">
+                    Hinweis: Dies ist ein deutsches Impressum gemäß § 5 Telemediengesetz (TMG). Bitte ergänzen Sie bei Bedarf den Nachnamen und Ihre Postanschrift für die vollständige gesetzliche Einhaltung.
+                </p>
+            </div>
 
-                <!-- Card 2: Datenschutz -->
-                <div class="legal-card">
-                    <div class="legal-card-header">
-                        <div class="legal-card-icon-wrap" style="background: rgba(0, 255, 128, 0.1); border: 1px solid rgba(0, 255, 128, 0.25); color: #00ff80;">
-                            <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: currentColor;"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-                        </div>
-                        <h3 class="legal-card-title">Datenschutzerklärung (DSGVO)</h3>
+            <!-- Block 2: Datenschutzerklärung -->
+            <div class="legal-section-block">
+                <div class="legal-section-title">
+                    <div class="legal-section-icon-wrap" style="background: rgba(0, 255, 128, 0.1); border: 1px solid rgba(0, 255, 128, 0.25); color: #00ff80;">
+                        <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
                     </div>
-                    <div class="legal-card-body">
-                        <p style="margin-top: 0;">Der Schutz deiner persönlichen Daten ist uns ein wichtiges Anliegen gemäß <strong>Art. 13 und 14 DSGVO</strong>:</p>
-                        <ul class="legal-card-list">
-                            <li><strong>Minecraft-Spielername:</strong> Zur Zuordnung deines Profils und deiner virtuellen Einkäufe (Art. 6 Abs. 1 lit. b DSGVO zur Vertragserfüllung).</li>
-                            <li><strong>Datenminimierung (Art. 5 DSGVO):</strong> Wir erfassen keine Logdateien, kein Tracking von Benutzeraktivitäten und keine Verhaltensdaten.</li>
-                            <li><strong>Serverstandort:</strong> Die clientseitigen Datenbanken und Serververbindungen werden auf sicheren, DSGVO-konformen Servern innerhalb der EU betrieben.</li>
-                        </ul>
-                    </div>
+                    <span>Datenschutzerklärung</span>
                 </div>
+                <div class="legal-badge-inline" style="background: rgba(0, 255, 128, 0.08); border: 1px solid rgba(0, 255, 128, 0.2); color: #00ff80;">DSGVO / GDPR Konformität</div>
+                
+                <p class="legal-text-p">
+                    Wir legen höchsten Wert auf den Schutz deiner persönlichen Daten. Nachfolgend informieren wir dich über die Erhebung, Verarbeitung und Nutzung deiner Daten bei Verwendung des TENTIX Clients gemäß <strong>Art. 13 und 14 der Datenschutz-Grundverordnung (DSGVO)</strong>.
+                </p>
 
-                <!-- Card 3: Nutzungsbedingungen -->
-                <div class="legal-card">
-                    <div class="legal-card-header">
-                        <div class="legal-card-icon-wrap" style="background: rgba(255, 75, 75, 0.1); border: 1px solid rgba(255, 75, 75, 0.25); color: #ff4b4b;">
-                            <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: currentColor;"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
-                        </div>
-                        <h3 class="legal-card-title">Nutzung & Haftung</h3>
-                    </div>
-                    <div class="legal-card-body">
-                        <p style="margin-top: 0;"><strong>Haftung für Inhalte:</strong> Gemäß § 7 Abs. 1 TMG sind wir für eigene Inhalte auf diesen Seiten verantwortlich. Die Nutzung des Clients erfolgt unentgeltlich und auf eigene Verantwortung.</p>
-                        <p><strong>Haftungsausschluss (§ 8 bis 10 TMG):</strong> Wir sind nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen (wie Chatverläufe von Minecraft-Servern oder fremde Serverinhalte) aktiv zu überwachen.</p>
-                        <p><strong>EULA-Konformität:</strong> Der TENTIX Client steht in keinerlei offiziellen Verbindung, Partnerschaft oder Kooperation mit Mojang Synergies AB oder Microsoft Corp.</p>
-                    </div>
-                </div>
+                <div class="legal-subsection-title">1. Verantwortlicher für die Datenverarbeitung</div>
+                <p class="legal-text-p">
+                    Verantwortlicher im Sinne des Art. 4 Nr. 7 DSGVO ist der im Impressum genannte Dienstanbieter Sandro.
+                </p>
 
-                <!-- Card 4: Streitbeilegung -->
-                <div class="legal-card">
-                    <div class="legal-card-header">
-                        <div class="legal-card-icon-wrap" style="background: rgba(255, 153, 0, 0.1); border: 1px solid rgba(255, 153, 0, 0.25); color: #ff9900;">
-                            <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 16h-2v-2h2v2zm0-4h-2V7h2v7z"/></svg>
-                        </div>
-                        <h3 class="legal-card-title">Streitbeilegung & Links</h3>
+                <div class="legal-subsection-title">2. Erhebung und Verarbeitung personenbezogener Daten</div>
+                <p class="legal-text-p">
+                    Wir erheben und verarbeiten deine personenbezogenen Daten streng nach dem Grundsatz der Datenminimierung. Folgende Daten werden verarbeitet:
+                </p>
+                <ul class="legal-bullet-list">
+                    <li><strong>Minecraft-Spielername & UUID:</strong> Diese Daten dienen zur eindeutigen Zuordnung deines Profils, deiner Einkäufe (Ränge, Kosmetika) sowie zur Authentifizierung für den Multiplayer-Modus. Die Verarbeitung erfolgt zur Vertragserfüllung bzw. Durchführung vorvertraglicher Maßnahmen gemäß <strong>Art. 6 Abs. 1 lit. b DSGVO</strong>.</li>
+                    <li><strong>Discord-Verbindung (optional):</strong> Wenn du dein Discord-Konto mit dem Launcher verknüpfst, verarbeiten wir deine Discord-ID und deinen Benutzernamen zur Bereitstellung des verknüpften Dienstes (Art. 6 Abs. 1 lit. b DSGVO).</li>
+                </ul>
+
+                <div class="legal-subsection-title">3. Speicherzeitraum der Daten</div>
+                <p class="legal-text-p">
+                    Deine Profildaten (UUID, Ränge) bleiben so lange gespeichert, wie dein TENTIX-Account aktiv genutzt wird. Wenn du eine Löschung deines Kontos anforderst, werden alle damit verbundenen Profildaten unverzüglich gelöscht, es sei denn, gesetzliche Aufbewahrungspflichten stehen dem entgegen.
+                </p>
+
+                <div class="legal-subsection-title">4. Deine Rechte als betroffene Person</div>
+                <p class="legal-text-p">
+                    Dir stehen nach der DSGVO folgende Rechte gegenüber dem Verantwortlichen zu:
+                </p>
+                <ul class="legal-bullet-list">
+                    <li><strong>Auskunftsrecht (Art. 15 DSGVO):</strong> Du hast das Recht, Auskunft über deine bei uns gespeicherten Daten zu verlangen.</li>
+                    <li><strong>Recht auf Berichtigung (Art. 16 DSGVO):</strong> Du kannst unrichtige Daten korrigieren lassen.</li>
+                    <li><strong>Recht auf Löschung (Art. 17 DSGVO):</strong> Du kannst die Löschung deiner personenbezogenen Daten verlangen ("Recht auf Vergessenwerden").</li>
+                    <li><strong>Widerspruchsrecht (Art. 21 DSGVO):</strong> Sofern deine Daten auf Grundlage berechtigter Interessen verarbeitet werden, kannst du der Verarbeitung widersprechen.</li>
+                    <li><strong>Beschwerderecht (Art. 77 DSGVO):</strong> Du hast das Recht, dich bei einer Datenschutz-Aufsichtsbehörde über die Verarbeitung deiner Daten zu beschweren.</li>
+                </ul>
+            </div>
+
+            <!-- Block 3: Cookies & Tracking -->
+            <div class="legal-section-block">
+                <div class="legal-section-title">
+                    <div class="legal-section-icon-wrap" style="background: rgba(255, 204, 0, 0.1); border: 1px solid rgba(255, 204, 0, 0.25); color: #ffcc00;">
+                        <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm1-8.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3.5 5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
                     </div>
-                    <div class="legal-card-body">
-                        <p style="margin-top: 0;">Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit, die du hier findest:</p>
-                        <span style="color: var(--accent-blue); text-decoration: underline; cursor: pointer; display: block; margin-bottom: 12px;" onclick="window.ipcRenderer.send('open-external', 'https://ec.europa.eu/consumers/odr')">https://ec.europa.eu/consumers/odr</span>
-                        <p><strong>Verbraucherstreitbeilegung:</strong> Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle nach dem <strong>§ 36 VSBG</strong> teilzunehmen.</p>
-                        <p><strong>Haftung für Links:</strong> Für Inhalte verlinkter externer Seiten wird jegliche Haftung ausgeschlossen.</p>
-                    </div>
+                    <span>Cookies & Tracking</span>
                 </div>
+                <div class="legal-badge-inline" style="background: rgba(255, 204, 0, 0.08); border: 1px solid rgba(255, 204, 0, 0.2); color: #ffcc00;">100% Tracking-Frei</div>
+                
+                <p class="legal-text-p">
+                    Im TENTIX Client und den integrierten Modulen kommen <strong>keine einwilligungspflichtigen Tracking-Cookies, Analyseskripte (wie Google Analytics) oder Werbepixel</strong> zum Einsatz. 
+                </p>
+                <p class="legal-text-p">
+                    Wir speichern lediglich technisch notwendige Konfigurationsdaten lokal auf deinem Endgerät (z. B. ausgewählte Sprache, Lautstärke oder zugeordneter Arbeitsspeicher in den Client-Einstellungen). Diese rein funktionalen Daten dienen ausschließlich der ordnungsgemäßen Bereitstellung der Software. Ein Abgleich dieser Daten zu Marketing- oder Profilbildungszwecken findet nicht statt.
+                </p>
+            </div>
+
+            <!-- Block 4: Nutzungsbedingungen & Haftung -->
+            <div class="legal-section-block">
+                <div class="legal-section-title">
+                    <div class="legal-section-icon-wrap" style="background: rgba(255, 75, 75, 0.1); border: 1px solid rgba(255, 75, 75, 0.25); color: #ff4b4b;">
+                        <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                    </div>
+                    <span>Nutzungsbedingungen & Haftungsausschluss</span>
+                </div>
+                <div class="legal-badge-inline" style="background: rgba(255, 75, 75, 0.08); border: 1px solid rgba(255, 75, 75, 0.2); color: #ff4b4b;">AGB & Disclaimer</div>
+
+                <div class="legal-subsection-title">1. Haftung für eigene Inhalte</div>
+                <p class="legal-text-p">
+                    Als Diensteanbieter sind wir gemäß <strong>§ 7 Abs. 1 TMG</strong> für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Wir übernehmen jedoch keine Gewähr für die ständige Verfügbarkeit des Launchers oder Fehlerfreiheit der Software.
+                </p>
+
+                <div class="legal-subsection-title">2. Haftung für externe Links und Serverinhalte</div>
+                <p class="legal-text-p">
+                    Der TENTIX Client ermöglicht die Verbindung zu Minecraft-Servern und externen Webseiten Dritter. Auf deren Inhalte haben wir keinen Einfluss. Nach <strong>§§ 8 bis 10 TMG</strong> sind wir nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen. Eine Haftung für verlinkte externe Inhalte wird hiermit ausgeschlossen.
+                </p>
+
+                <div class="legal-subsection-title">3. Fiktive In-App Währung (Shop-Simulation)</div>
+                <p class="legal-text-p">
+                    Das im Client angezeigte "Guthaben" ist ein rein fiktiver Wert im Rahmen unseres Free2Play-Simulators. Es besitzt keinen echten Geldwert, kann nicht ausgezahlt, übertragen oder zurückerstattet werden. Sämtliche Transaktionen im Shop-Bereich sind Simulationen.
+                </p>
+
+                <div class="legal-subsection-title">4. Geistiges Eigentum & Minecraft-EULA</div>
+                <p class="legal-text-p">
+                    Minecraft ist ein eingetragenes Warenzeichen von Mojang Synergies AB / Microsoft Corp. Der TENTIX Client steht in keinerlei Verbindung mit Mojang oder Microsoft. Alle Urheberrechte an der Modifikation liegen bei den jeweiligen Entwicklern des Clients.
+                </p>
+            </div>
+
+            <!-- Block 5: Verbraucherschlichtung -->
+            <div class="legal-section-block">
+                <div class="legal-section-title">
+                    <div class="legal-section-icon-wrap" style="background: rgba(255, 153, 0, 0.1); border: 1px solid rgba(255, 153, 0, 0.25); color: #ff9900;">
+                        <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm0-4h-2V7h2v7z"/></svg>
+                    </div>
+                    <span>Verbraucherstreitbeilegung</span>
+                </div>
+                <div class="legal-badge-inline" style="background: rgba(255, 153, 0, 0.08); border: 1px solid rgba(255, 153, 0, 0.2); color: #ff9900;">Streitbeilegungshinweis</div>
+                <p class="legal-text-p">
+                    Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit, die unter folgender Adresse erreichbar ist:
+                </p>
+                <span style="color: var(--accent-blue); text-decoration: underline; cursor: pointer; display: block; margin-bottom: 15px; font-size: 13.5px;" onclick="window.ipcRenderer.send('open-external', 'https://ec.europa.eu/consumers/odr')">https://ec.europa.eu/consumers/odr</span>
+                <p class="legal-text-p">
+                    Wir weisen gemäß <strong>§ 36 VSBG</strong> darauf hin, dass wir nicht bereit oder verpflichtet sind, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.
+                </p>
             </div>
             
-            <div style="margin-top: 35px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px; font-size: 11px; color: #555; text-align: right;">
+            <div style="margin-top: 35px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px; font-size: 11px; color: #555; text-align: right; margin-bottom: 50px;">
                 Letzte Aktualisierung: Juni 2026
             </div>
         </div>
@@ -16434,70 +16513,147 @@
             <h2 class="legal-header-title">Legal Information</h2>
             <p class="legal-header-desc">Here you can find all statutory disclosures, terms of use, and privacy notices for the TENTIX Client.</p>
 
-            <div class="legal-cards-grid">
-                <!-- Card 1: Legal Notice -->
-                <div class="legal-card">
-                    <div class="legal-card-header">
-                        <div class="legal-card-icon-wrap" style="background: rgba(0, 114, 255, 0.1); border: 1px solid rgba(0, 114, 255, 0.25); color: var(--accent-blue);">
-                            <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                        </div>
-                        <h3 class="legal-card-title">Legal Notice</h3>
+            <!-- Block 1: Legal Notice -->
+            <div class="legal-section-block">
+                <div class="legal-section-title">
+                    <div class="legal-section-icon-wrap" style="background: rgba(0, 114, 255, 0.1); border: 1px solid rgba(0, 114, 255, 0.25); color: var(--accent-blue);">
+                        <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
                     </div>
-                    <div class="legal-card-body">
-                        <p style="margin-top: 0;">Statutory information pursuant to <strong>Section 5 of the German Telemedia Act (TMG)</strong>:</p>
-                        <strong style="color: #fff; font-size: 14px;">TENTIX LLC</strong><br>
-                        Delaware File Number: 4839201<br>
-                        Represented by the Executive Management<br>
-                        E-Mail: <span style="color: var(--accent-blue);">legal@tentix.net</span><br>
-                        Website: <span style="color: var(--accent-blue); cursor: pointer;" onclick="window.ipcRenderer.send('open-external', 'https://www.tentix.net')">www.tentix.net</span><br><br>
-                        <span style="color: #666; font-size: 11px; display: block; line-height: 1.4;">TENTIX LLC is a corporation organized under the laws of the State of Delaware (USA).</span>
-                    </div>
+                    <span>Legal Notice</span>
                 </div>
+                <div class="legal-badge-inline" style="background: rgba(0, 114, 255, 0.08); border: 1px solid rgba(0, 114, 255, 0.2); color: var(--accent-blue);">Disclosures pursuant to TMG § 5</div>
+                <p class="legal-text-p">
+                    Service provider responsible for the TENTIX Client modification and associated telemedia utilities:<br><br>
+                    <strong style="font-size: 15px; color: #fff;">Sandro [LastName]</strong><br>
+                    [Street and House Number]<br>
+                    [ZIP Code and City]<br>
+                    Germany<br><br>
+                    E-Mail: <span style="color: var(--accent-blue); text-decoration: underline; cursor: pointer;" onclick="window.ipcRenderer.send('open-external', 'mailto:legal@tentixclient.net')">legal@tentixclient.net</span><br>
+                    Website: <span style="color: var(--accent-blue); text-decoration: underline; cursor: pointer;" onclick="window.ipcRenderer.send('open-external', 'https://www.tentix.space/tentixclient')">www.tentix.space/tentixclient</span>
+                </p>
+                <p class="legal-text-p" style="font-size: 11px; color: #666; margin-top: 20px;">
+                    Notice: This is a German Legal Disclosure (Impressum) pursuant to Section 5 of the German Telemedia Act (TMG). Please append your last name and postal address details for full legal compliance.
+                </p>
+            </div>
 
-                <!-- Card 2: Privacy Policy -->
-                <div class="legal-card">
-                    <div class="legal-card-header">
-                        <div class="legal-card-icon-wrap" style="background: rgba(0, 255, 128, 0.1); border: 1px solid rgba(0, 255, 128, 0.25); color: #00ff80;">
-                            <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: currentColor;"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-                        </div>
-                        <h3 class="legal-card-title">Privacy Policy (GDPR)</h3>
+            <!-- Block 2: Privacy Policy -->
+            <div class="legal-section-block">
+                <div class="legal-section-title">
+                    <div class="legal-section-icon-wrap" style="background: rgba(0, 255, 128, 0.1); border: 1px solid rgba(0, 255, 128, 0.25); color: #00ff80;">
+                        <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
                     </div>
-                    <div class="legal-card-body">
-                        <p style="margin-top: 0;">We take the protection of your personal data very seriously, in compliance with <strong>Art. 13 & 14 GDPR</strong>:</p>
-                        <ul class="legal-card-list">
-                            <li><strong>Minecraft Username:</strong> Used solely to identify your profile and assign ranks or cosmetics (Art. 6(1)(b) GDPR for contract performance).</li>
-                            <li><strong>Data Minimization (Art. 5 GDPR):</strong> We do not log user activities, trace locations, analyze behavior, or employ tracking cookies.</li>
-                            <li><strong>Hosting Location:</strong> All server transactions are hosted on secure, GDPR-compliant server hardware within the European Union.</li>
-                        </ul>
-                    </div>
+                    <span>Privacy Policy</span>
                 </div>
+                <div class="legal-badge-inline" style="background: rgba(0, 255, 128, 0.08); border: 1px solid rgba(0, 255, 128, 0.2); color: #00ff80;">GDPR Compliance</div>
+                
+                <p class="legal-text-p">
+                    Protecting your privacy is of the utmost importance to us. In the following sections, we outline how we handle and process your personal data when using the TENTIX Client pursuant to <strong>Articles 13 and 14 of the General Data Protection Regulation (GDPR)</strong>.
+                </p>
 
-                <!-- Card 3: Terms of Use -->
-                <div class="legal-card">
-                    <div class="legal-card-header">
-                        <div class="legal-card-icon-wrap" style="background: rgba(255, 75, 75, 0.1); border: 1px solid rgba(255, 75, 75, 0.25); color: #ff4b4b;">
-                            <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: currentColor;"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
-                        </div>
-                        <h3 class="legal-card-title">Terms & Liability</h3>
+                <div class="legal-subsection-title">1. Data Controller</div>
+                <p class="legal-text-p">
+                    The data controller responsible for processing activities under Art. 4 No. 7 GDPR is Sandro, as declared in the Legal Notice above.
+                </p>
+
+                <div class="legal-subsection-title">2. Processing of Personal Data</div>
+                <p class="legal-text-p">
+                    We only collect and process personal data that is technically essential. The processed data types are:
+                </p>
+                <ul class="legal-bullet-list">
+                    <li><strong>Minecraft Username & UUID:</strong> Processed to map your game profile, apply your purchased ranks/cosmetics, and perform secure multiplayer logins. This processing is based on performance of a contract under <strong>Art. 6(1)(b) GDPR</strong>.</li>
+                    <li><strong>Discord Connection (optional):</strong> When linking your Discord account, we process your Discord ID and name to associate benefits within the client (Art. 6(1)(b) GDPR).</li>
+                </ul>
+
+                <div class="legal-subsection-title">3. Data Retention Period</div>
+                <p class="legal-text-p">
+                    Your profile associations (UUID, purchases) remain active as long as you use the TENTIX Client. Upon requesting account deletion, all associated data is deleted immediately, unless statutory record retention periods apply.
+                </p>
+
+                <div class="legal-subsection-title">4. Your Rights as a Data Subject</div>
+                <p class="legal-text-p">
+                    Under the GDPR, you have the following rights:
+                </p>
+                <ul class="legal-bullet-list">
+                    <li><strong>Right of Access (Art. 15 GDPR):</strong> Request copy of all your processed personal data.</li>
+                    <li><strong>Right to Rectification (Art. 16 GDPR):</strong> Request correction of incorrect data records.</li>
+                    <li><strong>Right to Erasure (Art. 17 GDPR):</strong> Request complete deletion of your personal records ("Right to be Forgotten").</li>
+                    <li><strong>Right to Object (Art. 21 GDPR):</strong> Object to data processing based on legitimate interests.</li>
+                    <li><strong>Right to Lodge a Complaint (Art. 77 GDPR):</strong> Lodge an appeal with a competent data protection supervisory authority.</li>
+                </ul>
+            </div>
+
+            <!-- Block 3: Cookies & Tracking -->
+            <div class="legal-section-block">
+                <div class="legal-section-title">
+                    <div class="legal-section-icon-wrap" style="background: rgba(255, 204, 0, 0.1); border: 1px solid rgba(255, 204, 0, 0.25); color: #ffcc00;">
+                        <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm1-8.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3.5 5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
                     </div>
-                    <div class="legal-card-body">
-                        <p style="margin-top: 0;"><strong>Liability for Content:</strong> Pursuant to Section 7(1) TMG, we are liable for our own content. The client modification is provided free of charge and used at your own risk.</p>
-                        <p><strong>Disclaimer (Sections 8 to 10 TMG):</strong> We are not obligated to monitor transmitted or stored third-party information (such as chat text or multiplayer server contents).</p>
-                        <p><strong>Minecraft EULA:</strong> TENTIX Client is an independent modification and has no affiliation, endorsement, or partnership with Mojang Synergies AB or Microsoft Corp.</p>
-                    </div>
+                    <span>Cookies & Tracking</span>
                 </div>
+                <div class="legal-badge-inline" style="background: rgba(255, 204, 0, 0.08); border: 1px solid rgba(255, 204, 0, 0.2); color: #ffcc00;">100% Tracking-Free</div>
+                
+                <p class="legal-text-p">
+                    The TENTIX Client does <strong>not use tracking cookies, analytics scripts (such as Google Analytics), or marketing pixels</strong> that require user consent.
+                </p>
+                <p class="legal-text-p">
+                    We only save technically necessary configuration values locally on your device (e.g. settings preferences like active language, volume, or allocated game memory). These configurations are purely functional and serve exclusively to run the software. No data profiling or marketing activities are performed.
+                </p>
+            </div>
 
-                <!-- Card 4: Dispute Resolution -->
-                <div class="legal-card">
-                    <div class="legal-card-header">
-                        <div class="legal-card-icon-wrap" style="background: rgba(255, 153, 0, 0.1); border: 1px solid rgba(255, 153, 0, 0.25); color: #ff9900;">
-                            <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 16h-2v-2h2v2zm0-4h-2V7h2v7z"/></svg>
-                        </div>
-                        <h3 class="legal-card-title">Disputes & Links</h3>
+            <!-- Block 4: Terms of Use & Liability -->
+            <div class="legal-section-block">
+                <div class="legal-section-title">
+                    <div class="legal-section-icon-wrap" style="background: rgba(255, 75, 75, 0.1); border: 1px solid rgba(255, 75, 75, 0.25); color: #ff4b4b;">
+                        <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
                     </div>
-                    <div class="legal-card-body">
-                        <p style="margin-top: 0;">The European Commission provides a platform for Online Dispute Resolution (ODR), accessible here:</p>
-                        <span style="color: var(--accent-blue); text-decoration: underline; cursor: pointer; display: block; margin-bottom: 12px;" onclick="window.ipcRenderer.send('open-external', 'https://ec.europa.eu/consumers/odr')">https://ec.europa.eu/consumers/odr</span>
+                    <span>Terms of Use & Liability Disclaimer</span>
+                </div>
+                <div class="legal-badge-inline" style="background: rgba(255, 75, 75, 0.08); border: 1px solid rgba(255, 75, 75, 0.2); color: #ff4b4b;">TOS & Disclaimer</div>
+
+                <div class="legal-subsection-title">1. Liability for Internal Content</div>
+                <p class="legal-text-p">
+                    Pursuant to Section 7(1) TMG, we are responsible for our own content. However, we assume no liability for the permanent availability, stability, or error-free execution of the software.
+                </p>
+
+                <div class="legal-subsection-title">2. Liability for External Links and Servers</div>
+                <p class="legal-text-p">
+                    The client facilitates connections to external Minecraft servers and web resources. We do not monitor or control third-party content. Pursuant to Sections 8 to 10 TMG, we are not liable for external third-party content.
+                </p>
+
+                <div class="legal-subsection-title">3. Fictional Simulator Currency</div>
+                <p class="legal-text-p">
+                    The balance shown in the Shop is virtual and exists solely for simulation purposes. It carries no real monetary value, cannot be withdrawn, and is completely non-refundable and non-transferable.
+                </p>
+
+                <div class="legal-subsection-title">4. Intellectual Property & Mojang EULA</div>
+                <p class="legal-text-p">
+                    Minecraft is a registered trademark of Mojang Synergies AB / Microsoft Corp. This client is an independent modification and has no affiliation with Mojang or Microsoft.
+                </p>
+            </div>
+
+            <!-- Block 5: Consumer Arbitration -->
+            <div class="legal-section-block">
+                <div class="legal-section-title">
+                    <div class="legal-section-icon-wrap" style="background: rgba(255, 153, 0, 0.1); border: 1px solid rgba(255, 153, 0, 0.25); color: #ff9900;">
+                        <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm0-4h-2V7h2v7z"/></svg>
+                    </div>
+                    <span>Consumer Dispute Resolution</span>
+                </div>
+                <div class="legal-badge-inline" style="background: rgba(255, 153, 0, 0.08); border: 1px solid rgba(255, 153, 0, 0.2); color: #ff9900;">Dispute Resolution Info</div>
+                <p class="legal-text-p">
+                    The European Commission provides a portal for Online Dispute Resolution (ODR) accessible under:
+                </p>
+                <span style="color: var(--accent-blue); text-decoration: underline; cursor: pointer; display: block; margin-bottom: 15px; font-size: 13.5px;" onclick="window.ipcRenderer.send('open-external', 'https://ec.europa.eu/consumers/odr')">https://ec.europa.eu/consumers/odr</span>
+                <p class="legal-text-p">
+                    Pursuant to Section 36 VSBG, we hereby declare that we are neither willing nor obligated to participate in dispute settlement proceedings before a consumer arbitration board.
+                </p>
+            </div>
+            
+            <div style="margin-top: 35px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px; font-size: 11px; color: #555; text-align: right; margin-bottom: 50px;">
+                Last Updated: June 2026
+            </div>
+        </div>
+    </div>ck; margin-bottom: 12px;" onclick="window.ipcRenderer.send('open-external', 'https://ec.europa.eu/consumers/odr')">https://ec.europa.eu/consumers/odr</span>
                         <p><strong>Arbitration Notice:</strong> We are not willing or obligated to participate in dispute resolution proceedings before a consumer arbitration board under <strong>Section 36 VSBG</strong>.</p>
                         <p><strong>Liability for Links:</strong> We disclaim all liability for contents of linked external pages.</p>
                     </div>
