@@ -679,7 +679,7 @@
 
         .dl-hover-percent {
             position: absolute;
-            bottom: 130%;
+            top: 130%;
             right: 0;
             left: auto;
             transform: none;
@@ -7916,7 +7916,14 @@
                 }, 300);
             }
         } else if (updateState === 'ready') {
-            forceRestartClient();
+            const modal = document.getElementById('forced-restart-modal');
+            if (modal) {
+                modal.style.display = 'flex';
+                setTimeout(() => {
+                    modal.style.opacity = '1';
+                    modal.firstElementChild.style.transform = 'scale(1)';
+                }, 10);
+            }
         }
     }
 
@@ -16425,7 +16432,7 @@
     </div>
 </div>
 
-    <div id="legal-template-de">
+    <div id="legal-template-de" style="display: none;">
         <div class="legal-container">
             <h2 class="legal-header-title">Rechtliche Informationen</h2>
             <p class="legal-header-desc">Hier findest du alle gesetzlichen Angaben, Nutzungsbedingungen und Datenschutzhinweise für den TENTIX Client.</p>
@@ -16578,7 +16585,7 @@
         </div>
     </div>
     
-    <div id="legal-template-en">
+    <div id="legal-template-en" style="display: none;">
         <div class="legal-container">
             <h2 class="legal-header-title">Legal Information</h2>
             <p class="legal-header-desc">Here you can find all statutory disclosures, terms of use, and privacy notices for the TENTIX Client.</p>
