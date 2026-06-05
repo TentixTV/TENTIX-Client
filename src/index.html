@@ -680,8 +680,9 @@
         .dl-hover-percent {
             position: absolute;
             bottom: 130%;
-            left: 50%;
-            transform: translateX(-50%);
+            right: 0;
+            left: auto;
+            transform: none;
             background: rgba(10, 10, 12, 0.95);
             border: 1px solid var(--accent-blue);
             padding: 5px 12px;
@@ -702,6 +703,13 @@
         .update-box.downloading:hover .tooltiptext {
             visibility: hidden !important;
             opacity: 0 !important;
+        }
+        #fancy-update-box .tooltiptext {
+            top: 130% !important;
+            right: 0 !important;
+            left: auto !important;
+            transform: none !important;
+            white-space: nowrap !important;
         }
 
         #announcement-bar { position: absolute; top: 100px; left: 50%; transform: translateX(-50%) translateY(-20px); background: rgba(10, 10, 12, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(var(--accent-blue-rgb), 0.25); padding: 10px 25px; border-radius: 20px; font-size: 12px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 10px; opacity: 0; visibility: hidden; transition: 0.5s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(var(--accent-blue-rgb),0.15); z-index: 2000; -webkit-app-region: no-drag;}
@@ -7908,14 +7916,7 @@
                 }, 300);
             }
         } else if (updateState === 'ready') {
-            const modal = document.getElementById('forced-restart-modal');
-            if (modal) {
-                modal.style.display = 'flex';
-                setTimeout(() => {
-                    modal.style.opacity = '1';
-                    modal.firstElementChild.style.transform = 'scale(1)';
-                }, 10);
-            }
+            forceRestartClient();
         }
     }
 
