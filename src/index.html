@@ -4928,7 +4928,7 @@
                     }
 
                     let html = '';
-                    const standardMods = ['fabric-api', 'sodium', 'iris', 'lithium', 'modmenu'];
+                    const standardMods = ['fabric-api', 'sodium', 'iris', 'lithium', 'modmenu', 'tcm', 'fabric-language-kotlin'];
                     hits.forEach(mod => {
                         let tagsHtml = mod.categories.slice(0, 3).map(c => `<span class="mod-tag">${c}</span>`).join('');
                         let dlCount = (mod.downloads / 1000000).toFixed(2) + "M";
@@ -5012,7 +5012,7 @@
 
             if (data.hits && data.hits.length > 0) {
                 let html = '';
-                const standardMods = ['fabric-api', 'sodium', 'iris', 'lithium', 'modmenu'];
+                const standardMods = ['fabric-api', 'sodium', 'iris', 'lithium', 'modmenu', 'tcm', 'fabric-language-kotlin'];
 
                 data.hits.forEach(mod => {
                     let tagsHtml = mod.categories.slice(0, 3).map(c => `<span class="mod-tag">${c}</span>`).join('');
@@ -9810,7 +9810,8 @@
                 ram: localStorage.getItem('tentix_ram_raw') || "4G",
                 resWidth: parseInt(resParts[0]),
                 resHeight: parseInt(resParts[1]),
-                modloader: currentModloader
+                modloader: currentModloader,
+                rank: localStorage.getItem('tentix_active_rank') || 'PLAYER'
             });
 
             if (!result.success) {

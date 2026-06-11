@@ -424,10 +424,89 @@ ipcMain.handle('login-microsoft', async () => {
 
 ipcMain.handle('launch-minecraft', async (event, args) => {
     try {
+        const rootDir = path.join(app.getPath('appData'), '.tentixclient');
+        if (!fs.existsSync(rootDir)) {
+            fs.mkdirSync(rootDir, { recursive: true });
+        }
+
+        // 1. Enforce default settings in options.txt
+        const optionsPath = path.join(rootDir, 'options.txt');
+        try {
+            let optionsContent = '';
+            if (fs.existsSync(optionsPath)) {
+                optionsContent = fs.readFileSync(optionsPath, 'utf8');
+            }
+            let lines = optionsContent.split(/\r?\n/);
+            let updatedLines = [];
+            let keysToSet = {
+                'narrator': '0',
+                'soundCategory_music': '0.0',
+                'guiScale': '2'
+            };
+            for (let line of lines) {
+                if (!line.trim()) continue;
+                let parts = line.split(':');
+                if (parts.length >= 2) {
+                    let key = parts[0].trim();
+                    if (keysToSet.hasOwnProperty(key)) {
+                        updatedLines.push(`${key}:${keysToSet[key]}`);
+                        delete keysToSet[key];
+                        continue;
+                    }
+                }
+                updatedLines.push(line);
+            }
+            for (let key in keysToSet) {
+                updatedLines.push(`${key}:${keysToSet[key]}`);
+            }
+            fs.writeFileSync(optionsPath, updatedLines.join('\n'), 'utf8');
+            console.log("Enforced client options defaults (narrator: 0, music: 0.0, guiScale: 2).");
+        } catch (optionsErr) {
+            console.error("Failed to write options.txt defaults:", optionsErr);
+        }
+
+        // 2. Ensure mods are copied/updated
+        const modsDir = path.join(rootDir, 'mods');
+        if (!fs.existsSync(modsDir)) {
+            fs.mkdirSync(modsDir, { recursive: true });
+        }
+
+        // Delete old client JARs to avoid conflicts
+        try {
+            const files = fs.readdirSync(modsDir);
+            for (const file of files) {
+                if ((file.startsWith('tentix-client') || file.startsWith('tcm-')) && file.endsWith('.jar')) {
+                    fs.unlinkSync(path.join(modsDir, file));
+                    console.log(`Cleaned up old client jar: ${file}`);
+                }
+            }
+        } catch (cleanupErr) {
+            console.error("Failed to cleanup old client JARs:", cleanupErr);
+        }
+
+        const tcmSrc = path.join(__dirname, 'assets', 'mods', 'tcm.jar');
+        const kotlinSrc = path.join(__dirname, 'assets', 'mods', 'fabric-language-kotlin.jar');
+        const tcmDest = path.join(modsDir, 'tcm.jar');
+        const kotlinDest = path.join(modsDir, 'fabric-language-kotlin.jar');
+
+        if (fs.existsSync(tcmSrc)) {
+            fs.copyFileSync(tcmSrc, tcmDest);
+            console.log("Copied/updated tcm.jar in mods folder.");
+        } else {
+            console.warn("TCM JAR not found in launcher assets:", tcmSrc);
+        }
+
+        if (fs.existsSync(kotlinSrc)) {
+            fs.copyFileSync(kotlinSrc, kotlinDest);
+            console.log("Copied/updated fabric-language-kotlin.jar in mods folder.");
+        } else {
+            console.warn("Kotlin language mod JAR not found in launcher assets:", kotlinSrc);
+        }
+
         let opts = {
             clientPackage: null,
             authorization: args.token,
-            root: path.join(app.getPath('appData'), '.tentixclient'),
+            root: rootDir,
             version: {
                 number: args.version,
                 type: "release"
@@ -440,7 +519,10 @@ ipcMain.handle('launch-minecraft', async (event, args) => {
                 width: args.resWidth,
                 height: args.resHeight,
                 fullscreen: false
-            }
+            },
+            customArgs: [
+                `-Dtentix.rank=${args.rank || 'PLAYER'}`
+            ]
         };
 
         if (args.modloader === 'FABRIC') {
