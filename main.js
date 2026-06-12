@@ -441,7 +441,8 @@ ipcMain.handle('launch-minecraft', async (event, args) => {
             let keysToSet = {
                 'narrator': '0',
                 'soundCategory_music': '0.0',
-                'guiScale': '2'
+                'guiScale': '2',
+                'onboardAccessibility': 'false'
             };
             for (let line of lines) {
                 if (!line.trim()) continue;
